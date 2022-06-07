@@ -53,4 +53,9 @@ class FrontControllerTest extends TestCase {
          }
 
     }
+
+    function test_HelloWorld_Router_With_Query_Param(){
+        $this->assertNotNull($this->frontController->run('/HelloWorld?s=12', "GET"));
+        
+    }
 }

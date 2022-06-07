@@ -174,4 +174,26 @@ class UserTest extends TestCase {
         }
 
     }
+
+    function test_User_Role(){
+        $uuid = Uuid::uuid4();
+        $date = date ('Y-m-d H:i:s');
+        $user = new User($uuid, 'Example Example', 'example@gmail.com','123456',$date, $date);
+        $this->assertEquals('STRAIGHT', $user->getUserRole());
+        $user->setUserRole(Role::ADMIN);
+        $this->assertEquals('ADMIN', $user->getUserRole());
+
+    }
+
+    function test_Set_User_Role_NULL(){
+        try {
+            $uuid = Uuid::uuid4();
+            $date = date ('Y-m-d H:i:s');
+            $user = new User($uuid, 'Example Example', 'example@gmail.com','123456',$date, $date);
+            $user->setUserRole('');
+            $this->expectException(Exception::class);
+        } catch (Exception $e) {
+            $this->assertEquals('user role must be not null',$e->getMessage());
+        }
+    }
 }
