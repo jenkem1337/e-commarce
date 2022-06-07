@@ -10,8 +10,7 @@ class UserTest extends TestCase {
         $uuid = Uuid::uuid4();
         $date = date ('Y-m-d H:i:s');
         $user = new User($uuid, 'Hasancan Şahan', 'example@gmail.com','password123456',$date, $date);
-        $userPass = $user->getPassword();
-        $user->hashPassword($userPass);
+        $user->hashPassword($user->getPassword());
         $hashedPass = $user->getPassword();
         
         $this->assertEquals($uuid, $user->getUuid());
@@ -29,10 +28,24 @@ class UserTest extends TestCase {
         $date = date ('Y-m-d H:i:s');
         $user = new User($uuid, 'Hasancan Şahan', 'example@gmail.com','password123456',$date, $date);
         $anotherUuid4 = Uuid::uuid4();
+        $anotherUuid4 = $anotherUuid4->toString();
         $this->assertNotEquals($anotherUuid4, $user->getUuid());
     }
 
-    function test_
+    function test_Setting_UpdatedAt(){
+        $uuid = Uuid::uuid4();
+        $date = date ('Y-m-d H:i:s');
+        
+        $user = new User($uuid, 'Hasancan Şahan', 'example@gmail.com','password123456',$date, $date);
+        $this->assertEquals($date, $user->getUpdatedAt());
+        
+        $newDate = date ('Y-m-d H:i:s', strtotime('+3 Months'));
+        $this->assertNotEquals($newDate,$user->getUpdatedAt());
+
+        $user = new User($uuid, 'Hasancan Şahan', 'example@gmail.com','password123456',$date, $newDate);
+        $this->assertEquals($newDate, $user->getUpdatedAt());
+
+    }
     function test_Full_Name_Is_Null_And_Must_Throw_Exception(){
         try{
             $uuid = Uuid::uuid4();
