@@ -10,29 +10,37 @@ class FrontController {
     }
 
     function run($requsetUri, $HTTPMethod){
+        if(!$requsetUri){
+            throw new Exception('request uri must be not null');
+        }
+        if(!$HTTPMethod){
+            throw new Exception('http method must be not null');
+        }
         $url = $requsetUri;
         $requestMethod = $HTTPMethod;
 
         foreach($this->routes as $route){
-
-            $p = "@^".$route['pattern']."$@";
-            if(preg_match($p, $url, $matches)){
+            
+            $pattern = "@^".$route['pattern']."$@";
+            if(preg_match($pattern, $url, $matches)){
                 $matchedRoute = $route;
                 $uriPathParams = $matches;
             }
         }
-
+        if(!isset($matchedRoute) ){
+            throw new Exception('that route doesnt exist');
+        }
         if($matchedRoute['req_method'] != $requestMethod){
-            throw new Exception("Hatalı HTTP metodu");
+            throw new Exception("matched route http method is not equal to actual http method");
         }
         
         array_shift($uriPathParams);
         if(count($uriPathParams) >= 1){
             $command = $matchedRoute['command'];
-            $command->process($uriPathParams);
+            return $command->process($uriPathParams);
         }
         $command =  $matchedRoute['command'];
-        $command->process();
+        return $command->process();
 
     }
 
