@@ -6,7 +6,8 @@ class User extends BaseEntity {
     private  string $fullname;
     private  string $email;
     private  string $password;
-
+    private  string $activationCode;
+    private  string $userRole;
     
     function __construct($uuid,$fullname,$email,$password,$createdAt,$updatedAt)
     {
@@ -31,6 +32,7 @@ class User extends BaseEntity {
         $this->fullname = $fullname;
         $this->email = $email;
         $this->password = $password;
+        $this->userRole = Role::STRAIGHT;
     }
     
     function hashPassword($userPassword){
@@ -55,6 +57,11 @@ class User extends BaseEntity {
         }   
     }
 
+    
+    function createActivationCode(){
+        $this->activationCode = password_hash(bin2hex(random_bytes(16)),PASSWORD_DEFAULT);
+    }
+
     /**
      * Get the value of fullname
      */ 
@@ -77,5 +84,35 @@ class User extends BaseEntity {
     public function getPassword()
     {
         return $this->password;
+    }
+
+    /**
+     * Get the value of activationCode
+     */ 
+    public function getActivationCode()
+    {
+        return $this->activationCode;
+    }
+
+    
+    /**
+     * Get the value of userRole
+     */ 
+    public function getUserRole()
+    {
+        return $this->userRole;
+    }
+
+    /**
+     * Set the value of userRole
+     *
+     */ 
+    public function setUserRole(string $userRole)
+    {
+        if(!$userRole){
+            throw new Exception('user role must be not null');
+        }
+        $this->userRole = $userRole;
+
     }
 }
