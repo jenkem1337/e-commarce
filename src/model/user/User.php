@@ -44,8 +44,7 @@ class User extends BaseEntity {
         if(md5($newPassword) == $this->password){
             throw new Exception('new password and old password same which is not must be same');
         }
-        $this->password = md5($newPassword);
-
+        $this->hashPassword($newPassword);
     }
 
     function comparePassword($fromBody):bool{
