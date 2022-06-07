@@ -16,7 +16,7 @@ class FrontController {
         if(!$HTTPMethod){
             throw new Exception('http method must be not null');
         }
-        $url = $requsetUri;
+        $url = parse_url($requsetUri, PHP_URL_PATH);
         $requestMethod = $HTTPMethod;
 
         foreach($this->routes as $route){
