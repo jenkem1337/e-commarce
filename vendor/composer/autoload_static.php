@@ -36,6 +36,10 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
             'Prophecy\\' => 9,
             'PhpParser\\' => 10,
         ),
+        'F' => 
+        array (
+            'Firebase\\JWT\\' => 13,
+        ),
         'D' => 
         array (
             'Doctrine\\Instantiator\\' => 22,
@@ -78,6 +82,10 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         array (
             0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
         ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
+        ),
         'Doctrine\\Instantiator\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/instantiator/src/Doctrine/Instantiator',
@@ -93,6 +101,8 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
     );
 
     public static $classMap = array (
+        'AuthController' => __DIR__ . '/../..' . '/src/controller/AuthController.php',
+        'AuthService' => __DIR__ . '/../..' . '/src/service/AuthService.php',
         'BaseEntity' => __DIR__ . '/../..' . '/src/model/BaseEntity.php',
         'Command' => __DIR__ . '/../..' . '/src/front_controller/front_controller_command/Command.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
@@ -100,6 +110,7 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'FrontControllerTest' => __DIR__ . '/../..' . '/src/tests/front_controller/FrontControllerTest.php',
         'HelloWorldCommandStub' => __DIR__ . '/../..' . '/src/tests/stubs/HelloWorldControllerCommandStub.php',
         'HelloWorldControllerStub' => __DIR__ . '/../..' . '/src/tests/stubs/HelloWorldControllerStub.php',
+        'LoginCommand' => __DIR__ . '/../..' . '/src/front_controller/front_controller_command/controller_commands/AuthController/LoginCommand.php',
         'Middleware' => __DIR__ . '/../..' . '/src/middleware/AbstractMiddleware.php',
         'PHPUnit\\Exception' => __DIR__ . '/..' . '/phpunit/phpunit/src/Exception.php',
         'PHPUnit\\Framework\\ActualValueIsNotAnObjectException' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Exception/ActualValueIsNotAnObjectException.php',
@@ -519,6 +530,7 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'PharIo\\Version\\VersionConstraintParser' => __DIR__ . '/..' . '/phar-io/version/src/VersionConstraintParser.php',
         'PharIo\\Version\\VersionConstraintValue' => __DIR__ . '/..' . '/phar-io/version/src/VersionConstraintValue.php',
         'PharIo\\Version\\VersionNumber' => __DIR__ . '/..' . '/phar-io/version/src/VersionNumber.php',
+        'RegisterCommand' => __DIR__ . '/../..' . '/src/front_controller/front_controller_command/controller_commands/AuthController/RegisterCommand.php',
         'ReturnTypeWillChange' => __DIR__ . '/..' . '/symfony/polyfill-php81/Resources/stubs/ReturnTypeWillChange.php',
         'SebastianBergmann\\CliParser\\AmbiguousOptionException' => __DIR__ . '/..' . '/sebastian/cli-parser/src/exceptions/AmbiguousOptionException.php',
         'SebastianBergmann\\CliParser\\Exception' => __DIR__ . '/..' . '/sebastian/cli-parser/src/exceptions/Exception.php',

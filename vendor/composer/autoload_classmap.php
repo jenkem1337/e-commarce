@@ -6,6 +6,8 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AuthController' => $baseDir . '/src/controller/AuthController.php',
+    'AuthService' => $baseDir . '/src/service/AuthService.php',
     'BaseEntity' => $baseDir . '/src/model/BaseEntity.php',
     'Command' => $baseDir . '/src/front_controller/front_controller_command/Command.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
@@ -13,6 +15,7 @@ return array(
     'FrontControllerTest' => $baseDir . '/src/tests/front_controller/FrontControllerTest.php',
     'HelloWorldCommandStub' => $baseDir . '/src/tests/stubs/HelloWorldControllerCommandStub.php',
     'HelloWorldControllerStub' => $baseDir . '/src/tests/stubs/HelloWorldControllerStub.php',
+    'LoginCommand' => $baseDir . '/src/front_controller/front_controller_command/controller_commands/AuthController/LoginCommand.php',
     'Middleware' => $baseDir . '/src/middleware/AbstractMiddleware.php',
     'PHPUnit\\Exception' => $vendorDir . '/phpunit/phpunit/src/Exception.php',
     'PHPUnit\\Framework\\ActualValueIsNotAnObjectException' => $vendorDir . '/phpunit/phpunit/src/Framework/Exception/ActualValueIsNotAnObjectException.php',
@@ -432,6 +435,7 @@ return array(
     'PharIo\\Version\\VersionConstraintParser' => $vendorDir . '/phar-io/version/src/VersionConstraintParser.php',
     'PharIo\\Version\\VersionConstraintValue' => $vendorDir . '/phar-io/version/src/VersionConstraintValue.php',
     'PharIo\\Version\\VersionNumber' => $vendorDir . '/phar-io/version/src/VersionNumber.php',
+    'RegisterCommand' => $baseDir . '/src/front_controller/front_controller_command/controller_commands/AuthController/RegisterCommand.php',
     'ReturnTypeWillChange' => $vendorDir . '/symfony/polyfill-php81/Resources/stubs/ReturnTypeWillChange.php',
     'SebastianBergmann\\CliParser\\AmbiguousOptionException' => $vendorDir . '/sebastian/cli-parser/src/exceptions/AmbiguousOptionException.php',
     'SebastianBergmann\\CliParser\\Exception' => $vendorDir . '/sebastian/cli-parser/src/exceptions/Exception.php',
