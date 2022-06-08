@@ -194,7 +194,7 @@ class UserTest extends TestCase {
 
     }
 
-    function test_Set_User_Role_NULL(){
+    function test_Set_User_Role_Empty_String(){
         try {
             $uuid = Uuid::uuid4();
             $date = date ('Y-m-d H:i:s');
