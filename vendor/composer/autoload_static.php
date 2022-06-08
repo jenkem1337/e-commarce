@@ -103,6 +103,7 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
     public static $classMap = array (
         'AuthController' => __DIR__ . '/../..' . '/src/controller/AuthController.php',
         'AuthService' => __DIR__ . '/../..' . '/src/service/AuthService.php',
+        'AuthServiceImpl' => __DIR__ . '/../..' . '/src/service/AuthServiceImpl.php',
         'BaseEntity' => __DIR__ . '/../..' . '/src/model/BaseEntity.php',
         'Command' => __DIR__ . '/../..' . '/src/front_controller/front_controller_command/Command.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',

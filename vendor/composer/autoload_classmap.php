@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'AuthController' => $baseDir . '/src/controller/AuthController.php',
     'AuthService' => $baseDir . '/src/service/AuthService.php',
+    'AuthServiceImpl' => $baseDir . '/src/service/AuthServiceImpl.php',
     'BaseEntity' => $baseDir . '/src/model/BaseEntity.php',
     'Command' => $baseDir . '/src/front_controller/front_controller_command/Command.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
