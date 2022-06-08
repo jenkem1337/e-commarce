@@ -7,9 +7,10 @@ class User extends BaseEntity {
     private  string $email;
     private  string $password;
     private  string $activationCode;
+    private  bool   $isUserActiveted;
     private  string $userRole;
     
-    function __construct($uuid,$fullname,$email,$password,$createdAt,$updatedAt)
+    function __construct($uuid,$fullname,$email,$password,bool $isUserActiveted,$createdAt,$updatedAt)
     {
         parent::__construct($uuid, $createdAt, $updatedAt);
         if(!$fullname){
@@ -21,17 +22,20 @@ class User extends BaseEntity {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new Exception('email is not valid');
         }
-        
         if(!$password){
             throw new Exception('password must be not null');
         }
-
         if(strlen($password) < 6){
             throw new Exception('password length must be greater than 6');
         }
+        if(!isset($isUserActiveted) || !is_bool($isUserActiveted)){
+            throw new Exception('activated bool value must be not null or must be boolean');
+        }
+        
         $this->fullname = $fullname;
         $this->email = $email;
         $this->password = $password;
+        $this->isUserActiveted = $isUserActiveted;
         $this->userRole = Role::STRAIGHT;
     }
     
@@ -114,5 +118,13 @@ class User extends BaseEntity {
         }
         $this->userRole = $userRole;
 
+    }
+
+    /**
+     * Get the value of isUserActiveted
+     */ 
+    public function getIsUserActiveted()
+    {
+        return $this->isUserActiveted;
     }
 }
