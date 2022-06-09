@@ -7,7 +7,7 @@ class RegisterCommand implements Command{
 
     function __construct(AuthController $authController)
     {
-        $this->$authController = $authController;
+        $this->authController = $authController;
     }
 
     function process($params = []){
