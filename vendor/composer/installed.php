@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'aa9c918b9501f908f1effd994643f31fdd62397d',
+        'reference' => 'e4a989db12cd3631daf2c1735b8f42459ef33a5f',
         'name' => 'hasan/htdocs',
         'dev' => true,
     ),
@@ -52,7 +52,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'aa9c918b9501f908f1effd994643f31fdd62397d',
+            'reference' => 'e4a989db12cd3631daf2c1735b8f42459ef33a5f',
             'dev_requirement' => false,
         ),
         'myclabs/deep-copy' => array(
@@ -117,6 +117,15 @@
             'aliases' => array(),
             'reference' => '77a32518733312af16a44300404e945338981de3',
             'dev_requirement' => true,
+        ),
+        'phpmailer/phpmailer' => array(
+            'pretty_version' => 'v6.6.0',
+            'version' => '6.6.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../phpmailer/phpmailer',
+            'aliases' => array(),
+            'reference' => 'e43bac82edc26ca04b36143a48bde1c051cfd5b1',
+            'dev_requirement' => false,
         ),
         'phpoption/phpoption' => array(
             'pretty_version' => '1.8.1',

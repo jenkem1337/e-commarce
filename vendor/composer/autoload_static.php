@@ -42,6 +42,7 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
             'Prophecy\\' => 9,
             'PhpParser\\' => 10,
             'PhpOption\\' => 10,
+            'PHPMailer\\PHPMailer\\' => 20,
         ),
         'G' => 
         array (
@@ -110,6 +111,10 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         array (
             0 => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption',
         ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+        ),
         'GrahamCampbell\\ResultType\\' => 
         array (
             0 => __DIR__ . '/..' . '/graham-campbell/result-type/src',
@@ -144,12 +149,18 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'BaseEntity' => __DIR__ . '/../..' . '/src/model/BaseEntity.php',
         'Command' => __DIR__ . '/../..' . '/src/front_controller/front_controller_command/Command.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'DatabaseConnection' => __DIR__ . '/../..' . '/src/data_acces_layer/DatabaseConnections/DatabaseConnection.php',
+        'EmailService' => __DIR__ . '/../..' . '/src/service/EmailService.php',
+        'EmailServiceImpl' => __DIR__ . '/../..' . '/src/service/EmailServiceImpl.php',
+        'EmailSuccessfulyActivatedResponseDto' => __DIR__ . '/../..' . '/src/dto/EmailSuccessfulyActivatedResponseDto.php',
+        'EmailVerificationDto' => __DIR__ . '/../..' . '/src/dto/EmailVerificationDto.php',
         'FrontController' => __DIR__ . '/../..' . '/src/front_controller/FrontController.php',
         'FrontControllerTest' => __DIR__ . '/../..' . '/src/tests/front_controller/FrontControllerTest.php',
         'HelloWorldCommandStub' => __DIR__ . '/../..' . '/src/tests/stubs/HelloWorldControllerCommandStub.php',
         'HelloWorldControllerStub' => __DIR__ . '/../..' . '/src/tests/stubs/HelloWorldControllerStub.php',
         'LoginCommand' => __DIR__ . '/../..' . '/src/front_controller/front_controller_command/controller_commands/AuthController/LoginCommand.php',
         'Middleware' => __DIR__ . '/../..' . '/src/middleware/AbstractMiddleware.php',
+        'MySqlPDOConnection' => __DIR__ . '/../..' . '/src/data_acces_layer/DatabaseConnections/MySqlPDOConnection.php',
         'PHPUnit\\Exception' => __DIR__ . '/..' . '/phpunit/phpunit/src/Exception.php',
         'PHPUnit\\Framework\\ActualValueIsNotAnObjectException' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Exception/ActualValueIsNotAnObjectException.php',
         'PHPUnit\\Framework\\Assert' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert.php',
@@ -781,8 +792,16 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'TheSeer\\Tokenizer\\XMLSerializer' => __DIR__ . '/..' . '/theseer/tokenizer/src/XMLSerializer.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
         'User' => __DIR__ . '/../..' . '/src/model/user/User.php',
+        'UserCreatedResponseDto' => __DIR__ . '/../..' . '/src/dto/UserCreatedResponseDto.php',
+        'UserCreationalDto' => __DIR__ . '/../..' . '/src/dto/UserCreationalDto.php',
+        'UserDao' => __DIR__ . '/../..' . '/src/data_acces_layer/User/UserDao.php',
+        'UserDaoImpl' => __DIR__ . '/../..' . '/src/data_acces_layer/User/UserDaoImpl.php',
+        'UserLoginDto' => __DIR__ . '/../..' . '/src/dto/UserLoginDto.php',
+        'UserRepository' => __DIR__ . '/../..' . '/src/repository/UserRepository.php',
+        'UserRepositoryImpl' => __DIR__ . '/../..' . '/src/repository/UserRepositoryImpl.php',
         'UserTest' => __DIR__ . '/../..' . '/src/tests/model/user/UserTest.php',
         'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
+        'VerifyUserAccountCommand' => __DIR__ . '/../..' . '/src/front_controller/front_controller_command/controller_commands/AuthController/VerifyUserAccountCommand.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
