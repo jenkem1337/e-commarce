@@ -66,6 +66,12 @@ class User extends BaseEntity {
         $this->activationCode = password_hash(bin2hex(random_bytes(16)),PASSWORD_DEFAULT);
     }
 
+    function setActivationCode($code){
+        if(!$code){
+            throw new Exception('Activation code must be not null');
+        }
+        $this->activationCode = $code;
+    }
     /**
      * Get the value of fullname
      */ 
