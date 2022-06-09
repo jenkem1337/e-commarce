@@ -33,7 +33,7 @@ abstract class BaseEntity {
      */ 
     public function getUuid()
     {
-        return $this->uuid->toString();
+        return $this->uuid;
     }
 
     /**
