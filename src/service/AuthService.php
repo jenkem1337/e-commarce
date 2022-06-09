@@ -1,5 +1,6 @@
 <?php
 interface AuthService{
-    function login();
-    function register();
+    function login(UserLoginDto $userLoginDto);
+    function register(UserCreationalDto $userCreationalDto);
+    function verifyUserAccount(EmailVerificationDto $emailVerificationDto);
 }
