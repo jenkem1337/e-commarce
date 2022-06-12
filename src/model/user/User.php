@@ -7,7 +7,9 @@ class User extends BaseEntity {
     private  string $email;
     private  string $password;
     private  string $activationCode;
+    private  string $forgettenPasswordCode;
     private  bool   $isUserActiveted;
+    private $refreshTokenModel;
     private  string $userRole;
     
     function __construct($uuid,$fullname,$email,$password,bool $isUserActiveted,$createdAt,$updatedAt)
@@ -38,17 +40,45 @@ class User extends BaseEntity {
         $this->isUserActiveted = $isUserActiveted;
         $this->userRole = Role::STRAIGHT;
     }
-    
+
+    function changeFullName($newFullname){
+        if(!$newFullname){
+            throw new Exception('fullname must be not null');
+        }
+        if($newFullname == $this->fullname){
+            throw new Exception('new full name and actual full name is same which is not same');
+        }
+        $this->fullname = $newFullname;
+
+    }
+
     function hashPassword($userPassword){
         $this->password = md5($userPassword);
     }
-    
-    function ChangePassword($newPassword){
+    function createNewPassword($newPassword){
+        if(!$newPassword){
+            throw new Exception('password must be not null');
+        }
         if(strlen($newPassword) < 6){
             throw new Exception('password length must be greater than 6');
         }
         if(md5($newPassword) == $this->password){
-            throw new Exception('new password and old password same which is not must be same');
+            throw new Exception('new password and actual password same which is not must be same');
+        }
+
+        $this->hashPassword($newPassword);
+
+    }
+    function ChangePassword($oldPassword,$newPassword){
+        if(md5($oldPassword) !== $this->password){
+            throw new Exception('old password and actual is not same which is must be same');
+        }
+
+        if(strlen($newPassword) < 6){
+            throw new Exception('password length must be greater than 6');
+        }
+        if(md5($newPassword) == $this->password){
+            throw new Exception('new password and actual password same which is not must be same');
         }
         $this->hashPassword($newPassword);
     }
@@ -61,16 +91,46 @@ class User extends BaseEntity {
         }   
     }
 
-    
+    function isUserActiveted(){
+        $bool = $this->getIsUserActiveted();
+        if($bool == false){
+            throw new Exception('user not activated');
+        }
+        else{return true;}
+    }
+
+    function createForgettenPasswordCode(){
+        $this->forgettenPasswordCode = password_hash(bin2hex(random_bytes(16)),PASSWORD_DEFAULT);
+    }
     function createActivationCode(){
         $this->activationCode = password_hash(bin2hex(random_bytes(16)),PASSWORD_DEFAULT);
     }
 
-    function setActivationCode($code){
-        if(!$code){
-            throw new Exception('Activation code must be not null');
+        function setActivationCode($code){
+            if(!$code){
+                throw new Exception('Activation code must be not null');
+            }
+            $this->activationCode = $code;
         }
-        $this->activationCode = $code;
+        function setRefreshTokenModel(RefreshToken $refToken){
+            if(!$refToken){
+                throw new Exception('refresh token must be not null'); 
+            }
+            $this->refreshTokenModel = $refToken;
+    }
+    
+    public function setUserRole($userRole)
+    {
+        if(!$userRole){
+            throw new Exception('user role must be not null');
+        }
+        $this->userRole = $userRole;
+
+    }
+
+
+    function getRefreshTokenModel(){
+        return $this->refreshTokenModel;
     }
     /**
      * Get the value of fullname
@@ -113,19 +173,13 @@ class User extends BaseEntity {
         return $this->userRole;
     }
 
+    function getForegettenPasswordCode(){
+        return $this->forgettenPasswordCode;
+    }
     /**
      * Set the value of userRole
      *
      */ 
-    public function setUserRole(string $userRole)
-    {
-        if(!$userRole){
-            throw new Exception('user role must be not null');
-        }
-        $this->userRole = $userRole;
-
-    }
-
     /**
      * Get the value of isUserActiveted
      */ 
