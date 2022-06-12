@@ -24,7 +24,7 @@ class MySqlPDOConnection implements DatabaseConnection{
         }
 
     }
-    function getConnection()
+    function getConnection():PDO
     {
         return $this->pdo;
     }
