@@ -142,7 +142,8 @@ class UserTest extends TestCase {
         $user = new User($uuid, 'Example Example', 'example@gmail.com','123456',false,$date, $date);
         $user->hashPassword($user->getPassword());
         $newPassword = 'M0r3C00lP4ssw0rd';
-        $user->ChangePassword($newPassword);
+        $oldPassword = "123456";
+        $user->ChangePassword($oldPassword,$newPassword);
         $this->assertEquals(md5($newPassword), $user->getPassword());
     }
     
@@ -153,10 +154,12 @@ class UserTest extends TestCase {
             $user = new User($uuid, 'Example Example', 'example@gmail.com','123456',false,$date, $date);
             $user->hashPassword($user->getPassword());
             $newPassword = '123456';
-            $user->ChangePassword($newPassword);
+            $oldPassword = "123456";
+            $user->ChangePassword($oldPassword,$newPassword);
+    
             $this->expectException(Exception::class);
         }catch(Exception $e){
-            $this->assertEquals('new password and old password same which is not must be same', $e->getMessage());
+            $this->assertEquals('new password and actual password same which is not must be same', $e->getMessage());
         }
     }
 
@@ -167,7 +170,9 @@ class UserTest extends TestCase {
             $user = new User($uuid, 'Example Example', 'example@gmail.com','123456',false,$date, $date);
             $user->hashPassword($user->getPassword());
             $newPassword = '123';
-            $user->ChangePassword($newPassword);
+            $oldPassword = "123456";
+            $user->ChangePassword($oldPassword,$newPassword);
+    
             $this->expectException(Exception::class);
         }catch(Exception $e){
             $this->assertEquals('password length must be greater than 6', $e->getMessage());
@@ -175,7 +180,23 @@ class UserTest extends TestCase {
         }
 
     }
+    function test_Old_Password_And_Actual_Password_Not_Same(){
+        try{
+            $uuid = Uuid::uuid4();
+            $date = date ('Y-m-d H:i:s');
+            $user = new User($uuid, 'Example Example', 'example@gmail.com','123456',false,$date, $date);
+            $user->hashPassword($user->getPassword());
+            $newPassword = '123999999999999999';
+            $oldPassword = "12345698123131231";
+            $user->ChangePassword($oldPassword,$newPassword);
+    
+            $this->expectException(Exception::class);
+        }catch(Exception $e){
+            $this->assertEquals('old password and actual is not same which is must be same', $e->getMessage());
 
+        }
+
+    }
     
     function test_Is_User_Activated_Setted_True(){
             $uuid = Uuid::uuid4();
