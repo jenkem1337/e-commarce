@@ -98,7 +98,7 @@ class UserRepositoryImpl implements UserRepository{
 
     function findUserByUuidWithRefreshToken($refreshToken){
         try{
-            list($refreshTokenUuid, $userUuid) = $this->refreshTokenDao->findRefreshTokenByRefreshToken($refreshToken);
+            list($refreshTokenUuid, $userUuid) = $this->refreshTokenDao->findRefreshTokenDetailByRefreshToken($refreshToken);
             $userObj = $this->userDao->findUserByUuid($userUuid);
 
             foreach($userObj as $u){

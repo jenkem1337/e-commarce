@@ -17,7 +17,7 @@ class RefreshTokenDaoImpl implements RefreshTokenDao {
         $cacheConn = null;
 
     }
-    function findRefreshTokenByRefreshToken($refreshToken)
+    function findRefreshTokenDetailByRefreshToken($refreshToken)
     {
         $cacheConn = $this->cacheConnection->getConnection();
 
