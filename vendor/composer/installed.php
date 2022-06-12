@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'e4a989db12cd3631daf2c1735b8f42459ef33a5f',
+        'reference' => '56a33c4230fa48802718a9fa4340ffcf3150195f',
         'name' => 'hasan/htdocs',
         'dev' => true,
     ),
@@ -52,7 +52,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'e4a989db12cd3631daf2c1735b8f42459ef33a5f',
+            'reference' => '56a33c4230fa48802718a9fa4340ffcf3150195f',
             'dev_requirement' => false,
         ),
         'myclabs/deep-copy' => array(
@@ -198,6 +198,15 @@
             'aliases' => array(),
             'reference' => '8e16c225d57c3d6808014df6b1dd7598d0a5bbbe',
             'dev_requirement' => true,
+        ),
+        'predis/predis' => array(
+            'pretty_version' => 'v2.0.0',
+            'version' => '2.0.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../predis/predis',
+            'aliases' => array(),
+            'reference' => '99c253733dee9447d26257dc669d33d5ac84713d',
+            'dev_requirement' => false,
         ),
         'ramsey/collection' => array(
             'pretty_version' => '1.2.2',
