@@ -4,16 +4,13 @@ require './vendor/autoload.php';
 
 class LoginCommand implements Command{
     private AuthController $authController;
-    private Middleware $firstMiddleware;
 
-    function __construct(AuthController $authController, Middleware $firstMiddleware)
+    function __construct(AuthController $authController)
     {
-        $this->$authController = $authController;
-        $this->firstMiddleware = $firstMiddleware;
+        $this->authController = $authController;
     }
 
     function process($params = []){
-        $this->firstMiddleware->check();
         return $this->authController->login();
     }
 }
