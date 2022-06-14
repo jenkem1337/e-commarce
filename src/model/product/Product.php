@@ -61,7 +61,7 @@ class Product extends BaseEntity implements AggregateRoot{
     function decrementStockQuantity(int $quantity){
         $this->stockQuantity -= $quantity;
         if($this->stockQuantity < 0){
-            throw new Exception("stock quantity must be grater than zero");
+            throw new Exception("stock quantity must not be less than zero");
         }
     }
     function setComment(Comment $comment){
