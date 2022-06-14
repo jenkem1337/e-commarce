@@ -147,6 +147,7 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
     );
 
     public static $classMap = array (
+        'AggregateRoot' => __DIR__ . '/../..' . '/src/model/AggregateRoot.php',
         'AllUserResponseDto' => __DIR__ . '/../..' . '/src/dto/AlUserResponseDto.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'AuthController' => __DIR__ . '/../..' . '/src/controller/AuthController.php',
@@ -160,6 +161,7 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'ChangePasswordCommand' => __DIR__ . '/../..' . '/src/front_controller/front_controller_command/controller_commands/UserController/ChangePasswordCommand.php',
         'ChangePasswordDto' => __DIR__ . '/../..' . '/src/dto/ChangePasswordDto.php',
         'Command' => __DIR__ . '/../..' . '/src/front_controller/front_controller_command/Command.php',
+        'Comment' => __DIR__ . '/../..' . '/src/model/product/Comment.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'DatabaseConnection' => __DIR__ . '/../..' . '/src/data_acces_layer/DatabaseConnections/DatabaseConnection.php',
         'EmailService' => __DIR__ . '/../..' . '/src/service/EmailService.php',
@@ -179,6 +181,7 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'FullNameChangedResponseDto' => __DIR__ . '/../..' . '/src/dto/FullNameChagedResponseDto.php',
         'HelloWorldCommandStub' => __DIR__ . '/../..' . '/src/tests/stubs/HelloWorldControllerCommandStub.php',
         'HelloWorldControllerStub' => __DIR__ . '/../..' . '/src/tests/stubs/HelloWorldControllerStub.php',
+        'Image' => __DIR__ . '/../..' . '/src/model/product/Image.php',
         'IsAdminMiddleware' => __DIR__ . '/../..' . '/src/middleware/Auth/IsAdminMiddleware.php',
         'JwtAuthMiddleware' => __DIR__ . '/../..' . '/src/middleware/Auth/JwtAuthMiddleware.php',
         'JwtPayloadDto' => __DIR__ . '/../..' . '/src/dto/JwtPayloadDto.php',
@@ -608,6 +611,8 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'PharIo\\Version\\VersionConstraintValue' => __DIR__ . '/..' . '/phar-io/version/src/VersionConstraintValue.php',
         'PharIo\\Version\\VersionNumber' => __DIR__ . '/..' . '/phar-io/version/src/VersionNumber.php',
         'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
+        'Product' => __DIR__ . '/../..' . '/src/model/product/Product.php',
+        'Rate' => __DIR__ . '/../..' . '/src/model/product/Rate.php',
         'RedisConnection' => __DIR__ . '/../..' . '/src/data_acces_layer/DatabaseConnections/RedisConnection.php',
         'RefreshToken' => __DIR__ . '/../..' . '/src/model/user/RefreshToken.php',
         'RefreshTokenCommand' => __DIR__ . '/../..' . '/src/front_controller/front_controller_command/controller_commands/AuthController/RefreshTokenCommand.php',
@@ -836,6 +841,8 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'UserLogedInResponseDto' => __DIR__ . '/../..' . '/src/dto/UserLogedInResponseDto.php',
         'UserLoginDto' => __DIR__ . '/../..' . '/src/dto/UserLoginDto.php',
         'UserRepository' => __DIR__ . '/../..' . '/src/repository/UserRepository.php',
+        'UserRepositoryAggregateRootDecorator' => __DIR__ . '/../..' . '/src/repository/repository_decorator/aggregate_root_decorator/UserRepositoryAggregateRootDecorator.php',
+        'UserRepositoryDecorator' => __DIR__ . '/../..' . '/src/repository/repository_decorator/UserRepositoryDecorator.php',
         'UserRepositoryImpl' => __DIR__ . '/../..' . '/src/repository/Implemantions/UserRepositoryImpl.php',
         'UserService' => __DIR__ . '/../..' . '/src/service/UserService.php',
         'UserServiceImpl' => __DIR__ . '/../..' . '/src/service/Implemantions/UserServiceImpl.php',

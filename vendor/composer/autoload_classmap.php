@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AggregateRoot' => $baseDir . '/src/model/AggregateRoot.php',
     'AllUserResponseDto' => $baseDir . '/src/dto/AlUserResponseDto.php',
     'Attribute' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
     'AuthController' => $baseDir . '/src/controller/AuthController.php',
@@ -19,6 +20,7 @@ return array(
     'ChangePasswordCommand' => $baseDir . '/src/front_controller/front_controller_command/controller_commands/UserController/ChangePasswordCommand.php',
     'ChangePasswordDto' => $baseDir . '/src/dto/ChangePasswordDto.php',
     'Command' => $baseDir . '/src/front_controller/front_controller_command/Command.php',
+    'Comment' => $baseDir . '/src/model/product/Comment.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'DatabaseConnection' => $baseDir . '/src/data_acces_layer/DatabaseConnections/DatabaseConnection.php',
     'EmailService' => $baseDir . '/src/service/EmailService.php',
@@ -38,6 +40,7 @@ return array(
     'FullNameChangedResponseDto' => $baseDir . '/src/dto/FullNameChagedResponseDto.php',
     'HelloWorldCommandStub' => $baseDir . '/src/tests/stubs/HelloWorldControllerCommandStub.php',
     'HelloWorldControllerStub' => $baseDir . '/src/tests/stubs/HelloWorldControllerStub.php',
+    'Image' => $baseDir . '/src/model/product/Image.php',
     'IsAdminMiddleware' => $baseDir . '/src/middleware/Auth/IsAdminMiddleware.php',
     'JwtAuthMiddleware' => $baseDir . '/src/middleware/Auth/JwtAuthMiddleware.php',
     'JwtPayloadDto' => $baseDir . '/src/dto/JwtPayloadDto.php',
@@ -467,6 +470,8 @@ return array(
     'PharIo\\Version\\VersionConstraintValue' => $vendorDir . '/phar-io/version/src/VersionConstraintValue.php',
     'PharIo\\Version\\VersionNumber' => $vendorDir . '/phar-io/version/src/VersionNumber.php',
     'PhpToken' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
+    'Product' => $baseDir . '/src/model/product/Product.php',
+    'Rate' => $baseDir . '/src/model/product/Rate.php',
     'RedisConnection' => $baseDir . '/src/data_acces_layer/DatabaseConnections/RedisConnection.php',
     'RefreshToken' => $baseDir . '/src/model/user/RefreshToken.php',
     'RefreshTokenCommand' => $baseDir . '/src/front_controller/front_controller_command/controller_commands/AuthController/RefreshTokenCommand.php',
@@ -695,6 +700,8 @@ return array(
     'UserLogedInResponseDto' => $baseDir . '/src/dto/UserLogedInResponseDto.php',
     'UserLoginDto' => $baseDir . '/src/dto/UserLoginDto.php',
     'UserRepository' => $baseDir . '/src/repository/UserRepository.php',
+    'UserRepositoryAggregateRootDecorator' => $baseDir . '/src/repository/repository_decorator/aggregate_root_decorator/UserRepositoryAggregateRootDecorator.php',
+    'UserRepositoryDecorator' => $baseDir . '/src/repository/repository_decorator/UserRepositoryDecorator.php',
     'UserRepositoryImpl' => $baseDir . '/src/repository/Implemantions/UserRepositoryImpl.php',
     'UserService' => $baseDir . '/src/service/UserService.php',
     'UserServiceImpl' => $baseDir . '/src/service/Implemantions/UserServiceImpl.php',

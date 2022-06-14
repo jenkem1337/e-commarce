@@ -1,6 +1,5 @@
 <?php
 
-use PHPMailer\PHPMailer\PHPMailer;
 
 header('Content-type: application/json');
 
