@@ -10,11 +10,14 @@ $dotenv->load();
 class JwtAuthMiddleware extends Middleware {
     function check():bool{
         $headers = apache_request_headers();
+        
+        if(!$headers['Authorization']) throw new Exception("authorization header null");
+        
         $authorization = explode(' ', $headers['Authorization']);
         $jwt = $authorization[1];
-        if(!$jwt){
-            throw new Exception('jwt token doesnt exist');
-        }
+        
+        if(!$jwt) throw new Exception('jwt token doesnt exist');
+        
         $data = JWT::decode($jwt, new Key($_ENV['SECRET_KEY'], "HS256"));
         $jwtPayloadDto = JwtPayloadDto::getInstance();
         $jwtPayloadDto->setPayload($data);
