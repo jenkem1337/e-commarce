@@ -1,8 +1,8 @@
 <?php
 require './vendor/autoload.php';
 class UserRepositoryImpl implements UserRepository{
-    protected UserDao $userDao;
-    protected RefreshTokenDao $refreshTokenDao;
+    private UserDao $userDao;
+    private RefreshTokenDao $refreshTokenDao;
 
     public function __construct(UserDao $userDao, RefreshTokenDao $refreshTokenDao)
     {
@@ -50,7 +50,7 @@ class UserRepositoryImpl implements UserRepository{
             false;
         }
     }
-    function findUserByEmail($email):User{
+    function findUserByEmail($email){
         try {
             $userObj = $this->userDao->findUserByEmail($email);
             foreach($userObj as $u){
@@ -66,13 +66,13 @@ class UserRepositoryImpl implements UserRepository{
                 $user->setUserRole($u->user_role);
                 return $user;
             }
+
         } catch (Exception $th) {
             false;
         }
-
     }
 
-    function findUserByVerificationCode($code):User{
+    function findUserByVerificationCode($code){
         try{
             $userObj = $this->userDao->findUserByActivationCode($code);
         

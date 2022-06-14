@@ -1,9 +1,9 @@
 <?php
 
 interface UserRepository{
-    function findUserByEmail($userId):User;
+    function findUserByEmail($userId);
     function save(User $user);
-    function findUserByVerificationCode($code):User;
+    function findUserByVerificationCode($code);
     function updateUserActivatedState(User $user);
     function saveRefreshToken(User $user);
     function findUserByUuidWithRefreshToken($refreshToken);
