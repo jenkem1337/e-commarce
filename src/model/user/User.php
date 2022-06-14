@@ -2,7 +2,7 @@
 
 require './vendor/autoload.php';
 
-class User extends BaseEntity {
+class User extends BaseEntity implements AggregateRoot{
     private  string $fullname;
     private  string $email;
     private  string $password;
