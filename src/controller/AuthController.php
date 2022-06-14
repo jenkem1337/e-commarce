@@ -36,6 +36,7 @@ class AuthController {
             ];
             
             $token = JWT::encode($payload,  $_ENV["SECRET_KEY"], "HS256");
+            http_response_code(202);
             echo json_encode([
                 "message"=>"Login Process Succesful",
                 "access_token"=> $token,
@@ -60,6 +61,7 @@ class AuthController {
 
         $response = $this->authService->register($userCreationalDto);
         if($response->isSuccess()){
+            http_response_code(201);
             echo json_encode([
                 'uuid'=>$response->getUuid(),
                 'full_name'=>$response->getFullname(),
@@ -93,6 +95,7 @@ class AuthController {
                  ];
                  
                  $token = JWT::encode($payload,  $_ENV["SECRET_KEY"], "HS256");
+                 http_response_code(201);
                  echo json_encode([
                      "message"=>"Token Refreshed",
                      "access_token"=> $token,
@@ -107,6 +110,7 @@ class AuthController {
         $code = isset($_GET['code']) ? $_GET['code'] :"";
         $response = $this->authService->verifyUserAccount(new EmailVerificationDto($code));
         if($response->isSuccess()){
+            http_response_code(200);
             echo json_encode([
                 'uuid'=>$response->getUuid(),
                 'full_name'=>$response->getFullname(),

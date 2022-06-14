@@ -19,6 +19,7 @@ class UserController {
         $jwtPayload->removePayload();
         
         if($response->isSuccess()){
+            http_response_code(200); 
             echo json_encode(["message"=>$response->getSuccesMessage()]);
             die();
         }
@@ -93,6 +94,7 @@ class UserController {
         $jwtPayload->removePayload();
 
         if($response->isSuccess()){
+            http_response_code(200);
             echo json_encode(["message"=>$response->getSuccesMessage()]);
             die();
         }
