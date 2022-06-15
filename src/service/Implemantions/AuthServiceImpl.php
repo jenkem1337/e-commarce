@@ -18,7 +18,7 @@ class AuthServiceImpl implements AuthService{
     function login(UserLoginDto $userLoginDto):UserLogedInResponseDto{
         $user = $this->userRepository->findUserByEmail($userLoginDto->getEmail());
         if(!$user){
-            throw new Exception('this user doesnt exist in database');
+            throw new Exception('this user doesnt exist in database, 400');
         }
 
         $refreshToken = $this->refreshTokenFactory->createInstance(
@@ -60,7 +60,7 @@ class AuthServiceImpl implements AuthService{
         $isUserAlredyExist = $this->userRepository->findUserByEmail($user->getEmail());
         
         if($isUserAlredyExist){
-            throw new Exception('this user alredey exist');
+            throw new Exception('this user alredey exist, 400');
         }
 
         $user->hashPassword($user->getPassword());
@@ -88,7 +88,7 @@ class AuthServiceImpl implements AuthService{
         );
 
         if(!$userWithRefreshTokenModel){
-            throw new Exception("expire time ended, you have to login again");
+            throw new Exception("expire time ended, you have to login again, 401");
         }
 
        return new RefreshTokenResponseDto(
@@ -105,7 +105,7 @@ class AuthServiceImpl implements AuthService{
     function verifyUserAccount(EmailVerificationDto $emailVerificationDto):EmailSuccessfulyActivatedResponseDto{
         $user = $this->userRepository->findUserByVerificationCode($emailVerificationDto->getCode());
         if(!$user){
-            throw new Exception('this user doesnt exist in database');
+            throw new Exception('this user doesnt exist in database, 404');
         }
 
         $this->userRepository->updateUserActivatedState($user);
