@@ -30,6 +30,7 @@ return array(
     'EmailServiceImpl' => $baseDir . '/src/service/Implemantions/EmailServiceImpl.php',
     'EmailSuccessfulyActivatedResponseDto' => $baseDir . '/src/dto/EmailSuccessfulyActivatedResponseDto.php',
     'EmailVerificationDto' => $baseDir . '/src/dto/EmailVerificationDto.php',
+    'ExceptionHandler' => $baseDir . '/src/front_controller/ExceptionHandler.php',
     'Factory' => $baseDir . '/src/factory/Factory.php',
     'FindOneUserByUuidCommand' => $baseDir . '/src/front_controller/front_controller_command/controller_commands/UserController/FindOneUserByUuidCommand.php',
     'FindOneUserByUuidDto' => $baseDir . '/src/dto/FindOneUserByUuidDto.php',

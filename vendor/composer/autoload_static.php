@@ -171,6 +171,7 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'EmailServiceImpl' => __DIR__ . '/../..' . '/src/service/Implemantions/EmailServiceImpl.php',
         'EmailSuccessfulyActivatedResponseDto' => __DIR__ . '/../..' . '/src/dto/EmailSuccessfulyActivatedResponseDto.php',
         'EmailVerificationDto' => __DIR__ . '/../..' . '/src/dto/EmailVerificationDto.php',
+        'ExceptionHandler' => __DIR__ . '/../..' . '/src/front_controller/ExceptionHandler.php',
         'Factory' => __DIR__ . '/../..' . '/src/factory/Factory.php',
         'FindOneUserByUuidCommand' => __DIR__ . '/../..' . '/src/front_controller/front_controller_command/controller_commands/UserController/FindOneUserByUuidCommand.php',
         'FindOneUserByUuidDto' => __DIR__ . '/../..' . '/src/dto/FindOneUserByUuidDto.php',
