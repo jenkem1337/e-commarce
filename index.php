@@ -4,9 +4,11 @@
 header('Content-type: application/json');
 
 require __DIR__. '/vendor/autoload.php';
+$f = new FrontController();
+$f->setExceptionHandler(new ExceptionHandler(), 'handle');
 $authController = (new AuthControllerFactory())->createInstance();
 $userController = (new UserControllerFactory())->createInstance();
-$f = new FrontController();
+
 //Auth Route
 $f->registerRoute("POST", "/auth/register", new RegisterCommand($authController));
 $f->registerRoute("GET", "/auth/verify-user-acc", new VerifyUserAccountCommand($authController));
