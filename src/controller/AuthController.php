@@ -36,7 +36,7 @@ class AuthController {
             ];
             
             $token = JWT::encode($payload,  $_ENV["SECRET_KEY"], "HS256");
-            http_response_code(202);
+            http_response_code(200);
             echo json_encode([
                 "message"=>"Login Process Succesful",
                 "access_token"=> $token,
