@@ -47,7 +47,7 @@ class AuthServiceImpl implements AuthService{
     }
     
     function register(UserCreationalDto $userCreationalDto):UserCreatedResponseDto{
-        $user = new $this->userFactory->createInstance(
+        $user = $this->userFactory->createInstance(
             $userCreationalDto->getUuid(),
             $userCreationalDto->getFullname(),
             $userCreationalDto->getEmail(),
