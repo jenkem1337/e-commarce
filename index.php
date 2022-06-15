@@ -14,7 +14,7 @@ $f->registerRoute("POST", "/auth/login", new LoginCommand($authController));
 $f->registerRoute("POST","/auth/refresh-token", new RefreshTokenCommand($authController));
 
 //User Route
-$f->registerRoute("GET", "/user/list-all", new ListAllUserCommand(new JwtAuthMiddleware(), $userController));
+$f->registerRoute("GET", "/user/find-all", new ListAllUserCommand(new JwtAuthMiddleware(), $userController));
 $f->registerRoute("PATCH", "/user/change-password", new ChangePasswordCommand(new JwtAuthMiddleware(), $userController));
 $f->registerRoute("POST", "/user/send-forgetten-password-email", new ForgettenPasswordEmailCommand($userController));
 $f->registerRoute("PATCH", "/user/change-forgetten-password", new ChangeForgettenPasswordCommand($userController));
