@@ -3,11 +3,19 @@ require './vendor/autoload.php';
 class UserRepositoryImpl implements UserRepository{
     private UserDao $userDao;
     private RefreshTokenDao $refreshTokenDao;
-
-    public function __construct(UserDao $userDao, RefreshTokenDao $refreshTokenDao)
+    private UserFactory $userFactory;
+    private RefreshTokenFactory $refreshTokenFactory;
+    public function __construct(
+        UserDao $userDao, 
+        RefreshTokenDao $refreshTokenDao,
+        Factory $userFactory,
+        Factory $refreshTokenFactory
+    )
     {
         $this->userDao = $userDao;
         $this->refreshTokenDao = $refreshTokenDao;
+        $this->userFactory = $userFactory;
+        $this->refreshTokenFactory = $refreshTokenFactory;
     }
 
     function findAllWithPagination($startingLimit, $perPageForUsers)
@@ -15,7 +23,7 @@ class UserRepositoryImpl implements UserRepository{
         $users = $this->userDao->findAllWithPagination($startingLimit, $perPageForUsers);
         $userList = array();
         foreach($users as $u){
-            $user = new User(
+            $user = $this->userFactory->createInstance(
                 $u->uuid,
                 $u->full_name,
                 $u->email,
@@ -34,7 +42,7 @@ class UserRepositoryImpl implements UserRepository{
         try {
             $userObj = $this->userDao->findUserByUuid($uuid);
             foreach($userObj as $u){
-                $user = new User(
+                $user = $this->userFactory->createInstance(
                     $u->uuid,
                     $u->full_name,
                     $u->email,
@@ -54,7 +62,7 @@ class UserRepositoryImpl implements UserRepository{
         try {
             $userObj = $this->userDao->findUserByEmail($email);
             foreach($userObj as $u){
-                $user = new User(
+                $user = $this->userFactory->createInstance(
                     $u->uuid,
                     $u->full_name,
                     $u->email,
@@ -77,7 +85,7 @@ class UserRepositoryImpl implements UserRepository{
             $userObj = $this->userDao->findUserByActivationCode($code);
         
             foreach($userObj as $u){
-                $user = new User(
+                $user = $this->userFactory->createInstance(
                     $u->uuid,
                     $u->full_name,
                     $u->email,
@@ -102,7 +110,7 @@ class UserRepositoryImpl implements UserRepository{
             $userObj = $this->userDao->findUserByUuid($userUuid);
 
             foreach($userObj as $u){
-                    $user = new User(
+                    $user = $this->userFactory->createInstance(
                         $u->uuid,
                         $u->full_name,
                         $u->email,
@@ -113,7 +121,11 @@ class UserRepositoryImpl implements UserRepository{
                     );
                     $user->setUserRole($u->user_role);
 
-                    $refTokenModel = new RefreshToken($refreshTokenUuid, $user->getUuid(), date('Y-m-d H:i:s'), date('Y-m-d H:i:s'));
+                    $refTokenModel = $this->refreshTokenFactory->createInstance(
+                        $refreshTokenUuid, 
+                        $user->getUuid(), 
+                        date('Y-m-d H:i:s'), 
+                        date('Y-m-d H:i:s'));
                     $refTokenModel->setRefreshToken($refreshToken);
                     $user->setRefreshTokenModel($refTokenModel);
                     return $user;
@@ -128,7 +140,7 @@ class UserRepositoryImpl implements UserRepository{
             $userObj = $this->userDao->findUserByForgettenPasswordCode($passwordCode);
         
             foreach($userObj as $u){
-                $user = new User(
+                $user = new $this->userFactory->createInstance(
                     $u->uuid,
                     $u->full_name,
                     $u->email,

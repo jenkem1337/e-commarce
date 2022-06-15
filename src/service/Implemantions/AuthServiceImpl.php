@@ -5,11 +5,15 @@ use Ramsey\Uuid\Nonstandard\Uuid;
 class AuthServiceImpl implements AuthService{
     private UserRepository $userRepository;
     private EmailService $emailService;
+    private UserFactory $userFactory;
+    private RefreshTokenFactory $refreshTokenFactory;
 
-    function __construct(UserRepository $userRepo, EmailService $emailService)
+    function __construct(UserRepository $userRepo, EmailService $emailService, Factory $userFactory, Factory $refreshTokenFactory)
     {
         $this->userRepository = $userRepo;
         $this->emailService   = $emailService;
+        $this->userFactory = $userFactory;
+        $this->refreshTokenFactory = $refreshTokenFactory;
     }
     function login(UserLoginDto $userLoginDto):UserLogedInResponseDto{
         $user = $this->userRepository->findUserByEmail($userLoginDto->getEmail());
@@ -17,7 +21,11 @@ class AuthServiceImpl implements AuthService{
             throw new Exception('this user doesnt exist in database');
         }
 
-        $refreshToken = new RefreshToken(Uuid::uuid4(),$user->getUuid(), date('Y-m-d H:i:s'),date('Y-m-d H:i:s'));
+        $refreshToken = $this->refreshTokenFactory->createInstance(
+            Uuid::uuid4(),
+            $user->getUuid(),
+            date('Y-m-d H:i:s'),
+            date('Y-m-d H:i:s'));
         $refreshToken->createRefreshToken(60*60*24*10);
 
         $user->setRefreshTokenModel($refreshToken);
@@ -39,7 +47,7 @@ class AuthServiceImpl implements AuthService{
     }
     
     function register(UserCreationalDto $userCreationalDto):UserCreatedResponseDto{
-        $user = new User(
+        $user = new $this->userFactory->createInstance(
             $userCreationalDto->getUuid(),
             $userCreationalDto->getFullname(),
             $userCreationalDto->getEmail(),
