@@ -1,3 +1,3 @@
 <?php
-
-class Category extends BaseEntity{}
+require "./vendor/autoload.php";
+class Category extends BaseEntity implements AggregateRoot{}
