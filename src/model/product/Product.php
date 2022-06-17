@@ -38,7 +38,7 @@ class Product extends BaseEntity implements AggregateRoot{
             throw new NullException("stock quantity");
         }
         if(!$rate){
-            throw new Exception("rate must be not null, 400");
+            throw new NullException("rate");
         }
         $this->brand = $brand;
         $this->model = $model;
@@ -183,7 +183,7 @@ class Product extends BaseEntity implements AggregateRoot{
     /**
      * Get the value of images
      */ 
-    public function getImages(array $images)
+    public function getImages()
     {
         return $this->images;
     }
