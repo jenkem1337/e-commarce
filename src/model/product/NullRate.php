@@ -1,7 +1,7 @@
 <?php
 
 
-class NullRate extends BaseEntity implements RateInterface{
+class NullRate implements RateInterface{
     private int $howManyPeopleRateIt;
     private int $avarageRate;
     
