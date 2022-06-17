@@ -55,7 +55,7 @@ class UserTest extends TestCase {
             $this->expectException(Exception::class);
     
         }catch(Exception $e){
-            $this->assertEquals('fullname must be not null', $e->getMessage());
+            $this->assertEquals('full name must not be null', $e->getMessage());
         }
     }
 
@@ -67,7 +67,7 @@ class UserTest extends TestCase {
             $this->expectException(Exception::class);
     
         }catch(Exception $e){
-            $this->assertEquals('email must be not null', $e->getMessage());
+            $this->assertEquals('email must not be null', $e->getMessage());
         }
 
     }
@@ -93,7 +93,7 @@ class UserTest extends TestCase {
             $this->expectException(Exception::class);
     
         }catch(Exception $e){
-            $this->assertEquals('password must be not null', $e->getMessage());
+            $this->assertEquals('password must not be null', $e->getMessage());
         }
 
     }
@@ -159,7 +159,7 @@ class UserTest extends TestCase {
     
             $this->expectException(Exception::class);
         }catch(Exception $e){
-            $this->assertEquals('new password and actual password same which is not must be same', $e->getMessage());
+            $this->assertEquals('new password and actual password is same which must not be same', $e->getMessage());
         }
     }
 
@@ -192,7 +192,7 @@ class UserTest extends TestCase {
     
             $this->expectException(Exception::class);
         }catch(Exception $e){
-            $this->assertEquals('old password and actual is not same which is must be same', $e->getMessage());
+            $this->assertEquals('old password and actual password is not same which is must be same', $e->getMessage());
 
         }
 
@@ -223,7 +223,7 @@ class UserTest extends TestCase {
             $user->setUserRole('');
             $this->expectException(Exception::class);
         } catch (Exception $e) {
-            $this->assertEquals('user role must be not null',$e->getMessage());
+            $this->assertEquals('user role must not be null',$e->getMessage());
         }
     }
 }
