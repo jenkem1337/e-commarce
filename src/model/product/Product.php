@@ -10,10 +10,12 @@ class Product extends BaseEntity implements AggregateRoot{
     private $price;
     private $stockQuantity;
     private RateInterface $rate;
+    private $previousPrice;
+    private $subscribers;
     private $comments;
     private $comment;
     private $images;
-    function __construct($uuid, $brand,$model,$header,$description,$price,$stockQuantity, RateInterface $rate,$images,$createdAt, $updatedAt)
+    function __construct($uuid, $brand,$model,$header,$description,$price,$stockQuantity, RateInterface $rate,$subscribers = array(),$images = array(),$createdAt, $updatedAt)
     {
         parent::__construct($uuid,$createdAt, $updatedAt);
         if(!$brand){
@@ -29,7 +31,7 @@ class Product extends BaseEntity implements AggregateRoot{
             throw new NullException("description");
         }
         if(!$price){
-            throw new  NullException('price');
+            throw new NullException('price');
         }
         if($price < 0){
             throw new NegativeValueException();
@@ -48,7 +50,7 @@ class Product extends BaseEntity implements AggregateRoot{
         $this->stockQuantity = $stockQuantity;
         $this->rate = $rate;
         $this->images = $images;
-        
+        $this->subscribers = $subscribers;
     }
 
     function incrementStockQuantity(int $quantity){
@@ -85,8 +87,9 @@ class Product extends BaseEntity implements AggregateRoot{
     }
 
     function changePrice($price){
+        
         if(!$price){
-            throw new  NullException('price');
+            throw new NullException('price');
         }
         if($price < 0){
             throw new NegativeValueException();
@@ -95,9 +98,12 @@ class Product extends BaseEntity implements AggregateRoot{
         if($price == $this->price){
             throw new SamePropertyException('new price', 'price');
         }
+        $this->previousPrice = $this->price;
         $this->price = $price;
     }
-
+    function isPriceLessThanPreviousPrice(){
+        return ($this->price < $this->previousPrice) ? true : false;
+    }
     function writeNewComment(Comment $comment){
         if(!$comment){
             throw new NullException("comment");
@@ -188,5 +194,13 @@ class Product extends BaseEntity implements AggregateRoot{
     public function getImages()
     {
         return $this->images;
+    }
+
+    /**
+     * Get the value of subscribers
+     */ 
+    public function getSubscribers()
+    {
+        return $this->subscribers;
     }
 }
