@@ -12,37 +12,33 @@ class Product extends BaseEntity implements AggregateRoot{
     private $rate;
     private $comments;
     private $comment;
-    private $categories;
     private $images;
-    function __construct($uuid, $brand,$model,$header,$description,$price,$stockQuantity,$rate,$categories,$images,$createdAt, $updatedAt)
+    function __construct($uuid, $brand,$model,$header,$description,$price,$stockQuantity,$rate,$images,$createdAt, $updatedAt)
     {
         parent::__construct($uuid,$createdAt, $updatedAt);
         if(!$brand){
-            throw new Exception("brand must be not null, 400");
+            throw new NullException("brand");
         }
         if(!$model){
-            throw new Exception("model must be not null, 400");
+            throw new NullException("model");
         }
         if(!$header){
-            throw new Exception("header must be not null, 400");
+            throw new NullException("header");
         }
         if(!$description){
-            throw new Exception("description must be not null, 400");
+            throw new NullException("description");
         }
         if(!$price){
-            throw new Exception('price must be not null, 400');
+            throw new  NullException('price');
         }
-        if($price <= 0){
-            throw new Exception("price must be greater than zero, 400");
+        if($price < 0){
+            throw new NegativeValueException();
         }
         if(!$stockQuantity){
-            throw new Exception("stock quantity must be not null, 400");
+            throw new NullException("stock quantity");
         }
         if(!$rate){
             throw new Exception("rate must be not null, 400");
-        }
-        if(!$categories || count($categories)==0){
-            throw new Exception("categories must be not null or length greater than zero, 400");
         }
         $this->brand = $brand;
         $this->model = $model;
@@ -51,7 +47,6 @@ class Product extends BaseEntity implements AggregateRoot{
         $this->price = $price;
         $this->stockQuantity = $stockQuantity;
         $this->rate = $rate;
-        $this->categories = $categories;
         $this->images = $images;
     }
 
@@ -59,22 +54,60 @@ class Product extends BaseEntity implements AggregateRoot{
         $quantity = abs($quantity);
         $this->stockQuantity += $quantity;
     }
+
     function decrementStockQuantity(int $quantity){
         $quantity = abs($quantity);
         $this->stockQuantity -= $quantity;
         if($this->stockQuantity < 0){
-            throw new Exception("stock quantity must not be less than zero, 400");
+            throw new NegativeValueException();
         }
     }
-    function setComment(Comment $comment){
+
+    function changeHeader($header){
+        if(!$header){
+            throw new NullException('header');
+        }
+        if($header == $this->header){
+            throw new SamePropertyException('new header', 'header');
+        }
+        $this->header = $header;
+    }
+
+    function changeDescription($description){
+        if(!$description){
+            throw new NullException('description');
+        }
+        if($description == $this->description){
+            throw new SamePropertyException('new description', 'description');
+        }
+        $this->description = $description;
+    }
+
+    function changePrice($price){
+        if(!$price){
+            throw new  NullException('price');
+        }
+        if($price < 0){
+            throw new NegativeValueException();
+        }
+
+        if($price == $this->price){
+            throw new SamePropertyException('new price', 'price');
+        }
+        $this->price = $price;
+    }
+
+    function writeNewComment(Comment $comment){
         if(!$comment){
-            throw new Exception("comment must be not null, 400");
+            throw new NullException("comment");
         }
         $this->comment = $comment;
     }
+
     function setComments(array $comments){
         $this->comments = $comments;
     }
+
     /**
      * Get the value of brand
      */ 
@@ -121,14 +154,6 @@ class Product extends BaseEntity implements AggregateRoot{
     public function getComments()
     {
         return $this->comments;
-    }
-
-    /**
-     * Get the value of categories
-     */ 
-    public function getCategories()
-    {
-        return $this->categories;
     }
 
     /**
