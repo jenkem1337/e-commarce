@@ -20,7 +20,7 @@ class UserServiceImpl implements UserService{
     function changeForgettenPassword(ForgettenPasswordDto $forgettenPasswordDto): ForgettenPasswordResponseDto
     {
         $user = $this->userRepository->findUserByForgettenPasswordCode($forgettenPasswordDto->getVerificitationCode());
-        if(!$user) throw new Exception('Verification code is not matched, 400');
+        if(!$user) throw new NotMatchedException('verification code');
         $user->createNewPassword($forgettenPasswordDto->getNewPassword());
         $user->createForgettenPasswordCode();
         
@@ -55,7 +55,7 @@ class UserServiceImpl implements UserService{
     function findOneUserByUuid(FindOneUserByUuidDto $userUuidDto): OneUserFoundedResponseDto
     {
         $user = $this->userRepository->findOneUserByUuid($userUuidDto->getUuid());
-        if(!$user) throw new Exception('user doesnt exist in database, 404');
+        if(!$user) throw new DoesNotExistException('user');
         return new OneUserFoundedResponseDto(
             true,
             $user->getUuid(),

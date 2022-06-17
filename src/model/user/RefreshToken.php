@@ -9,7 +9,7 @@ class RefreshToken extends BaseEntity {
     function __construct($uuid, $userUuid, $createdAt, $updatedAt){
         parent::__construct($uuid, $createdAt, $updatedAt);
         if(!$userUuid){
-            throw new Exception('user uuid must be not null'); 
+            throw new NullException('user'); 
         }
         $this->userUuid = $userUuid;
         
@@ -17,14 +17,14 @@ class RefreshToken extends BaseEntity {
     function createRefreshToken($expireTime){
         $this->token = password_hash(bin2hex(random_bytes(16)),PASSWORD_DEFAULT);
         if(!$expireTime){ 
-            throw new Exception('expire time must be not null'); 
+            throw new NullException('expire'); 
         }
         $this->tokenExpireTime = $expireTime;
     }
 
     function setRefreshToken($refToken){
         if(!$refToken){ 
-            throw new Exception('refresh token must be not null'); 
+            throw new NullException('refresh token'); 
         }
         $this->token = $refToken;
     }

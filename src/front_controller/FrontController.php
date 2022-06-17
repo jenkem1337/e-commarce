@@ -11,13 +11,13 @@ class FrontController {
         
         $this->routes[] = ['req_method' => $requestMethod,'pattern' => $pattern, 'command' => $cmd];
     }
-
+     
     function run($requsetUri, $HTTPMethod){
         if(!$requsetUri){
-            throw new Exception('request uri must be not null, 400');
+            throw new NullException('request uri');
         }
         if(!$HTTPMethod){
-            throw new Exception('http method must be not null, 400');
+            throw new NullException('http method');
         }
         $url = parse_url($requsetUri, PHP_URL_PATH);
         $requestMethod = $HTTPMethod;
@@ -31,10 +31,10 @@ class FrontController {
             }
         }
         if(!isset($matchedRoute) ){
-            throw new Exception('that route doesnt exist, 400');
+            throw new DoesNotExistException('route');
         }
         if($matchedRoute['req_method'] != $requestMethod){
-            throw new Exception("matched route http method is not equal to actual http method, 405");
+            throw new HttpMethodException();
         }
         
         array_shift($uriPathParams);

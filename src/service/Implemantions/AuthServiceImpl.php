@@ -8,7 +8,12 @@ class AuthServiceImpl implements AuthService{
     private UserFactory $userFactory;
     private RefreshTokenFactory $refreshTokenFactory;
 
-    function __construct(UserRepository $userRepo, EmailService $emailService, Factory $userFactory, Factory $refreshTokenFactory)
+    function __construct(
+        UserRepository $userRepo, 
+        EmailService $emailService, 
+        Factory $userFactory, 
+        Factory $refreshTokenFactory
+        )
     {
         $this->userRepository = $userRepo;
         $this->emailService   = $emailService;
@@ -18,7 +23,7 @@ class AuthServiceImpl implements AuthService{
     function login(UserLoginDto $userLoginDto):UserLogedInResponseDto{
         $user = $this->userRepository->findUserByEmail($userLoginDto->getEmail());
         if(!$user){
-            throw new Exception('this user doesnt exist in database, 400');
+            throw new NotFoundException('user');
         }
 
         $refreshToken = $this->refreshTokenFactory->createInstance(
@@ -60,7 +65,7 @@ class AuthServiceImpl implements AuthService{
         $isUserAlredyExist = $this->userRepository->findUserByEmail($user->getEmail());
         
         if($isUserAlredyExist){
-            throw new Exception('this user alredey exist, 400');
+            throw new AlreadyExistException('user');
         }
 
         $user->hashPassword($user->getPassword());
@@ -88,7 +93,7 @@ class AuthServiceImpl implements AuthService{
         );
 
         if(!$userWithRefreshTokenModel){
-            throw new Exception("expire time ended, you have to login again, 401");
+            throw new RefreshTokenExpireTimeEndedException();
         }
 
        return new RefreshTokenResponseDto(
@@ -105,7 +110,7 @@ class AuthServiceImpl implements AuthService{
     function verifyUserAccount(EmailVerificationDto $emailVerificationDto):EmailSuccessfulyActivatedResponseDto{
         $user = $this->userRepository->findUserByVerificationCode($emailVerificationDto->getCode());
         if(!$user){
-            throw new Exception('this user doesnt exist in database, 404');
+            throw new NotFoundException('user');
         }
 
         $this->userRepository->updateUserActivatedState($user);

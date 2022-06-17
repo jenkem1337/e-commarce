@@ -10,17 +10,17 @@ abstract class BaseEntity {
     function __construct($uuid, $createdAt, $updatedAt)
     {
         if(!$uuid){
-            throw new Exception('uuid doesnt exist, 400');
+            throw new NullException('uuid');
         }
         if(!Uuid::isValid($uuid)){
-            throw new Exception('uuid is not valid, 400');
+            throw new NotValidException('uuid');
         }
         if(!$createdAt){
-            throw new Exception('create at doesnt exist, 400');
+            throw new NullException('create at');
 
         }
         if(!$updatedAt){
-            throw new Exception('updated at doesnt exist, 400');
+            throw new NullException('updated at');
         }
 
         $this->uuid = $uuid;

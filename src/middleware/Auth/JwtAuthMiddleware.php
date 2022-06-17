@@ -12,12 +12,12 @@ class JwtAuthMiddleware extends Middleware {
 
         $headers = apache_request_headers();
         
-        if(!$headers['Authorization']) throw new Exception("authorization header null, 401");
+        if(!$headers['Authorization']) throw new NullException("authorization header", 401);
         
         $authorization = explode(' ', $headers['Authorization']);
         $jwt = $authorization[1];
         
-        if(!$jwt) throw new Exception('jwt token doesnt exist, 401');
+        if(!$jwt) throw new DoesNotExistException('jwt token', 401);
         
         $data = JWT::decode($jwt, new Key($_ENV['SECRET_KEY'], "HS256"));
         $jwtPayloadDto = JwtPayloadDto::getInstance();
