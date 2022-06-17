@@ -159,11 +159,11 @@ class UserRepositoryImpl implements UserRepository{
 
     }
 
-    function save(User $user){
-        $this->userDao->save($user);
+    function persistUser(User $user){
+        $this->userDao->persist($user);
     }
-    function saveRefreshToken(User $user){
-        $this->refreshTokenDao->save($user->getRefreshTokenModel());
+    function persistRefreshToken(User $user){
+        $this->refreshTokenDao->persist($user->getRefreshTokenModel());
     }
 
     function updateUserActivatedState(User $user){

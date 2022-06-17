@@ -35,7 +35,7 @@ class AuthServiceImpl implements AuthService{
 
         $user->setRefreshTokenModel($refreshToken);
 
-        $this->userRepository->saveRefreshToken($user);
+        $this->userRepository->persistRefreshToken($user);
 
         $user->comparePassword($userLoginDto->getPassword());
         $user->isUserActiveted();
@@ -71,7 +71,7 @@ class AuthServiceImpl implements AuthService{
         $user->hashPassword($user->getPassword());
         $user->createActivationCode();
 
-        $this->userRepository->save($user);
+        $this->userRepository->persistUser($user);
         $this->emailService->sendVerificationCode($user);
 
         return new UserCreatedResponseDto(

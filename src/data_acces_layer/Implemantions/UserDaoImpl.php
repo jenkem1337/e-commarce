@@ -26,7 +26,7 @@ class UserDaoImpl implements UserDao{
         return $user;
         
     }
-    function save(User $user){
+    function persist(User $user){
         $conn =  $this->dbConnection->getConnection();
         
         $stmt = $conn->prepare("INSERT INTO users (uuid, full_name, email, user_password, email_activation_code, is_user_activated, user_role, created_at, updated_at) VALUES (:uuid, :full_name, :email, :user_password, :email_activation_code, :is_user_activated, :user_role, :created_at, :updated_at)");

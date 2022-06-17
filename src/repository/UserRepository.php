@@ -2,10 +2,10 @@
 
 interface UserRepository{
     function findUserByEmail($userId);
-    function save(User $user);
+    function persistUser(User $user);
     function findUserByVerificationCode($code);
     function updateUserActivatedState(User $user);
-    function saveRefreshToken(User $user);
+    function persistRefreshToken(User $user);
     function findUserByUuidWithRefreshToken($refreshToken);
     function updatePassword(User $user);
     function updateForgettenPasswordCode(User $user);

@@ -8,7 +8,7 @@ class RefreshTokenDaoImpl implements RefreshTokenDao {
         $this->cacheConnection = $cacheConnection;
     }
 
-    function save(RefreshToken $refreshToken)
+    function persist(RefreshToken $refreshToken)
     {
         $cacheConn = $this->cacheConnection->getConnection();
         $cacheConn->hset($refreshToken->getRefreshToken(), "uuid", $refreshToken->getUuid());

@@ -1,6 +1,6 @@
 <?php 
 
 interface RefreshTokenDao {
-    function save(RefreshToken $refreshToken);
+    function persist(RefreshToken $refreshToken);
     function findRefreshTokenDetailByRefreshToken($refreshToken);
 }
