@@ -9,11 +9,11 @@ class Product extends BaseEntity implements AggregateRoot{
     private $description;
     private $price;
     private $stockQuantity;
-    private $rate;
+    private RateInterface $rate;
     private $comments;
     private $comment;
     private $images;
-    function __construct($uuid, $brand,$model,$header,$description,$price,$stockQuantity,$rate,$images,$createdAt, $updatedAt)
+    function __construct($uuid, $brand,$model,$header,$description,$price,$stockQuantity, RateInterface $rate,$images,$createdAt, $updatedAt)
     {
         parent::__construct($uuid,$createdAt, $updatedAt);
         if(!$brand){
@@ -38,7 +38,7 @@ class Product extends BaseEntity implements AggregateRoot{
             throw new NullException("stock quantity");
         }
         if(!$rate){
-            throw new NullException("rate");
+            throw new NullException('rate');
         }
         $this->brand = $brand;
         $this->model = $model;
@@ -48,6 +48,7 @@ class Product extends BaseEntity implements AggregateRoot{
         $this->stockQuantity = $stockQuantity;
         $this->rate = $rate;
         $this->images = $images;
+        
     }
 
     function incrementStockQuantity(int $quantity){
@@ -103,6 +104,7 @@ class Product extends BaseEntity implements AggregateRoot{
         }
         $this->comment = $comment;
     }
+    
 
     function setComments(array $comments){
         $this->comments = $comments;
