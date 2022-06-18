@@ -19,4 +19,10 @@ interface RateInterface {
 
     public function getUserUuid();
 
+    public function getUuid();
+
+    public function getCreatedAt();
+
+    public function getUpdatedAt();
+
 }
