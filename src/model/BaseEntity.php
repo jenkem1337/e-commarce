@@ -51,4 +51,8 @@ abstract class BaseEntity {
     {
         return $this->updatedAt;
     }
+
+    function isNull(){
+        return false;
+    }
 }
