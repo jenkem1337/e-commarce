@@ -1,5 +1,5 @@
 <?php
 
 interface Factory{
-    function createInstance(...$params);
+    function createInstance($isMustBeConcreteObjcet = false, ...$params);
 }

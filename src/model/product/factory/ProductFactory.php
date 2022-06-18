@@ -2,7 +2,7 @@
 require "./vendor/autoload.php";
 
 abstract class ProductFactory implements Factory {
-    function createInstance(...$params):Product
+    function createInstance($isMustBeConcreteObject =false,...$params):Product
     {
         return new Product(...$params); 
     }

@@ -2,7 +2,7 @@
 require "./vendor/autoload.php";
 use PHPMailer\PHPMailer\PHPMailer;
 class AuthControllerFactory implements Factory{
-    function createInstance(...$params):AuthController {
+    function createInstance($isMustBeConcreteObject = false, ...$params):AuthController {
         return new AuthController(
             new AuthServiceImpl(
                 new UserRepositoryAggregateRootDecorator(

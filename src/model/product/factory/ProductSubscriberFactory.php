@@ -1,7 +1,7 @@
 <?php
 require "./vendor/autoload.php";
 abstract class ProductSubscriberFactory implements Factory {
-    function createInstance(...$params)
+    function createInstance($isMustBeConcreteObject =false,...$params)
     {
         return new ProductSubscriber(...$params);
     }

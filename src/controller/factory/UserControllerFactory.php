@@ -4,7 +4,7 @@ require "./vendor/autoload.php";
 use PHPMailer\PHPMailer\PHPMailer;
 class UserControllerFactory implements Factory {
     
-    function createInstance(...$params):UserController {
+    function createInstance($isMustBeConcreteObject = false,...$params):UserController {
         return new UserController(
             new UserServiceImpl(
                 new UserRepositoryAggregateRootDecorator(
