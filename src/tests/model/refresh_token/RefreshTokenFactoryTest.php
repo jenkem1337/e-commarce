@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 
 class RefreshTokenFactoryTest extends TestCase {
     protected RefreshTokenFactory $refreshTokenFactory;
-    protected RefreshToken $refreshToken;
+    protected RefreshTokenInterface $refreshToken;
     function setUp():void{
         $this->refreshTokenFactory = new ConcreteRefreshTokenFactory();
     }
@@ -23,5 +23,10 @@ class RefreshTokenFactoryTest extends TestCase {
         );
         $this->assertNotNull($this->refreshToken, "refresh token is null");
         $this->assertEquals($userUuid, $this->refreshToken->getUserUuid());
+    }
+
+    function test_Create_Instance_Method_Without_Params(){
+        $this->refreshToken = $this->refreshTokenFactory->createInstance(null,null,null,null);
+        $this->assertTrue($this->refreshToken->isNull());
     }
 }
