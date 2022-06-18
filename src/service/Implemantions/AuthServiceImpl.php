@@ -22,7 +22,7 @@ class AuthServiceImpl implements AuthService{
     }
     function login(UserLoginDto $userLoginDto):UserLogedInResponseDto{
         $user = $this->userRepository->findUserByEmail($userLoginDto->getEmail());
-        if(!$user){
+        if($user->isNull()){
             throw new NotFoundException('user');
         }
 
@@ -62,9 +62,9 @@ class AuthServiceImpl implements AuthService{
             $userCreationalDto->getUpdated_at()
         );
         
-        $isUserAlredyExist = $this->userRepository->findUserByEmail($user->getEmail());
+        $user = $this->userRepository->findUserByEmail($user->getEmail());
         
-        if($isUserAlredyExist){
+        if(!$user->isNull()){
             throw new AlreadyExistException('user');
         }
 
@@ -92,7 +92,7 @@ class AuthServiceImpl implements AuthService{
             $refreshTokenDto->getRefreshToken()
         );
 
-        if(!$userWithRefreshTokenModel){
+        if($userWithRefreshTokenModel->isNull()){
             throw new RefreshTokenExpireTimeEndedException();
         }
 
@@ -109,7 +109,7 @@ class AuthServiceImpl implements AuthService{
 
     function verifyUserAccount(EmailVerificationDto $emailVerificationDto):EmailSuccessfulyActivatedResponseDto{
         $user = $this->userRepository->findUserByVerificationCode($emailVerificationDto->getCode());
-        if(!$user){
+        if($user->isNull()){
             throw new NotFoundException('user');
         }
 
