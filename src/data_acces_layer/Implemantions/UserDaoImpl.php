@@ -1,4 +1,7 @@
-<?php 
+<?php
+
+use Ramsey\Uuid\Nonstandard\Uuid;
+
 require './vendor/autoload.php';
 class UserDaoImpl implements UserDao{
     private DatabaseConnection $dbConnection;
@@ -14,6 +17,7 @@ class UserDaoImpl implements UserDao{
         $stmt = $conn->prepare("SELECT * FROM users ORDER BY created_at DESC LIMIT $startingLimit, $perPageForUsers");
         $stmt->execute();
         $users = $stmt->fetchAll(PDO::FETCH_OBJ);
+   
         return $users; 
     }
 
@@ -23,6 +27,20 @@ class UserDaoImpl implements UserDao{
         $stmt->execute(['email'=>$email]);
         $user = $stmt->fetchAll(PDO::FETCH_OBJ);
         $conn = null;
+        if(!$user) {
+            $arr = [
+                'uuid'=>null,
+                'full_name'=>null,
+                'email'=>null,
+                'user_password'=>null,
+                'is_user_activated'=>null,
+                'created_at'=>null,
+                'updated_at'=>null,
+                'user_role'=>null
+            ];
+            return array(json_decode(json_encode($arr),false));
+        }
+
         return $user;
         
     }
@@ -49,6 +67,20 @@ class UserDaoImpl implements UserDao{
         $stmt->execute(['email_activation_code'=>$code]);
         $user = $stmt->fetchAll(PDO::FETCH_OBJ);
         $conn = null;
+        if(!$user) {
+            $arr = [
+                'uuid'=>null,
+                'full_name'=>null,
+                'email'=>null,
+                'user_password'=>null,
+                'is_user_activated'=>null,
+                'created_at'=>null,
+                'updated_at'=>null,
+                'user_role'=>null,
+                'email_activation_code'=>null
+            ];
+            return array(json_decode(json_encode($arr),false));
+        }
         return $user;
 
     }
@@ -67,7 +99,19 @@ class UserDaoImpl implements UserDao{
         $stmt = $conn->prepare("SELECT * FROM users WHERE uuid=:uuid");
         $stmt->execute(['uuid'=>$userUuid]);
         $user = $stmt->fetchAll(PDO::FETCH_OBJ);
-        
+        if(!$user) {
+            $arr = [
+                'uuid'=>null,
+                'full_name'=>null,
+                'email'=>null,
+                'user_password'=>null,
+                'is_user_activated'=>null,
+                'created_at'=>null,
+                'updated_at'=>null,
+                'user_role'=>null
+            ];
+            return array(json_decode(json_encode($arr),false));
+        }
         return $user;
     }
 
@@ -100,6 +144,19 @@ class UserDaoImpl implements UserDao{
         $stmt->execute(['forgetten_password_activation_code'=>$passwordCode]);
         $user = $stmt->fetchAll(PDO::FETCH_OBJ);
         $conn = null;
+        if(!$user) {
+            $arr = [
+                'uuid'=>null,
+                'full_name'=>null,
+                'email'=>null,
+                'user_password'=>null,
+                'is_user_activated'=>null,
+                'created_at'=>null,
+                'updated_at'=>null,
+                'user_role'=>null
+            ];
+            return array(json_decode(json_encode($arr),false));
+        }
         return $user;
 
     }
