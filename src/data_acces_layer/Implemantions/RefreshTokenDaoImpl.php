@@ -1,4 +1,7 @@
 <?php
+
+use Ramsey\Uuid\Nonstandard\Uuid;
+
 require "./vendor/autoload.php";
 class RefreshTokenDaoImpl implements RefreshTokenDao {
     private DatabaseConnection $cacheConnection;
@@ -20,8 +23,13 @@ class RefreshTokenDaoImpl implements RefreshTokenDao {
     function findRefreshTokenDetailByRefreshToken($refreshToken)
     {
         $cacheConn = $this->cacheConnection->getConnection();
-
         $refreshTokenCacheArray = $cacheConn->hgetall($refreshToken);
+        
+        if($refreshTokenCacheArray == null){
+            $responseArray = array(Uuid::uuid4()->toString(), Uuid::uuid4()->toString());
+            $cacheConn = null;
+            return $responseArray;
+        }
         $responseArray = array($refreshTokenCacheArray['uuid'], $refreshTokenCacheArray['user_uuid']);
         $cacheConn = null;
         return $responseArray;
