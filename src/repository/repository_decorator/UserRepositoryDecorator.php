@@ -6,22 +6,22 @@ class UserRepositoryDecorator implements UserRepository {
     {
         $this->userRepository = $userRepo;
     }
-    function findUserByEmail($userId){
-        return $this->userRepository->findUserByEmail($userId);
+    function findUserByEmail($userMail):UserInterface{
+        return $this->userRepository->findUserByEmail($userMail);
     }
-    function save(User $user){
-        $this->userRepository->save($user);
+    function persistUser(User $user){
+        $this->userRepository->persistUser($user);
     }
-    function findUserByVerificationCode($code){
+    function findUserByVerificationCode($code):UserInterface{
         return $this->userRepository->findUserByVerificationCode($code);
     }
     function updateUserActivatedState(User $user){
         $this->userRepository->updateUserActivatedState($user);
     }
-    function saveRefreshToken(User $user){
-        $this->userRepository->saveRefreshToken($user);
+    function persistRefreshToken(User $user){
+        $this->userRepository->persistRefreshToken($user);
     }
-    function findUserByUuidWithRefreshToken($refreshToken){
+    function findUserByUuidWithRefreshToken($refreshToken):UserInterface{
         return $this->userRepository->findUserByUuidWithRefreshToken($refreshToken);
     }
     function updatePassword(User $user){
@@ -30,13 +30,13 @@ class UserRepositoryDecorator implements UserRepository {
     function updateForgettenPasswordCode(User $user){
         $this->userRepository->updateForgettenPasswordCode($user);
     }
-    function findUserByForgettenPasswordCode($passwordCode){
+    function findUserByForgettenPasswordCode($passwordCode):UserInterface{
         return $this->userRepository->findUserByForgettenPasswordCode($passwordCode);
     }
-    function findAllWithPagination($startingLimit, $perPageForUsers){
+    function findAllWithPagination($startingLimit, $perPageForUsers):array{
         return $this->userRepository->findAllWithPagination($startingLimit, $perPageForUsers);
     }
-    function findOneUserByUuid($uuid){
+    function findOneUserByUuid($uuid):UserInterface{
         return $this->userRepository->findOneUserByUuid($uuid);
     }
     function updateFullName(User $user){

@@ -18,7 +18,7 @@ class UserRepositoryImpl implements UserRepository{
         $this->refreshTokenFactory = $refreshTokenFactory;
     }
 
-    function findAllWithPagination($startingLimit, $perPageForUsers)
+    function findAllWithPagination($startingLimit, $perPageForUsers):array
     {
         $users = $this->userDao->findAllWithPagination($startingLimit, $perPageForUsers);
         $userList = array();
@@ -37,9 +37,8 @@ class UserRepositoryImpl implements UserRepository{
         }
         return $userList;
     }
-    function findOneUserByUuid($uuid)
+    function findOneUserByUuid($uuid):UserInterface
     {
-        try {
             $userObj = $this->userDao->findUserByUuid($uuid);
             foreach($userObj as $u){
                 $user = $this->userFactory->createInstance(
@@ -54,12 +53,8 @@ class UserRepositoryImpl implements UserRepository{
                 $user->setUserRole($u->user_role);
                 return $user;
             }
-        } catch (\Exception $e) {
-            false;
-        }
     }
-    function findUserByEmail($email){
-        try {
+    function findUserByEmail($email):UserInterface{
             $userObj = $this->userDao->findUserByEmail($email);
             foreach($userObj as $u){
                 $user = $this->userFactory->createInstance(
@@ -75,13 +70,9 @@ class UserRepositoryImpl implements UserRepository{
                 return $user;
             }
 
-        } catch (Exception $th) {
-            false;
-        }
     }
 
-    function findUserByVerificationCode($code){
-        try{
+    function findUserByVerificationCode($code):UserInterface{
             $userObj = $this->userDao->findUserByActivationCode($code);
         
             foreach($userObj as $u){
@@ -99,13 +90,9 @@ class UserRepositoryImpl implements UserRepository{
 
                 return $user;
             }
-        }catch(Exception $e){
-            false;
-        }
     }
 
-    function findUserByUuidWithRefreshToken($refreshToken){
-        try{
+    function findUserByUuidWithRefreshToken($refreshToken):UserInterface{
             list($refreshTokenUuid, $userUuid) = $this->refreshTokenDao->findRefreshTokenDetailByRefreshToken($refreshToken);
             $userObj = $this->userDao->findUserByUuid($userUuid);
 
@@ -130,13 +117,9 @@ class UserRepositoryImpl implements UserRepository{
                     $user->setRefreshTokenModel($refTokenModel);
                     return $user;
             }
-        }catch(Exception $e){
-            false;
-        }
 
     }
-    function findUserByForgettenPasswordCode($passwordCode){
-        try{
+    function findUserByForgettenPasswordCode($passwordCode):UserInterface{
             $userObj = $this->userDao->findUserByForgettenPasswordCode($passwordCode);
         
             foreach($userObj as $u){
@@ -153,9 +136,7 @@ class UserRepositoryImpl implements UserRepository{
  
                 return $user;
             }
-        }catch(Exception $e){
-            false;
-        }
+        
 
     }
 

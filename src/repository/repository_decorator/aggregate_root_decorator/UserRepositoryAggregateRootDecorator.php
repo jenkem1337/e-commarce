@@ -3,22 +3,22 @@
 require "./vendor/autoload.php";
 class UserRepositoryAggregateRootDecorator extends UserRepositoryDecorator{
 
-    function findUserByEmail($userId){
-        return parent::findUserByEmail($userId);
+    function findUserByEmail($userMail):UserInterface{
+        return parent::findUserByEmail($userMail);
     }
-    function save(AggregateRoot $user){
-        parent::save($user);
+    function persistUser(AggregateRoot $user){
+        parent::persistUser($user);
     }
-    function findUserByVerificationCode($code){
+    function findUserByVerificationCode($code):UserInterface{
         return parent::findUserByVerificationCode($code);
     }
     function updateUserActivatedState(AggregateRoot $user){
         parent::updateUserActivatedState($user);
     }
-    function saveRefreshToken(AggregateRoot $user){
-        parent::saveRefreshToken($user);
+    function persistRefreshToken(AggregateRoot $user){
+        parent::persistRefreshToken($user);
     }
-    function findUserByUuidWithRefreshToken($refreshToken){
+    function findUserByUuidWithRefreshToken($refreshToken):UserInterface{
         return parent::findUserByUuidWithRefreshToken($refreshToken);
     }
     function updatePassword(AggregateRoot $user){
@@ -27,13 +27,13 @@ class UserRepositoryAggregateRootDecorator extends UserRepositoryDecorator{
     function updateForgettenPasswordCode(AggregateRoot $user){
         parent::updateForgettenPasswordCode($user);
     }
-    function findUserByForgettenPasswordCode($passwordCode){
+    function findUserByForgettenPasswordCode($passwordCode):UserInterface{
         return parent::findUserByForgettenPasswordCode($passwordCode);
     }
-    function findAllWithPagination($startingLimit, $perPageForUsers){
+    function findAllWithPagination($startingLimit, $perPageForUsers):array{
         return parent::findAllWithPagination($startingLimit, $perPageForUsers);
     }
-    function findOneUserByUuid($uuid){
+    function findOneUserByUuid($uuid):UserInterface{
         return parent::findOneUserByUuid($uuid);
     }
     function updateFullName(AggregateRoot $user){
