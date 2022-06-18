@@ -10,11 +10,11 @@ class User extends BaseEntity implements AggregateRoot, UserInterface{
     private  string $password;
     private  string $activationCode;
     private  string $forgettenPasswordCode;
-    private  bool   $isUserActiveted;
-    private $refreshTokenModel;
+    private         $isUserActiveted;
+    private  RefreshTokenInterface $refreshTokenModel;
     private  string $userRole;
     
-    function __construct($uuid,$fullname,$email,$password,bool $isUserActiveted,$createdAt,$updatedAt)
+    function __construct($uuid,$fullname,$email,$password, $isUserActiveted,$createdAt,$updatedAt)
     {
         parent::__construct($uuid, $createdAt, $updatedAt);
         if(!$fullname){
@@ -32,14 +32,14 @@ class User extends BaseEntity implements AggregateRoot, UserInterface{
         else if(strlen($password) < 6){
             throw new LengthMustBeGreaterThanException('password', 6);
         }
-        else if(!isset($isUserActiveted) || !is_bool($isUserActiveted)){
+        else if(!isset($isUserActiveted)){
             throw new NullException('activated bool');
         }
         
         $this->fullname = $fullname;
         $this->email = $email;
         $this->password = $password;
-        $this->isUserActiveted = $isUserActiveted;
+        $this->isUserActiveted = (bool) $isUserActiveted;
         $this->userRole = Role::STRAIGHT;
     }
 
