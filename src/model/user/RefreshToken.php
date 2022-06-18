@@ -1,7 +1,7 @@
 <?php
 
 require "./vendor/autoload.php";
-class RefreshToken extends BaseEntity {
+class RefreshToken extends BaseEntity implements RefreshTokenInterface {
     private $userUuid;
     private $token;
     private $tokenExpireTime;
