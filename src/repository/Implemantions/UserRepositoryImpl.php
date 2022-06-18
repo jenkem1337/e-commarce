@@ -1,4 +1,7 @@
 <?php
+
+use Ramsey\Uuid\Nonstandard\Uuid;
+
 require './vendor/autoload.php';
 class UserRepositoryImpl implements UserRepository{
     private UserDao $userDao;
@@ -24,6 +27,7 @@ class UserRepositoryImpl implements UserRepository{
         $userList = array();
         foreach($users as $u){
             $user = $this->userFactory->createInstance(
+                false,
                 $u->uuid,
                 $u->full_name,
                 $u->email,
@@ -42,6 +46,7 @@ class UserRepositoryImpl implements UserRepository{
             $userObj = $this->userDao->findUserByUuid($uuid);
             foreach($userObj as $u){
                 $user = $this->userFactory->createInstance(
+                    false,
                     $u->uuid,
                     $u->full_name,
                     $u->email,
@@ -54,10 +59,12 @@ class UserRepositoryImpl implements UserRepository{
                 return $user;
             }
     }
+
     function findUserByEmail($email):UserInterface{
             $userObj = $this->userDao->findUserByEmail($email);
             foreach($userObj as $u){
                 $user = $this->userFactory->createInstance(
+                    false,
                     $u->uuid,
                     $u->full_name,
                     $u->email,
@@ -69,7 +76,6 @@ class UserRepositoryImpl implements UserRepository{
                 $user->setUserRole($u->user_role);
                 return $user;
             }
-
     }
 
     function findUserByVerificationCode($code):UserInterface{
@@ -77,6 +83,7 @@ class UserRepositoryImpl implements UserRepository{
         
             foreach($userObj as $u){
                 $user = $this->userFactory->createInstance(
+                    false,
                     $u->uuid,
                     $u->full_name,
                     $u->email,
@@ -93,11 +100,13 @@ class UserRepositoryImpl implements UserRepository{
     }
 
     function findUserByUuidWithRefreshToken($refreshToken):UserInterface{
-            list($refreshTokenUuid, $userUuid) = $this->refreshTokenDao->findRefreshTokenDetailByRefreshToken($refreshToken);
+            list($refreshTokenUuid, $userUuid ) = $this->refreshTokenDao->findRefreshTokenDetailByRefreshToken($refreshToken);
             $userObj = $this->userDao->findUserByUuid($userUuid);
 
             foreach($userObj as $u){
+
                     $user = $this->userFactory->createInstance(
+                        false,
                         $u->uuid,
                         $u->full_name,
                         $u->email,
@@ -107,23 +116,27 @@ class UserRepositoryImpl implements UserRepository{
                         $u->updated_at
                     );
                     $user->setUserRole($u->user_role);
-
+                    
                     $refTokenModel = $this->refreshTokenFactory->createInstance(
+                        false,
                         $refreshTokenUuid, 
-                        $user->getUuid(), 
+                        $userUuid,
                         date('Y-m-d H:i:s'), 
-                        date('Y-m-d H:i:s'));
+                        date('Y-m-d H:i:s')
+                    );
+        
                     $refTokenModel->setRefreshToken($refreshToken);
                     $user->setRefreshTokenModel($refTokenModel);
                     return $user;
             }
-
     }
+
     function findUserByForgettenPasswordCode($passwordCode):UserInterface{
             $userObj = $this->userDao->findUserByForgettenPasswordCode($passwordCode);
         
             foreach($userObj as $u){
-                $user = new $this->userFactory->createInstance(
+                $user = $this->userFactory->createInstance(
+                    false,
                     $u->uuid,
                     $u->full_name,
                     $u->email,
