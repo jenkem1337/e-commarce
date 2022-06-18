@@ -27,6 +27,7 @@ class AuthServiceImpl implements AuthService{
         }
 
         $refreshToken = $this->refreshTokenFactory->createInstance(
+            true,
             Uuid::uuid4(),
             $user->getUuid(),
             date('Y-m-d H:i:s'),
@@ -52,7 +53,15 @@ class AuthServiceImpl implements AuthService{
     }
     
     function register(UserCreationalDto $userCreationalDto):UserCreatedResponseDto{
+
+        $isUserExist = $this->userRepository->findUserByEmail($userCreationalDto->getEmail());
+        
+        if(!$isUserExist->isNull()){
+            throw new AlreadyExistException('user');
+        }
+
         $user = $this->userFactory->createInstance(
+            true,
             $userCreationalDto->getUuid(),
             $userCreationalDto->getFullname(),
             $userCreationalDto->getEmail(),
@@ -62,11 +71,6 @@ class AuthServiceImpl implements AuthService{
             $userCreationalDto->getUpdated_at()
         );
         
-        $user = $this->userRepository->findUserByEmail($user->getEmail());
-        
-        if(!$user->isNull()){
-            throw new AlreadyExistException('user');
-        }
 
         $user->hashPassword($user->getPassword());
         $user->createActivationCode();
@@ -131,6 +135,9 @@ class AuthServiceImpl implements AuthService{
     function sendChangeForgettenPasswordEmail(ForgettenPasswordEmailDto $forgettenPasswordMailDto): ForgettenPasswordEmailResponseDto
     {
         $user = $this->userRepository->findUserByEmail($forgettenPasswordMailDto->getEmail());
+        if($user->isNull()){
+            throw new DoesNotExistException('email');
+        }
         $user->createForgettenPasswordCode();
         
         $this->userRepository->updateForgettenPasswordCode($user);
