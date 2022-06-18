@@ -4,7 +4,7 @@ use FFI\Exception;
 
 require './vendor/autoload.php';
 
-class User extends BaseEntity implements AggregateRoot{
+class User extends BaseEntity implements AggregateRoot, UserInterface{
     private  string $fullname;
     private  string $email;
     private  string $password;
@@ -188,10 +188,6 @@ class User extends BaseEntity implements AggregateRoot{
     function getForegettenPasswordCode(){
         return $this->forgettenPasswordCode;
     }
-    /**
-     * Set the value of userRole
-     *
-     */ 
     /**
      * Get the value of isUserActiveted
      */ 
