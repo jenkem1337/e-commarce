@@ -2,8 +2,15 @@
 require "./vendor/autoload.php";
 
 abstract class ImageFactory implements Factory {
-    function createInstance($isMustBeConcreteObject =false,...$params):Image
+    function createInstance($isMustBeConcreteObject =false,...$params):ImageInterface
     {
-        return new Image(...$params);
+        if($isMustBeConcreteObject == true){
+            return new Image(...$params);
+        }
+        try {
+            return new Image(...$params);
+        } catch (\Exception $th) {
+            return new NullImage();
+        }
     }
 }
