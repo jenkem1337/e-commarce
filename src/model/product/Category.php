@@ -1,6 +1,6 @@
 <?php
 require "./vendor/autoload.php";
-class Category extends BaseEntity implements AggregateRoot{
+class Category extends BaseEntity implements CategoryInterface{
     private $categoryName;
     private $productUuid;
     function __construct($uuid, $categoryName, $productUuid, $createdAt, $updatedAt)
