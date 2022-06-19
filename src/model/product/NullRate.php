@@ -1,4 +1,5 @@
 <?php
+require "./vendor/autoload.php";
 
 
 class NullRate implements RateInterface{
@@ -63,4 +64,11 @@ class NullRate implements RateInterface{
     public function getUserUuid()
     {
     }
+    public function getUuid(){}
+
+    public function getCreatedAt(){}
+
+    public function getUpdatedAt(){}
+
+
 }
