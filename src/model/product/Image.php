@@ -1,6 +1,6 @@
 <?php 
 
-class Image extends BaseEntity{
+class Image extends BaseEntity implements ImageInterface{
     private $productUuid;
     private $imageName;
 
