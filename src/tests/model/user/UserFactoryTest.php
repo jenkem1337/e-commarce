@@ -16,7 +16,8 @@ class UserFactoryTest extends TestCase {
         $uuid = Uuid::uuid4();
         $date = date ('Y-m-d H:i:s');
 
-        $user = $this->userFactory->createInstance( 
+        $user = $this->userFactory->createInstance(
+                true,
                 $uuid,
                 'Hasancan Şahan', 
                 'example@gmail.com',
@@ -42,7 +43,7 @@ class UserFactoryTest extends TestCase {
         $uuid = Uuid::uuid4();
         $date = date ('Y-m-d H:i:s');
 
-        $user = $this->userFactory->createInstance(null,null,null,null,false,null,null);
+        $user = $this->userFactory->createInstance(false,null,null,null,null,false,null,null);
         $this->assertNotFalse($user->isNull());
     }
 }

@@ -16,6 +16,7 @@ class RefreshTokenFactoryTest extends TestCase {
         $uuid = Uuid::uuid4();
         $userUuid = Uuid::uuid4();
         $this->refreshToken = $this->refreshTokenFactory->createInstance(
+            true,
             $uuid,
             $userUuid,
             date ('Y-m-d H:i:s'),
@@ -26,7 +27,7 @@ class RefreshTokenFactoryTest extends TestCase {
     }
 
     function test_Create_Instance_Method_Without_Params(){
-        $this->refreshToken = $this->refreshTokenFactory->createInstance(null,null,null,null);
+        $this->refreshToken = $this->refreshTokenFactory->createInstance(false,null,null,null,null);
         $this->assertTrue($this->refreshToken->isNull());
     }
 }
