@@ -2,7 +2,7 @@
 
 
 require "./vendor/autoload.php";
-class Product extends BaseEntity implements AggregateRoot{
+class Product extends BaseEntity implements AggregateRoot, ProductInteface{
     private $brand;
     private $model;
     private $header;
@@ -12,10 +12,12 @@ class Product extends BaseEntity implements AggregateRoot{
     private RateInterface $rate;
     private $previousPrice;
     private $subscribers;
+    private $categories;
+    private $category;
     private $comments;
     private $comment;
     private $images;
-    function __construct($uuid, $brand,$model,$header,$description,$price,$stockQuantity, RateInterface $rate,$subscribers = array(),$images = array(),$createdAt, $updatedAt)
+    function __construct($uuid, $brand,$model,$header,$description,$price,$stockQuantity, RateInterface $rate,$images,$subscribers,$createdAt, $updatedAt)
     {
         parent::__construct($uuid,$createdAt, $updatedAt);
         if(!$brand){
@@ -101,16 +103,27 @@ class Product extends BaseEntity implements AggregateRoot{
         $this->previousPrice = $this->price;
         $this->price = $price;
     }
+
     function isPriceLessThanPreviousPrice(){
         return ($this->price < $this->previousPrice) ? true : false;
     }
+    function createNewCategory(Category $category) {
+        if(!$category){
+            throw new NullException('new category');
+        }
+        $this->category = $category;
+    }
+
     function writeNewComment(Comment $comment){
         if(!$comment){
-            throw new NullException("comment");
+            throw new NullException("new comment");
         }
         $this->comment = $comment;
     }
     
+    function setCategories(array $categories){
+        $this->categories = $categories;
+    }
 
     function setComments(array $comments){
         $this->comments = $comments;
@@ -202,5 +215,21 @@ class Product extends BaseEntity implements AggregateRoot{
     public function getSubscribers()
     {
         return $this->subscribers;
+    }
+
+    /**
+     * Get the value of categories
+     */ 
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
+    /**
+     * Get the value of category
+     */ 
+    public function getCategory()
+    {
+        return $this->category;
     }
 }
