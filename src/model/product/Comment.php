@@ -1,5 +1,5 @@
 <?php
-class Comment extends BaseEntity{
+class Comment extends BaseEntity implements CommentInterface{
     private $productUuid;
     private $userUuid;
     private $comment;
