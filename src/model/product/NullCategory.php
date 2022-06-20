@@ -6,6 +6,7 @@ class NullCategory implements CategoryInterface {
     {
         
     }
+    function setProductUuid($productUuid): void{}
     function changeCategoryName($categoryName){}
 
     public function getCategoryName(){}
