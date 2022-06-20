@@ -6,6 +6,7 @@ interface CategoryInterface {
         public function getCategoryName();
     
         public function getProductUuid();
+        function setProductUuid($productUuid): void;
         
         public function getUuid();
 

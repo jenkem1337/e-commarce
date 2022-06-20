@@ -3,13 +3,11 @@ require "./vendor/autoload.php";
 class Category extends BaseEntity implements CategoryInterface{
     private $categoryName;
     private $productUuid;
-    function __construct($uuid, $categoryName, $productUuid, $createdAt, $updatedAt)
+    function __construct($uuid, $categoryName, $createdAt, $updatedAt)
     {
         parent::__construct($uuid, $createdAt, $updatedAt);
         if(!$categoryName) throw new NullException('category name');
-        if(!$productUuid) throw new NullException('product uuid');
         $this->categoryName = $categoryName;
-        $this->productUuid = $productUuid;
     }
     function changeCategoryName($categoryName){
         if(!$categoryName) throw new NullException('category name');
@@ -26,11 +24,12 @@ class Category extends BaseEntity implements CategoryInterface{
         return $this->categoryName;
     }
 
-    /**
-     * Get the value of productUuid
-     */ 
-    public function getProductUuid()
-    {
-        return $this->productUuid;
-    }
+	function getProductUuid() {
+		return $this->productUuid;
+	}
+	
+	function setProductUuid($productUuid): void {
+        if(!$productUuid) throw new NullException('product uuid');
+		$this->productUuid = $productUuid;
+	}
 }
