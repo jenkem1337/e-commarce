@@ -8,7 +8,6 @@ class IsAdminMiddleware extends Middleware {
         $payload = $jwtPayloadDto->getPayload();
         if($payload->user_role !== "ADMIN"){
             throw new UserRoleException('admin');
-            die();
         }
         return parent::check();
     }
