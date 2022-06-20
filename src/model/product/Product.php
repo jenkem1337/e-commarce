@@ -11,13 +11,11 @@ class Product extends BaseEntity implements AggregateRoot, ProductInteface{
     private $stockQuantity;
     private RateInterface $rate;
     private $previousPrice;
-    private $subscribers;
-    private $categories;
-    private $category;
-    private $comments;
-    private $comment;
-    private $images;
-    function __construct($uuid, $brand,$model,$header,$description,$price,$stockQuantity, RateInterface $rate,$images,$subscribers,$createdAt, $updatedAt)
+    private SubscriberCollection $subscribers;
+    private CategoryCollection $categories;
+    private CommentCollection $comments;
+    private ImageCollection $images;
+    function __construct($uuid, $brand,$model,$header,$description,$price,$stockQuantity, RateInterface $rate, CommentCollection $comments ,CategoryCollection $categories, ImageCollection $images, SubscriberCollection $subscribers,$createdAt, $updatedAt)
     {
         parent::__construct($uuid,$createdAt, $updatedAt);
         if(!$brand){
@@ -51,8 +49,10 @@ class Product extends BaseEntity implements AggregateRoot, ProductInteface{
         $this->price = $price;
         $this->stockQuantity = $stockQuantity;
         $this->rate = $rate;
-        $this->images = $images;
-        $this->subscribers = $subscribers;
+        $this->comments = $comments ?? new CommentCollection();
+        $this->categories = $categories ?? new CategoryCollection();
+        $this->images = $images ?? new ImageCollection();
+        $this->subscribers = $subscribers ?? new SubscriberCollection();
     }
 
     function incrementStockQuantity(int $quantity){
@@ -107,28 +107,20 @@ class Product extends BaseEntity implements AggregateRoot, ProductInteface{
     function isPriceLessThanPreviousPrice(){
         return ($this->price < $this->previousPrice) ? true : false;
     }
-    function createNewCategory(Category $category) {
+    function createNewCategory(CategoryInterface $category) {
         if(!$category){
             throw new NullException('new category');
         }
-        $this->category = $category;
+        $this->categories->add($category);
     }
 
-    function writeNewComment(Comment $comment){
+    function writeNewComment(CommentInterface $comment){
         if(!$comment){
             throw new NullException("new comment");
         }
         $this->comment = $comment;
     }
     
-    function setCategories(array $categories){
-        $this->categories = $categories;
-    }
-
-    function setComments(array $comments){
-        $this->comments = $comments;
-    }
-
     /**
      * Get the value of brand
      */ 
@@ -164,7 +156,7 @@ class Product extends BaseEntity implements AggregateRoot, ProductInteface{
     /**
      * Get the value of rate
      */ 
-    public function getRate()
+    public function getRate():RateInterface
     {
         return $this->rate;
     }
@@ -172,7 +164,7 @@ class Product extends BaseEntity implements AggregateRoot, ProductInteface{
     /**
      * Get the value of comments
      */ 
-    public function getComments()
+    public function getComments():CommentCollection
     {
         return $this->comments;
     }
@@ -193,18 +185,11 @@ class Product extends BaseEntity implements AggregateRoot, ProductInteface{
         return $this->header;
     }
 
-    /**
-     * Get the value of newComment
-     */ 
-    public function getComment()
-    {
-        return $this->comment;
-    }
-
+    
     /**
      * Get the value of images
      */ 
-    public function getImages()
+    public function getImages():ImageCollection
     {
         return $this->images;
     }
@@ -212,7 +197,7 @@ class Product extends BaseEntity implements AggregateRoot, ProductInteface{
     /**
      * Get the value of subscribers
      */ 
-    public function getSubscribers()
+    public function getSubscribers():SubscriberCollection
     {
         return $this->subscribers;
     }
@@ -220,16 +205,8 @@ class Product extends BaseEntity implements AggregateRoot, ProductInteface{
     /**
      * Get the value of categories
      */ 
-    public function getCategories()
+    public function getCategories():CategoryCollection
     {
         return $this->categories;
-    }
-
-    /**
-     * Get the value of category
-     */ 
-    public function getCategory()
-    {
-        return $this->category;
     }
 }
