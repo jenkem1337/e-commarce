@@ -43,78 +43,74 @@ class UserRepositoryImpl implements UserRepository{
     function findOneUserByUuid($uuid):UserInterface
     {
             $userObj = $this->userDao->findUserByUuid($uuid);
-            foreach($userObj as $u){
                 $user = $this->userFactory->createInstance(
                     false,
-                    $u->uuid,
-                    $u->full_name,
-                    $u->email,
-                    $u->user_password,
-                    $u->is_user_activated,
-                    $u->created_at,
-                    $u->updated_at
+                    $userObj->uuid,
+                    $userObj->full_name,
+                    $userObj->email,
+                    $userObj->user_password,
+                    $userObj->is_user_activated,
+                    $userObj->created_at,
+                    $userObj->updated_at
                 );
-                $user->setUserRole($u->user_role);
+                $user->setUserRole($userObj->user_role);
                 return $user;
-            }
+            
     }
 
     function findUserByEmail($email):UserInterface{
             $userObj = $this->userDao->findUserByEmail($email);
-            foreach($userObj as $u){
                 $user = $this->userFactory->createInstance(
                     false,
-                    $u->uuid,
-                    $u->full_name,
-                    $u->email,
-                    $u->user_password,
-                    $u->is_user_activated,
-                    $u->created_at,
-                    $u->updated_at
+                    $userObj->uuid,
+                    $userObj->full_name,
+                    $userObj->email,
+                    $userObj->user_password,
+                    $userObj->is_user_activated,
+                    $userObj->created_at,
+                    $userObj->updated_at
                 );
-                $user->setUserRole($u->user_role);
+                $user->setUserRole($userObj->user_role);
                 return $user;
-            }
+            
     }
 
     function findUserByVerificationCode($code):UserInterface{
             $userObj = $this->userDao->findUserByActivationCode($code);
         
-            foreach($userObj as $u){
                 $user = $this->userFactory->createInstance(
                     false,
-                    $u->uuid,
-                    $u->full_name,
-                    $u->email,
-                    $u->user_password,
-                    $u->is_user_activated,
-                    $u->created_at,
-                    $u->updated_at
+                    $userObj->uuid,
+                    $userObj->full_name,
+                    $userObj->email,
+                    $userObj->user_password,
+                    $userObj->is_user_activated,
+                    $userObj->created_at,
+                    $userObj->updated_at
                 );
-                $user->setActivationCode($u->email_activation_code);
-                $user->setUserRole($u->user_role);
+                $user->setActivationCode($userObj->email_activation_code);
+                $user->setUserRole($userObj->user_role);
 
                 return $user;
-            }
+            
     }
 
     function findUserByUuidWithRefreshToken($refreshToken):UserInterface{
             list($refreshTokenUuid, $userUuid ) = $this->refreshTokenDao->findRefreshTokenDetailByRefreshToken($refreshToken);
             $userObj = $this->userDao->findUserByUuid($userUuid);
 
-            foreach($userObj as $u){
 
                     $user = $this->userFactory->createInstance(
                         false,
-                        $u->uuid,
-                        $u->full_name,
-                        $u->email,
-                        $u->user_password,
-                        $u->is_user_activated,
-                        $u->created_at,
-                        $u->updated_at
+                        $userObj->uuid,
+                        $userObj->full_name,
+                        $userObj->email,
+                        $userObj->user_password,
+                        $userObj->is_user_activated,
+                        $userObj->created_at,
+                        $userObj->updated_at
                     );
-                    $user->setUserRole($u->user_role);
+                    $user->setUserRole($userObj->user_role);
                     
                     $refTokenModel = $this->refreshTokenFactory->createInstance(
                         false,
@@ -127,27 +123,26 @@ class UserRepositoryImpl implements UserRepository{
                     $refTokenModel->setRefreshToken($refreshToken);
                     $user->setRefreshTokenModel($refTokenModel);
                     return $user;
-            }
+            
     }
 
     function findUserByForgettenPasswordCode($passwordCode):UserInterface{
             $userObj = $this->userDao->findUserByForgettenPasswordCode($passwordCode);
         
-            foreach($userObj as $u){
                 $user = $this->userFactory->createInstance(
                     false,
-                    $u->uuid,
-                    $u->full_name,
-                    $u->email,
-                    $u->user_password,
-                    $u->is_user_activated,
-                    $u->created_at,
-                    $u->updated_at
+                    $userObj->uuid,
+                    $userObj->full_name,
+                    $userObj->email,
+                    $userObj->user_password,
+                    $userObj->is_user_activated,
+                    $userObj->created_at,
+                    $userObj->updated_at
                 );
-                $user->setUserRole($u->user_role);
+                $user->setUserRole($userObj->user_role);
  
                 return $user;
-            }
+            
         
 
     }
