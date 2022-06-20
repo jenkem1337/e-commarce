@@ -5,7 +5,7 @@ interface UserDao{
     function persist(User $user);
     function findUserByActivationCode($code);
     function updateUserActivatedState(User $user);
-    function findUserByUuid($userUuid):array;
+    function findUserByUuid($userUuid);
     function updatePassword(User $user);
     function updateForgettenPasswordCode(User $user);
     function findUserByForgettenPasswordCode($passwordCode);
