@@ -887,6 +887,7 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'TheSeer\\Tokenizer\\XMLSerializer' => __DIR__ . '/..' . '/theseer/tokenizer/src/XMLSerializer.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
         'User' => __DIR__ . '/../..' . '/src/model/user/User.php',
+        'UserCollection' => __DIR__ . '/../..' . '/src/model/user/iterator_aggregate/UserCollection.php',
         'UserController' => __DIR__ . '/../..' . '/src/controller/UserController.php',
         'UserControllerFactory' => __DIR__ . '/../..' . '/src/controller/factory/UserControllerFactory.php',
         'UserCreatedResponseDto' => __DIR__ . '/../..' . '/src/dto/UserCreatedResponseDto.php',

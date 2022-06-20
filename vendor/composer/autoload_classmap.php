@@ -746,6 +746,7 @@ return array(
     'TheSeer\\Tokenizer\\XMLSerializer' => $vendorDir . '/theseer/tokenizer/src/XMLSerializer.php',
     'UnhandledMatchError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
     'User' => $baseDir . '/src/model/user/User.php',
+    'UserCollection' => $baseDir . '/src/model/user/iterator_aggregate/UserCollection.php',
     'UserController' => $baseDir . '/src/controller/UserController.php',
     'UserControllerFactory' => $baseDir . '/src/controller/factory/UserControllerFactory.php',
     'UserCreatedResponseDto' => $baseDir . '/src/dto/UserCreatedResponseDto.php',
