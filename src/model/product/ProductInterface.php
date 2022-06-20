@@ -2,7 +2,7 @@
 
 interface ProductInteface {
         function incrementStockQuantity(int $quantity);
-
+        function decrementStockQuantity(int $quantity);
         function changeHeader($header);
     
         function changeDescription($description);
@@ -11,14 +11,10 @@ interface ProductInteface {
     
         function isPriceLessThanPreviousPrice();
     
-        function createNewCategory(Category $category);
+        function createNewCategory(CategoryInterface $category);
     
-        function writeNewComment(Comment $comment);
-    
-        function setCategories(array $categories);
-    
-        function setComments(array $comments);
-    
+        function writeNewComment(CommentInterface $comment);
+        
         public function getBrand();
     
         public function getModel();
@@ -27,23 +23,19 @@ interface ProductInteface {
     
         public function getStockQuantity();
     
-        public function getRate();
+        public function getRate():RateInterface;
     
-        public function getComments();
+        public function getComments():CommentCollection;
     
         public function getDescription();
     
         public function getHeader();
+        
+        public function getImages():ImageCollection;
     
-        public function getComment();
+        public function getSubscribers():SubscriberCollection;
     
-        public function getImages();
-    
-        public function getSubscribers();
-    
-        public function getCategories();
-
-        public function getCategory();
+        public function getCategories():CategoryCollection;
 
         public function getUuid();
 

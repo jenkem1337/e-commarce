@@ -8,7 +8,7 @@ class NullProduct implements ProductInteface {
         
     }
     function incrementStockQuantity(int $quantity){}
-
+    function decrementStockQuantity(int $quantity){}
     function changeHeader($header){}
 
     function changeDescription($description){}
@@ -17,13 +17,9 @@ class NullProduct implements ProductInteface {
 
     function isPriceLessThanPreviousPrice(){}
 
-    function createNewCategory(Category $category){}
+    function createNewCategory(CategoryInterface $category){}
 
-    function writeNewComment(Comment $comment){}
-
-    function setCategories(array $categories){}
-
-    function setComments(array $comments){}
+    function writeNewComment(CommentInterface $comment){}
 
     public function getBrand(){}
 
@@ -33,23 +29,29 @@ class NullProduct implements ProductInteface {
 
     public function getStockQuantity(){}
 
-    public function getRate(){}
+    public function getRate():RateInterface{
+        return new NullRate();
+    }
 
-    public function getComments(){}
+    public function getComments():CommentCollection{
+        return new CommentCollection();
+    }
 
     public function getDescription(){}
 
     public function getHeader(){}
 
-    public function getComment(){}
+    public function getImages():ImageCollection {
+        return new ImageCollection();
+    }
 
-    public function getImages(){}
+    public function getSubscribers():SubscriberCollection{
+        return new SubscriberCollection();
+    }
 
-    public function getSubscribers(){}
-
-    public function getCategories(){}
-
-    public function getCategory(){}
+    public function getCategories():CategoryCollection{
+        return new CategoryCollection();
+    }
 
     public function getUuid(){}
 
