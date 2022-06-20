@@ -35,9 +35,13 @@ class UserServiceImpl implements UserService{
 
     function listAllUser(ListAllUserDto $listAllUserDto): array
     {
-        $userList = $this->userRepository->findAllWithPagination($listAllUserDto->getStartingLimit(), $listAllUserDto->getPerPageForUser());
+        $userList = $this->userRepository->findAllWithPagination(
+            $listAllUserDto->getStartingLimit(), 
+            $listAllUserDto->getPerPageForUser(),
+            new UserCollection()
+        );
         $usersResponseList = array();
-        foreach($userList as $user){
+        foreach($userList->getIterator() as $user){
             $usersResponseList[] = new AllUserResponseDto(
                 $user->getUuid(),
                 $user->getFullname(),
