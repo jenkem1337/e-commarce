@@ -10,7 +10,7 @@ interface UserRepository{
     function updatePassword(User $user);
     function updateForgettenPasswordCode(User $user);
     function findUserByForgettenPasswordCode($passwordCode):UserInterface;
-    function findAllWithPagination($startingLimit, $perPageForUsers):array;
+    function findAllWithPagination($startingLimit, $perPageForUsers, UserCollection $userCollection):IteratorAggregate;
     function findOneUserByUuid($uuid):UserInterface;
     function updateFullName(User $user);
 

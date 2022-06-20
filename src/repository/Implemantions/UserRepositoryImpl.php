@@ -21,10 +21,9 @@ class UserRepositoryImpl implements UserRepository{
         $this->refreshTokenFactory = $refreshTokenFactory;
     }
 
-    function findAllWithPagination($startingLimit, $perPageForUsers):array
+    function findAllWithPagination($startingLimit, $perPageForUsers, UserCollection $userCollection):IteratorAggregate
     {
         $users = $this->userDao->findAllWithPagination($startingLimit, $perPageForUsers);
-        $userList = array();
         foreach($users as $u){
             $user = $this->userFactory->createInstance(
                 false,
@@ -37,9 +36,9 @@ class UserRepositoryImpl implements UserRepository{
                 $u->updated_at
             );
             $user->setUserRole($u->user_role);
-            $userList[] = $user;
+            $userCollection->add($user);
         }
-        return $userList;
+        return $userCollection;
     }
     function findOneUserByUuid($uuid):UserInterface
     {
