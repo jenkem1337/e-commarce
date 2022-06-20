@@ -32,7 +32,7 @@ class NullUser implements UserInterface {
 
     function setActivationCode($code){}
 
-    function setRefreshTokenModel(RefreshToken $refToken){}
+    function setRefreshTokenModel(RefreshTokenInterface $refToken){}
 
     public function setUserRole($userRole){}
 

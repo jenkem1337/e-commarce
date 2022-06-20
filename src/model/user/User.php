@@ -124,7 +124,7 @@ class User extends BaseEntity implements AggregateRoot, UserInterface{
             }
             $this->activationCode = $code;
     }
-    function setRefreshTokenModel(RefreshToken $refToken){
+    function setRefreshTokenModel(RefreshTokenInterface $refToken){
         if(!$refToken){
             throw new NullException('refresh token'); 
         }
