@@ -17,15 +17,15 @@ class UserDaoImpl implements UserDao{
         $stmt = $conn->prepare("SELECT * FROM users ORDER BY created_at DESC LIMIT $startingLimit, $perPageForUsers");
         $stmt->execute();
         $users = $stmt->fetchAll(PDO::FETCH_OBJ);
-   
+        $conn = null;
         return $users; 
     }
 
     function findUserByEmail($email){
         $conn =  $this->dbConnection->getConnection();
-        $stmt = $conn->prepare("SELECT * FROM users WHERE email=:email");
+        $stmt = $conn->prepare("SELECT * FROM users WHERE email=:email LIMIT 1");
         $stmt->execute(['email'=>$email]);
-        $user = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $user = $stmt->fetch(PDO::FETCH_OBJ);
         $conn = null;
         if(!$user) {
             $arr = [
@@ -38,7 +38,7 @@ class UserDaoImpl implements UserDao{
                 'updated_at'=>null,
                 'user_role'=>null
             ];
-            return array(json_decode(json_encode($arr),false));
+            return json_decode(json_encode($arr),false);
         }
 
         return $user;
@@ -63,9 +63,9 @@ class UserDaoImpl implements UserDao{
     }
     function findUserByActivationCode($code){
         $conn =  $this->dbConnection->getConnection();
-        $stmt = $conn->prepare("SELECT * FROM users WHERE email_activation_code=:email_activation_code");
+        $stmt = $conn->prepare("SELECT * FROM users WHERE email_activation_code=:email_activation_code LIMIT 1");
         $stmt->execute(['email_activation_code'=>$code]);
-        $user = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $user = $stmt->fetch(PDO::FETCH_OBJ);
         $conn = null;
         if(!$user) {
             $arr = [
@@ -79,7 +79,7 @@ class UserDaoImpl implements UserDao{
                 'user_role'=>null,
                 'email_activation_code'=>null
             ];
-            return array(json_decode(json_encode($arr),false));
+            return json_decode(json_encode($arr),false);
         }
         return $user;
 
@@ -93,12 +93,12 @@ class UserDaoImpl implements UserDao{
         $conn = null;
     }
 
-    function findUserByUuid($userUuid):array{
+    function findUserByUuid($userUuid){
 
         $conn = $this->dbConnection->getConnection();
-        $stmt = $conn->prepare("SELECT * FROM users WHERE uuid=:uuid");
+        $stmt = $conn->prepare("SELECT * FROM users WHERE uuid=:uuid LIMIT 1");
         $stmt->execute(['uuid'=>$userUuid]);
-        $user = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $user = $stmt->fetch(PDO::FETCH_OBJ);
         if(!$user) {
             $arr = [
                 'uuid'=>null,
@@ -110,7 +110,7 @@ class UserDaoImpl implements UserDao{
                 'updated_at'=>null,
                 'user_role'=>null
             ];
-            return array(json_decode(json_encode($arr),false));
+            return json_decode(json_encode($arr),false);
         }
         return $user;
     }
@@ -140,9 +140,9 @@ class UserDaoImpl implements UserDao{
 
     function findUserByForgettenPasswordCode($passwordCode){
         $conn =  $this->dbConnection->getConnection();
-        $stmt = $conn->prepare("SELECT * FROM users WHERE forgetten_password_activation_code=:forgetten_password_activation_code");
+        $stmt = $conn->prepare("SELECT * FROM users WHERE forgetten_password_activation_code=:forgetten_password_activation_code LIMIT 1");
         $stmt->execute(['forgetten_password_activation_code'=>$passwordCode]);
-        $user = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $user = $stmt->fetch(PDO::FETCH_OBJ);
         $conn = null;
         if(!$user) {
             $arr = [
@@ -155,7 +155,7 @@ class UserDaoImpl implements UserDao{
                 'updated_at'=>null,
                 'user_role'=>null
             ];
-            return array(json_decode(json_encode($arr),false));
+            return json_decode(json_encode($arr),false);
         }
         return $user;
 
