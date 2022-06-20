@@ -28,17 +28,7 @@ class UserDaoImpl implements UserDao{
         $user = $stmt->fetch(PDO::FETCH_OBJ);
         $conn = null;
         if(!$user) {
-            $arr = [
-                'uuid'=>null,
-                'full_name'=>null,
-                'email'=>null,
-                'user_password'=>null,
-                'is_user_activated'=>null,
-                'created_at'=>null,
-                'updated_at'=>null,
-                'user_role'=>null
-            ];
-            return json_decode(json_encode($arr),false);
+            return $this->returnNullStatment();
         }
 
         return $user;
@@ -68,18 +58,7 @@ class UserDaoImpl implements UserDao{
         $user = $stmt->fetch(PDO::FETCH_OBJ);
         $conn = null;
         if(!$user) {
-            $arr = [
-                'uuid'=>null,
-                'full_name'=>null,
-                'email'=>null,
-                'user_password'=>null,
-                'is_user_activated'=>null,
-                'created_at'=>null,
-                'updated_at'=>null,
-                'user_role'=>null,
-                'email_activation_code'=>null
-            ];
-            return json_decode(json_encode($arr),false);
+            return $this->returnNullStatment();
         }
         return $user;
 
@@ -100,17 +79,7 @@ class UserDaoImpl implements UserDao{
         $stmt->execute(['uuid'=>$userUuid]);
         $user = $stmt->fetch(PDO::FETCH_OBJ);
         if(!$user) {
-            $arr = [
-                'uuid'=>null,
-                'full_name'=>null,
-                'email'=>null,
-                'user_password'=>null,
-                'is_user_activated'=>null,
-                'created_at'=>null,
-                'updated_at'=>null,
-                'user_role'=>null
-            ];
-            return json_decode(json_encode($arr),false);
+            return $this->returnNullStatment();
         }
         return $user;
     }
@@ -145,17 +114,7 @@ class UserDaoImpl implements UserDao{
         $user = $stmt->fetch(PDO::FETCH_OBJ);
         $conn = null;
         if(!$user) {
-            $arr = [
-                'uuid'=>null,
-                'full_name'=>null,
-                'email'=>null,
-                'user_password'=>null,
-                'is_user_activated'=>null,
-                'created_at'=>null,
-                'updated_at'=>null,
-                'user_role'=>null
-            ];
-            return json_decode(json_encode($arr),false);
+            return $this->returnNullStatment();
         }
         return $user;
 
@@ -169,6 +128,20 @@ class UserDaoImpl implements UserDao{
             'uuid'=>$user->getUuid()
         ]);
         $conn = null;
+
+    }
+    private function returnNullStatment() {
+        $arr = [
+            'uuid'=>null,
+            'full_name'=>null,
+            'email'=>null,
+            'user_password'=>null,
+            'is_user_activated'=>null,
+            'created_at'=>null,
+            'updated_at'=>null,
+            'user_role'=>null
+        ];
+        return json_decode(json_encode($arr),false);
 
     }
 }
