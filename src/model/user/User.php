@@ -1,6 +1,5 @@
 <?php
 
-use FFI\Exception;
 
 require './vendor/autoload.php';
 
