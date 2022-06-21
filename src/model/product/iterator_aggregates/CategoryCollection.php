@@ -10,10 +10,10 @@ class CategoryCollection implements IteratorAggregate{
         $lastItem = count($this->categoryCollection) - 1;
         return $this->categoryCollection[$lastItem];
     }
-    function getItems(){
+    function getItems():array{
         return $this->categoryCollection;
     }
-    function add(CategoryInterface $category){
+    function add(CategoryInterface $category):void{
         $this->categoryCollection[] = $category;
     }
 	function getIterator():Iterator {
