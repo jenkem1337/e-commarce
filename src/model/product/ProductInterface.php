@@ -11,9 +11,9 @@ interface ProductInteface {
     
         function isPriceLessThanPreviousPrice();
     
-        function createNewCategory(CategoryInterface $category);
+        function addCategory(CategoryInterface $category);
     
-        function writeNewComment(CommentInterface $comment);
+        function addComment(CommentInterface $comment);
         
         public function getBrand();
     
