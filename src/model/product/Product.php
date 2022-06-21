@@ -15,7 +15,7 @@ class Product extends BaseEntity implements AggregateRoot, ProductInteface{
     private CategoryCollection $categories;
     private CommentCollection $comments;
     private ImageCollection $images;
-    function __construct($uuid, $brand,$model,$header,$description,$price,$stockQuantity, RateInterface $rate, CommentCollection $comments ,CategoryCollection $categories, ImageCollection $images, SubscriberCollection $subscribers,$createdAt, $updatedAt)
+    function __construct($uuid, $brand,$model,$header,$description,$price,$stockQuantity, RateInterface $rate,$createdAt, $updatedAt)
     {
         parent::__construct($uuid,$createdAt, $updatedAt);
         if(!$brand){
@@ -49,10 +49,10 @@ class Product extends BaseEntity implements AggregateRoot, ProductInteface{
         $this->price = $price;
         $this->stockQuantity = $stockQuantity;
         $this->rate = $rate;
-        $this->comments = $comments ?? new CommentCollection();
-        $this->categories = $categories ?? new CategoryCollection();
-        $this->images = $images ?? new ImageCollection();
-        $this->subscribers = $subscribers ?? new SubscriberCollection();
+        $this->comments = new CommentCollection();
+        $this->categories =  new CategoryCollection();
+        $this->images = new ImageCollection();
+        $this->subscribers = new SubscriberCollection();
     }
 
     function incrementStockQuantity(int $quantity){
@@ -107,18 +107,18 @@ class Product extends BaseEntity implements AggregateRoot, ProductInteface{
     function isPriceLessThanPreviousPrice(){
         return ($this->price < $this->previousPrice) ? true : false;
     }
-    function createNewCategory(CategoryInterface $category) {
+    function addCategory(CategoryInterface $category) {
         if(!$category){
             throw new NullException('new category');
         }
         $this->categories->add($category);
     }
 
-    function writeNewComment(CommentInterface $comment){
+    function addComment(CommentInterface $comment){
         if(!$comment){
             throw new NullException("new comment");
         }
-        $this->comment = $comment;
+        $this->comments->add($comment);
     }
     
     /**
