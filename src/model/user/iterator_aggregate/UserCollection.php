@@ -10,10 +10,10 @@ class UserCollection implements IteratorAggregate{
         $lastItem = count($this->userCollection) - 1;
         return $this->userCollection[$lastItem];
     }
-    function getItems(){
+    function getItems():array{
         return $this->userCollection;
     }
-    function add(UserInterface $user){
+    function add(UserInterface $user):void{
         $this->userCollection[] = $user;
     }
 	function getIterator():Iterator {
