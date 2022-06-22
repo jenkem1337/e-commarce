@@ -17,6 +17,21 @@ class CommentTest extends TestCase {
         $comment->changeComment('Ürün berbat sakın almayın');
         $this->assertEquals('Ürün berbat sakın almayın', $comment->getComment());
     }
+    function test_setWriterName_method(){
+        $comment = new Comment(Uuid::uuid4(), Uuid::uuid4(), Uuid::uuid4(), 'Deneme yorumu', date ('Y-m-d H:i:s'),date ('Y-m-d H:i:s'));
+        $comment->setWriterName('Hasancan Sahan');
+        $this->assertEquals('Hasancan Sahan', $comment->getWriterName());
+    }
+    function test_setWriterName_parameter_is_empty_and_should_throw_NullException(){
+        try {
+            $comment = new Comment(Uuid::uuid4(), Uuid::uuid4(), Uuid::uuid4(), 'Deneme yorumu', date ('Y-m-d H:i:s'),date ('Y-m-d H:i:s'));
+            $comment->setWriterName('');
+            $this->expectException(NullException::class);
+    
+        } catch (\BaseException $e) {
+            $this->assertEquals('writer name must not be null', $e->getMessage());
+        }
+    }
     function test_Comment_constructor_productUuid_parameter_is_null_and_should_throw_NullException(){
         try {
             $comment = new Comment(Uuid::uuid4(), null, Uuid::uuid4(), 'Deneme yorumu', date ('Y-m-d H:i:s'),date ('Y-m-d H:i:s'));
