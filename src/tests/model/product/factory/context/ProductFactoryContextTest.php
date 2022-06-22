@@ -50,4 +50,23 @@ class ProductFactoryContextTest extends TestCase {
         $this->assertNotInstanceOf(ProductCategoryCreationalModel::class, $product);
 
     }
+
+    function test_executeFactory_should_return_ProductCategoryCreationalModel_instance(){
+        $product = $this->context->executeFactory(
+            ProductCategoryCreationalModelFactory::class,
+            false,
+            Uuid::uuid4(),
+            'ssss',
+            'ssss',
+            'sssssssssss',
+            'ssssssssssssssssssssss',
+            23,
+            100,
+            new NullRate(),
+            date ('Y-m-d H:i:s'),
+            date ('Y-m-d H:i:s')
+        );
+        $this->assertInstanceOf(ProductCategoryCreationalModel::class, $product);
+
+    }
 }
