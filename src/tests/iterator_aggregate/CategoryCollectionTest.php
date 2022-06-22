@@ -12,15 +12,9 @@ class CategoryCollectionTest extends TestCase {
     }
     function test_add_method(){
         $uuid = Uuid::uuid4();
-        $this->categoryCollection->add(new Category($uuid, 'Araba', date ('Y-m-d H:i:s'), date ('Y-m-d H:i:s')));
-        $this->assertEquals($uuid, $this->categoryCollection->getItems()[0]->getUuid());
-        $this->assertEquals('Araba', $this->categoryCollection->getItems()[0]->getCategoryName());
-    }
-    function test_getLastItem_method(){
-        $uuid = Uuid::uuid4();
-        $this->categoryCollection->add(new Category($uuid, 'Araba', date ('Y-m-d H:i:s'), date ('Y-m-d H:i:s')));
-        $this->assertEquals($uuid, $this->categoryCollection->getLastItem()->getUuid());
-        $this->assertEquals('Araba', $this->categoryCollection->getLastItem()->getCategoryName());
-
+        $this->categoryCollection->add(new Category($uuid->toString(), 'Araba', date ('Y-m-d H:i:s'), date ('Y-m-d H:i:s')));
+        $cat =  $this->categoryCollection->getItem($uuid->toString());
+        $this->assertEquals($uuid, $cat->getUuid());
+        $this->assertEquals('Araba', $cat->getCategoryName());
     }
 }
