@@ -6,15 +6,14 @@ class CategoryCollection implements IteratorAggregate{
 	function __construct() {
         $this->categoryCollection = array();
 	}
-    function getLastItem():CategoryInterface{
-        $lastItem = count($this->categoryCollection) - 1;
-        return $this->categoryCollection[$lastItem];
+    function getItem($key):CategoryInterface{
+        return $this->categoryCollection[$key];
     }
     function getItems():array{
         return $this->categoryCollection;
     }
     function add(CategoryInterface $category):void{
-        $this->categoryCollection[] = $category;
+        $this->categoryCollection[$category->getUuid()] = $category;
     }
 	function getIterator():Iterator {
         return new ArrayIterator($this->categoryCollection);
