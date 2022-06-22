@@ -10,8 +10,8 @@ class Category extends BaseEntity implements CategoryInterface{
         $this->categoryName = $categoryName;
     }
     function changeCategoryName($categoryName){
-        if(!$categoryName) throw new NullException('category name');
-
+        if(!$categoryName) throw new NullException('new category name');
+        if($categoryName == $this->categoryName) throw new SamePropertyException('new category name', 'category name');
         $this->categoryName = $categoryName;
 
     }
