@@ -31,6 +31,15 @@ class Comment extends BaseEntity implements CommentInterface{
         } 
         $this->comment = $comment;
     }
+    function setWriterName($writerName) {
+        if(!$writerName){
+            throw new NullException('writer name');
+        }
+
+		$this->writerName = $writerName;
+	}
+
+
     /**
      * Get the value of productUuid
      */ 
@@ -54,14 +63,6 @@ class Comment extends BaseEntity implements CommentInterface{
     {
         return $this->comment;
     }
-
-    function setWriterName($writerName) {
-        if(!$writerName){
-            throw new NullException('writer name');
-        }
-
-		$this->writerName = $writerName;
-	}
 
     /**
      * Get the value of writerName
