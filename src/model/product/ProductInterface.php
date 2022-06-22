@@ -10,11 +10,11 @@ interface ProductInteface {
         function changePrice($price);
     
         function isPriceLessThanPreviousPrice();
-    
+        function addSubscriber(ProductSubscriberInterface $sub);
         function addCategory(CategoryInterface $category);
     
         function addComment(CommentInterface $comment);
-        
+        function addImage(ImageInterface $img);
         public function getBrand();
     
         public function getModel();

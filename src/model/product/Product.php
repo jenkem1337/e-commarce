@@ -107,6 +107,10 @@ class Product extends BaseEntity implements AggregateRoot, ProductInteface{
     function isPriceLessThanPreviousPrice(){
         return ($this->price < $this->previousPrice) ? true : false;
     }
+    function addSubscriber(ProductSubscriberInterface $sub){
+        if(!$sub) throw new NullException('new subscriber');
+        $this->subscribers->add($sub);
+    }
     function addCategory(CategoryInterface $category) {
         if(!$category){
             throw new NullException('new category');
@@ -119,6 +123,9 @@ class Product extends BaseEntity implements AggregateRoot, ProductInteface{
             throw new NullException("new comment");
         }
         $this->comments->add($comment);
+    }
+    function addImage(ImageInterface $img){
+        $this->images->add($img);
     }
     
     /**

@@ -20,6 +20,9 @@ class NullProduct implements ProductInteface {
     function addCategory(CategoryInterface $category){}
 
     function addComment(CommentInterface $comment){}
+    function addSubscriber(ProductSubscriberInterface $sub){}
+
+    function addImage(ImageInterface $img){}
 
     public function getBrand(){}
 
