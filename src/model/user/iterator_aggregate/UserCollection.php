@@ -7,13 +7,13 @@ class UserCollection implements IteratorAggregate{
         $this->userCollection = array();
 	}
     function getItem($key):UserInterface{
-        return $this->userCollection[$key];
+        return $this->userCollection[(string)$key];
     }
     function getItems():array{
         return $this->userCollection;
     }
     function add(UserInterface $user):void{
-        $this->userCollection[$user->getUuid()] = $user;
+        $this->userCollection[(string)$user->getUuid()] = $user;
     }
 	function getIterator():Iterator {
         return new ArrayIterator($this->userCollection);

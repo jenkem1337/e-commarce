@@ -11,10 +11,10 @@ class ImageCollection implements IteratorAggregate {
         return $this->imageCollection;
     }
     function getItem($key):ImageInterface{
-        return $this->imageCollection[$key];
+        return $this->imageCollection[(string)$key];
     }
     function add(ImageInterface $image):void{
-        $this->imageCollection[$image->getUuid()] = $image; 
+        $this->imageCollection[(string)$image->getUuid()] = $image; 
     }
     function getIterator(): Iterator
     {

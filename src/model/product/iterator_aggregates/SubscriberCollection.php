@@ -11,10 +11,10 @@ class SubscriberCollection implements IteratorAggregate {
         return $this->subscriberCollection;
     }
     function getItem($key):SubscriberCollection{
-        return $this->subscriberCollection[$key];
+        return $this->subscriberCollection[(string)$key];
     }
     function add(ProductSubscriberInterface $sub):void{
-        $this->subscriberCollection[$sub->getUuid()] = $sub; 
+        $this->subscriberCollection[(string)$sub->getUuid()] = $sub; 
     }
     function getIterator(): Iterator
     {

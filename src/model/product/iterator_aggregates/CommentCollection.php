@@ -11,10 +11,10 @@ class CommentCollection implements IteratorAggregate {
         return $this->commentCollection;
     }
     function getItem($key):CommentInterface{
-        return $this->commentCollection[$key];
+        return $this->commentCollection[(string)$key];
     }
     function add(CommentInterface $comment):void{
-        $this->commentCollection[$comment->getUuid()] = $comment; 
+        $this->commentCollection[(string)$comment->getUuid()] = $comment; 
     }
     function getIterator(): Iterator
     {
