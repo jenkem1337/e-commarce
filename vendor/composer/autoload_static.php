@@ -659,6 +659,7 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'Product' => __DIR__ . '/../..' . '/src/model/product/Product.php',
         'ProductCategoryCreationalModel' => __DIR__ . '/../..' . '/src/model/product/ProductCategoryCretionalModel.php',
         'ProductCategoryCreationalModelFactory' => __DIR__ . '/../..' . '/src/model/product/factory/ProductCategoryCreationalModelFactory.php',
+        'ProductCollection' => __DIR__ . '/../..' . '/src/model/product/iterator_aggregates/ProductCollection.php',
         'ProductFactory' => __DIR__ . '/../..' . '/src/model/product/factory/ProductFactory.php',
         'ProductFactoryContext' => __DIR__ . '/../..' . '/src/model/product/factory/product_factory_context/ProductFactoryContext.php',
         'ProductFactoryContextTest' => __DIR__ . '/../..' . '/src/tests/model/product/factory/context/ProductFactoryContextTest.php',

@@ -518,6 +518,7 @@ return array(
     'Product' => $baseDir . '/src/model/product/Product.php',
     'ProductCategoryCreationalModel' => $baseDir . '/src/model/product/ProductCategoryCretionalModel.php',
     'ProductCategoryCreationalModelFactory' => $baseDir . '/src/model/product/factory/ProductCategoryCreationalModelFactory.php',
+    'ProductCollection' => $baseDir . '/src/model/product/iterator_aggregates/ProductCollection.php',
     'ProductFactory' => $baseDir . '/src/model/product/factory/ProductFactory.php',
     'ProductFactoryContext' => $baseDir . '/src/model/product/factory/product_factory_context/ProductFactoryContext.php',
     'ProductFactoryContextTest' => $baseDir . '/src/tests/model/product/factory/context/ProductFactoryContextTest.php',
