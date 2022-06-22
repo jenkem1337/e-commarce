@@ -49,9 +49,9 @@ class Product extends BaseEntity implements AggregateRoot, ProductInteface{
         $this->price = $price;
         $this->stockQuantity = $stockQuantity;
         $this->rate = $rate;
-        $this->comments = new CommentCollection();
-        $this->categories =  new CategoryCollection();
-        $this->images = new ImageCollection();
+        $this->comments    = new CommentCollection();
+        $this->categories  = new CategoryCollection();
+        $this->images      = new ImageCollection();
         $this->subscribers = new SubscriberCollection();
     }
 
