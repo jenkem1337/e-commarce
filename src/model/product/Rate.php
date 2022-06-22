@@ -7,7 +7,7 @@ class Rate extends BaseEntity implements RateInterface{
     private int $howManyPeopleRateIt;
     private float $avarageRate;
     
-    function __construct(string $uuid,string $productUuid, $userUuid, int $rateNumber, int $howManyPeopleRateIt, $createdAt, $updatedAt)
+    function __construct(string $uuid,string $productUuid, $userUuid, int $rateNumber, $createdAt, $updatedAt)
     {
         parent::__construct($uuid, $createdAt, $updatedAt);
         if(!$userUuid){
@@ -23,9 +23,6 @@ class Rate extends BaseEntity implements RateInterface{
         if($rateNumber<0)   throw new NegativeValueException();
         if($rateNumber > 5) throw new LengthMustBeGreaterThanException('rate number', 5);
         
-        if(!$howManyPeopleRateIt){
-            throw new NullException('how many people rate it');
-        }
         
         $this->productUuid = $productUuid;
         $this->userUuid = $userUuid;
@@ -38,13 +35,12 @@ class Rate extends BaseEntity implements RateInterface{
         $this->howManyPeopleRateIt = $howManyPeopleRateIt;
     }
 
-    function calculateAvarageRate(int $sumOfRate, int $howManyPeopleRateIt){
-        if(!$howManyPeopleRateIt) throw new NullException('how many people rate it');
-        if(!$sumOfRate)           throw new NullException('sum of rate');
-        if($sumOfRate == 0 || $howManyPeopleRateIt == 0) {
-            $howManyPeopleRateIt = 1;
+    function calculateAvarageRate(int $sumOfRate){
+        if(!$sumOfRate) throw new NullException('sum of rate');
+        if($sumOfRate == 0 || $this->howManyPeopleRateIt == 0) {
+            $this->howManyPeopleRateIt = 1;
         }
-        $this->avarageRate =  $sumOfRate/$howManyPeopleRateIt;
+        $this->avarageRate =  $sumOfRate/$this->howManyPeopleRateIt;
     }
 
     /**

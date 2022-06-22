@@ -15,7 +15,7 @@ class NullRate implements RateInterface{
     {
     }
 
-    function calculateAvarageRate(int $sumOfRate, int $howManyPeopleRateIt){}
+    function calculateAvarageRate(int $sumOfRate){}
     public function getPruductUuid()
     {
     }

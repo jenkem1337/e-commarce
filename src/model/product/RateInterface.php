@@ -3,7 +3,7 @@
 interface RateInterface {
     public function setHowManyPeopleRateIt($howManyPeopleRateIt);
 
-    function calculateAvarageRate(int $sumOfRate, int $howManyPeopleRateIt);
+    function calculateAvarageRate(int $sumOfRate);
 
     public function getPruductUuid();
 
