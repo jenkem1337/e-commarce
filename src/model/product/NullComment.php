@@ -14,6 +14,8 @@ class NullComment implements CommentInterface {
     public function getComment(){}
 
     public function getUuid(){}
+    function setWriterName($writerName){}
+    function getWriterName(){}
 
     public function getCreatedAt(){}
 

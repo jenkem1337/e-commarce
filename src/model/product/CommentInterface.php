@@ -13,7 +13,8 @@ interface CommentInterface {
     public function getCreatedAt();
 
     public function getUpdatedAt();
-
+    function setWriterName($writerName);
+    function getWriterName();
     function isNull();
 
 }

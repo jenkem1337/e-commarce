@@ -2,6 +2,7 @@
 class Comment extends BaseEntity implements CommentInterface{
     private $productUuid;
     private $userUuid;
+    private $writerName;
     private $comment;
     
     function __construct($uuid, $productUuid, $userUuid, $comment, $createdAt, $updatedAt)
@@ -52,5 +53,21 @@ class Comment extends BaseEntity implements CommentInterface{
     public function getComment()
     {
         return $this->comment;
+    }
+
+    function setWriterName($writerName) {
+        if(!$writerName){
+            throw new NullException('writer name');
+        }
+
+		$this->writerName = $writerName;
+	}
+
+    /**
+     * Get the value of writerName
+     */ 
+    public function getWriterName()
+    {
+        return $this->writerName;
     }
 }
