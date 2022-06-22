@@ -2,6 +2,7 @@
 
 interface RateInterface {
     public function setHowManyPeopleRateIt($howManyPeopleRateIt);
+    function setRateNumber($rateNumber);
 
     function calculateAvarageRate(int $sumOfRate);
 
