@@ -17,4 +17,22 @@ class CategoryCollectionTest extends TestCase {
         $this->assertEquals($uuid, $cat->getUuid());
         $this->assertEquals('Araba', $cat->getCategoryName());
     }
+    function test_ChangeCategoryName_method_and_set_collection(){
+                
+
+        $category  = new Category(Uuid::uuid4(), 'Araba',       date ('Y-m-d H:i:s'), date ('Y-m-d H:i:s'));
+        $category2 = new Category(Uuid::uuid4(), 'Motorsiklet', date ('Y-m-d H:i:s'), date ('Y-m-d H:i:s'));
+        
+        $this->categoryCollection->add($category);
+        $this->categoryCollection->add($category2);
+
+        $carCategory =  $this->categoryCollection->getItem($category->getUuid());
+        $carCategory->changeCategoryName('Elektronik');
+        $this->categoryCollection->add($carCategory);
+        
+        $this->assertNotEquals('Araba',$this->categoryCollection->getItem($category->getUuid())->getCategoryName());
+        $this->assertEquals('Elektronik',$this->categoryCollection->getItem($category->getUuid())->getCategoryName());
+
+
+    }
 }
