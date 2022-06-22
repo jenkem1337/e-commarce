@@ -16,9 +16,6 @@ class Comment extends BaseEntity implements CommentInterface{
         if(!$comment){
             throw new NullException('comment');
         }
-        if(strlen($comment) < 0) {
-            throw new NegativeValueException();
-        }
         $this->userUuid = $userUuid;
         $this->productUuid= $productUuid;
         $this->comment = $comment;
@@ -26,11 +23,11 @@ class Comment extends BaseEntity implements CommentInterface{
 
     function changeComment($comment){
         if(!$comment){
-            throw new NullException('comment');
+            throw new NullException('new comment');
         }
-        if(strlen($comment) < 0) {
-            throw new NegativeValueException();
-        }
+        if($comment == $this->comment){
+            throw new SamePropertyException('new comment', 'comment');
+        } 
         $this->comment = $comment;
     }
     /**
