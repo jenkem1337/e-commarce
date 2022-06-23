@@ -2,7 +2,7 @@
 
 
 require "./vendor/autoload.php";
-class Product extends BaseEntity implements AggregateRoot, ProductInteface{
+class Product extends BaseEntity implements AggregateRoot, ProductInterface{
     private $brand;
     private $model;
     private $header;
@@ -11,11 +11,12 @@ class Product extends BaseEntity implements AggregateRoot, ProductInteface{
     private $stockQuantity;
     private RateInterface $rate;
     private $previousPrice;
+    private RateCollection $rates;
     private SubscriberCollection $subscribers;
     private CategoryCollection $categories;
     private CommentCollection $comments;
     private ImageCollection $images;
-    function __construct($uuid, $brand,$model,$header,$description,$price,$stockQuantity, RateInterface $rate,$createdAt, $updatedAt)
+    function __construct($uuid, string $brand,string $model,string $header, string $description, float $price,int $stockQuantity,RateInterface $rate,$createdAt, $updatedAt)
     {
         parent::__construct($uuid,$createdAt, $updatedAt);
         if(!$brand){
@@ -36,12 +37,13 @@ class Product extends BaseEntity implements AggregateRoot, ProductInteface{
         if($price < 0){
             throw new NegativeValueException();
         }
-        if(!$stockQuantity){
-            throw new NullException("stock quantity");
+        if($stockQuantity<0){
+            throw new NegativeValueException();
         }
         if(!$rate){
             throw new NullException('rate');
         }
+
         $this->brand = $brand;
         $this->model = $model;
         $this->header = $header;
@@ -49,6 +51,7 @@ class Product extends BaseEntity implements AggregateRoot, ProductInteface{
         $this->price = $price;
         $this->stockQuantity = $stockQuantity;
         $this->rate = $rate;
+        $this->rates       = new RateCollection();
         $this->comments    = new CommentCollection();
         $this->categories  = new CategoryCollection();
         $this->images      = new ImageCollection();
@@ -87,6 +90,12 @@ class Product extends BaseEntity implements AggregateRoot, ProductInteface{
         }
         $this->description = $description;
     }
+    function setRate(RateInterface $rate){
+        if(!$rate){
+            throw new NullException('rate');
+        }
+        $this->rate = $rate;
+    }
 
     function changePrice($price){
         
@@ -106,28 +115,43 @@ class Product extends BaseEntity implements AggregateRoot, ProductInteface{
 
     function isPriceLessThanPreviousPrice(){
         return ($this->price < $this->previousPrice) ? true : false;
-    }
+    } 
     function addSubscriber(ProductSubscriberInterface $sub){
-        if(!$sub) throw new NullException('new subscriber');
+        if(!$sub) throw new NullException('subscriber');
         $this->subscribers->add($sub);
     }
     function addCategory(CategoryInterface $category) {
         if(!$category){
-            throw new NullException('new category');
+            throw new NullException('category');
         }
         $this->categories->add($category);
     }
 
     function addComment(CommentInterface $comment){
         if(!$comment){
-            throw new NullException("new comment");
+            throw new NullException("comment");
         }
         $this->comments->add($comment);
     }
     function addImage(ImageInterface $img){
         $this->images->add($img);
     }
-    
+    function addRate(RateInterface $rate){
+        $this->rates->add($rate);
+    }
+    function calculateAvarageRate(){
+        $howManyPeopleRateIt = count($this->rates->getItems());
+        $this->rate->setHowManyPeopleRateIt($howManyPeopleRateIt);
+        $this->rate->calculateAvarageRate($this->getSumOfRate());
+    }
+    protected function getSumOfRate(){
+        $sumOfRates = 0;
+        $rates = $this->rates->getItems();
+        foreach($rates as $rate){
+            $sumOfRates += $rate->getRateNumber(); 
+        }
+        return $sumOfRates;
+    }
     /**
      * Get the value of brand
      */ 
@@ -215,5 +239,21 @@ class Product extends BaseEntity implements AggregateRoot, ProductInteface{
     public function getCategories():CategoryCollection
     {
         return $this->categories;
+    }
+
+    /**
+     * Get the value of previousPrice
+     */ 
+    public function getPreviousPrice()
+    {
+        return $this->previousPrice;
+    }
+
+    /**
+     * Get the value of rates
+     */ 
+    public function getRates():RateCollection
+    {
+        return $this->rates;
     }
 }
