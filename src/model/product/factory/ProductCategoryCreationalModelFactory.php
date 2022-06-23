@@ -1,13 +1,13 @@
 <?php
 require "./vendor/autoload.php";
 
-class ProductCategoryCreationalModelFactory implements Factory {
+abstract class ProductCategoryCreationalModelFactory implements Factory {
     
 	/**
 	 */
 	function __construct() {
 	}
-	function createInstance($isMustBeConcreteObjcet = false ,...$params ) {
+	function createInstance($isMustBeConcreteObjcet = false ,...$params ):ProductInterface {
         return new ProductCategoryCreationalModel(...$params);
 	}
 }
