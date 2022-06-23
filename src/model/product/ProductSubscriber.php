@@ -53,7 +53,7 @@ class ProductSubscriber extends BaseEntity implements ProductSubscriberInterface
      */ 
     public function setUserFullName($userFullName)
     {
-        if($userFullName) throw new NullException('user full name');
+        if(!$userFullName) throw new NullException('user full name');
 
         $this->userFullName = $userFullName;
 
@@ -65,7 +65,7 @@ class ProductSubscriber extends BaseEntity implements ProductSubscriberInterface
      */ 
     public function setUserEmail($userEmail)
     {
-        if($userEmail) throw new NullException('user mail');
+        if(!$userEmail) throw new NullException('user mail');
         $this->userEmail = $userEmail;
 
     }
