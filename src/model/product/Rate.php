@@ -19,7 +19,7 @@ class Rate extends BaseEntity implements RateInterface{
         $this->productUuid = $productUuid;
         $this->userUuid = $userUuid;
     }
-    function setRateNumber($rateNumber){
+    function rateIt($rateNumber){
         if(!$rateNumber)    throw new NullException('rate number');
         if($rateNumber<0)   throw new NegativeValueException();
         if($rateNumber > 5) throw new ValueMustBeLessThanException('rate number', 5);
@@ -77,7 +77,7 @@ class Rate extends BaseEntity implements RateInterface{
      */ 
     public function getAvaregeRate()
     {
-        return $this->avaregeRate;
+        return $this->avarageRate;
     }
 
     /**
