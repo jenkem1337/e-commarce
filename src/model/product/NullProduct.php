@@ -2,7 +2,7 @@
 
 require "./vendor/autoload.php";
 
-class NullProduct implements ProductInteface {
+class NullProduct implements ProductInterface {
     function __construct()
     {
         
@@ -12,12 +12,15 @@ class NullProduct implements ProductInteface {
     function changeHeader($header){}
 
     function changeDescription($description){}
-
+    public function getPreviousPrice(){}
     function changePrice($price){}
-
+    function calculateAvarageRate(){}
     function isPriceLessThanPreviousPrice(){}
 
     function addCategory(CategoryInterface $category){}
+    public function getRates():RateCollection{
+        return new RateCollection();
+    }
 
     function addComment(CommentInterface $comment){}
     function addSubscriber(ProductSubscriberInterface $sub){}
@@ -31,10 +34,11 @@ class NullProduct implements ProductInteface {
     public function getPrice(){}
 
     public function getStockQuantity(){}
-
+    function setRate(RateInterface $rate){}
     public function getRate():RateInterface{
         return new NullRate();
     }
+    function addRate(RateInterface $rate){}
 
     public function getComments():CommentCollection{
         return new CommentCollection();
