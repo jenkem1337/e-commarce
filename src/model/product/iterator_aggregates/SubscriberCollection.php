@@ -10,7 +10,7 @@ class SubscriberCollection implements IteratorAggregate {
     function getItems():array{
         return $this->subscriberCollection;
     }
-    function getItem($key):SubscriberCollection{
+    function getItem($key):ProductSubscriberInterface{
         return $this->subscriberCollection[(string)$key];
     }
     function add(ProductSubscriberInterface $sub):void{

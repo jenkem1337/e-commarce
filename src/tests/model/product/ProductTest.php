@@ -89,8 +89,8 @@ class ProductTest extends TestCase {
         }
     }
     function test_changeDescription_method(){
-        $this->product->changeDescription("Dünyanın en enkötü markası X'in yeni modeli XYZ");
-        $this->assertEquals("Dünyanın en enkötü markası X'in yeni modeli XYZ", $this->product->getDescription());
+        $this->product->changeDescription("Dünyanın en en kötü markası X'in yeni modeli XYZ");
+        $this->assertEquals("Dünyanın en en kötü markası X'in yeni modeli XYZ", $this->product->getDescription());
     }
     function test_changeDescription_method_parameter_equal_to_actual_value_and_should_throw_SamePropertyException(){
         try {

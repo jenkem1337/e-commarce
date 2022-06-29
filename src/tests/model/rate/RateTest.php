@@ -24,13 +24,13 @@ class RateTest extends TestCase {
 
     function test_setRate_method(){
         $rate = new Rate(Uuid::uuid4(), Uuid::uuid4(), Uuid::uuid4(), date ('Y-m-d H:i:s'),date ('Y-m-d H:i:s'));
-        $rate->setRateNumber(4.9);
+        $rate->rateIt(4.9);
         $this->assertEquals(4.9, $rate->getRateNumber());
     }
     function test_setRate_method_property_less_than_zero_and_should_throw_NegativeValueException(){
         try {
             $rate = new Rate(Uuid::uuid4(), Uuid::uuid4(), Uuid::uuid4(), date ('Y-m-d H:i:s'),date ('Y-m-d H:i:s'));
-            $rate->setRateNumber(-0.01);
+            $rate->rateIt(-0.01);
         } catch (\BaseException $e) {
             $this->assertEquals('value must not be negative value', $e->getMessage());
         }
@@ -38,7 +38,7 @@ class RateTest extends TestCase {
     function test_setRate_method_property_greater_than_five_and_should_throw_LengthMustBeGreaterThanException(){
         try {
             $rate = new Rate(Uuid::uuid4(), Uuid::uuid4(), Uuid::uuid4(), date ('Y-m-d H:i:s'),date ('Y-m-d H:i:s'));
-            $rate->setRateNumber(5.01);
+            $rate->rateIt(5.01);
         } catch (\BaseException $e) {
             $this->assertEquals('rate number value must be less than 5', $e->getMessage());
         }
