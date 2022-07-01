@@ -2,5 +2,5 @@
 
 Front Controller - Layered Architecture - RESTFull - Rich Domain Model - Redis - MySql
 
-![My Image](src/uml-diagrams/user-aggragete.png)
+![User Aggregate Root](src/uml-diagrams/user-aggragete.png)
 
