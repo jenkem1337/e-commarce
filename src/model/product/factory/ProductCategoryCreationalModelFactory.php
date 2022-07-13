@@ -8,6 +8,6 @@ abstract class ProductCategoryCreationalModelFactory implements Factory {
 	function __construct() {
 	}
 	function createInstance($isMustBeConcreteObjcet = false ,...$params ):ProductInterface {
-        return new ProductCategoryCreationalModel(...$params);
+        return new ProductForCreatingCategoryDecorator();
 	}
 }
