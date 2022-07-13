@@ -8,8 +8,16 @@ use Ramsey\Uuid\Uuid;
 class ProductTest extends TestCase {
     protected ProductInterface $product;
     function setUp():void {
-        $this->product = new Product(Uuid::uuid4(), 'X', 'XYZ', 'X XYZ', "Dünyanın en iyi markası X'in yeni modeli XYZ", 199, 100, new DefaultRateModel(), date ('Y-m-d H:i:s'),date ('Y-m-d H:i:s'));
-
+        $this->product = new ProductConstructorRuleRequiredDecorator(Uuid::uuid4(), 'X', 'XYZ', 'X XYZ', "Dünyanın en iyi markası X'in yeni modeli XYZ", 199, 100, new DefaultRateModel(), date ('Y-m-d H:i:s'),date ('Y-m-d H:i:s'));
+    }
+    function test_header_property_null_and_should_throw_exception(){
+        try {
+            $this->product = new ProductConstructorRuleRequiredDecorator(Uuid::uuid4(), 'X', 'XYZ', '', "Dünyanın en iyi markası X'in yeni modeli XYZ", 199, 100, new DefaultRateModel(), date ('Y-m-d H:i:s'),date ('Y-m-d H:i:s'));
+            $this->assertNull($this->product);
+            $this->expectException(NullException::class);
+        } catch (\Exception $th) {
+            $this->assertEquals('header must not be null', $th->getMessage());
+        }
     }
     function test_Product_constructor_should_not_throw_exception(){
         $this->assertNotNull($this->product);
@@ -134,6 +142,66 @@ class ProductTest extends TestCase {
         $this->assertEquals(3, $rateFromProduct->getAvaregeRate());
 
     }
+    function test_addCategory_method(){
+        $this->product = new ProductForCreatingCategoryDecorator();
+        $category1 = new Category(Uuid::uuid4(), 'Deneme', date('h'),date('h'));
+        $category2 = new Category(Uuid::uuid4(), 'Deneme2', date('h'),date('h'));
+        $this->product->addCategory($category1);
+        $this->product->addCategory($category2);
+        $this->assertEquals(2, count($this->product->getCategories()->getItems()));
+    }
 
+    function test_add_category_and_get_category_from_product_model(){
+        $this->product = new ProductForCreatingCategoryDecorator();
+        $categoryUuid = Uuid::uuid4();
+        $category1 = new Category($categoryUuid, 'Deneme', date('h'),date('h'));
+        $this->product->addCategory($category1);
+        $denemeCategory = $this->product->getCategories()->getItem($categoryUuid);
+        $this->assertEquals('Deneme', $denemeCategory->getCategoryName());
 
+    }
+
+    function test_isPriceLessThanPreviousPrice_method_and_should_throw_exception_in_ProductForCreatingCategoryDecorator(){
+        $this->expectException(Exception::class);
+        $this->product = new ProductForCreatingCategoryDecorator();
+        $this->product->isPriceLessThanPreviousPrice();
+    }
+
+    function test_addComment_method(){
+        $this->product->addComment(new Comment(Uuid::uuid4(),$this->product->getUuid(), Uuid::uuid4(), 'Excelent Product',date('h'),date('h')));
+        $this->assertEquals(1, count($this->product->getComments()->getItems()));
+    }
+    function test_add_comment_and_get_comment_from_product_model(){
+        $uuid = Uuid::uuid4();
+        $comment = new Comment($uuid,$this->product->getUuid(), Uuid::uuid4(), 'Excelent Product',date('h'),date('h'));
+        $this->product->addComment($comment);
+        $commentFromProduct = $this->product->getComments()->getItem($uuid);
+        $this->assertEquals('Excelent Product', $commentFromProduct->getComment());
+    }
+
+    function test_addSubscriber_method(){
+        $this->product->addSubscriber(new ProductSubscriber(Uuid::uuid4(), $this->product->getUuid(), Uuid::uuid4(), date('h'),date('h')));
+        $this->assertEquals(1, count($this->product->getSubscribers()->getItems()));
+    }
+
+    function test_add_subscriber_and_get_subbscriber_from_product(){
+        $uuid = Uuid::uuid4();
+        $sub = new ProductSubscriber($uuid, $this->product->getUuid(), Uuid::uuid4(), date('h'),date('h'));
+        $this->product->addSubscriber($sub);
+        $subFormProduct = $this->product->getSubscribers()->getItem($uuid);
+        $this->assertEquals($this->product->getUuid(), $subFormProduct->getProductUuid());
+    }
+
+    function test_addImage_method(){
+        $this->product->addImage(new Image(Uuid::uuid4(), $this->product->getUuid(), 'deneme.jpg', date('h'),date('h')));
+        $this->assertEquals(1, count($this->product->getImages()->getItems()));
+    }
+
+    function test_add_image_and_get_image_from_product_model(){
+        $uuid = Uuid::uuid4();
+        $img = new Image($uuid, $this->product->getUuid(), 'deneme.jpg', date('h'),date('h'));
+        $this->product->addImage($img);
+        $imgFromProduct = $this->product->getImages()->getItem($uuid);
+        $this->assertEquals('deneme.jpg', $imgFromProduct->getImageName());
+    }
 }
