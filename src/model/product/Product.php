@@ -1,48 +1,25 @@
 <?php
 
+use Ramsey\Uuid\Uuid;
 
 require "./vendor/autoload.php";
-class Product extends BaseEntity implements AggregateRoot, ProductInterface{
-    private $brand;
-    private $model;
-    private $header;
-    private $description;
-    private $price;
-    private $stockQuantity;
-    private RateInterface $rate;
-    private $previousPrice;
-    private RateCollection $rates;
-    private SubscriberCollection $subscribers;
-    private CategoryCollection $categories;
-    private CommentCollection $comments;
-    private ImageCollection $images;
-    function __construct($uuid, string $brand,string $model,string $header, string $description, float $price,int $stockQuantity,RateInterface $rate,$createdAt, $updatedAt)
+abstract class Product extends BaseEntity implements AggregateRoot, ProductInterface{
+    protected $brand;
+    protected $model;
+    protected $header;
+    protected $description;
+    protected $price;
+    protected $stockQuantity;
+    protected RateInterface $rate;
+    protected $previousPrice;
+    protected RateCollection $rates;
+    protected SubscriberCollection $subscribers;
+    protected CategoryCollection $categories;
+    protected CommentCollection $comments;
+    protected ImageCollection $images;
+    function __construct($uuid, string $brand = null,string $model = null ,string $header = null, string $description = null, float $price = null ,int $stockQuantity = null,RateInterface $rate = null,$createdAt, $updatedAt)
     {
         parent::__construct($uuid,$createdAt, $updatedAt);
-        if(!$brand){
-            throw new NullException("brand");
-        }
-        if(!$model){
-            throw new NullException("model");
-        }
-        if(!$header){
-            throw new NullException("header");
-        }
-        if(!$description){
-            throw new NullException("description");
-        }
-        if(!$price){
-            throw new NullException('price');
-        }
-        if($price < 0){
-            throw new NegativeValueException();
-        }
-        if($stockQuantity<0){
-            throw new NegativeValueException();
-        }
-        if(!$rate){
-            throw new NullException('rate');
-        }
 
         $this->brand = $brand;
         $this->model = $model;
