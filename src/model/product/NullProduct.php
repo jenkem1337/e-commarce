@@ -70,4 +70,9 @@ class NullProduct implements ProductInterface {
         return true;
     }
 
+	function changeBrand($newBrand) {
+	}
+	
+	function changeModel($newModel) {
+	}
 }
