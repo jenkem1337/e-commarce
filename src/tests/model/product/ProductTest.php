@@ -204,4 +204,13 @@ class ProductTest extends TestCase {
         $imgFromProduct = $this->product->getImages()->getItem($uuid);
         $this->assertEquals('deneme.jpg', $imgFromProduct->getImageName());
     }
+    function test_changeBrand_method(){
+        $this->product->changeBrand('Abibbas');
+        $this->assertEquals('Abibbas', $this->product->getBrand());
+    }
+
+    function test_changeModel_method(){
+        $this->product->changeModel('XNXX-2000');
+        $this->assertEquals('XNXX-2000', $this->product->getModel());
+    }
 }
