@@ -47,7 +47,16 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
             throw new NegativeValueException();
         }
     }
-
+    function changeModel($newModel){
+        if(!$newModel) throw new NullException('new model');
+        if($this->model == $newModel) throw new SamePropertyException('new model', 'model');
+        $this->model = $newModel;
+    }
+    function changeBrand($newBrand) {
+        if(!$newBrand) throw new NullException('new brand');
+        if($this->brand == $newBrand) throw new SamePropertyException('new brand','brand');
+        $this->brand = $newBrand; 
+    }
     function changeHeader($header){
         if(!$header){
             throw new NullException('header');
