@@ -40,10 +40,7 @@ class ProductForCreatingCategoryDecorator extends ProductDecorator {
         throw new Exception();    
     }
     function addCategory(CategoryInterface $category) {
-        if(!$category){
-            throw new NullException('category');
-        }
-        $this->categories->add($category);
+        parent::addCategory($category);
     }
 
     function addComment(CommentInterface $comment){
@@ -146,7 +143,7 @@ class ProductForCreatingCategoryDecorator extends ProductDecorator {
      */ 
     public function getCategories():CategoryCollection
     {
-        return $this->categories;
+        return parent::getCategories();
     }
 
     /**
