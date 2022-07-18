@@ -3,7 +3,7 @@
 require './vendor/autoload.php';
 
 class CategoryDaoImpl implements CategoryDao {
-    private DatabaseConnection $databaseConnection;
+    protected DatabaseConnection $databaseConnection;
 	function __construct(DatabaseConnection $databaseConnection) {
         $this->databaseConnection = $databaseConnection;
 	}
