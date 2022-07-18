@@ -2,7 +2,7 @@
 require './vendor/autoload.php';
 
 class CommentDaoImpl implements CommentDao {
-    private DatabaseConnection $dbConnection;
+    protected DatabaseConnection $dbConnection;
 
     function __construct(DatabaseConnection $dbConn)
     {
@@ -84,14 +84,25 @@ class CommentDaoImpl implements CommentDao {
         $comments = $stmt->fetchAll(PDO::FETCH_OBJ);
         if($comments == null) return $this->returnNullStatment();
         return $comments;
+    }
+    function findAllByUserUuid($userUuid){
+        $conn = $this->dbConnection->getConnection();
+        $stmt = $conn->prepare(
+            "SELECT * FROM comment WHERE user_uuid = :user_uuid"
+        );
+        $stmt->execute([
+            'user_uuid'=> $userUuid
+        ]);
+        $comments = $stmt->fetchAll(PDO::FETCH_OBJ);
+        if($comments == null) return $this->returnNullStatment();
+        return $comments;
 
     }
-
     private function returnNullStatment() {
         $arr = [
             'uuid'=>null,
             'comment_text' => null,
-            'user_uuid'=>null,
+            'user_uuid'=>null, 
             'product_uuid'=>null,
             'created_at'=>null,
             'updated_at'=>null,
