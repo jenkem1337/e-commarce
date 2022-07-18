@@ -1,6 +1,6 @@
 <?php
 require "./vendor/autoload.php";
-class UserRepositoryDecorator implements UserRepository {
+abstract class UserRepositoryDecorator implements UserRepository {
     private UserRepository $userRepository;
     function __construct(UserRepository $userRepo)
     {
