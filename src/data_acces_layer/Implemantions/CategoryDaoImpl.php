@@ -9,7 +9,10 @@ class CategoryDaoImpl implements CategoryDao {
 	}
 	function persist(Category $c) {
         $conn = $this->databaseConnection->getConnection();
-        $stmt = $conn->prepare("INSERT INTO category (uuid, category_name, created_at, updated_at) VALUES (:uuid, :category_name, :created_at, :updated_at)");
+        $stmt = $conn->prepare(
+            "INSERT INTO category (uuid, category_name, created_at, updated_at) 
+             VALUES (:uuid, :category_name, :created_at, :updated_at)"
+        );
         $stmt->execute([
             'uuid'=>$c->getUuid(),
             'category_name' => $c->getCategoryName(),
