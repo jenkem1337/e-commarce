@@ -36,18 +36,6 @@ class Rate extends BaseEntity implements RateInterface{
         $this->howManyPeopleRateIt = $howManyPeopleRateIt;
     }
 
-    function calculateAvarageRate($sumOfRate){
-        if($sumOfRate === 0){
-            if($sumOfRate == 0 || $this->howManyPeopleRateIt == 0) {
-                $this->howManyPeopleRateIt = 1;
-            }
-            $this->avarageRate =  $sumOfRate/$this->howManyPeopleRateIt;
-            return;
-        }
-        if(!$sumOfRate) throw new NullException('sum of rate');
-        $this->avarageRate =  $sumOfRate/$this->howManyPeopleRateIt;
-    }
-
     /**
      * Get the value of pruductUuid
      */ 

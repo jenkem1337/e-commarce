@@ -4,8 +4,6 @@ interface RateInterface {
     public function setHowManyPeopleRateIt($howManyPeopleRateIt);
     function rateIt($rateNumber);
 
-    function calculateAvarageRate(int $sumOfRate);
-
     public function getPruductUuid();
 
     public function getRateNumber();
