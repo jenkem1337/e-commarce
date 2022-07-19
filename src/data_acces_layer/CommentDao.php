@@ -5,7 +5,7 @@ interface CommentDao{
     function deleteByUuid($uuid);
     function findAll();
     function findOneByUuid($uuid);
-    function updateByUuid($uuid, $updatedComment);
+    function updateByUuid(Comment $c);
     function findAllByProductUuid($productUuid);
     function findAllByUserUuid($userUuid);
 }
