@@ -61,14 +61,14 @@ class CommentDaoImpl implements CommentDao {
         return $comment;
 	}
 	
-	function updateByUuid($uuid, $updatedComment) {
+	function updateByUuid(Comment $c) {
         $conn = $this->dbConnection->getConnection();
         $stmt = $conn->prepare(
             "UPDATE comment SET comment_text = :comment_text, updated_at = NOW() WHERE uuid = :uuid"
         );
         $stmt->execute([
-            'uuid'=>$uuid,
-            'comment_text'=>$updatedComment
+            'uuid'=>$c->getUuid(),
+            'comment_text'=>$c->getComment()
         ]);
         $conn = null;
 	}

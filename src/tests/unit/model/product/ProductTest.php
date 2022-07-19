@@ -8,11 +8,11 @@ use Ramsey\Uuid\Uuid;
 class ProductTest extends TestCase {
     protected ProductInterface $product;
     function setUp():void {
-        $this->product = new ProductConstructorRuleRequiredDecorator(Uuid::uuid4(), 'X', 'XYZ', 'X XYZ', "Dünyanın en iyi markası X'in yeni modeli XYZ", 199, 100, new DefaultRateModel(), date ('Y-m-d H:i:s'),date ('Y-m-d H:i:s'));
+        $this->product = new ProductConstructorRuleRequiredDecorator(Uuid::uuid4(), 'X', 'XYZ', 'X XYZ', "Dünyanın en iyi markası X'in yeni modeli XYZ", 199, 100, date ('Y-m-d H:i:s'),date ('Y-m-d H:i:s'));
     }
     function test_header_property_null_and_should_throw_exception(){
         try {
-            $this->product = new ProductConstructorRuleRequiredDecorator(Uuid::uuid4(), 'X', 'XYZ', '', "Dünyanın en iyi markası X'in yeni modeli XYZ", 199, 100, new DefaultRateModel(), date ('Y-m-d H:i:s'),date ('Y-m-d H:i:s'));
+            $this->product = new ProductConstructorRuleRequiredDecorator(Uuid::uuid4(), 'X', 'XYZ', '', "Dünyanın en iyi markası X'in yeni modeli XYZ", 199, 100, date ('Y-m-d H:i:s'),date ('Y-m-d H:i:s'));
             $this->assertNull($this->product);
             $this->expectException(NullException::class);
         } catch (\Exception $th) {
@@ -138,8 +138,8 @@ class ProductTest extends TestCase {
         $this->product->addRate($rate5);
 
         $this->product->calculateAvarageRate();
-        $rateFromProduct = $this->product->getRate();
-        $this->assertEquals(3, $rateFromProduct->getAvaregeRate());
+        $avgRate = $this->product->getAvarageRate();
+        $this->assertEquals(3, $avgRate);
 
     }
     function test_addCategory_method(){

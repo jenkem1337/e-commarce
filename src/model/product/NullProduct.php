@@ -35,8 +35,8 @@ class NullProduct implements ProductInterface {
 
     public function getStockQuantity(){}
     function setRate(RateInterface $rate){}
-    public function getRate():RateInterface{
-        return new NullRate();
+    public function getAvarageRate(){
+        
     }
     function addRate(RateInterface $rate){}
 

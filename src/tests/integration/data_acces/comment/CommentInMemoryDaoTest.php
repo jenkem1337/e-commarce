@@ -37,7 +37,7 @@ class CommentInMemoryDaoTest extends TestCase {
         $comment = new Comment(Uuid::uuid4(), Uuid::uuid4(),Uuid::uuid4(), 'example comment', date('h'), date('h'));
         $this->dao->persist($comment);
         $comment->changeComment('new comment');
-        $this->dao->updateByUuid($comment->getUuid(), $comment->getComment());
+        $this->dao->updateByUuid($comment);
         $commentFromDao = $this->dao->findOneByUuid($comment->getUuid());
         $this->assertEquals('new comment', $commentFromDao->comment_text);
     }

@@ -43,12 +43,12 @@ class CategoryDaoImpl implements CategoryDao {
         return $category;
 	}
 	
-	function updateNameByUuid($uuid, $newCategoryName) {
+	function updateNameByUuid(Category $c) {
         $conn = $this->databaseConnection->getConnection();
         $stmt = $conn->prepare("UPDATE category SET category_name = :category_name, updated_at=NOW() WHERE uuid = :uuid");
         $stmt->execute([
-             'category_name'=>$newCategoryName,
-             'uuid'=> $uuid
+             'category_name'=>$c->getCategoryName(),
+             'uuid'=> $c->getUuid()
         ]);
         $conn = null;
 	}

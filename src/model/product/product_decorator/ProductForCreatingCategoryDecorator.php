@@ -92,9 +92,8 @@ class ProductForCreatingCategoryDecorator extends ProductDecorator {
     /**
      * Get the value of rate
      */ 
-    public function getRate():RateInterface
+    public function getAvarageRate()
     {
-        throw new Exception();
     }
 
     /**

@@ -10,14 +10,14 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
     protected $description;
     protected $price;
     protected $stockQuantity;
-    protected RateInterface $rate;
+    protected $avarageRate;
     protected $previousPrice;
     protected RateCollection $rates;
     protected SubscriberCollection $subscribers;
     protected CategoryCollection $categories;
     protected CommentCollection $comments;
     protected ImageCollection $images;
-    function __construct($uuid, string $brand = null,string $model = null ,string $header = null, string $description = null, float $price = null ,int $stockQuantity = null,RateInterface $rate = null,$createdAt, $updatedAt)
+    function __construct($uuid, string $brand = null,string $model = null ,string $header = null, string $description = null, float $price = null ,int $stockQuantity = null,$createdAt, $updatedAt)
     {
         parent::__construct($uuid,$createdAt, $updatedAt);
 
@@ -27,7 +27,6 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
         $this->description = $description;
         $this->price = $price;
         $this->stockQuantity = $stockQuantity;
-        $this->rate = $rate;
         $this->rates       = new RateCollection();
         $this->comments    = new CommentCollection();
         $this->categories  = new CategoryCollection();
@@ -127,8 +126,16 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
     }
     function calculateAvarageRate(){
         $howManyPeopleRateIt = count($this->rates->getItems());
-        $this->rate->setHowManyPeopleRateIt($howManyPeopleRateIt);
-        $this->rate->calculateAvarageRate($this->getSumOfRate());
+        $sumOfRate = $this->getSumOfRate();
+        if($sumOfRate === 0){
+            if($sumOfRate == 0 || $howManyPeopleRateIt == 0) {
+                $this->howManyPeopleRateIt = 1;
+            }
+            $this->avarageRate =  $sumOfRate/$howManyPeopleRateIt;
+            return;
+        }
+        if(!$sumOfRate) throw new NullException('sum of rate');
+        $this->avarageRate =  $sumOfRate/$howManyPeopleRateIt;
     }
     protected function getSumOfRate(){
         $sumOfRates = 0;
@@ -173,9 +180,9 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
     /**
      * Get the value of rate
      */ 
-    public function getRate():RateInterface
+    public function getAvarageRate()
     {
-        return $this->rate;
+        return $this->avarageRate;
     }
 
     /**

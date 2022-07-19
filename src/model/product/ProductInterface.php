@@ -22,7 +22,7 @@ interface ProductInterface {
         public function getPrice();
     
         public function getStockQuantity();
-        public function getRate():RateInterface;
+        public function getAvarageRate();
     
         public function getComments():CommentCollection;
     

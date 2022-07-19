@@ -41,7 +41,7 @@ class CategoryInMemoryDaoTest extends TestCase {
         $category = new Category(Uuid::uuid4(), 'Araba', date('h'), date('h'));
         $this->dao->persist($category);
         $category->changeCategoryName('Elektronik');
-        $this->dao->updateNameByUuid($category->getUuid(), $category->getCategoryName());
+        $this->dao->updateNameByUuid($category);
         $categoryFromDao = $this->dao->findByUuid($category->getUuid());
         $this->assertNotEquals('Araba', $categoryFromDao->category_name);
         $this->assertEquals('Elektronik', $categoryFromDao->category_name);
