@@ -910,6 +910,7 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'SebastianBergmann\\Type\\VoidType' => __DIR__ . '/..' . '/sebastian/type/src/VoidType.php',
         'SebastianBergmann\\Version' => __DIR__ . '/..' . '/sebastian/version/src/Version.php',
         'SetNumCommandStub' => __DIR__ . '/../..' . '/src/tests/unit/stubs/HelloWorldControllerCommandStub.php',
+        'SingletonConnection' => __DIR__ . '/../..' . '/src/data_acces_layer/DatabaseConnections/SingletonConnection.php',
         'SqliteInMemoryConnection' => __DIR__ . '/../..' . '/src/data_acces_layer/DatabaseConnections/SqliteInMemoryConnection.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
         'SubscriberCollection' => __DIR__ . '/../..' . '/src/model/product/iterator_aggregates/SubscriberCollection.php',

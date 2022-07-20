@@ -769,6 +769,7 @@ return array(
     'SebastianBergmann\\Type\\VoidType' => $vendorDir . '/sebastian/type/src/VoidType.php',
     'SebastianBergmann\\Version' => $vendorDir . '/sebastian/version/src/Version.php',
     'SetNumCommandStub' => $baseDir . '/src/tests/unit/stubs/HelloWorldControllerCommandStub.php',
+    'SingletonConnection' => $baseDir . '/src/data_acces_layer/DatabaseConnections/SingletonConnection.php',
     'SqliteInMemoryConnection' => $baseDir . '/src/data_acces_layer/DatabaseConnections/SqliteInMemoryConnection.php',
     'Stringable' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
     'SubscriberCollection' => $baseDir . '/src/model/product/iterator_aggregates/SubscriberCollection.php',
