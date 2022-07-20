@@ -55,7 +55,7 @@ class CategoryDaoImpl implements CategoryDao {
 	
 	function findAll() {
         $conn = $this->databaseConnection->getConnection();
-        $stmt = $conn->prepare("SELECT * FROM category");
+        $stmt = $conn->prepare("SELECT * FROM category ORDER BY created_at DESC");
         $stmt->execute();
         $categories = $stmt->fetchAll(PDO::FETCH_OBJ);
         $conn = null;

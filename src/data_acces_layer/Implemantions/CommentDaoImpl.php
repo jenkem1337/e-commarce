@@ -39,7 +39,7 @@ class CommentDaoImpl implements CommentDao {
 	function findAll() {
         $conn = $this->dbConnection->getConnection();
         $stmt = $conn->prepare(
-            "SELECT * FROM comment"
+            "SELECT * FROM comment ORDER BY created_at DESC"
         );
         $stmt->execute();
         $comments = $stmt->fetchAll(PDO::FETCH_OBJ);
