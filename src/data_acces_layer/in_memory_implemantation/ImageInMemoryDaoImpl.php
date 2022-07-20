@@ -2,7 +2,7 @@
 require './vendor/autoload.php';
 
 class ImageInMemoryDaoImpl extends ImageDaoImpl {
-    function __construct(DatabaseConnection $conn)
+    function __construct(SingletonConnection $conn)
     {
         parent::__construct($conn);
         $this->createProductTable();

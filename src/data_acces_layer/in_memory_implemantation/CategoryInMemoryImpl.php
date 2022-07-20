@@ -1,7 +1,7 @@
 <?php
 require './vendor/autoload.php';
 class CategoryInMemoryDaoImpl extends CategoryDaoImpl{
-    function __construct(DatabaseConnection $dbConn)
+    function __construct(SingletonConnection $dbConn)
     {
         parent::__construct($dbConn);
         $this->createTable();

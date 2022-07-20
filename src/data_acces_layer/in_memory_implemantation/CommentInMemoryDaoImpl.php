@@ -1,7 +1,7 @@
 <?php
 require './vendor/autoload.php';
 class CommentInMemoryDaoImpl extends CommentDaoImpl{
-    function __construct(DatabaseConnection $conn)
+    function __construct(SingletonConnection $conn)
     {
         parent::__construct($conn);
         
