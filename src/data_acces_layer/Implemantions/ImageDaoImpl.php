@@ -17,7 +17,7 @@ class ImageDaoImpl implements ImageDao {
         $stmt->execute([
             'uuid'=>$i->getUuid(),
             'image_name'=>$i->getImageName(),
-            'product_ uuid'=>$i->getProductUuid(),
+            'product_uuid'=>$i->getProductUuid(),
             'created_at'=>$i->getCreatedAt(),
             'updated_at'=>$i->getUpdatedAt()
         ]);
