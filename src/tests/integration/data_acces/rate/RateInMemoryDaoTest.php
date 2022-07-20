@@ -8,7 +8,7 @@ use Ramsey\Uuid\Uuid;
 class RateInMemoryDaoTest extends TestCase {
     protected RateInMemoryDaoImpl $dao;
     function setUp():void {
-        $this->dao = new RateInMemoryDaoImpl(new SqliteInMemoryConnection());
+        $this->dao = new RateInMemoryDaoImpl(SqliteInMemoryConnection::getInstance());
     }
     function test_persist_rate(){
         $r = new Rate(uuid::uuid4(), uuid::uuid4(), uuid::uuid4(), date('h'), date('h'));

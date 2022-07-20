@@ -9,7 +9,7 @@ class ImageInMemoryDaoTest extends TestCase {
     protected ImageInMemoryDaoImpl $dao;
     
     function setUp():void {
-        $this->dao = new ImageInMemoryDaoImpl(new SqliteInMemoryConnection());
+        $this->dao = new ImageInMemoryDaoImpl(SqliteInMemoryConnection::getInstance());
     }
     function test_persist()
     {

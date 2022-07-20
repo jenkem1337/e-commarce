@@ -8,7 +8,7 @@ use Ramsey\Uuid\Uuid;
 class CommentInMemoryDaoTest extends TestCase {
     protected CommentInMemoryDaoImpl $dao;
     function setUp():void{
-        $this->dao = new CommentInMemoryDaoImpl(new SqliteInMemoryConnection());
+        $this->dao = new CommentInMemoryDaoImpl(SqliteInMemoryConnection::getInstance());
     } 
     function test_not_null_CommentInMemoryDao_instance(){
         $this->assertNotNull($this->dao);

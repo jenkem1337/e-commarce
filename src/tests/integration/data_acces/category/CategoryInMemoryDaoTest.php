@@ -8,7 +8,8 @@ class CategoryInMemoryDaoTest extends TestCase {
     protected CategoryInMemoryDaoImpl $dao;
 
     function setUp():void{
-        $this->dao = new CategoryInMemoryDaoImpl(new SqliteInMemoryConnection());
+        $this->dao = new CategoryInMemoryDaoImpl(SqliteInMemoryConnection::getInstance());
+        
     }
     function test_not_null_CategoryInMemoryDao_instance(){
         $this->assertNotNull($this->dao);
