@@ -35,25 +35,10 @@ class NullRate implements RateInterface{
     }
 
     /**
-     * Get the value of avaregeRate
-     */ 
-    public function getAvaregeRate()
-    {
-        return $this->avarageRate;
-    }
-
-    /**
      * Set the value of userUuid
      *
      */ 
     public function setUserUuid($userUuid)
-    {
-    }
-
-    /**
-     * Get the value of avarageRate
-     */ 
-    public function getAvarageRate()
     {
     }
 

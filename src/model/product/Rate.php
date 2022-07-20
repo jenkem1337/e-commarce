@@ -60,13 +60,6 @@ class Rate extends BaseEntity implements RateInterface{
         return $this->howManyPeopleRateIt;
     }
 
-    /**
-     * Get the value of avaregeRate
-     */ 
-    public function getAvaregeRate()
-    {
-        return $this->avarageRate;
-    }
 
     /**
      * Set the value of userUuid
@@ -75,14 +68,6 @@ class Rate extends BaseEntity implements RateInterface{
     public function setUserUuid($userUuid)
     {
         $this->userUuid = $userUuid;
-    }
-
-    /**
-     * Get the value of avarageRate
-     */ 
-    public function getAvarageRate()
-    {
-        return $this->avarageRate;
     }
 
     /**

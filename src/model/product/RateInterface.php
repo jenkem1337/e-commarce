@@ -10,11 +10,7 @@ interface RateInterface {
 
     public function getHowManyPeopleRateIt();
 
-    public function getAvaregeRate();
-
     public function setUserUuid($userUuid);
-
-    public function getAvarageRate();
 
     public function getUserUuid();
 
