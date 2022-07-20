@@ -2,10 +2,12 @@
 require './vendor/autoload.php';
 
 class ImageDaoImpl implements ImageDao {
-    protected DatabaseConnection $dbConnection;
+    protected SingletonConnection $dbConnection;
 
-	function __construct(DatabaseConnection $dbConnection) {
+	function __construct(SingletonConnection $dbConnection) {
 	    $this->dbConnection = $dbConnection;
+        $this->dbConnection->createDatabaseConnection();
+
 	}
     function persist(Image $i)
     {

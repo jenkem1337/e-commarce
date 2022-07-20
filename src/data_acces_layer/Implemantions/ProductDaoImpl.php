@@ -2,9 +2,11 @@
 require './vendor/autoload.php';
 
 class ProductDaoImpl implements ProductDao {
-    protected DatabaseConnection $dbConnection;
-	function __construct(DatabaseConnection $dbConnection) {
+    protected SingletonConnection $dbConnection;
+	function __construct(SingletonConnection $dbConnection) {
         $this->dbConnection = $dbConnection;
+        $this->dbConnection->createDatabaseConnection();
+
 	}
 	function persist(Product $p) {
         $conn = $this->dbConnection->getConnection();

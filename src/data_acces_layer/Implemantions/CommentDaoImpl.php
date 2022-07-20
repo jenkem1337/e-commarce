@@ -2,11 +2,13 @@
 require './vendor/autoload.php';
 
 class CommentDaoImpl implements CommentDao {
-    protected DatabaseConnection $dbConnection;
+    protected SingletonConnection $dbConnection;
 
-    function __construct(DatabaseConnection $dbConn)
+    function __construct(SingletonConnection $dbConn)
     {
         $this->dbConnection = $dbConn;
+        $this->dbConnection->createDatabaseConnection();
+
     }
 	function persist(Comment $c) {
         $conn = $this->dbConnection->getConnection();

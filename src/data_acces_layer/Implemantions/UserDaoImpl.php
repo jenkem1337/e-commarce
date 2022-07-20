@@ -4,12 +4,13 @@ use Ramsey\Uuid\Nonstandard\Uuid;
 
 require './vendor/autoload.php';
 class UserDaoImpl implements UserDao{
-    private DatabaseConnection $dbConnection;
+    private SingletonConnection $dbConnection;
 
-    public function __construct(DatabaseConnection $dbConnection)
+    public function __construct(SingletonConnection $dbConnection)
     {
         
         $this->dbConnection = $dbConnection;
+        $this->dbConnection->createDatabaseConnection();
     }
     function findAllWithPagination($startingLimit, $perPageForUsers)
     {

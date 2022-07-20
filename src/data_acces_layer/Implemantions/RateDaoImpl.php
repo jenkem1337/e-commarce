@@ -2,9 +2,11 @@
 require './vendor/autoload.php';
 
 class RateDaoImpl implements RateDao {
-    protected DatabaseConnection $dbConnection;
-	function __construct(DatabaseConnection $dbConn) {
+    protected SingletonConnection $dbConnection;
+	function __construct(SingletonConnection $dbConn) {
         $this->dbConnection = $dbConn;
+        $this->dbConnection->createDatabaseConnection();
+
 	}
 	function persist(Rate $r) {
         $conn = $this->dbConnection->getConnection();
