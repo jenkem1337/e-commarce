@@ -26,6 +26,11 @@ class ProductInMemoryDaoTest extends TestCase {
         );
         $this->assertEquals(1, count($this->dao->findAll()));
     }
+    function test_persist_product_subscriber(){
+        $ps = new ProductSubscriber(uuid::uuid4(), uuid::uuid4(), uuid::uuid4(), date('h'), date('h'));
+        $this->dao->persistSubscriber($ps);
+        $this->assertEquals($ps->getUserUuid(), $this->dao->findSubscriberByUserUuid($ps->getUserUuid() )->user_uuid);
+    }
     function test_delete_product(){
         $productUuid = Uuid::uuid4();
         $product = new ProductConstructorRuleRequiredDecorator(
