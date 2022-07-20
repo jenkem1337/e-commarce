@@ -44,7 +44,6 @@ class CommentDaoImpl implements CommentDao {
         $stmt->execute();
         $comments = $stmt->fetchAll(PDO::FETCH_OBJ);
         $conn = null;
-        if($comments == null) return $this->returnNullStatment();
         return $comments;
 	}
 	
@@ -82,7 +81,6 @@ class CommentDaoImpl implements CommentDao {
             'product_uuid'=> $productUuid
         ]);
         $comments = $stmt->fetchAll(PDO::FETCH_OBJ);
-        if($comments == null) return $this->returnNullStatment();
         return $comments;
     }
     function findAllByUserUuid($userUuid){
@@ -94,7 +92,6 @@ class CommentDaoImpl implements CommentDao {
             'user_uuid'=> $userUuid
         ]);
         $comments = $stmt->fetchAll(PDO::FETCH_OBJ);
-        if($comments == null) return $this->returnNullStatment();
         return $comments;
 
     }
