@@ -68,6 +68,7 @@ class ProductDaoImpl implements ProductDao {
         ]);
         $product = $stmt->fetch(PDO::FETCH_OBJ);
         $conn = null;
+        if($product == null) return $this->returnNullStatment();
         return $product;
 	}
 	
@@ -186,4 +187,21 @@ class ProductDaoImpl implements ProductDao {
         ]);
         $conn = null;
 	}
+    private function returnNullStatment() {
+        $arr = [
+            'uuid'=>null,
+            'brand' => null,
+            'model'=>null, 
+            'header'=>null,
+            '_description'=>null,
+            'price'=>null,
+            'prev_price'=>null,
+            'rate'=>null,
+            'stockquantity'=>null,
+            'created_at'=>null,
+            'updated_at'=>null,
+        ];
+        return json_decode(json_encode($arr),false);
+    } 
+
 }
