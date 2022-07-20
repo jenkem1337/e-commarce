@@ -9,7 +9,7 @@ class UserControllerFactory implements Factory {
             new UserServiceImpl(
                 new UserRepositoryAggregateRootDecorator(
                     new UserRepositoryImpl(
-                        new UserDaoImpl(new MySqlPDOConnection()),
+                        new UserDaoImpl(MySqlPDOConnection::getInsatace()),
                         new RefreshTokenDaoImpl(new RedisConnection()),
                         new ConcreteUserFactory(),
                         new ConcreteRefreshTokenFactory()        
@@ -18,7 +18,7 @@ class UserControllerFactory implements Factory {
             ),new AuthServiceImpl(
                 new UserRepositoryAggregateRootDecorator(
                     new UserRepositoryImpl(
-                        new UserDaoImpl(new MySqlPDOConnection()),
+                        new UserDaoImpl(MySqlPDOConnection::getInsatace()),
                         new RefreshTokenDaoImpl(new RedisConnection()),
                         new ConcreteUserFactory(),
                         new ConcreteRefreshTokenFactory()
