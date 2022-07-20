@@ -4,7 +4,7 @@ require './vendor/autoload.php';
 
 class RateInMemoryDaoImpl extends RateDaoImpl{
     
-    function __construct(DatabaseConnection $conn)
+    function __construct(SingletonConnection $conn)
     {
         parent::__construct($conn);
         $this->createProductTable();
