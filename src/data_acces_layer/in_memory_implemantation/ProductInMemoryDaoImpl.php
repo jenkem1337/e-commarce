@@ -6,7 +6,9 @@ class ProductInMemoryDaoImpl extends ProductDaoImpl {
     function __construct(DatabaseConnection $dbConn)
     {
         parent::__construct($dbConn);
+        $this->createUserTable();
         $this->createProductTable();
+        $this->createProductSubscriberTable();
     }
 
     private function createProductTable(){
@@ -26,6 +28,41 @@ class ProductInMemoryDaoImpl extends ProductDaoImpl {
                                     updated_at DATETIME
                                 )"
                             );
+    }
+    private function createUserTable(){
+        $this->dbConnection->getConnection()
+                            ->exec("CREATE TABLE IF NOT EXISTS users (
+                                    uuid TEXT PRIMARY KEY,
+                                    full_name TEXT,
+                                    email TEXT,
+                                    user_password  TEXT,
+                                    email_activation_code	TEXT,
+                                    forgetten_password_activation_code TEXT,
+                                    is_user_activated BOOLEAN,
+                                    user_role TEXT,
+                                    created_at DATETIME,
+                                    updated_at DATETIME)");
+
+    }
+    private function createProductSubscriberTable(){
+        $this->dbConnection->getConnection()
+                        ->exec(
+                            "CREATE TABLE IF NOT EXISTS product_subscriber (
+                                uuid text primary key,
+                                user_uuid text,
+                                product_uuid text,
+                                created_at datetime,
+                                updated_at datetime,
+                                foreign key (user_uuid)
+                                    references users(uuid)
+                                    on delete cascade
+                                    on update cascade
+                                foreign key (product_uuid)
+                                    references products(uuid)
+                                    on delete cascade
+                                    on update cascade
+                            )"
+                        );
     }
     function updateStockQuantityByUuid(Product $p) {
         $conn = $this->dbConnection->getConnection();
