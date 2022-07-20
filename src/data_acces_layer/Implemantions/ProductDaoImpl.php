@@ -26,10 +26,37 @@ class ProductDaoImpl implements ProductDao {
             'updated_at'=>$p->getUpdatedAt()
         ]);
         $conn = null;
-
 	}
+    function persistSubscriber(ProductSubscriber $ps)
+    {
+        $conn = $this->dbConnection->getConnection();
+        $stmt = $conn->prepare(
+            "INSERT INTO product_subscriber (uuid, user_uuid, product_uuid, created_at, updated_at)
+            VALUES (:uuid, :user_uuid, :product_uuid, :created_at, :updated_at)"
+        );
+        $stmt->execute([
+            'uuid'=>$ps->getUuid(),
+            'user_uuid'=>$ps->getUserUuid(),
+            'product_uuid'=>$ps->getProductUuid(),
+            'created_at'=>$ps->getCreatedAt(),
+            'updated_at'=>$ps->getUpdatedAt()
+        ]);
+        $conn = null;
+
+    }
 	
-	
+	function deleteSubscriberByUserUuid($uuid)
+    {
+        $conn = $this->dbConnection->getConnection();
+        $stmt = $conn->prepare(
+            "DELETE FROM product_subscriber WHERE user_uuid = :uuid"
+        );
+        $stmt->execute([
+            'uuid'=>$uuid
+        ]);
+        $conn = null;
+
+    }
 	function deleteByUuid($uuid) {
         $conn = $this->dbConnection->getConnection();
         $stmt = $conn->prepare(
@@ -47,6 +74,19 @@ class ProductDaoImpl implements ProductDao {
         $products = $stmt->fetchAll(PDO::FETCH_OBJ);
         $conn = null;
         return $products; 
+
+    }
+    function findSubscriberByUserUuid($uuid)
+    {
+        $conn =  $this->dbConnection->getConnection();
+        $stmt = $conn->prepare("SELECT * FROM product_subscriber WHERE user_uuid = :uuid LIMIT 1");
+        $stmt->execute([
+            'uuid'=>$uuid
+        ]);
+        $product = $stmt->fetch(PDO::FETCH_OBJ);
+        $conn = null;
+        if($product == null) return $this->returnNullStatment();
+        return $product;
 
     }
 	function findAllWithPagination($startingLimit, $perPageForUsers) {

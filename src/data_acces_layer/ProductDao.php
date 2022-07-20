@@ -2,8 +2,11 @@
 
 interface ProductDao {
     function persist(Product $p);
+    function persistSubscriber(ProductSubscriber $ps);
+    function deleteSubscriberByUserUuid($uuid);
     function deleteByUuid($uuid);
     function findAll();
+    function findSubscriberByUserUuid($userUuid);
     function findAllWithPagination($startingLimit, $perPageForUsers);
     function findOneByUuid($uuid);
     function findBySearching($value);
