@@ -1,6 +1,8 @@
 <?php
 
-class UserLogedInResponseDto {
+require './vendor/autoload.php';
+
+class RefreshTokenResponseDto extends ResponseViewModel{
     protected $fullname;
 
     protected $email;
@@ -11,16 +13,15 @@ class UserLogedInResponseDto {
 
     protected $uuid;
 
-    protected $isSuccess;
 
-    public function __construct($isSuccess,$uuid,$fullname, $email, $userRole, $refreshToken)
+    public function __construct($uuid,$fullname, $email, $userRole, $refreshToken)
     {
-        $this->isSuccess = $isSuccess;
         $this->uuid = $uuid;
         $this->fullname = $fullname;
         $this->email = $email;
         $this->userRole = $userRole;
         $this->refreshToken= $refreshToken;
+        parent::__construct('success', $this);
     }
 
 
@@ -59,9 +60,5 @@ class UserLogedInResponseDto {
         return $this->fullname;
     }
 
-    public function isSuccess()
-    {
-        return $this->isSuccess;
-    }
 
 }

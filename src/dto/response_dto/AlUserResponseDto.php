@@ -1,6 +1,6 @@
 <?php
-
-class AllUserResponseDto {
+require './vendor/autoload.php';
+class AllUserResponseDto extends ResponseViewModel {
     protected $fullName;
 
 
@@ -28,6 +28,7 @@ class AllUserResponseDto {
         $this->isUserActivated = $isUserActivated;
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
+        parent::__construct('success', $this);
     }
 
 

@@ -1,6 +1,7 @@
 <?php
+require './vendor/autoload.php';
 
-class UserCreatedResponseDto {
+class UserCreatedResponseDto extends ResponseViewModel{
     protected $fullname;
 
     protected $email;
@@ -13,17 +14,16 @@ class UserCreatedResponseDto {
 
     protected $uuid;
 
-    protected $isSuccess;
 
-    public function __construct($isSuccess,$uuid,$fullname, $email, $isUserActivaed, $created_at, $updated_at)
+    public function __construct($uuid,$fullname, $email, $isUserActivaed, $created_at, $updated_at)
     {
-        $this->isSuccess = $isSuccess;
         $this->uuid = $uuid;
         $this->fullname = $fullname;
         $this->email = $email;
         $this->isUserActivaed = $isUserActivaed;
         $this->created_at = $created_at;
         $this->updated_at = $updated_at;
+        parent::__construct('success', $this);
     }
 
 
@@ -76,8 +76,4 @@ class UserCreatedResponseDto {
         return $this->fullname;
     }
 
-    public function isSuccess()
-    {
-        return $this->isSuccess;
-    }
 }

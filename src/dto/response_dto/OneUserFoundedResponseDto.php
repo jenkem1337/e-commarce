@@ -1,7 +1,7 @@
 <?php
+require './vendor/autoload.php';
 
-class OneUserFoundedResponseDto {
-    protected $isSuccess;
+class OneUserFoundedResponseDto extends ResponseViewModel{
     
     protected $fullName;
 
@@ -19,9 +19,8 @@ class OneUserFoundedResponseDto {
 
     protected $updatedAt;
 
-    public function __construct($isSuccess,$uuid,$fullName, $email, $password, $userRole, $isUserActivated, $createdAt, $updatedAt)
+    public function __construct($uuid,$fullName, $email, $password, $userRole, $isUserActivated, $createdAt, $updatedAt)
     {
-        $this->isSuccess = $isSuccess;
         $this->uuid = $uuid;
         $this->fullName = $fullName;
         $this->email = $email;
@@ -30,6 +29,7 @@ class OneUserFoundedResponseDto {
         $this->isUserActivated = $isUserActivated;
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
+        parent::__construct('success', $this);
     }
 
 
@@ -42,13 +42,6 @@ class OneUserFoundedResponseDto {
         return $this->fullName;
     }
 
-    /**
-     * Get the value of isSuccess
-     */ 
-    public function isSuccess()
-    {
-        return $this->isSuccess;
-    }
 
     /**
      * Get the value of email

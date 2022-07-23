@@ -1,25 +1,18 @@
 <?php
+require './vendor/autoload.php';
 
-class ForgettenPasswordResponseDto {
-    protected $isSuccess;
+class PasswordChangeResponseDto extends ResponseViewModel{
 
     protected $succesMessage;
 
     public function __construct($isSuccess, $succesMessage)
     {
-        $this->isSuccess = $isSuccess;
         $this->succesMessage = $succesMessage;
+        parent::__construct('success', $this);
     }
 
 
 
-    /**
-     * Get the value of isSuccess
-     */ 
-    public function isSuccess()
-    {
-        return $this->isSuccess;
-    }
 
     /**
      * Get the value of succesMessage
@@ -28,5 +21,4 @@ class ForgettenPasswordResponseDto {
     {
         return $this->succesMessage;
     }
-
 }
