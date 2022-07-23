@@ -7,17 +7,16 @@ class UserServiceImpl implements UserService{
     {   
         $this->userRepository = $userRepo;
     }
-    function changePassword(ChangePasswordDto $dto): PasswordChangeResponseDto
+    function changePassword(ChangePasswordDto $dto): ResponseViewModel
     {
         $user = $this->userRepository->findUserByEmail($dto->getEmail());
         $user->changePassword($dto->getOldPassword(), $dto->getNewPassword());
         $this->userRepository->updatePassword($user);
         return new PasswordChangeResponseDto(
-            true,
             "Password changed successfuly"
         );
     }
-    function changeForgettenPassword(ForgettenPasswordDto $forgettenPasswordDto): ForgettenPasswordResponseDto
+    function changeForgettenPassword(ForgettenPasswordDto $forgettenPasswordDto): ResponseViewModel
     {
         $user = $this->userRepository->findUserByForgettenPasswordCode($forgettenPasswordDto->getVerificitationCode());
         if($user->isNull()) throw new NotMatchedException('verification code');
@@ -28,40 +27,25 @@ class UserServiceImpl implements UserService{
         $this->userRepository->updateForgettenPasswordCode($user);
 
         return new ForgettenPasswordResponseDto(
-            true,
             "Your password changed successfuly."
         );
     }
 
-    function listAllUser(ListAllUserDto $listAllUserDto): array
+    function listAllUser(ListAllUserDto $listAllUserDto): ResponseViewModel
     {
         $userList = $this->userRepository->findAllWithPagination(
             $listAllUserDto->getStartingLimit(), 
             $listAllUserDto->getPerPageForUser(),
             new UserCollection()
         );
-        $usersResponseList = array();
-        foreach($userList->getIterator() as $user){
-            $usersResponseList[] = new AllUserResponseDto(
-                $user->getUuid(),
-                $user->getFullname(),
-                $user->getEmail(),
-                $user->getPassword(),
-                $user->getUserRole(),
-                $user->getIsUserActiveted(),
-                $user->getCreatedAt(),
-                $user->getUpdatedAt()
-            );
-        }
-        return $usersResponseList;
+        return new AllUserResponseDto($userList->getIterator());
     }
 
-    function findOneUserByUuid(FindOneUserByUuidDto $userUuidDto): OneUserFoundedResponseDto
+    function findOneUserByUuid(FindOneUserByUuidDto $userUuidDto): ResponseViewModel
     {
         $user = $this->userRepository->findOneUserByUuid($userUuidDto->getUuid());
         if($user->isNull()) throw new DoesNotExistException('user');
         return new OneUserFoundedResponseDto(
-            true,
             $user->getUuid(),
             $user->getFullname(),
             $user->getEmail(),
@@ -73,14 +57,13 @@ class UserServiceImpl implements UserService{
         );
     }
 
-    function changeFullName(ChangeFullNameDto $changeFullNameDto): FullNameChangedResponseDto
+    function changeFullName(ChangeFullNameDto $changeFullNameDto): ResponseViewModel
     {
         $user = $this->userRepository->findUserByEmail($changeFullNameDto->getEmail());
         $user->changeFullName($changeFullNameDto->getNewFullname());
 
         $this->userRepository->updateFullName($user);
         return new FullNameChangedResponseDto(
-            true,
             "Full name changed successfuly"
         );
     }

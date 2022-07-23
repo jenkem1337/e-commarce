@@ -1,9 +1,9 @@
 <?php
 
 interface UserService {
-    function changePassword(ChangePasswordDto $dto):PasswordChangeResponseDto;
-    function changeForgettenPassword(ForgettenPasswordDto $forgettenPasswordDto):ForgettenPasswordResponseDto;
-    function listAllUser(ListAllUserDto $listAllUserDto):array;
-    function findOneUserByUuid(FindOneUserByUuidDto $userUuidDto):OneUserFoundedResponseDto;
-    function changeFullName(ChangeFullNameDto $changeFullNameDto):FullNameChangedResponseDto;
+    function changePassword(ChangePasswordDto $dto):ResponseViewModel;
+    function changeForgettenPassword(ForgettenPasswordDto $forgettenPasswordDto):ResponseViewModel;
+    function listAllUser(ListAllUserDto $listAllUserDto):ResponseViewModel;
+    function findOneUserByUuid(FindOneUserByUuidDto $userUuidDto):ResponseViewModel;
+    function changeFullName(ChangeFullNameDto $changeFullNameDto):ResponseViewModel;
 }
