@@ -5,7 +5,10 @@ header('Content-type: application/json');
 
 require __DIR__. '/vendor/autoload.php';
 $f = new FrontController();
-$f->setExceptionHandler(new ExceptionHandler(), 'handle');
+
+$database = MySqlPDOConnection::getInsatace();
+$database->createDatabaseConnection();
+
 $authController = (new AuthControllerFactory())->createInstance();
 $userController = (new UserControllerFactory())->createInstance();
 
