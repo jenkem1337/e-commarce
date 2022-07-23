@@ -148,7 +148,7 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
 
     public static $classMap = array (
         'AggregateRoot' => __DIR__ . '/../..' . '/src/model/AggregateRoot.php',
-        'AllUserResponseDto' => __DIR__ . '/../..' . '/src/dto/response_dto/AlUserResponseDto.php',
+        'AllUserResponseDto' => __DIR__ . '/../..' . '/src/dto/response_dto/AllUserResponseDto.php',
         'AlreadyExistException' => __DIR__ . '/../..' . '/src/exception/AlreadyExistException.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'AuthController' => __DIR__ . '/../..' . '/src/controller/AuthController.php',
@@ -926,7 +926,8 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'TheSeer\\Tokenizer\\TokenCollectionException' => __DIR__ . '/..' . '/theseer/tokenizer/src/TokenCollectionException.php',
         'TheSeer\\Tokenizer\\Tokenizer' => __DIR__ . '/..' . '/theseer/tokenizer/src/Tokenizer.php',
         'TheSeer\\Tokenizer\\XMLSerializer' => __DIR__ . '/..' . '/theseer/tokenizer/src/XMLSerializer.php',
-        'TransactionalAuthServiceDecorator' => __DIR__ . '/../..' . '/src/service/service_decorator/AuthService/TransactionalAuthService.php',
+        'TransactionalAuthServiceDecorator' => __DIR__ . '/../..' . '/src/service/service_decorator/AuthService/TransactionalAuthServiceDecorator.php',
+        'TransactionalUserServiceDecorator' => __DIR__ . '/../..' . '/src/service/service_decorator/UserService/TransactionalUserServiceDecorator.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
         'User' => __DIR__ . '/../..' . '/src/model/user/User.php',
         'UserCollection' => __DIR__ . '/../..' . '/src/model/user/iterator_aggregate/UserCollection.php',
@@ -947,6 +948,7 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'UserRepositoryImpl' => __DIR__ . '/../..' . '/src/repository/Implemantions/UserRepositoryImpl.php',
         'UserRoleException' => __DIR__ . '/../..' . '/src/exception/UserRoleException.php',
         'UserService' => __DIR__ . '/../..' . '/src/service/UserService.php',
+        'UserServiceDecorator' => __DIR__ . '/../..' . '/src/service/service_decorator/UserService/UserServiceDecorator.php',
         'UserServiceImpl' => __DIR__ . '/../..' . '/src/service/Implemantions/UserServiceImpl.php',
         'UserTest' => __DIR__ . '/../..' . '/src/tests/unit/model/user/UserTest.php',
         'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',

@@ -7,7 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'AggregateRoot' => $baseDir . '/src/model/AggregateRoot.php',
-    'AllUserResponseDto' => $baseDir . '/src/dto/response_dto/AlUserResponseDto.php',
+    'AllUserResponseDto' => $baseDir . '/src/dto/response_dto/AllUserResponseDto.php',
     'AlreadyExistException' => $baseDir . '/src/exception/AlreadyExistException.php',
     'Attribute' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
     'AuthController' => $baseDir . '/src/controller/AuthController.php',
@@ -785,7 +785,8 @@ return array(
     'TheSeer\\Tokenizer\\TokenCollectionException' => $vendorDir . '/theseer/tokenizer/src/TokenCollectionException.php',
     'TheSeer\\Tokenizer\\Tokenizer' => $vendorDir . '/theseer/tokenizer/src/Tokenizer.php',
     'TheSeer\\Tokenizer\\XMLSerializer' => $vendorDir . '/theseer/tokenizer/src/XMLSerializer.php',
-    'TransactionalAuthServiceDecorator' => $baseDir . '/src/service/service_decorator/AuthService/TransactionalAuthService.php',
+    'TransactionalAuthServiceDecorator' => $baseDir . '/src/service/service_decorator/AuthService/TransactionalAuthServiceDecorator.php',
+    'TransactionalUserServiceDecorator' => $baseDir . '/src/service/service_decorator/UserService/TransactionalUserServiceDecorator.php',
     'UnhandledMatchError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
     'User' => $baseDir . '/src/model/user/User.php',
     'UserCollection' => $baseDir . '/src/model/user/iterator_aggregate/UserCollection.php',
@@ -806,6 +807,7 @@ return array(
     'UserRepositoryImpl' => $baseDir . '/src/repository/Implemantions/UserRepositoryImpl.php',
     'UserRoleException' => $baseDir . '/src/exception/UserRoleException.php',
     'UserService' => $baseDir . '/src/service/UserService.php',
+    'UserServiceDecorator' => $baseDir . '/src/service/service_decorator/UserService/UserServiceDecorator.php',
     'UserServiceImpl' => $baseDir . '/src/service/Implemantions/UserServiceImpl.php',
     'UserTest' => $baseDir . '/src/tests/unit/model/user/UserTest.php',
     'ValueError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
