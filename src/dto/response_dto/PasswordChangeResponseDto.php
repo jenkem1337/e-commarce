@@ -5,7 +5,7 @@ class PasswordChangeResponseDto extends ResponseViewModel{
 
     protected $succesMessage;
 
-    public function __construct($isSuccess, $succesMessage)
+    public function __construct($succesMessage)
     {
         $this->succesMessage = $succesMessage;
         parent::__construct('success', $this);
