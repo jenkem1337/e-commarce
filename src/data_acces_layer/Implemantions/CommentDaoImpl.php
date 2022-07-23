@@ -7,8 +7,6 @@ class CommentDaoImpl implements CommentDao {
     function __construct(SingletonConnection $dbConn)
     {
         $this->dbConnection = $dbConn;
-        $this->dbConnection->createDatabaseConnection();
-
     }
 	function persist(Comment $c) {
         $conn = $this->dbConnection->getConnection();

@@ -7,10 +7,8 @@ class UserDaoImpl implements UserDao{
     private SingletonConnection $dbConnection;
 
     public function __construct(SingletonConnection $dbConnection)
-    {
-        
+    {  
         $this->dbConnection = $dbConnection;
-        $this->dbConnection->createDatabaseConnection();
     }
     function findAllWithPagination($startingLimit, $perPageForUsers)
     {

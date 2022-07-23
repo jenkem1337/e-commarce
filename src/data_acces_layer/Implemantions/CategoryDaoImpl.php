@@ -6,8 +6,6 @@ class CategoryDaoImpl implements CategoryDao {
     protected SingletonConnection $databaseConnection;
 	function __construct(SingletonConnection $databaseConnection) {
         $this->databaseConnection = $databaseConnection;
-        $this->dbConnection->createDatabaseConnection();
-
 	}
 	function persist(Category $c) {
         $conn = $this->databaseConnection->getConnection();

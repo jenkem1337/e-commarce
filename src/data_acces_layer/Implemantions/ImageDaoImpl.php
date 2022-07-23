@@ -6,8 +6,6 @@ class ImageDaoImpl implements ImageDao {
 
 	function __construct(SingletonConnection $dbConnection) {
 	    $this->dbConnection = $dbConnection;
-        $this->dbConnection->createDatabaseConnection();
-
 	}
     function persist(Image $i)
     {
