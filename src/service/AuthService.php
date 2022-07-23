@@ -1,8 +1,8 @@
 <?php
 interface AuthService{
-    function login(UserLoginDto $userLoginDto):UserLogedInResponseDto;
-    function register(UserCreationalDto $userCreationalDto):UserCreatedResponseDto;
-    function verifyUserAccount(EmailVerificationDto $emailVerificationDto):EmailSuccessfulyActivatedResponseDto;
-    function refreshToken(RefreshTokenDto $refDto):RefreshTokenResponseDto;
-    function sendChangeForgettenPasswordEmail(ForgettenPasswordEmailDto $forgettenPasswordMailDto):ForgettenPasswordEmailResponseDto;
+    function login(UserLoginDto $userLoginDto):ResponseViewModel;
+    function register(UserCreationalDto $userCreationalDto):ResponseViewModel;
+    function verifyUserAccount(EmailVerificationDto $emailVerificationDto):ResponseViewModel;
+    function refreshToken(RefreshTokenDto $refDto):ResponseViewModel;
+    function sendChangeForgettenPasswordEmail(ForgettenPasswordEmailDto $forgettenPasswordMailDto):ResponseViewModel;
 }

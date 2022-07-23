@@ -20,7 +20,7 @@ class AuthServiceImpl implements AuthService{
         $this->userFactory = $userFactory;
         $this->refreshTokenFactory = $refreshTokenFactory;
     }
-    function login(UserLoginDto $userLoginDto):UserLogedInResponseDto{
+    function login(UserLoginDto $userLoginDto):ResponseViewModel{
         $user = $this->userRepository->findUserByEmail($userLoginDto->getEmail());
         if($user->isNull()){
             throw new NotFoundException('user');
@@ -42,7 +42,6 @@ class AuthServiceImpl implements AuthService{
         $user->isUserActiveted();
 
         return new UserLogedInResponseDto(
-            true,
             $user->getUuid(),
             $user->getFullname(),
             $user->getEmail(),
@@ -52,7 +51,7 @@ class AuthServiceImpl implements AuthService{
 
     }
     
-    function register(UserCreationalDto $userCreationalDto):UserCreatedResponseDto{
+    function register(UserCreationalDto $userCreationalDto):ResponseViewModel{
 
         $isUserExist = $this->userRepository->findUserByEmail($userCreationalDto->getEmail());
         
@@ -79,7 +78,6 @@ class AuthServiceImpl implements AuthService{
         $this->emailService->sendVerificationCode($user);
 
         return new UserCreatedResponseDto(
-            true,
             $userCreationalDto->getUuid(),
             $userCreationalDto->getFullname(),
             $userCreationalDto->getEmail(),
@@ -91,7 +89,7 @@ class AuthServiceImpl implements AuthService{
     }
 
 
-    function refreshToken(RefreshTokenDto $refreshTokenDto):RefreshTokenResponseDto{
+    function refreshToken(RefreshTokenDto $refreshTokenDto):ResponseViewModel{
         $userWithRefreshTokenModel = $this->userRepository->findUserByUuidWithRefreshToken(
             $refreshTokenDto->getRefreshToken()
         );
@@ -101,7 +99,6 @@ class AuthServiceImpl implements AuthService{
         }
 
        return new RefreshTokenResponseDto(
-        true,
         $userWithRefreshTokenModel->getUuid(),
         $userWithRefreshTokenModel->getFullname(),
         $userWithRefreshTokenModel->getEmail(),
@@ -111,7 +108,7 @@ class AuthServiceImpl implements AuthService{
     }
 
 
-    function verifyUserAccount(EmailVerificationDto $emailVerificationDto):EmailSuccessfulyActivatedResponseDto{
+    function verifyUserAccount(EmailVerificationDto $emailVerificationDto):ResponseViewModel{
         $user = $this->userRepository->findUserByVerificationCode($emailVerificationDto->getCode());
         if($user->isNull()){
             throw new NotFoundException('user');
@@ -121,7 +118,6 @@ class AuthServiceImpl implements AuthService{
 
         $updatedUser = $this->userRepository->findUserByEmail($user->getEmail());
         return new EmailSuccessfulyActivatedResponseDto(
-            true,
             $updatedUser->getUuid(),
             $updatedUser->getFullname(),
             $updatedUser->getEmail(),
@@ -132,7 +128,7 @@ class AuthServiceImpl implements AuthService{
         );
     }
 
-    function sendChangeForgettenPasswordEmail(ForgettenPasswordEmailDto $forgettenPasswordMailDto): ForgettenPasswordEmailResponseDto
+    function sendChangeForgettenPasswordEmail(ForgettenPasswordEmailDto $forgettenPasswordMailDto): ResponseViewModel
     {
         $user = $this->userRepository->findUserByEmail($forgettenPasswordMailDto->getEmail());
         if($user->isNull()){
@@ -144,7 +140,6 @@ class AuthServiceImpl implements AuthService{
         $this->emailService->sendChangeForgettenPasswordEmail($user);
         
         return new ForgettenPasswordEmailResponseDto(
-            true,
             "Email successfuly sended, take your code and create new password :)"
         );
     }
