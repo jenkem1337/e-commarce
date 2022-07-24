@@ -4,7 +4,7 @@ use Ramsey\Uuid\Uuid;
 
 require './vendor/autoload.php';
 
-class ProductForCreatingCategoryDecorator extends ProductDecorator {
+class ProductForCreatingCategoryDecorator extends ProductDecorator implements AggregateRoot, ProductInterface {
     function __construct()
     {
         parent::__construct(Uuid::uuid4(),'', '', '', '', 0.0 , 0, new NullRate(), date('Y-m-d H:i:s'), date('Y-m-d H:i:s') );
