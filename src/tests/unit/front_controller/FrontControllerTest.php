@@ -24,7 +24,7 @@ class FrontControllerTest extends TestCase {
             $this->frontController->run("/HelloWorld","POST");
             $this->expectException(Exception::class);
         }catch(Exception $e){
-            $this->assertEquals('matched route http method is not equal to actual http method, 405', $e->getMessage());
+            $this->assertEquals('matched route http method is not equal to actual http method', $e->getMessage());
         }
     }
     function test_Incorrect_Route(){
@@ -32,7 +32,7 @@ class FrontControllerTest extends TestCase {
            $this->frontController->run("/Hello","GET");
             $this->expectException(Exception::class);
         }catch(Exception $e){
-            $this->assertEquals('that route doesnt exist, 400', $e->getMessage());
+            $this->assertEquals('route doesnt exist', $e->getMessage());
         }
 
     }

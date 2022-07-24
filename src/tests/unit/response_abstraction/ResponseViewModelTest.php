@@ -9,7 +9,6 @@ use Ramsey\Uuid\Uuid;
 class ResponseViewModelTest extends TestCase {
     function test_onSuccess_method(){
         $response = new UserLogedInResponseDto(
-            'success',
             Uuid::uuid4(),
             'deneme',
             'deneme',
