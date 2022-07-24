@@ -3,10 +3,6 @@
 class FrontController {  
     
     private array $routes = [];
-    function setExceptionHandler($ExceptionHandler, string $methodName){
-        error_reporting(0);
-        set_exception_handler([$ExceptionHandler, $methodName]);
-    }
     function registerRoute(string $requestMethod,string $pattern, Command $cmd){
         
         $this->routes[] = ['req_method' => $requestMethod,'pattern' => $pattern, 'command' => $cmd];
