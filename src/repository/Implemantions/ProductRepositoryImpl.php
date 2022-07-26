@@ -1,19 +1,15 @@
 <?php
 require './vendor/autoload.php';
 
-class ProductRepositoryImpl implements ProductRepository {
-    private CategoryRepository $categoryRepository;
+class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent implements ProductRepository{
     private ProductFactoryContext $productFactoryContext;
 	function __construct(
-        CategoryRepository $categoryRepository,
         ProductFactoryContext $productFactoryContext) {
-        $this->categoryRepository = $categoryRepository;
         $this->productFactoryContext = $productFactoryContext;
 	}
-    function createCategory(ProductForCreatingCategoryDecorator $c){
+    function createCategory(ProductForCreatingCategoryDecorator $c,  $categoryUuidForFinding){
         $categoryCollection = $c->getCategories();
-        $categories = $categoryCollection->getItems();
-        $category = $categories[count($categories) - 1];
+        $category = $categoryCollection->getItem($categoryUuidForFinding);
 
         $this->categoryRepository->persist($category);
     }
@@ -23,24 +19,43 @@ class ProductRepositoryImpl implements ProductRepository {
             ProductCategoryCreationalModelFactory::class,
             false
         );
+        
         foreach($categoryCollection->getIterator() as $category){
+            if($category->isNull()){
+                break;
+            }
             $productForCategoryDomainModel->addCategory($category);
         }
         return $productForCategoryDomainModel;
+    }
+    function findOneCategoryByName($categoryName): ProductInterface
+    {
+        $categoryDomainObject = $this->categoryRepository->findOneByName($categoryName);
+        $productForCategoryDomainModel = $this->productFactoryContext->executeFactory(
+            ProductCategoryCreationalModelFactory::class,
+            true
+        );
+        $productForCategoryDomainModel->addCategory($categoryDomainObject);
+        return $productForCategoryDomainModel;
+
     }
     function findOneCategoryByUuid($uuid):ProductInterface{
         $categoryDomainObject = $this->categoryRepository->findByUuid($uuid);
         $productForCategoryDomainModel = $this->productFactoryContext->executeFactory(
             ProductCategoryCreationalModelFactory::class,
-            false
+            true
         );
         $productForCategoryDomainModel->addCategory($categoryDomainObject);
         return $productForCategoryDomainModel;
     }
-    function updateCategoryNameByUuid(ProductInterface $c) {
-        $category = $c->getCategories()->getItems()[0];
+    function updateCategoryNameByUuid(ProductInterface $c, $categoryUuidForFinding) {
+        $category = $c->getCategories()->getItem($categoryUuidForFinding);
 
         $this->categoryRepository->updateNameByUuid($category);
+    }
+    function deleteCategoryByUuid($uuid)
+    {
+        $this->categoryRepository->deleteByUuid($uuid);
     }
 
 }
