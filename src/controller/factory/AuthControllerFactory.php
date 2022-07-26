@@ -18,7 +18,7 @@ class AuthControllerFactory implements Factory{
                     new ConcreteUserFactory(),
                     new ConcreteRefreshTokenFactory()
     
-                )
+                ), MySqlPDOConnection::getInsatace()
             )
         );
     }

@@ -17,7 +17,7 @@ class UserControllerFactory implements Factory {
                             new ConcreteRefreshTokenFactory()        
                         )
                     )
-                )
+                ), MySqlPDOConnection::getInsatace() 
 
             ),new TransactionalAuthServiceDecorator(
                 new AuthServiceImpl(
@@ -33,7 +33,7 @@ class UserControllerFactory implements Factory {
                     new EmailServiceImpl(new PHPMailer(true)),
                     new ConcreteUserFactory(),
                     new ConcreteRefreshTokenFactory()
-                    )
+                ), MySqlPDOConnection::getInsatace()
             )
         );
     }
