@@ -33,7 +33,16 @@ class CategoryRepositoryImpl implements CategoryRepository {
 	function updateNameByUuid(CategoryInterface $c) {
         $this->categoryDao->updateNameByUuid($c);
 	}
-	
+    function findOneByName($categoryName):CategoryInterface{
+        $category = $this->categoryDao->findOneByName($categoryName);
+        return $this->categoryFactory->createInstance(
+            false,
+            $category->uuid,
+            $category->category_name,
+            $category->created_at,
+            $category->updated_at
+        );
+    }
 	function findAll():IteratorAggregate {
         $categoryCollection = new CategoryCollection();
         $categories = $this->categoryDao->findAll();
@@ -58,4 +67,8 @@ class CategoryRepositoryImpl implements CategoryRepository {
 	 */
 	function addCategoryUuidToProduct($productUuid) {
 	}
+    function setProductMediator(AbstractProductRepositoryMediatorComponent $m)
+    {
+        $m->setCategoryRepository($this);
+    }
 }

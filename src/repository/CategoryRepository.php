@@ -6,5 +6,6 @@ interface CategoryRepository {
     function findByUuid($uuid):CategoryInterface;
     function updateNameByUuid(CategoryInterface $c);
     function findAll():IteratorAggregate;
+    function findOneByName($categoryName):CategoryInterface;
     function addCategoryUuidToProduct($productUuid);
 }
