@@ -7,7 +7,7 @@ class ProductCollection implements IteratorAggregate{
         $this->productCollection = array();
 	}
     function getItem($key):ProductInterface{
-        return $this->productCollection[(string)$key];
+        return $this->productCollection[(string)$key] ?? new NullProduct();
     }
     function getItems():array{
         return $this->productCollection;

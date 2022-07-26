@@ -7,7 +7,7 @@ class CategoryCollection implements IteratorAggregate{
         $this->categoryCollection = array();
 	}
     function getItem($key):CategoryInterface{
-        return $this->categoryCollection[(string)$key];
+        return $this->categoryCollection[(string)$key] ?? new NullCategory();
     }
     function getItems():array{
         return $this->categoryCollection;

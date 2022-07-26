@@ -6,7 +6,7 @@ class RateCollection implements IteratorAggregate {
         $this->rateCollection = array();
 	}
     function getItem($key):RateInterface{
-        return $this->rateCollection[(string)$key];
+        return $this->rateCollection[(string)$key] ?? new NullRate();
     }
     function getItems():array{
         return $this->rateCollection;

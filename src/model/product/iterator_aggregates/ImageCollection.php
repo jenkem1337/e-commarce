@@ -11,7 +11,7 @@ class ImageCollection implements IteratorAggregate {
         return $this->imageCollection;
     }
     function getItem($key):ImageInterface{
-        return $this->imageCollection[(string)$key];
+        return $this->imageCollection[(string)$key] ?? new NullImage();
     }
     function add(ImageInterface $image):void{
         $this->imageCollection[(string)$image->getUuid()] = $image; 
