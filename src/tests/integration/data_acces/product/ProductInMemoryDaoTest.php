@@ -8,6 +8,8 @@ use Ramsey\Uuid\Uuid;
 class ProductInMemoryDaoTest extends TestCase {
     protected ProductInMemoryDaoImpl $dao;
     function setUp():void {
+        SqliteInMemoryConnection::getInstance()->createDatabaseConnection();
+
         $this->dao = new ProductInMemoryDaoImpl(SqliteInMemoryConnection::getInstance());
     }
     function test_persist_product(){

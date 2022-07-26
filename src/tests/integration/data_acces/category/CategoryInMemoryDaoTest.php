@@ -8,6 +8,7 @@ class CategoryInMemoryDaoTest extends TestCase {
     protected CategoryInMemoryDaoImpl $dao;
 
     function setUp():void{
+        SqliteInMemoryConnection::getInstance()->createDatabaseConnection();
         $this->dao = new CategoryInMemoryDaoImpl(SqliteInMemoryConnection::getInstance());
         
     }
