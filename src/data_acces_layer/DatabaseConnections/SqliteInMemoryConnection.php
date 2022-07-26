@@ -2,7 +2,7 @@
 require '/xampp/htdocs/vendor/autoload.php';
 class SqliteInMemoryConnection implements SingletonConnection {
     private static $instance;
-    private PDO $pdo;
+    private $pdo;
     private function __construct(){}
     static function getInstance():SingletonConnection{
         if(self::$instance == null){
