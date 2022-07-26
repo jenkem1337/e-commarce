@@ -4,15 +4,16 @@
 require './vendor/autoload.php';
 
 class TransactionalAuthServiceDecorator extends AuthServiceDecorator {
-    function __construct(AuthService $service)
+    private DatabaseConnection $databaseConnection;
+    function __construct(AuthService $service, DatabaseConnection $databaseConnection)
     {
+        $this->databaseConnection = $databaseConnection;
         parent::__construct($service);
     }
     function login(UserLoginDto $userLoginDto): ResponseViewModel
     {                                                   
         try {
-            $db = MySqlPDOConnection::getInsatace();
-            $dbConnection = $db->getConnection();
+            $dbConnection =  $this->databaseConnection->getConnection();
             
             $dbConnection->beginTransaction();
             $response = parent::login($userLoginDto);
@@ -30,8 +31,7 @@ class TransactionalAuthServiceDecorator extends AuthServiceDecorator {
     function register(UserCreationalDto $userCreationalDto): ResponseViewModel
     {
         try {
-            $db = MySqlPDOConnection::getInsatace();
-            $dbConnection = $db->getConnection();
+            $dbConnection = $this->databaseConnection->getConnection();
             
             $dbConnection->beginTransaction();
             $response = parent::register($userCreationalDto);
@@ -50,8 +50,7 @@ class TransactionalAuthServiceDecorator extends AuthServiceDecorator {
     function verifyUserAccount(EmailVerificationDto $emailVerificationDto): ResponseViewModel
     {
         try {
-            $db = MySqlPDOConnection::getInsatace();
-            $dbConnection = $db->getConnection();
+            $dbConnection =  $this->databaseConnection->getConnection();
             
             $dbConnection->beginTransaction();
             $response = parent::verifyUserAccount($emailVerificationDto);
@@ -70,8 +69,7 @@ class TransactionalAuthServiceDecorator extends AuthServiceDecorator {
     function refreshToken(RefreshTokenDto $refDto): ResponseViewModel
     {
         try {
-            $db = MySqlPDOConnection::getInsatace();
-            $dbConnection = $db->getConnection();
+            $dbConnection =  $this->databaseConnection->getConnection();
             
             $dbConnection->beginTransaction();
             $response= parent::refreshToken($refDto);
@@ -90,8 +88,7 @@ class TransactionalAuthServiceDecorator extends AuthServiceDecorator {
     function sendChangeForgettenPasswordEmail(ForgettenPasswordEmailDto $forgettenPasswordMailDto): ResponseViewModel
     {
         try {
-            $db = MySqlPDOConnection::getInsatace();
-            $dbConnection = $db->getConnection();
+            $dbConnection =  $this->databaseConnection->getConnection();
             
             $dbConnection->beginTransaction();
             $response= parent::sendChangeForgettenPasswordEmail($forgettenPasswordMailDto);

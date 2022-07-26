@@ -1,14 +1,15 @@
 <?php
 require './vendor/autoload.php';
 class TransactionalUserServiceDecorator extends UserServiceDecorator {
-    function __construct(UserService $service)
+    private DatabaseConnection $databaseConnection;
+    function __construct(UserService $service, DatabaseConnection $databaseConnection)
     {
+        $this->databaseConnection = $databaseConnection;
         parent::__construct($service);
     }
     function changePassword(ChangePasswordDto $dto):ResponseViewModel {
         try {
-            $database = MySqlPDOConnection::getInsatace();
-            $dbConnection = $database->getConnection();
+            $dbConnection =  $this->databaseConnection->getConnection();
 
             $dbConnection->beginTransaction();
             
@@ -25,8 +26,7 @@ class TransactionalUserServiceDecorator extends UserServiceDecorator {
     }
     function changeForgettenPassword(ForgettenPasswordDto $forgettenPasswordDto):ResponseViewModel{
         try {
-            $database = MySqlPDOConnection::getInsatace();
-            $dbConnection = $database->getConnection();
+            $dbConnection =  $this->databaseConnection->getConnection();
 
             $dbConnection->beginTransaction();
             
@@ -47,8 +47,7 @@ class TransactionalUserServiceDecorator extends UserServiceDecorator {
     }
     function findOneUserByUuid(FindOneUserByUuidDto $userUuidDto):ResponseViewModel{
         try {
-            $database = MySqlPDOConnection::getInsatace();
-            $dbConnection = $database->getConnection();
+            $dbConnection =  $this->databaseConnection->getConnection();
 
             $dbConnection->beginTransaction();
             
@@ -66,8 +65,7 @@ class TransactionalUserServiceDecorator extends UserServiceDecorator {
     }
     function changeFullName(ChangeFullNameDto $changeFullNameDto):ResponseViewModel{
         try {
-            $database = MySqlPDOConnection::getInsatace();
-            $dbConnection = $database->getConnection();
+            $dbConnection = $this->databaseConnection->getConnection();
 
             $dbConnection->beginTransaction();
             
