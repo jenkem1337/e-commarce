@@ -59,10 +59,22 @@ class CategoryDaoImpl implements CategoryDao {
         $stmt->execute();
         $categories = $stmt->fetchAll(PDO::FETCH_OBJ);
         $conn = null;
-        if($categories == null) return $this->returnNullStatment();
+        if($categories == null) return $this->returnManyNullStatment();
         return $categories;
 	}
-	
+	function findOneByName($categoryName)
+    {
+        $conn = $this->databaseConnection->getConnection();
+        $stmt = $conn->prepare("SELECT * FROM category WHERE category_name = :category_name LIMIT 1");
+        $stmt->execute([
+            'category_name'=>$categoryName
+        ]);
+        $category = $stmt->fetch(PDO::FETCH_OBJ);
+        $conn = null; 
+        if($category == null) return $this->returnNullStatment();
+        return $category;
+
+    }
 	function addCategoryUuidToProduct($productUuid) {
 	}
     private function returnNullStatment() {
@@ -75,5 +87,15 @@ class CategoryDaoImpl implements CategoryDao {
         ];
         return json_decode(json_encode($arr),false);
     } 
+    private function returnManyNullStatment(){
+        $categories = array();
+        $category = new stdClass();
+        $category->uuid = null;
+        $category->category_name = null;
+        $category->created_at = null;
+        $category->updated_at = null;
+        $categories[] = $category;
+        return $categories;
+    }
 
 }
