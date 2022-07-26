@@ -27,12 +27,20 @@ class ProductServiceImpl implements ProductService {
             $dto->getCreatedAt(),
             $dto->getUpdatedAt()
         );
-        $isCategoryExist = $this->productRepository->findOneCategoryByUuid($dto->getUuid());
-        if( !($isCategoryExist->isNull()) ){
-            throw new AlreadyExistException('category');
+        $categories = $this->productRepository->findOneCategoryByName($dto->getCategoryName())
+                                            ->getCategories();
+
+        foreach($categories->getIterator() as $category){
+            if($category->getCategoryName() == $dto->getCategoryName()){
+                 if(!($category->isNull())){
+                    throw new AlreadyExistException('category');
+                }
+            }
         }
+
         $productForCategoryDomainObject->addCategory($categoryDomainObject);
-        $this->productRepository->createCategory($productForCategoryDomainObject);
+        
+        $this->productRepository->createCategory($productForCategoryDomainObject, $categoryDomainObject->getUuid());
         return new CategoryCreatedResponseDto(
             $dto->getUuid(),
             $dto->getCategoryName(),
@@ -42,12 +50,12 @@ class ProductServiceImpl implements ProductService {
     }
     function findOneCategoryByUuid(FindCategoryByUuidDto $dto): ResponseViewModel
     {
-        $productForCategoryDomainObject = $this->productRepository->findOneCategoryByUuid($dto->getUuid());
-        if($productForCategoryDomainObject->isNull()){
-            throw new NotFoundException('category');
+        $category = $this->productRepository->findOneCategoryByUuid($dto->getUuid())
+                                            ->getCategories()
+                                            ->getItem($dto->getUuid());
+        if($category->isNull()){
+            throw new DoesNotExistException('category');
         }
-        $category = $productForCategoryDomainObject->getCategories()
-                                                   ->getItem($dto->getUuid());
         return new OneCategoryFoundedResponseDto(
             $category->getUuid(),
             $category->getCategoryName(),
@@ -64,17 +72,28 @@ class ProductServiceImpl implements ProductService {
     function updateCategoryNameByUuid(UpdateCategoryNameByUuidDto $dto): ResponseViewModel
     {
         $productForCategoryDomainObject = $this->productRepository->findOneCategoryByUuid($dto->getUuid());
-        if($productForCategoryDomainObject->isNull()){
-            throw new NotFoundException('category');
-        }
         $category = $productForCategoryDomainObject->getCategories()
                                                 ->getItem($dto->getUuid());
-        
+        if($category->isNull()){
+            throw new DoesNotExistException('category');
+        }
         $category->changeCategoryName($dto->getNewCategoryName());
 
         $productForCategoryDomainObject->addCategory($category);
 
-        $this->productRepository->updateCategoryNameByUuid($productForCategoryDomainObject);
+        $this->productRepository->updateCategoryNameByUuid($productForCategoryDomainObject ,$dto->getUuid());
         return new CategoryNameChangedResponseDto('Category name changed successfuly');
+    }
+    function deleteCategoryByUuid(DeleteCategoryDto $dto): ResponseViewModel
+    {
+        $category = $this->productRepository->findOneCategoryByUuid($dto->getUuid())
+                                            ->getCategories()
+                                            ->getItem($dto->getUuid());
+        if($category->isNull()){
+            throw new DoesNotExistException('category');
+        }
+        $this->productRepository->deleteCategoryByUuid($dto->getUuid());
+        return new CategoryDeletedResponseDto('Category deleted successfuly');
+
     }
 }
