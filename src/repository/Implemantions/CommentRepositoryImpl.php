@@ -14,10 +14,10 @@ class CommentRepositoryImpl implements CommentRepository {
     {
         $this->commentDao->persist($c);
     }
-    function findAll():ArrayIterator
+    function findAll():IteratorAggregate
     {
         $commentObjects = $this->commentDao->findAll();
-        $commentArray = new ArrayIterator([]);
+        $commentArray = new CommentCollection();
         foreach($commentObjects as $commentObject){
             $commentDomainObject = $this->commentFactory->createInstance(
                 false,
@@ -28,13 +28,13 @@ class CommentRepositoryImpl implements CommentRepository {
                 $commentObject->created_at,
                 $commentObject->updated_at
             );
-            $commentArray->append($commentDomainObject);
+            $commentArray->add($commentDomainObject);
         }
         return $commentArray;
     }
-    function findAllByUserUuid($userUuid):ArrayIterator {
+    function findAllByUserUuid($userUuid):IteratorAggregate {
         $commentObjects = $this->commentDao->findAllByUserUuid($userUuid);
-        $commentArray = new ArrayIterator([]);
+        $commentArray = new CommentCollection();
         foreach($commentObjects as $commentObject){
             $commentDomainObject = $this->commentFactory->createInstance(
                 false,
@@ -45,14 +45,14 @@ class CommentRepositoryImpl implements CommentRepository {
                 $commentObject->created_at,
                 $commentObject->updated_at
             );
-            $commentArray->append($commentDomainObject);
+            $commentArray->add($commentDomainObject);
         }
         return $commentArray;
     }
-    function findAllByProductUuid($productUuid): ArrayIterator
+    function findAllByProductUuid($productUuid): IteratorAggregate
     {
         $commentObjects = $this->commentDao->findAllByProductUuid($productUuid);
-        $commentArray = new ArrayIterator([]);
+        $commentArray = new CommentCollection();
         foreach($commentObjects as $commentObject){
             $commentDomainObject = $this->commentFactory->createInstance(
                 false,
@@ -63,7 +63,7 @@ class CommentRepositoryImpl implements CommentRepository {
                 $commentObject->created_at,
                 $commentObject->updated_at
             );
-            $commentArray->append($commentDomainObject);
+            $commentArray->add($commentDomainObject);
         }
         return $commentArray;
     }

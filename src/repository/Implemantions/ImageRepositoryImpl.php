@@ -17,10 +17,10 @@ class ImageRepositoryImpl implements ImageRepository {
     {
         $this->imageDao->deleteByUuid($uuid);
     }
-    function findAll():ArrayIterator
+    function findAll():IteratorAggregate
     {
         $imageObjects = $this->imageDao->findAll();
-        $imageArray = new ArrayIterator([]);
+        $imageArray = new ImageCollection();
         foreach($imageObjects as $imageObject){
             $imageDomainObject = $this->imageFactory->createInstance(
                 false,
@@ -30,7 +30,7 @@ class ImageRepositoryImpl implements ImageRepository {
                 $imageObject->created_at,
                 $imageObject->updated_at
             );
-            $imageArray->append($imageDomainObject);
+            $imageArray->add($imageDomainObject);
         }
         return $imageArray;
     }
