@@ -1,7 +1,6 @@
 <?php
 
 class FrontController {  
-    
     private array $routes = [];
     function registerRoute(string $requestMethod,string $pattern, Command $cmd){
         
@@ -16,12 +15,12 @@ class FrontController {
             throw new NullException('http method');
         }
         $url = parse_url($requsetUri, PHP_URL_PATH);
-        $requestMethod = $HTTPMethod;
-
+        
+        
         foreach($this->routes as $route){
-            
             $pattern = "@^".$route['pattern']."$@";
             if(preg_match($pattern, $url, $matches)){
+                if($route['req_method'] != $HTTPMethod) continue;
                 $matchedRoute = $route;
                 $uriPathParams = $matches;
             }
@@ -29,7 +28,7 @@ class FrontController {
         if(!isset($matchedRoute) ){
             throw new DoesNotExistException('route');
         }
-        if($matchedRoute['req_method'] != $requestMethod){
+        if($matchedRoute['req_method'] != $HTTPMethod){
             throw new HttpMethodException();
         }
         
@@ -43,7 +42,7 @@ class FrontController {
 
     }
 
- }
+}
 
 
 
