@@ -10,11 +10,6 @@ class RateTest extends TestCase {
         $rate = new Rate(Uuid::uuid4(), Uuid::uuid4(), Uuid::uuid4(), date ('Y-m-d H:i:s'),date ('Y-m-d H:i:s'));
         $this->assertNotNull($rate);   
     }
-    function test_setHowManyPeopleRateIt_method(){
-        $rate = new Rate(Uuid::uuid4(), Uuid::uuid4(), Uuid::uuid4(), date ('Y-m-d H:i:s'),date ('Y-m-d H:i:s'));
-        $rate->setHowManyPeopleRateIt(10);
-        $this->assertEquals(10, $rate->getHowManyPeopleRateIt());
-    }
     
     function test_setRate_method(){
         $rate = new Rate(Uuid::uuid4(), Uuid::uuid4(), Uuid::uuid4(), date ('Y-m-d H:i:s'),date ('Y-m-d H:i:s'));
