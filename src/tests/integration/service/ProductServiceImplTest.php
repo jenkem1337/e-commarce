@@ -15,7 +15,7 @@ class ProductServiceImplTest extends TestCase {
             new ProductFactoryContext([
                 ProductFactory::class => new ConcreteProductFactory(),
                 ProductCategoryCreationalModelFactory::class => new ConcreteProductCategoryCreationalModelFactory()    
-            ])
+            ]),new ProductDaoImpl(MySqlPDOConnection::getInsatace())
         );
         $categoryRepository = new CategoryRepositoryImpl($categoryDao, new ConcreteCategoryFactory());
         $categoryRepository->setProductMediator($productRepository);
