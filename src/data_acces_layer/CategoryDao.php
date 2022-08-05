@@ -6,5 +6,5 @@ interface CategoryDao {
     function updateNameByUuid(Category $c);
     function findAll();
     function findOneByName($categoryName);
-    function addCategoryUuidToProduct($productUuid);
+    function addCategoryUuidToProduct($uuid, $productUuid, $categoryUuid, $created_at, $updated_at);
 }
