@@ -1,5 +1,6 @@
 <?php
 interface ProductRepository {
+    function createProduct(Product $p);
     function createCategory(ProductForCreatingCategoryDecorator $c, $categoryUuidForFinding);
     function findAllCategory():ProductInterface;
     function findOneCategoryByUuid($uuid):ProductInterface;
