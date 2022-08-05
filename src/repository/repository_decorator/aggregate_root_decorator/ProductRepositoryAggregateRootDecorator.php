@@ -9,6 +9,10 @@ class ProductRepositoryAggregateRootDecorator extends ProductRepositoryDecorator
     {
         parent::__construct($repo);
     }
+    function createProduct(AggregateRoot $p)
+    {
+        parent::createProduct($p);
+    }
     function createCategory(AggregateRoot $c, $categoryUuidForFinding)
     {
         parent::createCategory($c, $categoryUuidForFinding);

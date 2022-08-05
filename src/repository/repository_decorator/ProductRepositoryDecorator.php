@@ -7,6 +7,10 @@ abstract class ProductRepositoryDecorator implements ProductRepository {
     {
         $this->productRepository = $r;
     }
+    function createProduct(Product $p)
+    {
+        $this->productRepository->createProduct($p);
+    }
     function createCategory(ProductForCreatingCategoryDecorator $c, $categoryUuidForFinding)
     {
         $this->productRepository->createCategory($c, $categoryUuidForFinding);
