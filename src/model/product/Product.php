@@ -10,7 +10,7 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
     protected $description;
     protected $price;
     protected $stockQuantity;
-    protected $avarageRate;
+    protected $avarageRate = 0;
     protected $previousPrice;
     protected RateCollection $rates;
     protected SubscriberCollection $subscribers;
@@ -126,7 +126,7 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
     }
     function calculateAvarageRate(){
         $howManyPeopleRateIt = count($this->rates->getItems());
-        $sumOfRate = $this->getSumOfRate();
+        $sumOfRate = $this->getSumOfRate() ?? 0;
         if($sumOfRate === 0){
             if($sumOfRate == 0 || $howManyPeopleRateIt == 0) {
                 $this->howManyPeopleRateIt = 1;
