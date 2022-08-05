@@ -32,7 +32,7 @@ class ImageDaoImpl implements ImageDao {
         $stmt->execute([
             'uuid'=>$uuid
         ]);
-        $con= null;
+        $conn= null;
     }
     function findAll()
     {
@@ -42,7 +42,8 @@ class ImageDaoImpl implements ImageDao {
         );
         $stmt->execute();
         $images = $stmt->fetchAll(PDO::FETCH_OBJ);
-        $con = null;
+        $conn = null;
+        if($images == null) return $this->returnManyNullStatement();
         return $images;
     }
     function findOneByUuid($uuid)
@@ -85,5 +86,15 @@ class ImageDaoImpl implements ImageDao {
         ];
         return json_decode(json_encode($arr),false);
     } 
-
+    private function returnManyNullStatement(){
+        $imageArr = array();
+        $imageObj= new stdClass();
+        $imageObj->uuid = null;
+        $imageObj->image_name = null;
+        $imageObj->product_uuid = null;
+        $imageObj->created_at = null;
+        $imageObj->updated_at = null;
+        $imageArr[] = $imageObj;
+        return $imageArr;
+    }
 }

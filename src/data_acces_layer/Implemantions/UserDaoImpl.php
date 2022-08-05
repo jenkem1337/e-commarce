@@ -17,6 +17,8 @@ class UserDaoImpl implements UserDao{
         $stmt->execute();
         $users = $stmt->fetchAll(PDO::FETCH_OBJ);
         $conn = null;
+        if($users == null) return $this->returnManyNullStatement();
+
         return $users; 
     }
 
@@ -142,5 +144,19 @@ class UserDaoImpl implements UserDao{
         ];
         return json_decode(json_encode($arr),false);
 
+    }
+    private function returnManyNullStatement(){
+        $userArr = array();
+        $user = new stdClass();
+        $user->uuid= null;
+        $user->full_name = null;
+        $user->email = null;
+        $user->user_password=null;
+        $user->is_user_activated = null;
+        $user->user_role = null;
+        $user->created_at = null;
+        $user->updated_at = null;
+        $userArr[] = $user;
+        return $userArr;
     }
 }

@@ -55,6 +55,8 @@ class RateDaoImpl implements RateDao {
         $stmt->execute();
         $rates = $stmt->fetchAll(PDO::FETCH_OBJ);
         $conn = null;
+        if($rates == null) return $this->returnManyNullStatement();
+
         return $rates;
 
 	}
@@ -91,7 +93,7 @@ class RateDaoImpl implements RateDao {
     private function returnNullStatment() {
         $arr = [
             'uuid'=>null,
-            'rate_number' => null,
+            'rate_num' => null,
             'user_uuid'=>null, 
             'product_uuid'=>null,
             'created_at'=>null,
@@ -99,5 +101,17 @@ class RateDaoImpl implements RateDao {
         ];
         return json_decode(json_encode($arr),false);
     } 
+    private function returnManyNullStatement(){
+        $rateArr= array();
+        $rate= new stdClass();
+        $rate->uuid = null;
+        $rate->rate_num = null;
+        $rate->user_uuid = null;
+        $rate->product_uuid = null;
+        $rate->created_at  = null;
+        $rate->updated_at = null;
+        $rateArr[] = $rate;
+        return $rateArr;
+    }
 
 }
