@@ -75,7 +75,20 @@ class CategoryDaoImpl implements CategoryDao {
         return $category;
 
     }
-	function addCategoryUuidToProduct($productUuid) {
+	function addCategoryUuidToProduct($uuid, $productUuid, $categoryUuid, $created_at, $updated_at) {
+        $conn = $this->databaseConnection->getConnection();
+        $stmt = $conn->prepare(
+            "INSERT INTO product_category (uuid, category_uuid, product_uuid, created_at, updated_at)
+            VALUES (:uuid, :category_uuid, :product_uuid, :created_at, :updated_at)"
+        );
+        $stmt->execute([
+            'uuid'=>$uuid,
+            'category_uuid'=>$categoryUuid,
+            'product_uuid'=>$productUuid,
+            'created_at'=>$created_at,
+            'updated_at'=>$updated_at
+        ]);
+        $conn = null;
 	}
     private function returnNullStatment() {
         $arr = [
