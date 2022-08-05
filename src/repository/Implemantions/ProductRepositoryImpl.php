@@ -48,7 +48,7 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
         $productForCategoryDomainModel->addCategory($categoryDomainObject);
         return $productForCategoryDomainModel;
     }
-    function updateCategoryNameByUuid(ProductInterface $c, $categoryUuidForFinding) {
+    function updateCategoryNameByUuid(Product $c, $categoryUuidForFinding) {
         $category = $c->getCategories()->getItem($categoryUuidForFinding);
 
         $this->categoryRepository->updateNameByUuid($category);
