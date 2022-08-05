@@ -2,11 +2,18 @@
 require './vendor/autoload.php';
 
 class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent implements ProductRepository{
+    private ProductDao $productDao;
     private ProductFactoryContext $productFactoryContext;
 	function __construct(
-        ProductFactoryContext $productFactoryContext) {
+        ProductFactoryContext $productFactoryContext,
+        ProductDao $productDao) {
         $this->productFactoryContext = $productFactoryContext;
+        $this->productDao = $productDao;
 	}
+    function createProduct(Product $p)
+    {
+        
+    }
     function createCategory(ProductForCreatingCategoryDecorator $c,  $categoryUuidForFinding){
         $categoryCollection = $c->getCategories();
         $category = $categoryCollection->getItem($categoryUuidForFinding);
