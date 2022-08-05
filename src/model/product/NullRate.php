@@ -3,17 +3,6 @@ require "./vendor/autoload.php";
 
 
 class NullRate implements RateInterface{
-    private int $howManyPeopleRateIt;
-    private int $avarageRate;
-    
-    function __construct()
-    {
-        $this->avarageRate = 0;
-        $this->howManyPeopleRateIt = 0;
-    }
-    public function setHowManyPeopleRateIt($howManyPeopleRateIt)
-    {
-    }
     function rateIt($rateNumber){}
     public function getPruductUuid()
     {
@@ -31,7 +20,6 @@ class NullRate implements RateInterface{
      */ 
     public function getHowManyPeopleRateIt()
     {
-        return $this->howManyPeopleRateIt;
     }
 
     /**

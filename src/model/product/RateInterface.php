@@ -1,7 +1,6 @@
 <?php
 
 interface RateInterface {
-    public function setHowManyPeopleRateIt($howManyPeopleRateIt);
     function rateIt($rateNumber);
 
     public function getPruductUuid();

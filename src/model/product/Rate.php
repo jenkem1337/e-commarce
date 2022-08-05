@@ -5,7 +5,6 @@ class Rate extends BaseEntity implements RateInterface{
     private $userUuid;
     private $rateNumber;
     private $howManyPeopleRateIt;
-    private $avarageRate;
     
     function __construct($uuid, $productUuid, $userUuid, $createdAt, $updatedAt)
     {
@@ -25,15 +24,6 @@ class Rate extends BaseEntity implements RateInterface{
         if($rateNumber > 5) throw new ValueMustBeLessThanException('rate number', 5);
 
         $this->rateNumber = $rateNumber;
-    }
-    public function setHowManyPeopleRateIt($howManyPeopleRateIt)
-    {   
-        if($howManyPeopleRateIt === 0){
-            $this->howManyPeopleRateIt = $howManyPeopleRateIt;
-            return;
-        }
-        if(!$howManyPeopleRateIt) throw new NullException('how many people rate it');
-        $this->howManyPeopleRateIt = $howManyPeopleRateIt;
     }
 
     /**
