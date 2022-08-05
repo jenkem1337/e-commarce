@@ -3,7 +3,10 @@ abstract class AbstractProductRepositoryMediatorComponent {
     protected CategoryRepository $categoryRepository;
     protected ImageRepository $imageRepository;
     protected CommentRepository $commentRepository;
-
+    protected RateRepository $rateRepository;
+    function setRateRepository(RateRepository $rateRepo){
+        $this->rateRepository = $rateRepo;
+    }
     function setCategoryRepository(CategoryRepository $categoryRepository){
         $this->categoryRepository = $categoryRepository;
     }
