@@ -9,6 +9,10 @@ class ProductRepositoryAggregateRootDecorator extends ProductRepositoryDecorator
     {
         parent::__construct($repo);
     }
+    function persistImage(AggregateRoot $p)
+    {
+        parent::persistImage($p);
+    }
     function createProduct(AggregateRoot $p)
     {
         parent::createProduct($p);

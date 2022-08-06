@@ -76,6 +76,21 @@ class ImageDaoImpl implements ImageDao {
         return $image;
 
     }
+    function findAllByProductUuid($pUuid)
+    {
+        $conn= $this->dbConnection->getConnection();
+        $stmt = $conn->prepare(
+            "SELECT * FROM 'image' WHERE product_uuid = :uuid"
+        );
+        $stmt->execute([
+            'uuid'=>$pUuid
+        ]);
+        $images = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $conn=null;
+        if($images == null) return $this->returnManyNullStatement();
+        return $images;
+
+    }
     private function returnNullStatment() {
         $arr = [
             'uuid'=>null,

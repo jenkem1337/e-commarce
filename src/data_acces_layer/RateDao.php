@@ -5,4 +5,5 @@ interface RateDao{
     function findAll();
     function updateRateNumberByUuid(Rate $r);
     function deleteRateByUuid($uuid);
+    function findAllByProductUuid($pUuid);
 }

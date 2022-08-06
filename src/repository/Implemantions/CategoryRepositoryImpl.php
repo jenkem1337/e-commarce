@@ -18,7 +18,22 @@ class CategoryRepositoryImpl implements CategoryRepository {
 	function deleteByUuid($uuid) {
         $this->categoryDao->deleteByUuid($uuid);
 	}
-	
+    function findAllByProductUuid($productUuid): IteratorAggregate
+    {
+        $categories =  $this->categoryDao->findAllByProductUuid($productUuid);
+        $categoryArray = new CategoryCollection();
+        foreach($categories as $category){
+            $categoryDomainObject = $this->categoryFactory->createInstance(
+                false,
+                $category->uuid,
+                $category->category_name,
+                $category->created_at,
+                $category->updated_at
+            );
+            $categoryArray->add($categoryDomainObject);
+        }
+        return $categoryArray;
+    }
 	function findByUuid($uuid):CategoryInterface {
         $category = $this->categoryDao->findByUuid($uuid);
         return $this->categoryFactory->createInstance(
@@ -66,6 +81,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
 	 * @return mixed
 	 */
 	function addCategoryUuidToProduct($productUuid) {
+        $this->categoryDao->addCategoryUuidToProduct($productUuid);
 	}
     function setProductMediator(AbstractProductRepositoryMediatorComponent $m)
     {

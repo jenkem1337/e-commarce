@@ -7,6 +7,14 @@ abstract class ProductServiceDecorator implements ProductService {
 	function __construct(ProductService $productService) {
         $this->productService = $productService;
 	}
+	function craeteNewProduct(ProductCreationalDto $dto): ResponseViewModel
+	{
+		return $this->productService->craeteNewProduct($dto);
+	}
+	function uploadImageForProduct(ImageCreationalDto $dto): ResponseViewModel
+	{
+		return $this->productService->uploadImageForProduct($dto);
+	}
 	/**
 	 *
 	 * @param CategoryCreationalDto $dto

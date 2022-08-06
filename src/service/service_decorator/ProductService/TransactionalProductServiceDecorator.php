@@ -8,6 +8,43 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
         $this->dbConnection = $dbConnection;
         parent::__construct($productService);
     }
+    function craeteNewProduct(ProductCreationalDto $dto): ResponseViewModel
+    {
+        try {
+            $dbConnection = $this->dbConnection->getConnection();
+            
+            $dbConnection->beginTransaction();
+            $response = parent::craeteNewProduct($dto);
+            
+            $dbConnection->commit();
+
+        } catch (Exception $e) {
+            $dbConnection->rollBack();
+            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
+        } finally {
+            $dbConnection = null;
+            return $response;
+        }
+    }
+    function uploadImageForProduct(ImageCreationalDto $dto): ResponseViewModel
+    {
+        try {
+            $dbConnection = $this->dbConnection->getConnection();
+            
+            $dbConnection->beginTransaction();
+            $response = parent::uploadImageForProduct($dto);
+            
+            $dbConnection->commit();
+
+        } catch (Exception $e) {
+            $dbConnection->rollBack();
+            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
+        } finally {
+            $dbConnection = null;
+            return $response;
+        }
+
+    }
     function createNewCategory(CategoryCreationalDto $dto): ResponseViewModel
     {
         try {

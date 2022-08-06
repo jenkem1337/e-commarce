@@ -6,5 +6,6 @@ interface ImageDao {
     function findAll();
     function findImageByProductUuid($pUuid);
     function findOneByUuid($uuid);
+    function findAllByProductUuid($pUuid);
     
 }

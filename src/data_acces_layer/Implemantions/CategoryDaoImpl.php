@@ -1,7 +1,7 @@
 <?php
 
 require './vendor/autoload.php';
-
+use Ramsey\Uuid\Uuid;
 class CategoryDaoImpl implements CategoryDao {
     protected SingletonConnection $databaseConnection;
 	function __construct(SingletonConnection $databaseConnection) {
@@ -75,21 +75,38 @@ class CategoryDaoImpl implements CategoryDao {
         return $category;
 
     }
-	function addCategoryUuidToProduct($uuid, $productUuid, $categoryUuid, $created_at, $updated_at) {
+	function addCategoryUuidToProduct(Category $c) {
         $conn = $this->databaseConnection->getConnection();
         $stmt = $conn->prepare(
             "INSERT INTO product_category (uuid, category_uuid, product_uuid, created_at, updated_at)
             VALUES (:uuid, :category_uuid, :product_uuid, :created_at, :updated_at)"
         );
         $stmt->execute([
-            'uuid'=>$uuid,
-            'category_uuid'=>$categoryUuid,
-            'product_uuid'=>$productUuid,
-            'created_at'=>$created_at,
-            'updated_at'=>$updated_at
+            'uuid'=>uuid::uuid4(),
+            'category_uuid'=>$c->getUuid(),
+            'product_uuid'=>$c->getProductUuid(),
+            'created_at'=> date ('Y-m-d H:i:s'),
+            'updated_at'=> date ('Y-m-d H:i:s')
+
         ]);
         $conn = null;
 	}
+    function findAllByProductUuid($uuid){
+        $conn = $this->databaseConnection->getConnection();
+        $stmt = $conn->prepare(
+            "SELECT c.uuid, c.category_name, c.created_at, c.updated_at FROM category as c
+            INNER JOIN product_category as pc
+            ON pc.category_uuid = c.uuid
+            WHERE product_uuid = :product_uuid"
+        );
+        $stmt->execute([
+            'product_uuid' => $uuid
+        ]);
+        $categories = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $conn = null;
+        if($categories == null) return $this->returnManyNullStatment();
+        return $categories;
+    }
     private function returnNullStatment() {
         $arr = [
 

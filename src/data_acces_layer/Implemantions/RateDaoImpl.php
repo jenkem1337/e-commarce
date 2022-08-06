@@ -79,7 +79,23 @@ class RateDaoImpl implements RateDao {
         ]);
         $conn = null;
 	}
-	
+	function findAllByProductUuid($pUuid)
+    {
+        $conn = $this->dbConnection->getConnection();
+        $stmt = $conn->prepare(
+            "SELECT * FROM rates WHERE product_uuid = :product_uuid"
+        );
+        $stmt->execute([
+            "product_uuid" => $pUuid
+        ]);
+        $rates = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $conn = null;
+        if($rates == null) return $this->returnManyNullStatement();
+
+        return $rates;
+
+
+    }
 	function deleteRateByUuid($uuid) {
         $conn = $this->dbConnection->getConnection();
         $stmt = $conn->prepare(

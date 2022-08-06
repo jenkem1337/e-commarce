@@ -34,6 +34,24 @@ class ImageRepositoryImpl implements ImageRepository {
         }
         return $imageArray;
     }
+    function findAllByProductUuid($pUuid):IteratorAggregate
+    {
+        $imageObjects = $this->imageDao->findAllByProductUuid($pUuid);
+        $imageArray = new ImageCollection();
+        foreach($imageObjects as $imageObject){
+            $imageDomainObject = $this->imageFactory->createInstance(
+                false,
+                $imageObject->uuid,
+                $imageObject->product_uuid,
+                $imageObject->image_name,
+                $imageObject->created_at,
+                $imageObject->updated_at
+            );
+            $imageArray->add($imageDomainObject);
+        }
+        return $imageArray;
+
+    }
     function findImageByProductUuid($pUuid):ImageInterface
     {
         $imageObject = $this->imageDao->findImageByProductUuid($pUuid);

@@ -11,6 +11,14 @@ abstract class ProductRepositoryDecorator implements ProductRepository {
     {
         $this->productRepository->createProduct($p);
     }
+    function findOneProductByUuid($uuid):ProductInterface
+    {
+        return $this->productRepository->findOneProductByUuid($uuid);
+    }
+    function persistImage(Product $p)
+    {
+        $this->productRepository->persistImage($p);
+    }
     function createCategory(ProductForCreatingCategoryDecorator $c, $categoryUuidForFinding)
     {
         $this->productRepository->createCategory($c, $categoryUuidForFinding);

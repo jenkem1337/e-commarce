@@ -55,6 +55,25 @@ class RateRepositoryImpl implements RateRepository {
         return $rateDomainObject;
 
     }
+    function findAllByProductUuid($pUuid): IteratorAggregate
+    {
+        $rateArray = new RateCollection();
+        $rateObjects = $this->rateDao->findAllByProductUuid($pUuid);
+        foreach($rateObjects as $rateObject){
+            $rateDomainObject = $this->rateFactory->createInstance(
+                false,
+                $rateObject->uuid,
+                $rateObject->product_uuid,
+                $rateObject->user_uuid,
+                $rateObject->created_at,
+                $rateObject->updated_at
+            );
+            $rateDomainObject->rateIt($rateObject->rate_num);
+            $rateArray->add($rateDomainObject);
+        }
+        return $rateArray;
+
+    }
     function setProductMediator(AbstractProductRepositoryMediatorComponent $mediator)
     {
         $mediator->setRateRepository($this);

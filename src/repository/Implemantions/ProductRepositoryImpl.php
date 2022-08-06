@@ -12,6 +12,52 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
 	}
     function createProduct(Product $p)
     {
+        $categories = $p->getCategories()->getItems();
+        $this->productDao->persist($p);
+        foreach($categories as $category){
+            $this->categoryRepository->addCategoryUuidToProduct($category);
+        }
+    }
+    function findOneProductByUuid($uuid): ProductInterface
+    {
+        $productObject    = $this->productDao->findOneByUuid($uuid);
+        
+        $commentIterator  = $this->commentRepository->findAllByProductUuid($uuid);
+        $categoryIterator = $this->categoryRepository->findAllByProductUuid($uuid);
+        $rateIterator     = $this->rateRepository->findAllByProductUuid($uuid);
+        $imageIterator    = $this->imageRepository->findAllByProductUuid($uuid);
+
+        $productDomainObject = $this->productFactoryContext->executeFactory(
+            ProductFactory::class,
+            false,
+            $productObject->uuid,
+            $productObject->brand,
+            $productObject->model,
+            $productObject->header,
+            $productObject->description,
+            $productObject->price,
+            $productObject->stockquantity
+        );
+        foreach($commentIterator->getIterator() as $comment){
+            $productDomainObject->addComment($comment);
+        }
+        foreach($categoryIterator->getIterator() as $category){
+            $productDomainObject->addCategory($category);
+        }
+        foreach($rateIterator->getIterator() as $rate){
+            $productDomainObject->addRate($rate);
+        }
+        foreach($imageIterator->getIterator() as $image){
+            $productDomainObject->addImage($image);
+        }
+        return $productDomainObject;
+    }
+    function persistImage(Product $p)
+    {
+        $images = $p->getImages()->getItems();
+        foreach($images as $image){
+            $this->imageRepository->persist($image);
+        }
         
     }
     function createCategory(ProductForCreatingCategoryDecorator $c,  $categoryUuidForFinding){
