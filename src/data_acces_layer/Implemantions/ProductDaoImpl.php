@@ -17,7 +17,7 @@ class ProductDaoImpl implements ProductDao {
             'brand'=>$p->getBrand(),
             'model'=>$p->getModel(),
             'header'=>$p->getHeader(),
-            '_description'=>$p->getPrice(),
+            '_description'=>$p->getDescription(),
             'price'=>$p->getPrice(),
             'prev_price'=>NULL,
             'rate'=>$p->getAvarageRate(),
