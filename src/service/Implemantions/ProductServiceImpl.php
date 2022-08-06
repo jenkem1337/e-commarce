@@ -1,19 +1,77 @@
 <?php
 require './vendor/autoload.php';
+use Ramsey\Uuid\Uuid;
 class ProductServiceImpl implements ProductService {
     private ProductRepository $productRepository;
+    private UploadService $uploadService;
     private ProductFactoryContext $productFactoryContext;
     private CategoryFactory $categoryFactory;
+    private ImageFactory $imageFactory;
 	function __construct(
         ProductRepository $productRepository,
         ProductFactoryContext $productFactoryContext,
-        Factory $categoryFactory
+        Factory $categoryFactory,
+        Factory $imageFactory,
+        UploadService $uploadService
     ) {
 	    $this->productRepository     = $productRepository;
         $this->productFactoryContext = $productFactoryContext;
         $this->categoryFactory       = $categoryFactory; 
+        $this->imageFactory          = $imageFactory;
+        $this->uploadService         = $uploadService; 
 
 	}
+    function craeteNewProduct(ProductCreationalDto $dto): ResponseViewModel
+    {
+        $productDomainObject = $this->productFactoryContext->executeFactory(
+            ProductFactory::class,
+            true,
+            $dto->getUuid(),
+            $dto->getBrand(),
+            $dto->getModel(),
+            $dto->getHeader(),
+            $dto->getDescription(),
+            $dto->getPrice(),
+            $dto->getStockQuantity(),
+            $dto->getCreatedAt(),
+            $dto->getUpdatedAt()
+        );
+        $categoriesResponseArray = [];
+        foreach($dto->getCategories() as $categoryUuid) {
+            $categoryDomainObject = $this->productRepository->findOneCategoryByUuid($categoryUuid)
+                                                ->getCategories()
+                                                ->getItem($categoryUuid);
+            if($categoryDomainObject->isNull()){
+                throw new DoesNotExistException('category');
+            }
+           
+            $categoriesResponseArray[]= $categoryDomainObject->getCategoryName();
+            
+            $categoryDomainObject->setProductUuid($productDomainObject->getUuid());
+            $productDomainObject->addCategory($categoryDomainObject);            
+        }
+        $this->productRepository->createProduct($productDomainObject);
+        
+        return new ProductCreatedResponseDto(
+            $dto->getUuid(),
+            $dto->getBrand(),
+            $dto->getModel(),
+            $dto->getHeader(),
+            $dto->getDescription(),
+            $dto->getPrice(),
+            $dto->getStockQuantity(),
+            $categoriesResponseArray,
+            $dto->getCreatedAt(),
+            $dto->getUpdatedAt()
+        );
+    }
+    function uploadImageForProduct(ImageCreationalDto $dto): ResponseViewModel
+    {
+        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getProductUuid());
+        if($productDomainObject->isNull()) throw new DoesNotExistException('product');
+        
+        return new ImageCreatedResponseDto($dto->getImages());
+    }
     function createNewCategory(CategoryCreationalDto $dto): ResponseViewModel
     {
         $productForCategoryDomainObject = $this->productFactoryContext->executeFactory(
