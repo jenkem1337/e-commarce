@@ -25,7 +25,9 @@ class ProductServiceImplTest extends TestCase {
                 ProductFactory::class => new ConcreteProductFactory(),
                 ProductCategoryCreationalModelFactory::class => new ConcreteProductCategoryCreationalModelFactory()    
             ]),
-            new ConcreteCategoryFactory()
+            new ConcreteCategoryFactory(),
+            new  ConcreteImageFactory(),
+            new UploadServiceImpl()
         ), $sqlite);
     }
 
