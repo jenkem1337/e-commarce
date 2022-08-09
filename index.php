@@ -13,7 +13,7 @@ $authController = (new AuthControllerFactory())->createInstance();
 $userController = (new UserControllerFactory())->createInstance();
 $categoryController = (new CategoryControllerFactory())->createInstance();
 $productController = (new ProductControllerFactory())->createInstance();
-
+$imageController = (new ImageControllerFactory())->createInstance(); 
 //Auth Route
 $f->registerRoute("POST", "/auth/register", new RegisterCommand($authController));
 $f->registerRoute("GET", "/auth/verify-user-acc", new VerifyUserAccountCommand($authController));
@@ -37,4 +37,10 @@ $f->registerRoute('GET', '/categories/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-
 
 //Product Route
 $f->registerRoute('POST', '/products', new CreateNewProductCommand($productController, new JwtAuthMiddleware));
+$f->registerRoute("GET","/products/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})", new FindOneProductCommand($productController));
+$f->registerRoute("PATCH", "/products/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})", new UpdateProductBrandNameCommand($productController, new JwtAuthMiddleware));
+
+//Upload Route
+$f->registerRoute('POST', '/uploads/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/image', new UploadImageForProductCommand($imageController, new JwtAuthMiddleware));
+$f->registerRoute("DELETE", '/uploads/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/image/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/product', new DeleteImageCommand($imageController, new JwtAuthMiddleware));
 $f->run($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']); 
