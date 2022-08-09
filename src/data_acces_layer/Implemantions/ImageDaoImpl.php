@@ -11,7 +11,7 @@ class ImageDaoImpl implements ImageDao {
     {
         $conn = $this->dbConnection->getConnection();
         $stmt = $conn->prepare(
-            "INSERT INTO 'image' (uuid, image_name, product_uuid, created_at, updated_at) 
+            "INSERT INTO image (uuid, image_name, product_uuid, created_at, updated_at) 
             VALUES (:uuid, :image_name, :product_uuid, :created_at, :updated_at)"
         );
         $stmt->execute([
@@ -27,7 +27,7 @@ class ImageDaoImpl implements ImageDao {
     {
         $conn = $this->dbConnection->getConnection();
         $stmt = $conn->prepare(
-            "DELETE FROM 'image' WHERE uuid = :uuid"
+            "DELETE FROM image WHERE uuid = :uuid"
         );
         $stmt->execute([
             'uuid'=>$uuid
@@ -38,7 +38,7 @@ class ImageDaoImpl implements ImageDao {
     {
         $conn= $this->dbConnection->getConnection();
         $stmt = $conn->prepare(
-            "SELECT * FROM 'image' ORDER BY created_at DESC"
+            "SELECT * FROM image ORDER BY created_at DESC"
         );
         $stmt->execute();
         $images = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -50,7 +50,7 @@ class ImageDaoImpl implements ImageDao {
     {
         $conn= $this->dbConnection->getConnection();
         $stmt = $conn->prepare(
-            "SELECT * FROM 'image' WHERE uuid = :uuid"
+            "SELECT * FROM image WHERE uuid = :uuid"
         );
         $stmt->execute([
             'uuid'=>$uuid
@@ -65,7 +65,7 @@ class ImageDaoImpl implements ImageDao {
     {
         $conn= $this->dbConnection->getConnection();
         $stmt = $conn->prepare(
-            "SELECT * FROM 'image' WHERE product_uuid = :uuid"
+            "SELECT * FROM image WHERE product_uuid = :uuid"
         );
         $stmt->execute([
             'uuid'=>$pUuid
@@ -80,7 +80,7 @@ class ImageDaoImpl implements ImageDao {
     {
         $conn= $this->dbConnection->getConnection();
         $stmt = $conn->prepare(
-            "SELECT * FROM 'image' WHERE product_uuid = :uuid"
+            "SELECT * FROM image WHERE product_uuid = :uuid "
         );
         $stmt->execute([
             'uuid'=>$pUuid
