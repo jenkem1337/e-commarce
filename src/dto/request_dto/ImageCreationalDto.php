@@ -1,19 +1,23 @@
 <?php
 class ImageCreationalDto {
-    protected array $images;
 
+    protected ArrayIterator $imageIterator;
     protected $productUuid;
 
-    public function __construct ($images, $productUuid)
+    public function __construct (ArrayIterator $imageIterator, $productUuid)
     {
-        $this->images = $images;
-        $this->productUuid = $productUuid;
+        $this->imageIterator = $imageIterator;
+        $this->productUuid =$productUuid;
     }
 
-    function getImages(){
-        return $this->images;
-    }
 
+    /**
+     * Get the value of imageIterator
+     */ 
+    public function getImageIterator()
+    {
+        return $this->imageIterator;
+    }
 
     /**
      * Get the value of productUuid
