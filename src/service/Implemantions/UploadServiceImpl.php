@@ -2,15 +2,25 @@
 require './vendor/autoload.php';
 
 class UploadServiceImpl implements UploadService {
-    function uploadNewProductImages(array $images, $productUuid)
+    function uploadNewProductImages(ArrayIterator $images, $productUuid)
     {
-        if(!file_exists(__DIR__."/src/uploads/products/$productUuid")){
-            mkdir(__DIR__."/src/uploads/products/$productUuid");
+        if(!file_exists($_SERVER['DOCUMENT_ROOT']."/src/uploads/products/$productUuid")){
+            mkdir($_SERVER['DOCUMENT_ROOT']."/src/uploads/products/$productUuid", 0777, true);
         }
-            $imageName = $images['name'][$i];
-            $targetFile = __DIR__."/src/uploads/products/$productUuid/$imageName";
-
-            move_uploaded_file($images['tmp_name'][$i], $targetFile);
+        foreach($images as $image){
+            $imageName = $image->imageName;
+            $targetFile = $_SERVER['DOCUMENT_ROOT']."/src/uploads/products/$productUuid/$imageName";
+            move_uploaded_file($image->imageTmpName, $targetFile);
         }
+    }
+    function deleteImageByUuid($imageName, $productUuid)
+    {
+        if(!file_exists($_SERVER['DOCUMENT_ROOT']."/src/uploads/products/$productUuid")){
+            throw new DoesNotExistException('product image folder');
+        }
+        if(!unlink($_SERVER['DOCUMENT_ROOT']."/src/uploads/products/$productUuid/$imageName")){
+            throw new DoesNotExistException('product image file');
+        }
+        unlink($_SERVER['DOCUMENT_ROOT']."/src/uploads/products/$productUuid/$imageName");
     }
 }

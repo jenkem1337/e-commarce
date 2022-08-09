@@ -128,10 +128,7 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
         $howManyPeopleRateIt = count($this->rates->getItems());
         $sumOfRate = $this->getSumOfRate() ?? 0;
         if($sumOfRate === 0){
-            if($sumOfRate == 0 || $howManyPeopleRateIt == 0) {
-                $this->howManyPeopleRateIt = 1;
-            }
-            $this->avarageRate =  $sumOfRate/$howManyPeopleRateIt;
+            $this->avarageRate = 0;
             return;
         }
         if(!$sumOfRate) throw new NullException('sum of rate');

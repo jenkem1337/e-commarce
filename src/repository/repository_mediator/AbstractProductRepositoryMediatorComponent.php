@@ -4,6 +4,7 @@ abstract class AbstractProductRepositoryMediatorComponent {
     protected ImageRepository $imageRepository;
     protected CommentRepository $commentRepository;
     protected RateRepository $rateRepository;
+    protected UserRepository $userRepository;
     function setRateRepository(RateRepository $rateRepo){
         $this->rateRepository = $rateRepo;
     }
@@ -14,6 +15,9 @@ abstract class AbstractProductRepositoryMediatorComponent {
         $this->imageRepository = $imgRepo;
     }
     function setCommentRepository(CommentRepository $commentRepository){
-        $this->categoryRepository = $commentRepository;
+        $this->commentRepository = $commentRepository;
+    }
+    function setUserRepository(UserRepository $userRepository){
+        $this->userRepository = $userRepository;
     }
 } 

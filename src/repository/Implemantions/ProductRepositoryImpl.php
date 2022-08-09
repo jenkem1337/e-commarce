@@ -3,11 +3,14 @@ require './vendor/autoload.php';
 
 class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent implements ProductRepository{
     private ProductDao $productDao;
+    private ProductSubscriberFactory $productSubscriberFactory;
     private ProductFactoryContext $productFactoryContext;
 	function __construct(
         ProductFactoryContext $productFactoryContext,
+        Factory $productSubscriberFactory,
         ProductDao $productDao) {
         $this->productFactoryContext = $productFactoryContext;
+        $this->productSubscriberFactory = $productSubscriberFactory;
         $this->productDao = $productDao;
 	}
     function createProduct(Product $p)
@@ -21,7 +24,24 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
     function findOneProductByUuid($uuid): ProductInterface
     {
         $productObject    = $this->productDao->findOneByUuid($uuid);
-        
+        $productSubscriberObjects = $this->productDao->findAllProductSubscriberByProductUuid($uuid);
+        $subscriberIterator = new SubscriberCollection();
+
+        foreach($productSubscriberObjects as $subscriber){
+            $userDomainObject = $this->userRepository->findOneUserByUuid($subscriber->user_uuid);
+            $productSubscriberDomainObject = $this->productSubscriberFactory->createInstance(
+                false,
+                $subscriber->uuid,
+                $subscriber->product_uuid,
+                $subscriber->user_uuid,
+                $subscriber->created_at,
+                $subscriber->updated_at
+            );
+            $productSubscriberDomainObject->setUserEmail($userDomainObject->getEmail());
+            $productSubscriberDomainObject->setUserFullName($userDomainObject->getFullname());
+            $subscriberIterator->add($productSubscriberDomainObject);
+        }
+
         $commentIterator  = $this->commentRepository->findAllByProductUuid($uuid);
         $categoryIterator = $this->categoryRepository->findAllByProductUuid($uuid);
         $rateIterator     = $this->rateRepository->findAllByProductUuid($uuid);
@@ -34,23 +54,37 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
             $productObject->brand,
             $productObject->model,
             $productObject->header,
-            $productObject->description,
+            $productObject->_description,
             $productObject->price,
-            $productObject->stockquantity
+            $productObject->stockquantity,
+            $productObject->created_at,
+            $productObject->updated_at
         );
+        foreach($subscriberIterator->getIterator() as $subscriber){
+            if($subscriber->isNull()) continue;
+            $productDomainObject->addSubscriber($subscriber);
+        }
         foreach($commentIterator->getIterator() as $comment){
+            if($comment->isNull()) continue;
             $productDomainObject->addComment($comment);
         }
         foreach($categoryIterator->getIterator() as $category){
+            if($category->isNull()) continue;
             $productDomainObject->addCategory($category);
         }
         foreach($rateIterator->getIterator() as $rate){
+            if($rate->isNull()) continue;
             $productDomainObject->addRate($rate);
         }
         foreach($imageIterator->getIterator() as $image){
+            if($image->isNull()) continue;
             $productDomainObject->addImage($image);
         }
         return $productDomainObject;
+    }
+    function updateProductBrandName(Product $p)
+    {
+        $this->productDao->updateBrandNameByUuid($p);
     }
     function persistImage(Product $p)
     {
@@ -59,6 +93,10 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
             $this->imageRepository->persist($image);
         }
         
+    }
+    function deleteImageByUuid($uuid)
+    {
+        $this->imageRepository->deleteByUuid($uuid);
     }
     function createCategory(ProductForCreatingCategoryDecorator $c,  $categoryUuidForFinding){
         $categoryCollection = $c->getCategories();
@@ -75,7 +113,7 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
         
         foreach($categoryCollection->getIterator() as $category){
             if($category->isNull()){
-                break;
+                continue;
             }
             $productForCategoryDomainModel->addCategory($category);
         }

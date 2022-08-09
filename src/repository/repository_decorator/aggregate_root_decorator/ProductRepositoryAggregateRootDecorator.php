@@ -17,6 +17,10 @@ class ProductRepositoryAggregateRootDecorator extends ProductRepositoryDecorator
     {
         parent::createProduct($p);
     }
+    function updateProductBrandName(AggregateRoot $p)
+    {
+        parent::updateProductBrandName($p);
+    }
     function createCategory(AggregateRoot $c, $categoryUuidForFinding)
     {
         parent::createCategory($c, $categoryUuidForFinding);

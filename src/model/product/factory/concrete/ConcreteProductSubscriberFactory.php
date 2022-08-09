@@ -1,4 +1,4 @@
 <?php
 require "./vendor/autoload.php";
 
-class ConcreteProductSubscriberFactory extends ProductSubscriber {}
+class ConcreteProductSubscriberFactory extends ProductSubscriberFactory {}

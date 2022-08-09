@@ -3,6 +3,10 @@ require "./vendor/autoload.php";
 
 
 class NullRate implements RateInterface{
+    function isNull()
+    {
+        return true;
+    }
     function rateIt($rateNumber){}
     public function getPruductUuid()
     {
@@ -14,7 +18,7 @@ class NullRate implements RateInterface{
     public function getRateNumber()
     {
     }
-
+    
     /**
      * Get the value of howManyPeopleRateIt
      */ 

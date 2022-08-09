@@ -18,5 +18,6 @@ interface RateInterface {
     public function getCreatedAt();
 
     public function getUpdatedAt();
+    public function isNull();
 
 }

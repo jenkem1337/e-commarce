@@ -15,9 +15,17 @@ abstract class ProductRepositoryDecorator implements ProductRepository {
     {
         return $this->productRepository->findOneProductByUuid($uuid);
     }
+    function updateProductBrandName(Product $p)
+    {
+        $this->productRepository->updateProductBrandName($p);
+    }
     function persistImage(Product $p)
     {
         $this->productRepository->persistImage($p);
+    }
+    function deleteImageByUuid($uuid)
+    {
+        $this->productRepository->deleteImageByUuid($uuid);
     }
     function createCategory(ProductForCreatingCategoryDecorator $c, $categoryUuidForFinding)
     {
