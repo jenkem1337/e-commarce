@@ -71,11 +71,26 @@ class ProductDaoImpl implements ProductDao {
         $conn =  $this->dbConnection->getConnection();
         $stmt = $conn->prepare("SELECT * FROM products ORDER BY created_at DESC");
         $stmt->execute();
-        $products = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $products = $stmt->fetchAll(PDO::FETCH_OBJ);    
         $conn = null;
         if($products == null) return $this->returnManyNullStatement();
 
         return $products; 
+
+    }
+    function findAllProductSubscriberByProductUuid($uuid)
+    {
+        $conn= $this->dbConnection->getConnection();
+        $stmt = $conn->prepare(
+            "SELECT * FROM product_subscriber WHERE product_uuid = :uuid"
+        );
+        $stmt->execute([
+            "uuid"=>$uuid
+        ]);
+        $productSubscriber = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $conn = null;
+        if($productSubscriber == null) $this->returnManyNullForSubscriberStatement();
+        return $productSubscriber;
 
     }
     function findSubscriberByUserUuid($uuid)
@@ -265,4 +280,16 @@ class ProductDaoImpl implements ProductDao {
         $productArr[] = $product;
         return $productArr;
     }
+    private function returnManyNullForSubscriberStatement(){
+        $productArr = array();
+        $product_subscriber = new stdClass();
+        $product_subscriber->uuid = null;
+        $product_subscriber->product_uuid = null;
+        $product_subscriber->user_uuid = null;
+        $product_subscriber->created_at= null;
+        $product_subscriber->updated_at = null;
+        $productArr[] = $product_subscriber;
+        return $productArr;
+    }
+
 }
