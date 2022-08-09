@@ -2,16 +2,16 @@
 require './vendor/autoload.php';
 use Ramsey\Uuid\Uuid;
 class CategoryController {
-    private CategoryService $productService;
-    function __construct(CategoryService $productService)
+    private CategoryService $categoryService;
+    function __construct(CategoryService $categoryService)
     {
-        $this->productService = $productService;
+        $this->categoryService = $categoryService;
     }
 
     function createNewCategory(){
         $jsonBody = json_decode(file_get_contents('php://input'));
         
-        $response = $this->productService->createNewCategory(
+        $response = $this->categoryService->createNewCategory(
             new CategoryCreationalDto(
                 Uuid::uuid4(),
                 $jsonBody->category_name,
@@ -38,7 +38,7 @@ class CategoryController {
     function updateCategoryByUuid($uuid){
         $jsonBody = json_decode(file_get_contents('php://input'));
         
-        $this->productService->updateCategoryNameByUuid(
+        $this->categoryService->updateCategoryNameByUuid(
             new UpdateCategoryNameByUuidDto($uuid, $jsonBody->new_category_name)
         )->onSucsess(function (CategoryNameChangedResponseDto $response){
             echo json_encode([
@@ -53,7 +53,7 @@ class CategoryController {
     }
 
     function deleteCategoryByUuid($uuid){
-        $this->productService->deleteCategoryByUuid(
+        $this->categoryService->deleteCategoryByUuid(
             new DeleteCategoryDto($uuid)
         )->onSucsess(function (CategoryDeletedResponseDto $response){
             echo json_encode([
@@ -68,7 +68,7 @@ class CategoryController {
     }
 
     function findAllCategory(){
-        $this->productService->findAllCategory(new FindAllCategoryDto())
+        $this->categoryService->findAllCategory(new FindAllCategoryDto())
                             ->onSucsess(function (AllCategoryResponseDto $response){
                                 foreach($response->getCategories() as $category){
                                     echo json_encode( [
@@ -82,7 +82,7 @@ class CategoryController {
     }
 
     function findOneCategoryByUuid($uuid){
-        $this->productService->findOneCategoryByUuid(new FindCategoryByUuidDto($uuid))
+        $this->categoryService->findOneCategoryByUuid(new FindCategoryByUuidDto($uuid))
                             ->onSucsess(function(OneCategoryFoundedResponseDto $response){
                                 echo json_encode([
                                     'uuid'=>$response->getUuid(),
