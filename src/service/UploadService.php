@@ -1,4 +1,5 @@
 <?php
 interface UploadService {
-    function uploadNewProductImages(array $images, $productUuid);
+    function uploadNewProductImages(ArrayIterator $images, $productUuid);
+    function deleteImageByUuid($imageName, $productUuid);
 }
