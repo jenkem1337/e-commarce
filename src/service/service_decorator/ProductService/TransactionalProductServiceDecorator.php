@@ -26,13 +26,13 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
             return $response;
         }
     }
-    function uploadImageForProduct(ImageCreationalDto $dto): ResponseViewModel
+    function updateProductBrandName(ChangeProductBrandNameDto $dto): ResponseViewModel
     {
         try {
             $dbConnection = $this->dbConnection->getConnection();
             
             $dbConnection->beginTransaction();
-            $response = parent::uploadImageForProduct($dto);
+            $response = parent::updateProductBrandName($dto);
             
             $dbConnection->commit();
 
@@ -45,69 +45,13 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
         }
 
     }
-    function createNewCategory(CategoryCreationalDto $dto): ResponseViewModel
+    function findOneProductByUuid(FindOneProductByUuidDto $dto): ResponseViewModel
     {
         try {
             $dbConnection = $this->dbConnection->getConnection();
             
             $dbConnection->beginTransaction();
-            $response = parent::createNewCategory($dto);
-            
-            $dbConnection->commit();
-
-        } catch (Exception $e) {
-            $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-        } finally {
-            $dbConnection = null;
-            return $response;
-        }
-
-    }
-    function findOneCategoryByUuid(FindCategoryByUuidDto $dto): ResponseViewModel
-    {
-        try {
-            $dbConnection = $this->dbConnection->getConnection();
-            
-            $dbConnection->beginTransaction();
-            $response = parent::findOneCategoryByUuid($dto);
-            
-            $dbConnection->commit();
-
-        } catch (Exception $e) {
-            $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-        } finally {
-            $dbConnection = null;
-            return $response;
-        }
-
-    }
-    function updateCategoryNameByUuid(UpdateCategoryNameByUuidDto $dto): ResponseViewModel
-    {
-        try {
-            $dbConnection = $this->dbConnection->getConnection();
-            
-            $dbConnection->beginTransaction();
-            $response = parent::updateCategoryNameByUuid($dto);
-            
-            $dbConnection->commit();
-
-        } catch (Exception $e) {
-            $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-        } finally {
-            $dbConnection = null;
-            return $response;
-        }
-    }
-    function deleteCategoryByUuid(DeleteCategoryDto $dto): ResponseViewModel
-    {
-        try {
-            $dbConnection = $this->dbConnection->getConnection();
-            
-            $dbConnection->beginTransaction();
-            $response = parent::deleteCategoryByUuid($dto);
+            $response = parent::findOneProductByUuid($dto);
             
             $dbConnection->commit();
 
