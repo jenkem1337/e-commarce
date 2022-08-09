@@ -6,6 +6,7 @@ interface ProductDao {
     function deleteSubscriberByUserUuid($uuid);
     function deleteByUuid($uuid);
     function findAll();
+    function findAllProductSubscriberByProductUuid($uuid);
     function findSubscriberByUserUuid($userUuid);
     function findAllWithPagination($startingLimit, $perPageForUsers);
     function findOneByUuid($uuid);
