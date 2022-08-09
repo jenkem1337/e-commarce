@@ -10,6 +10,9 @@ class ImageCollection implements IteratorAggregate {
     function getItems():array{
         return $this->imageCollection;
     }
+    function clearItems(){
+        $this->imageCollection = array();
+    }
     function getItem($key):ImageInterface{
         return $this->imageCollection[(string)$key] ?? new NullImage();
     }

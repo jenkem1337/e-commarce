@@ -11,6 +11,10 @@ class RateCollection implements IteratorAggregate {
     function getItems():array{
         return $this->rateCollection;
     }
+    function clearItems(){
+        $this->rateCollection = array();
+    }
+
     function add(RateInterface $rate):void{
         $this->rateCollection[(string)$rate->getUuid()] = $rate;
     }

@@ -12,6 +12,10 @@ class ProductCollection implements IteratorAggregate{
     function getItems():array{
         return $this->productCollection;
     }
+    function clearItems(){
+        $this->productCollection = array();
+    }
+
     function add(ProductInterface $product):void{
         $this->productCollection[(string)$product->getUuid()] = $product;
     }

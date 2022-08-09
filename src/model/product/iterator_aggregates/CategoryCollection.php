@@ -12,6 +12,10 @@ class CategoryCollection implements IteratorAggregate{
     function getItems():array{
         return $this->categoryCollection;
     }
+    function clearItems(){
+        $this->categoryCollection = array();
+    }
+
     function add(CategoryInterface $category):void{
         $this->categoryCollection[(string)$category->getUuid()] = $category;
     }
