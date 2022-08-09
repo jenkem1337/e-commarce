@@ -2,8 +2,8 @@
 require './vendor/autoload.php';
 use Ramsey\Uuid\Uuid;
 class CategoryController {
-    private ProductService $productService;
-    function __construct(ProductService $productService)
+    private CategoryService $productService;
+    function __construct(CategoryService $productService)
     {
         $this->productService = $productService;
     }
