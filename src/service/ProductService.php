@@ -6,4 +6,5 @@ interface ProductService {
     function findOneProductByUuid(FindOneProductByUuidDto $dto): ResponseViewModel;
     function updateProductBrandName(ChangeProductBrandNameDto $dto): ResponseViewModel;
     function updateProductModelName(ChangeProductModelNameDto $dto): ResponseViewModel;
+    function updateProductHeader(ChangeProductHeaderDto $dto): ResponseViewModel;
 }

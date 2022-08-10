@@ -22,4 +22,8 @@ abstract class ProductServiceDecorator implements ProductService {
 	{
 		return $this->productService->updateProductModelName($dto);
 	}
+	function updateProductHeader(ChangeProductHeaderDto $dto): ResponseViewModel
+	{
+		return $this->productService->updateProductHeader($dto);
+	}
 }

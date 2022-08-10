@@ -5,6 +5,7 @@ interface ProductRepository {
     function findOneProductByUuid($uuid):ProductInterface;
     function updateProductBrandName(Product $p);
     function updateProductModelName(Product $p);
+    function updateProductHeader(Product $p);
 
     //image
     function persistImage(Product $p);
