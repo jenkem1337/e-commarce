@@ -1,6 +1,5 @@
 <?php
 
-use Predis\Configuration\Option\Aggregate;
 
 require './vendor/autoload.php';
 
@@ -12,6 +11,10 @@ class ProductRepositoryAggregateRootDecorator extends ProductRepositoryDecorator
     function persistImage(AggregateRoot $p)
     {
         parent::persistImage($p);
+    }
+    function updateProductModelName(AggregateRoot $p)
+    {
+        parent::updateProductModelName($p);
     }
     function createProduct(AggregateRoot $p)
     {

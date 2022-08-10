@@ -11,6 +11,10 @@ abstract class ProductRepositoryDecorator implements ProductRepository {
     {
         $this->productRepository->createProduct($p);
     }
+    function updateProductModelName(Product $p)
+    {
+        $this->productRepository->updateProductModelName($p);
+    }
     function findOneProductByUuid($uuid):ProductInterface
     {
         return $this->productRepository->findOneProductByUuid($uuid);

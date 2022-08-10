@@ -89,4 +89,22 @@ class ProductController {
             ]);
         });
     }
+
+    function updateProductModelName($uuid){
+        $jsonBody = json_decode(file_get_contents('php://input'));
+        
+        $this->productService->updateProductModelName(
+            new ChangeProductModelNameDto($uuid, $jsonBody->new_model_name)
+        
+        )->onSucsess(function (ProductModelNameChangedResponseDto $response){
+            echo json_encode(['success_message' => $response->getSuccessMessage()]);
+        
+        })->onError(function (ErrorResponseDto $err){
+            echo json_encode([
+                'error_message'=>$err->getErrorMessage(),
+                'status_code'=> $err->getErrorCode()
+            ]);
+        });
+    }
+
 }

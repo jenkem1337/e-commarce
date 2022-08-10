@@ -64,4 +64,23 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
         }
 
     }
+    function updateProductModelName(ChangeProductModelNameDto $dto): ResponseViewModel
+    {
+        try {
+            $dbConnection = $this->dbConnection->getConnection();
+            
+            $dbConnection->beginTransaction();
+            $response = parent::updateProductModelName($dto);
+            
+            $dbConnection->commit();
+
+        } catch (Exception $e) {
+            $dbConnection->rollBack();
+            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
+        } finally {
+            $dbConnection = null;
+            return $response;
+        }
+
+    }
 }

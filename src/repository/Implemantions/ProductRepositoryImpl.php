@@ -86,6 +86,10 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
     {
         $this->productDao->updateBrandNameByUuid($p);
     }
+    function updateProductModelName(Product $p)
+    {
+        $this->productDao->updateModelNameByUuid($p);
+    }
     function persistImage(Product $p)
     {
         $images = $p->getImages()->getItems();
