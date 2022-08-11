@@ -9,7 +9,6 @@ $dotenv->load();
 
 class JwtAuthMiddleware extends Middleware {
     function check():bool{
-        try {
             $headers = apache_request_headers();
         
             if(!$headers['Authorization']) throw new NullException("authorization header");
@@ -23,17 +22,5 @@ class JwtAuthMiddleware extends Middleware {
             $jwtPayloadDto = JwtPayloadDto::getInstance();
             $jwtPayloadDto->setPayload($data);
             return parent::check();
-    
-        } catch (Exception $e) {
-            return (new ErrorResponseDto($e->getMessage(), $e->getCode()))
-                                        ->onError(function(ErrorResponseDto $err){
-                                            json_encode([
-                                                'error-message' => $err->getErrorMessage(),
-                                                'status-code' => $err->getErrorCode()
-                                            ]);
-                                        });
-
-
         }
-    }
 }
