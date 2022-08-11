@@ -123,5 +123,22 @@ class ProductController {
         });
 
     }
+    function updateProductDescription($uuid){
+        $jsonBody = json_decode(file_get_contents('php://input'));
+        
+        $this->productService->updateProductDescription(
+            new ChangeProductDescriptionDto($uuid, $jsonBody->new_description)
+        
+        )->onSucsess(function (ProductDescriptionChangedResponseDto $response){
+            echo json_encode(['success_message' => $response->getSuccessMessage()]);
+        
+        })->onError(function (ErrorResponseDto $err){
+            echo json_encode([
+                'error_message'=>$err->getErrorMessage(),
+                'status_code'=> $err->getErrorCode()
+            ]);
+        });
+
+    }
 
 }

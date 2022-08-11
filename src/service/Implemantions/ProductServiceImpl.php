@@ -84,7 +84,18 @@ class ProductServiceImpl implements ProductService {
 
         $this->productRepository->updateProductHeader($productDomainObject);
         
-        return new ProductHeaderChangedResponseDto('Product header name changed successfully');
+        return new ProductHeaderChangedResponseDto('Product header changed successfully');
+
+    }
+    function updateProductDescription(ChangeProductDescriptionDto $dto): ResponseViewModel
+    {
+        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid());
+        if($productDomainObject->isNull()) throw new NotFoundException('product');
+        $productDomainObject->changeDescription($dto->getNewDescription());
+
+        $this->productRepository->updateProductDescription($productDomainObject);
+        
+        return new ProductDescriptionChangedResponseDto('Product description changed successfully');
 
     }
     function findOneProductByUuid(FindOneProductByUuidDto $dto):ResponseViewModel{

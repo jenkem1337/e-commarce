@@ -6,6 +6,7 @@ interface ProductRepository {
     function updateProductBrandName(Product $p);
     function updateProductModelName(Product $p);
     function updateProductHeader(Product $p);
+    function updateProductDescription(Product $p);
 
     //image
     function persistImage(Product $p);

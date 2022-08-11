@@ -94,7 +94,10 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
     {
         $this->productDao->updateHeaderByUuid($p);
     }
-
+    function updateProductDescription(Product $p)
+    {
+        $this->productDao->updateDescriptionByUuid($p);
+    }
     function persistImage(Product $p)
     {
         $images = $p->getImages()->getItems();
