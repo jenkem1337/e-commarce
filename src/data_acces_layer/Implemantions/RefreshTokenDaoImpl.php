@@ -2,7 +2,6 @@
 
 use Ramsey\Uuid\Nonstandard\Uuid;
 
-require "./vendor/autoload.php";
 class RefreshTokenDaoImpl implements RefreshTokenDao {
     private DatabaseConnection $cacheConnection;
 

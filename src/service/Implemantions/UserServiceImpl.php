@@ -1,5 +1,4 @@
 <?php
-require "./vendor/autoload.php";
 
 class UserServiceImpl implements UserService{
     private UserRepository $userRepository;

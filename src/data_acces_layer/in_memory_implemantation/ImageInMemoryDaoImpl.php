@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 class ImageInMemoryDaoImpl extends ImageDaoImpl {
     function __construct(SingletonConnection $conn)

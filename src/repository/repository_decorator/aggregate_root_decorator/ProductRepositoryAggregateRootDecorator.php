@@ -1,7 +1,6 @@
 <?php
 
 
-require './vendor/autoload.php';
 
 class ProductRepositoryAggregateRootDecorator extends ProductRepositoryDecorator {
     function __construct(ProductRepository $repo)
@@ -31,6 +30,10 @@ class ProductRepositoryAggregateRootDecorator extends ProductRepositoryDecorator
     function updateProductHeader(AggregateRoot $p)
     {
         parent::updateProductHeader($p);
+    }
+    function updateProductPrice(AggregateRoot $p)
+    {
+        parent::updateProductPrice($p);
     }
     function updateProductDescription(AggregateRoot $p)
     {

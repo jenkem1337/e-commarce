@@ -1,6 +1,4 @@
 <?php 
-require './vendor/autoload.php';
-
 abstract class ProductDecorator extends Product{
     function __construct($uuid, string $brand,string $model,string $header, string $description, float $price,int $stockQuantity,$createdAt, $updatedAt)
     {

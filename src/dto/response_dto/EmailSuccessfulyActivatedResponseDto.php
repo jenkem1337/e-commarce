@@ -1,6 +1,4 @@
 <?php 
-require './vendor/autoload.php';
-
 class EmailSuccessfulyActivatedResponseDto extends ResponseViewModel{
     protected $fullname;
 

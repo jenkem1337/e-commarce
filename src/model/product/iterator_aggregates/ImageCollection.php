@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 class ImageCollection implements IteratorAggregate {
     private array $imageCollection;

@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 class CategoryInMemoryDaoImpl extends CategoryDaoImpl{
     function __construct(SingletonConnection $dbConn)
     {

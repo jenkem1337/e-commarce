@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 class UpdateCategoryNameByUuidCommand implements Command {
     private CategoryController $controller;

@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 class CommentInMemoryDaoImpl extends CommentDaoImpl{
     function __construct(SingletonConnection $conn)
     {

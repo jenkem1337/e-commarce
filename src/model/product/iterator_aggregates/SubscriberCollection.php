@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 class SubscriberCollection implements IteratorAggregate {
     private array $subscriberCollection;

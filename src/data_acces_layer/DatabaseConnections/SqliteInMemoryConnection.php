@@ -1,5 +1,4 @@
 <?php
-require '/xampp/htdocs/vendor/autoload.php';
 class SqliteInMemoryConnection implements SingletonConnection {
     private static $instance;
     private $pdo;

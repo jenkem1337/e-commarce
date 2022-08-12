@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 class CommentDaoImpl implements CommentDao {
     protected SingletonConnection $dbConnection;

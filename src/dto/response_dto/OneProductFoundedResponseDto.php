@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 class OneProductFoundedResponseDto extends ResponseViewModel {
     protected $uuid;

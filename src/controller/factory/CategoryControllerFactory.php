@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 class CategoryControllerFactory implements Factory {
     function createInstance($isMustBeConcreteObjcet = false, ...$params): CategoryController

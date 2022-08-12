@@ -1,5 +1,4 @@
 <?php
-require "./vendor/autoload.php";
 class NegativeValueException extends BaseException {
     function __construct()
     {

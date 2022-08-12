@@ -1,6 +1,5 @@
 <?php
 
-require './vendor/autoload.php';
 abstract class AuthServiceDecorator implements AuthService {
     private AuthService $authService;
     function __construct(AuthService $service)

@@ -1,5 +1,4 @@
 <?php
-require "./vendor/autoload.php";
 class NullComment implements CommentInterface {
     function __construct()
     {

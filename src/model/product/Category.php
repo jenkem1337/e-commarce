@@ -1,5 +1,4 @@
 <?php
-require "./vendor/autoload.php";
 class Category extends BaseEntity implements CategoryInterface{
     private $categoryName;
     private $productUuid;

@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 class ProductHeaderChangedResponseDto extends ResponseViewModel {
     protected $successMessage;

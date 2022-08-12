@@ -1,6 +1,5 @@
 <?php
 
-require './vendor/autoload.php';
 
 class FindOneProductCommand implements Command {
     private ProductController $controller;
@@ -14,3 +13,4 @@ class FindOneProductCommand implements Command {
             return $this->controller->findOneProductByUuid($params[0]);
     }
 }
+

@@ -1,5 +1,4 @@
 <?php
-require "./vendor/autoload.php";
 use PHPMailer\PHPMailer\PHPMailer;
 class AuthControllerFactory implements Factory{
     function createInstance($isMustBeConcreteObject = false, ...$params):AuthController {

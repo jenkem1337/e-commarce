@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 abstract class ImageServiceDecorator implements ImageService{
     private ImageService $imageService;

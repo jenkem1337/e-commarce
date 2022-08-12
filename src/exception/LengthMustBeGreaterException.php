@@ -1,5 +1,4 @@
 <?php
-require "./vendor/autoload.php";
 
 class LengthMustBeGreaterThanException extends BaseException {
     function __construct($property, $minimumLength)

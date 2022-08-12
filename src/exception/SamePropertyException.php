@@ -1,6 +1,5 @@
 <?php
 
-require "./vendor/autoload.php";
 
 class SamePropertyException extends BaseException{
     function __construct($property, $actualProperty)

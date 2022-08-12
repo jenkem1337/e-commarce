@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 class RateDaoImpl implements RateDao {
     protected SingletonConnection $dbConnection;

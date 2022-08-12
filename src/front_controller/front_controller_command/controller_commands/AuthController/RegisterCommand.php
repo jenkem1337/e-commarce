@@ -1,6 +1,5 @@
 <?php
 
-require './vendor/autoload.php';
 
 class RegisterCommand implements Command{
     private AuthController $authController;

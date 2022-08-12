@@ -1,5 +1,4 @@
-<<?php
-require './vendor/autoload.php';
+<?php
 
 class UploadImageForProductCommand implements Command {
     private ImageController $controller;
@@ -11,10 +10,10 @@ class UploadImageForProductCommand implements Command {
     }
 
     function process($params = [])
-    {
-            $this->jwtMiddleware->linkWith(new IsAdminMiddleware());
-            $this->jwtMiddleware->check();
-            return $this->controller->uploadImageForProduct($params[0]);
+    {       
+        $this->jwtMiddleware->linkWith(new IsAdminMiddleware());
+        $this->jwtMiddleware->check();
+        return $this->controller->uploadImageForProduct($params[0]);
     }
 
 }

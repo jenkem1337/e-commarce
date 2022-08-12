@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 class UploadServiceImpl implements UploadService {
     function uploadNewProductImages(ArrayIterator $images, $productUuid)

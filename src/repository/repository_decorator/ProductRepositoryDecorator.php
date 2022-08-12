@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 abstract class ProductRepositoryDecorator implements ProductRepository {
     private ProductRepository $productRepository;
@@ -30,6 +29,10 @@ abstract class ProductRepositoryDecorator implements ProductRepository {
     function updateProductBrandName(Product $p)
     {
         $this->productRepository->updateProductBrandName($p);
+    }
+    function updateProductPrice(Product $p)
+    {
+        $this->productRepository->updateProductPrice($p);
     }
     function persistImage(Product $p)
     {

@@ -1,11 +1,6 @@
 <?php
-require "./vendor/autoload.php";
-use Ramsey\Uuid\Nonstandard\Uuid;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-
-$dotenv = Dotenv\Dotenv::createImmutable("C:\\xampp\htdocs\\");
-$dotenv->load();
 
 class JwtAuthMiddleware extends Middleware {
     function check():bool{

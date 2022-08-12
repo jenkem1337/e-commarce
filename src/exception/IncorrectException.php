@@ -1,5 +1,4 @@
 <?php
-require "./vendor/autoload.php";
 class IncorrectException extends BaseException {
     function __construct($property)
     {

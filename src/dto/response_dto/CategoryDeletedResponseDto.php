@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 class CategoryDeletedResponseDto extends ResponseViewModel {
     protected $successfullMessage;
 

@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 class UserCreatedResponseDto extends ResponseViewModel{
     protected $fullname;

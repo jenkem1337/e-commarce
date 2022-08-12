@@ -1,5 +1,4 @@
 <?php
-require "./vendor/autoload.php";
 class RefreshTokenExpireTimeEndedException extends BaseException {
     function __construct()
     {

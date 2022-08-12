@@ -1,5 +1,4 @@
 <?php
-require "./vendor/autoload.php";
 
 class NullProductSubscriber implements ProductSubscriberInterface{
     function __construct()

@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 class AllUserResponseDto extends ResponseViewModel {
     protected ArrayIterator $users;
     public function __construct($users)

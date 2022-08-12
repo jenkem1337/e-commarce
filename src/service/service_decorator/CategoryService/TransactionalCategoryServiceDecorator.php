@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 class TransactionalCategoryServiceDecorator extends CategoryServiceDecorator {
     private DatabaseConnection $dbConnection;

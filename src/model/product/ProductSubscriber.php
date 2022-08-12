@@ -1,5 +1,4 @@
 <?php
-require "./vendor/autoload.php";
 
 class ProductSubscriber extends BaseEntity implements ProductSubscriberInterface{
     private $productUuid;

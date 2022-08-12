@@ -1,7 +1,4 @@
 <?php
-require "./vendor/autoload.php";
-
-
 class NullRate implements RateInterface{
     function isNull()
     {

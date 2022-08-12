@@ -1,13 +1,15 @@
 <?php
-require './vendor/autoload.php';
 class ProductServiceImpl implements ProductService {
     private ProductRepository $productRepository;
+    private EmailService $emailService;
     private ProductFactoryContext $productFactoryContext;
 	function __construct(
         ProductRepository $productRepository,
+        EmailService $emailService,
         ProductFactoryContext $productFactoryContext,
     ) {
 	    $this->productRepository     = $productRepository;
+        $this->emailService = $emailService;
         $this->productFactoryContext = $productFactoryContext;
 
 	}
@@ -97,6 +99,20 @@ class ProductServiceImpl implements ProductService {
         
         return new ProductDescriptionChangedResponseDto('Product description changed successfully');
 
+    }
+    function updateProductPrice(ChangeProductPriceDto $dto): ResponseViewModel
+    {
+        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid());
+        if($productDomainObject->isNull()) throw new NotFoundException('product');
+        $productDomainObject->changePrice($dto->getNewPrice());
+        
+        if($productDomainObject->isPriceLessThanPreviousPrice()) {
+            foreach($productDomainObject->getSubscribers() as $subscribers) {
+                $this->emailService->notifyProductSubscribersForPriceChanged($productDomainObject, $subscribers);
+            }
+        }
+        $this->productRepository->updateProductPrice($productDomainObject);
+        return new ProductPriceChangedResponseDto('Product price changed successfully');
     }
     function findOneProductByUuid(FindOneProductByUuidDto $dto):ResponseViewModel{
         $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid());

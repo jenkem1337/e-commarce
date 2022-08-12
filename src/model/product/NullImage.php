@@ -1,5 +1,4 @@
 <?php
-require "./vendor/autoload.php";
 
 class NullImage implements ImageInterface {
     function __construct()

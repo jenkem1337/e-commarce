@@ -1,6 +1,5 @@
 <?php
 
-require './vendor/autoload.php';
 
 class UpdateProductHeaderCommand implements Command {
     private ProductController $controller;

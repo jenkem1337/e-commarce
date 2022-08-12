@@ -1,5 +1,4 @@
 <?php
-require "./vendor/autoload.php";
 
 class CategoryCollection implements IteratorAggregate{
     private array $categoryCollection;

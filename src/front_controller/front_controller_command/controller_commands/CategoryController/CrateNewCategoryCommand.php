@@ -1,7 +1,5 @@
 <?php
 
-require './vendor/autoload.php';
-
 class CrateNewCategoryCommand implements Command {
     private CategoryController $controller;
     private Middleware $jwtMiddleware;

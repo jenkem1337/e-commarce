@@ -1,8 +1,5 @@
 <?php
 
-use Ramsey\Uuid\Nonstandard\Uuid;
-
-require './vendor/autoload.php';
 class UserDaoImpl implements UserDao{
     private SingletonConnection $dbConnection;
 

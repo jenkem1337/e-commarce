@@ -1,9 +1,12 @@
 <?php
-require './vendor/autoload.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+
 
 class ProductControllerFactory implements Factory {
     function createInstance($isMustBeConcreteObjcet = false, ...$params):ProductController
     {
+
         $productRepositoryImpl = new ProductRepositoryImpl(
             new ProductFactoryContext([
                 ProductFactory::class => new ConcreteProductFactory(),
@@ -43,10 +46,12 @@ class ProductControllerFactory implements Factory {
         $imageRepositoryImpl->setProductMediator($productRepositoryImpl);
         $categoryRepositoryImpl->setProductMediator($productRepositoryImpl);
 
+
         return new ProductController(
             new TransactionalProductServiceDecorator(
                 new ProductServiceImpl(
                     $productRepositoryImpl,
+                    new EmailServiceImpl(new PHPMailer(true)),
                     new ProductFactoryContext([
                         ProductFactory::class => new ConcreteProductFactory(),
                         ProductCategoryCreationalModelFactory::class => new ConcreteProductCategoryCreationalModelFactory()

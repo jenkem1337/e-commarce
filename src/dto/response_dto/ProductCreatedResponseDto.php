@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 class ProductCreatedResponseDto extends ResponseViewModel {
     public function __construct(  
         protected $uuid,  

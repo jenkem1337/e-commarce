@@ -1,6 +1,5 @@
 <?php
 
-require "./vendor/autoload.php";
 
 class NullProduct implements ProductInterface {
     function __construct()

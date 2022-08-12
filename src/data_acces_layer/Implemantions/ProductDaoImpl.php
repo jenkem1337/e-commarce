@@ -200,7 +200,7 @@ class ProductDaoImpl implements ProductDao {
         );
         $stmt->execute([
             'uuid'=>$p->getUuid(),
-            'price'=>$p->getStockQuantity(),
+            'price'=>$p->getPrice(),
             'prev_price'=>$p->getPreviousPrice()
         ]);
         $conn = null;

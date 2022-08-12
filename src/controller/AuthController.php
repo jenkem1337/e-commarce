@@ -1,13 +1,7 @@
 <?php
 
-
-require './vendor/autoload.php';
 use Ramsey\Uuid\Nonstandard\Uuid;
 use Firebase\JWT\JWT;
-
-$dotenv = Dotenv\Dotenv::createImmutable("C:\\xampp\htdocs\\");
-$dotenv->load();
-
 
 class AuthController {
     private AuthService $authService;

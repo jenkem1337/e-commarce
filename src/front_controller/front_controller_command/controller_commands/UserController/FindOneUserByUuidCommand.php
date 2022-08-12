@@ -1,5 +1,4 @@
 <?php 
-require "./vendor/autoload.php";
 class FindOneUserByUuidCommand implements Command {
     private UserController $userController;
     private Middleware $firstMiddleware;

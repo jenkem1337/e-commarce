@@ -1,6 +1,5 @@
 <?php
 
-require './vendor/autoload.php';
 
 class VerifyUserAccountCommand implements Command{
     private AuthController $authController;

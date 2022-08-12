@@ -1,6 +1,5 @@
 <?php
 
-require './vendor/autoload.php';
 
 class ProductInMemoryDaoImpl extends ProductDaoImpl {
     function __construct(SingletonConnection $dbConn)

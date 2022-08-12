@@ -1,5 +1,4 @@
 <?php
-require "./vendor/autoload.php";
 
 abstract class CategoryFactory implements Factory {
     function createInstance($isMustBeConcreteObject =false,...$params):CategoryInterface{

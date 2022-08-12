@@ -1,6 +1,4 @@
 <?php
-require './vendor/autoload.php';
-
 class FullNameChangedResponseDto extends ResponseViewModel {
 
     protected $succesMessage;

@@ -1,6 +1,5 @@
 <?php
 
-require "./vendor/autoload.php";
 class RefreshToken extends BaseEntity implements RefreshTokenInterface {
     private $userUuid;
     private $token;

@@ -1,5 +1,4 @@
 <?php
-require "./vendor/autoload.php";
 class ValueMustBeLessThanException extends BaseException {
     function __construct($property, $maxValue)
     {

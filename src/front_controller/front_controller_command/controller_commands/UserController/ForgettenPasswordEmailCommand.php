@@ -1,5 +1,4 @@
 <?php
-require "./vendor/autoload.php";
 
 class ForgettenPasswordEmailCommand implements Command {
     private UserController $userController;

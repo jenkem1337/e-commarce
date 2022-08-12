@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 class ImageControllerFactory implements Factory {
     function createInstance($isMustBeConcreteObjcet = false, ...$params):ImageController

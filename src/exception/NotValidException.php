@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 class NotValidException extends BaseException {
     function __construct($property)
     {

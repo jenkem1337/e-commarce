@@ -1,5 +1,4 @@
 <?php
-require "./vendor/autoload.php";
 
 class NullRefreshToken implements RefreshTokenInterface {
         function __construct()

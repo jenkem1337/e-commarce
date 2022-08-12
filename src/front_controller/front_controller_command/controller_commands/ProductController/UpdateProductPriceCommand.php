@@ -1,9 +1,10 @@
 <?php
 
-class DeleteImageCommand implements Command {
-    private ImageController $controller;
+
+class UpdateProductPriceCommand implements Command {
+    private ProductController $controller;
     private Middleware $jwtMiddleware;
-    function __construct(ImageController $cont, Middleware $middleware)
+    function __construct(ProductController $cont, Middleware $middleware)
     {
         $this->controller = $cont;
         $this->jwtMiddleware = $middleware;
@@ -13,7 +14,6 @@ class DeleteImageCommand implements Command {
     {
             $this->jwtMiddleware->linkWith(new IsAdminMiddleware());
             $this->jwtMiddleware->check();
-            return $this->controller->deleteImageByUuid($params[0], $params[1]);
+            return $this->controller->updateProductPrice($params[0]);
     }
-
 }

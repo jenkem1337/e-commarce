@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 class FindOneCategoryCommand implements Command {
     private CategoryController $controller;

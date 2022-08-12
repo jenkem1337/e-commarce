@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 class CommentRepositoryImpl implements CommentRepository {
     private CommentDao $commentDao;

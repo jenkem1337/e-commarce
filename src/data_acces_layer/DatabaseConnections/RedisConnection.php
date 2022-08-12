@@ -2,7 +2,6 @@
 
 use Predis\Client;
 
-require "./vendor/autoload.php";
 Predis\Autoloader::register();
 class RedisConnection implements DatabaseConnection {
     private Client $redis;

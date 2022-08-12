@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 class ImageDeletedResponseDto extends ResponseViewModel{
     protected $successMessage;

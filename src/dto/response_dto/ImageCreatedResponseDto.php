@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 class ImageCreatedResponseDto extends ResponseViewModel {
     protected $images;

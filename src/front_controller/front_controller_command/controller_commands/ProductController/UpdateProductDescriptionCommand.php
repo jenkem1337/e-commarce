@@ -1,7 +1,5 @@
 <?php
 
-require './vendor/autoload.php';
-
 class UpdateProductDescriptionCommand implements Command {
     private ProductController $controller;
     private Middleware $jwtMiddleware;

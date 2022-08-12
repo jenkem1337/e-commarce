@@ -1,5 +1,4 @@
 <?php
-require "./vendor/autoload.php";
 
 class CommentCollection implements IteratorAggregate {
     private array $commentCollection;

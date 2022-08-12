@@ -8,4 +8,5 @@ interface ProductService {
     function updateProductModelName(ChangeProductModelNameDto $dto): ResponseViewModel;
     function updateProductHeader(ChangeProductHeaderDto $dto): ResponseViewModel;
     function updateProductDescription(ChangeProductDescriptionDto $dto): ResponseViewModel;
+    function updateProductPrice(ChangeProductPriceDto $dto): ResponseViewModel;
 }

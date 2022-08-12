@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 class TransactionalProductServiceDecorator extends ProductServiceDecorator {
     private DatabaseConnection $dbConnection;
@@ -119,6 +118,26 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
             $dbConnection = null;
             return $response;
         }
-
     }
+        function updateProductPrice(ChangeProductPriceDto $dto): ResponseViewModel
+        {
+            try {
+                $dbConnection = $this->dbConnection->getConnection();
+                
+                $dbConnection->beginTransaction();
+                $response = parent::updateProductPrice($dto);
+                
+                $dbConnection->commit();
+    
+            } catch (Exception $e) {
+                $dbConnection->rollBack();
+                $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
+            } finally {
+                $dbConnection = null;
+                return $response;
+            }
+    
+        }
+
+    
 }

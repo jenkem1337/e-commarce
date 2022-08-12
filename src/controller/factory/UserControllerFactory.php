@@ -1,7 +1,4 @@
 <?php
-require './src/service/service_decorator/UserService/TransactionalUserServiceDecorator.php';
-
-require "./vendor/autoload.php";
 use PHPMailer\PHPMailer\PHPMailer;
 class UserControllerFactory implements Factory {
     

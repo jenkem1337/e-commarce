@@ -1,6 +1,5 @@
 <?php
 
-require "./vendor/autoload.php";
 class UserRepositoryAggregateRootDecorator extends UserRepositoryDecorator{
 
     function findUserByEmail($userMail):UserInterface{

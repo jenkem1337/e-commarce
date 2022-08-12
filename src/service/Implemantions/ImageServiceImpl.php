@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 class ImageServiceImpl implements ImageService {
     private ProductRepository $productAggregateRepository;

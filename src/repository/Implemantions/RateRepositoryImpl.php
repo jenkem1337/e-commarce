@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 class RateRepositoryImpl implements RateRepository {
     private RateDao $rateDao;

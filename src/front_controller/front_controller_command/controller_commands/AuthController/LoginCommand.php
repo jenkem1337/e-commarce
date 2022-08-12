@@ -1,7 +1,5 @@
 <?php
 
-require './vendor/autoload.php';
-
 class LoginCommand implements Command{
     private AuthController $authController;
 

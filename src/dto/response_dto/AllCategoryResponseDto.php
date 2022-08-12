@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 class AllCategoryResponseDto extends ResponseViewModel {
     private ArrayIterator $categories;

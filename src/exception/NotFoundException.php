@@ -1,5 +1,4 @@
 <?php
-require "./vendor/autoload.php";
 
 class NotFoundException extends BaseException {
     function __construct($property, $code = 400)

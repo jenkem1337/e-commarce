@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 class DeleteCategoryByUuidCommand implements Command {
     private CategoryController $controller;

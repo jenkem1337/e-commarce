@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent implements ProductRepository{
     private ProductDao $productDao;
@@ -89,6 +88,10 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
     function updateProductModelName(Product $p)
     {
         $this->productDao->updateModelNameByUuid($p);
+    }
+    function updateProductPrice(Product $p)
+    {
+        $this->productDao->updatePriceByUuid($p);
     }
     function updateProductHeader(Product $p)
     {

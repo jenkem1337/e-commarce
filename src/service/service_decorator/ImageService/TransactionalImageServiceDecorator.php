@@ -1,7 +1,5 @@
 <?php
 
-require './vendor/autoload.php';
-
 class TransactionalImageServiceDecorator extends ImageServiceDecorator {
     private DatabaseConnection $dbConnection;
     function __construct(ImageService $imgService, DatabaseConnection $dbconn)

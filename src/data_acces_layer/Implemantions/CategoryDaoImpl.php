@@ -1,6 +1,5 @@
 <?php
 
-require './vendor/autoload.php';
 use Ramsey\Uuid\Uuid;
 class CategoryDaoImpl implements CategoryDao {
     protected SingletonConnection $databaseConnection;

@@ -1,7 +1,6 @@
 <?php
 
 
-require './vendor/autoload.php';
 
 class User extends BaseEntity implements AggregateRoot, UserInterface{
     private  string $fullname;

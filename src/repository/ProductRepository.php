@@ -7,7 +7,7 @@ interface ProductRepository {
     function updateProductModelName(Product $p);
     function updateProductHeader(Product $p);
     function updateProductDescription(Product $p);
-
+    function updateProductPrice(Product $p);
     //image
     function persistImage(Product $p);
     function deleteImageByUuid($uuid);

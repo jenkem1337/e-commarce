@@ -8,6 +8,7 @@ class FrontController {
     }
      
     function run($requsetUri, $HTTPMethod){
+
         if(!$requsetUri){
             throw new NullException('request uri');
         }

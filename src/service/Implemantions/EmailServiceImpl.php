@@ -1,11 +1,8 @@
 <?php
-require './vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
-$dotenv = Dotenv\Dotenv::createImmutable("C:\\xampp\htdocs\\");
-$dotenv->load();
 
 
 class EmailServiceImpl implements EmailService {
@@ -53,7 +50,7 @@ class EmailServiceImpl implements EmailService {
         try {
             $this->serverOptions();
             
-            $this->phpMailer->setFrom("denemeexample@yandex.com", "ADMIN");
+            $this->phpMailer->setFrom($_ENV['EMAIL'], "ADMIN");
             $this->phpMailer->addAddress($user->getEmail(), $user->getFullname());
     
             $code = $user->getForegettenPasswordCode();
@@ -68,6 +65,36 @@ class EmailServiceImpl implements EmailService {
             die();
 
         }
+    }
+    function notifyProductSubscribersForPriceChanged(Product $p, ProductSubscriber $ps)
+    {
+        try {
+            $this->serverOptions();
+            
+            $this->phpMailer->setFrom($_ENV['EMAIL'], "ADMIN");
+            $this->phpMailer->addAddress($ps->getUserEmail(), $ps->getUserFullName());
+    
+            $productSubscriberName = $ps->getUserFullName();
+            $productActualPrice = $p->getPrice();
+            $productPreviousPrice = $p->getPreviousPrice();
+            $productUuid = $p->getUuid();
+
+            $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https://" : "http://";
+            $url.=$_SERVER['HTTP_HOST'];
+            $url.="/products/$productUuid";
+
+
+            $this->phpMailer->isHTML();
+            $this->phpMailer->Subject = "Subscribed Product Price Less Than Before Lets Examine";
+            $this->phpMailer->Body = "Hi $productSubscriberName. Your subscribed product price down to $productActualPrice from $productPreviousPrice. Let's examine product from $url.";
+            $this->phpMailer->send();
+
+        } catch (Exception $e) {
+            echo json_encode(["mailler_err"=>$this->phpMailer->ErrorInfo]);
+            die();
+
+        }
+
     }
 
 }

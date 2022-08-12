@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 class ProductConstructorRuleRequiredDecorator extends ProductDecorator {
     function __construct($uuid, string $brand,string $model, string $header, string $description, float $price, int $stockQuantity, $createdAt, $updatedAt)
     {

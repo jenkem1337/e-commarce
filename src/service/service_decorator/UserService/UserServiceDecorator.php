@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 abstract class UserServiceDecorator implements UserService {
     private UserService $service;
     function __construct(UserService $service)
@@ -16,7 +15,7 @@ abstract class UserServiceDecorator implements UserService {
         return $this->service->listAllUser($listAllUserDto);
     }
     function findOneUserByUuid(FindOneUserByUuidDto $userUuidDto):ResponseViewModel{
-        return $this->findOneUserByUuid($userUuidDto);
+        return $this->service->findOneUserByUuid($userUuidDto);
     }
     function changeFullName(ChangeFullNameDto $changeFullNameDto):ResponseViewModel{
         return $this->service->changeFullName($changeFullNameDto);

@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 class ErrorResponseDto extends ResponseViewModel {
     private $errorMessage;

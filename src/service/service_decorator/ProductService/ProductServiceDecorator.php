@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 abstract class ProductServiceDecorator implements ProductService {
 
@@ -25,6 +24,10 @@ abstract class ProductServiceDecorator implements ProductService {
 	function updateProductHeader(ChangeProductHeaderDto $dto): ResponseViewModel
 	{
 		return $this->productService->updateProductHeader($dto);
+	}
+	function updateProductPrice(ChangeProductPriceDto $dto): ResponseViewModel
+	{
+		return $this->productService->updateProductPrice($dto);
 	}
 	function updateProductDescription(ChangeProductDescriptionDto $dto): ResponseViewModel
 	{

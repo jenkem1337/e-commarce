@@ -1,6 +1,4 @@
 <?php
-require './vendor/autoload.php';
-
 class OneUserFoundedResponseDto extends ResponseViewModel{
     
     protected $fullName;

@@ -1,6 +1,5 @@
 <?php
 
-require "./vendor/autoload.php";
 
 abstract class RefreshTokenFactory implements Factory {
     function createInstance($isMustBeConcreteObject =false,...$params):RefreshTokenInterface{

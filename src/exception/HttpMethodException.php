@@ -1,5 +1,4 @@
 <?php
-require "./vendor/autoload.php";
 
 class HttpMethodException extends BaseException {
     function __construct()

@@ -1,5 +1,4 @@
 <?php
-require "./vendor/autoload.php";
 
 class AlreadyExistException extends BaseException {
     function __construct($property)

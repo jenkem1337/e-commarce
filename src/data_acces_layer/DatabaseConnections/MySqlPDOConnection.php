@@ -1,6 +1,4 @@
 <?php
-require './vendor/autoload.php';
-
 class MySqlPDOConnection implements SingletonConnection{
     private static $instace;
     private $pdo;
@@ -17,8 +15,6 @@ class MySqlPDOConnection implements SingletonConnection{
     } 
     function createDatabaseConnection(){
         try {
-            $dotenv = Dotenv\Dotenv::createImmutable("C:\\xampp\htdocs\\");
-            $dotenv->load();
 
             $this->databaseHost = $_ENV['DB_SERVER_NAME'];
             $this->databaseName = $_ENV['DB_NAME'];

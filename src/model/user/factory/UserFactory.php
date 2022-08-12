@@ -1,5 +1,4 @@
 <?php
-require "./vendor/autoload.php";
 abstract class UserFactory implements Factory {
     function createInstance($isMustBeConcreteObject = false, ...$params):UserInterface
     {

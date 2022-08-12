@@ -1,5 +1,4 @@
 <?php
-require "./vendor/autoload.php";
 class UserController {
     private AuthService $authService;
     private UserService $userService;

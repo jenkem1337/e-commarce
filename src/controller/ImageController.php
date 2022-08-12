@@ -2,7 +2,6 @@
 
 use Ramsey\Uuid\Uuid;
 
-require './vendor/autoload.php';
 class ImageController {
 
     private ImageService $imageService;

@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 class CategoryRepositoryImpl implements CategoryRepository {
     private CategoryDao $categoryDao;

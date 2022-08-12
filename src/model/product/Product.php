@@ -1,8 +1,5 @@
 <?php
 
-use Ramsey\Uuid\Uuid;
-
-require "./vendor/autoload.php";
 abstract class Product extends BaseEntity implements AggregateRoot, ProductInterface{
     protected $brand;
     protected $model;

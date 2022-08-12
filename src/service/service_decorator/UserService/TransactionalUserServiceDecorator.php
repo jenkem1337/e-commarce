@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 class TransactionalUserServiceDecorator extends UserServiceDecorator {
     private DatabaseConnection $databaseConnection;
     function __construct(UserService $service, DatabaseConnection $databaseConnection)

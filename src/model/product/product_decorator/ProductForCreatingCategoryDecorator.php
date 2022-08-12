@@ -2,7 +2,6 @@
 
 use Ramsey\Uuid\Uuid;
 
-require './vendor/autoload.php';
 
 class ProductForCreatingCategoryDecorator extends ProductDecorator implements AggregateRoot, ProductInterface {
     function __construct()

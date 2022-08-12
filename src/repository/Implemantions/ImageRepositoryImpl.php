@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 class ImageRepositoryImpl implements ImageRepository {
     private ImageDao $imageDao;
