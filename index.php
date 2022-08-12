@@ -50,7 +50,7 @@ $f->registerRoute("PATCH", '/products/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-
 $f->registerRoute("PATCH", "/products/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/header", new UpdateProductHeaderCommand($productController, new JwtAuthMiddleware));
 $f->registerRoute("PATCH", '/products/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/description', new UpdateProductDescriptionCommand($productController, new JwtAuthMiddleware));
 $f->registerRoute("PATCH", '/products/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/price', new UpdateProductPriceCommand($productController, new JwtAuthMiddleware));
-
+$f->registerRoute("DELETE", "/products/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})", new DeleteProductCommand($productController, new JwtAuthMiddleware));
 //Upload Route
 $f->registerRoute('POST', '/uploads/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/image', new UploadImageForProductCommand($imageController, new JwtAuthMiddleware));
 $f->registerRoute("DELETE", '/uploads/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/image/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/product', new DeleteImageCommand($imageController, new JwtAuthMiddleware));
