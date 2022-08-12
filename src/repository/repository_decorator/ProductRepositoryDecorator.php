@@ -10,6 +10,10 @@ abstract class ProductRepositoryDecorator implements ProductRepository {
     {
         $this->productRepository->createProduct($p);
     }
+    function findAllProducts(): IteratorAggregate
+    {
+        return $this->productRepository->findAllProducts();
+    }
     function updateProductModelName(Product $p)
     {
         $this->productRepository->updateProductModelName($p);

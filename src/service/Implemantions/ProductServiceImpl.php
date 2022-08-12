@@ -57,6 +57,16 @@ class ProductServiceImpl implements ProductService {
             $dto->getUpdatedAt()
         );
     }
+    function findAllProduct(FindAllProductsDto $dto): ResponseViewModel
+    {
+        $products = $this->productRepository->findAllProducts();
+        foreach($products->getIterator() as $productDomainObject) {
+            if($productDomainObject->isNull()) {
+                throw new NotFoundException('property');
+            }
+        }
+        return new AllProductResponseDto($products);
+    }
     function updateProductBrandName(ChangeProductBrandNameDto $dto): ResponseViewModel
     {
         $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid());

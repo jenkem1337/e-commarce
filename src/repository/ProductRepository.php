@@ -8,6 +8,7 @@ interface ProductRepository {
     function updateProductHeader(Product $p);
     function updateProductDescription(Product $p);
     function updateProductPrice(Product $p);
+    function findAllProducts():IteratorAggregate;
     //image
     function persistImage(Product $p);
     function deleteImageByUuid($uuid);
