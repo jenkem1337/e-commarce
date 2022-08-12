@@ -14,6 +14,10 @@ abstract class ProductServiceDecorator implements ProductService {
 	{
 		return $this->productService->findAllProduct($dto);
 	}
+	function findAllProductWithPagination(FindAllProductWithPaginationDto $dto): ResponseViewModel
+	{
+		return $this->productService->findAllProductWithPagination($dto);
+	}
 	function updateProductBrandName(ChangeProductBrandNameDto $dto): ResponseViewModel{
 		return $this->productService->updateProductBrandName($dto);
 	}

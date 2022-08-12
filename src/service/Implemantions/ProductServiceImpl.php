@@ -62,11 +62,21 @@ class ProductServiceImpl implements ProductService {
         $products = $this->productRepository->findAllProducts();
         foreach($products->getIterator() as $productDomainObject) {
             if($productDomainObject->isNull()) {
-                throw new NotFoundException('property');
+                throw new NotFoundException('product');
             }
         }
         return new AllProductResponseDto($products);
     }
+    function findAllProductWithPagination(FindAllProductWithPaginationDto $dto): ResponseViewModel
+    {
+        $products = $this->productRepository->findAllWithPagination($dto->getStartingLimit(), $dto->getPerPageForProduct());
+        foreach($products->getIterator() as $productDomainObject) {
+            if($productDomainObject->isNull()) {
+                throw new NotFoundException('product');
+            }
+        }
+        return new AllProductWithPaginationResponseDto($products);
+    }   
     function updateProductBrandName(ChangeProductBrandNameDto $dto): ResponseViewModel
     {
         $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid());

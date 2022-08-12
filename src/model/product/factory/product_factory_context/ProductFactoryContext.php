@@ -9,10 +9,15 @@ class ProductFactoryContext {
     }
 
     function executeFactory($key, $isMustBeConcreteObjcet = false, ...$params):ProductInterface{
-        $concreteProductFactory = $this->factoryMap[$key];
-        if(!$concreteProductFactory) throw new DoesNotExistException('concrete factory');
-        $product =  $concreteProductFactory->createInstance($isMustBeConcreteObjcet, ...$params);
-        if(!($product instanceof ProductInterface)) throw new Error('product not instance of ProductInterface');
-        return $product;
+        try {
+            $concreteProductFactory = $this->factoryMap[$key];
+            if(!$concreteProductFactory) throw new DoesNotExistException('concrete factory');
+            $product =  $concreteProductFactory->createInstance($isMustBeConcreteObjcet, ...$params);
+            if(!($product instanceof ProductInterface)) throw new Exception('product not instance of ProductInterface');
+            return $product;
+    
+        } catch (\Throwable $th) {
+            return new NullProduct;
+        }
     }
 }

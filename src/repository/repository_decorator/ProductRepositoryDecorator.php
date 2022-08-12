@@ -18,6 +18,10 @@ abstract class ProductRepositoryDecorator implements ProductRepository {
     {
         $this->productRepository->updateProductModelName($p);
     }
+    function findAllWithPagination($startingLimit, $perPageForProduct): IteratorAggregate
+    {
+        return $this->productRepository->findAllWithPagination($startingLimit, $perPageForProduct);
+    }
     function updateProductHeader(Product $p)
     {
         $this->productRepository->updateProductHeader($p);
