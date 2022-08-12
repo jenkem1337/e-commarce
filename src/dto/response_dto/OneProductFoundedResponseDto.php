@@ -164,7 +164,7 @@ class OneProductFoundedResponseDto extends ResponseViewModel {
             $commentObj->writer_name = $comment->getWriterName();
             $commentObj->created_at = $comment->getCreatedAt();
             $commentObj->updated_at = $comment->getUpdatedAt();
-            $commentArr = $commentObj;
+            $commentArr[] = $commentObj;
         }
         return $commentArr;
     }
