@@ -3,8 +3,9 @@ require './vendor/autoload.php';
 header('Content-type: application/json');
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
-
-$authController = (new AuthControllerFactory())->createInstance();
+try {
+    //code...
+    $authController = (new AuthControllerFactory())->createInstance();
 $userController = (new UserControllerFactory())->createInstance();
 $categoryController = (new CategoryControllerFactory())->createInstance();
 $productController = (new ProductControllerFactory())->createInstance();
@@ -40,6 +41,7 @@ $f->registerRoute('GET', '/categories', new FindAllCategoryCommand($categoryCont
 $f->registerRoute('GET', '/categories/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})', new FindOneCategoryCommand($categoryController, new JwtAuthMiddleware));
         
 //Product Route
+$f->registerRoute("GET", "/products/partial", new FindAllProductWithPaginationCommand($productController));
 $f->registerRoute("GET", "/products", new FindAllProductCommand($productController));
 $f->registerRoute("GET","/products/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})", new FindOneProductCommand($productController));
 $f->registerRoute('POST', '/products', new CreateNewProductCommand($productController, new JwtAuthMiddleware));
@@ -54,3 +56,12 @@ $f->registerRoute('POST', '/uploads/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[0
 $f->registerRoute("DELETE", '/uploads/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/image/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/product', new DeleteImageCommand($imageController, new JwtAuthMiddleware));
 
 $f->run($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']); 
+
+} catch (\Exception $err) {
+    (new ErrorResponseDto($err->getMessage(), $err->getCode()))->onError(function (ErrorResponseDto $err) {
+        echo json_encode([
+            'error_message' => $err->getErrorMessage(),
+            'status_code' => $err->getErrorCode()
+        ]);
+    });
+}
