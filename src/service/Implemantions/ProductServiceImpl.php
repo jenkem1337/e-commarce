@@ -3,12 +3,15 @@ class ProductServiceImpl implements ProductService {
     private ProductRepository $productRepository;
     private EmailService $emailService;
     private ProductFactoryContext $productFactoryContext;
+    private UploadService $uploadService;
 	function __construct(
         ProductRepository $productRepository,
+        UploadService $uploadService,
         EmailService $emailService,
         ProductFactoryContext $productFactoryContext,
     ) {
 	    $this->productRepository     = $productRepository;
+        $this->uploadService = $uploadService;
         $this->emailService = $emailService;
         $this->productFactoryContext = $productFactoryContext;
 
@@ -56,6 +59,19 @@ class ProductServiceImpl implements ProductService {
             $dto->getCreatedAt(),
             $dto->getUpdatedAt()
         );
+    }
+    function deleteProduct(DeleteProductByUuidDto $dto):ResponseViewModel 
+    {
+        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid());
+        if($productDomainObject->isNull()) throw new NotFoundException('product');
+        
+        if(count($productDomainObject->getImages()->getItems()) >= 1){
+            foreach($productDomainObject->getImages()->getItems() as $image){
+                $this->uploadService->deleteImageByUuid($image->getImageName(), $productDomainObject->getUuid());
+            }
+        }
+        $this->productRepository->deleteProductByUuid($productDomainObject);
+        return new ProductDeletedResponseDto('Product deleted successfully');
     }
     function findAllProduct(FindAllProductsDto $dto): ResponseViewModel
     {

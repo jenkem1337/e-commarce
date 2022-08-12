@@ -106,6 +106,18 @@ class CategoryDaoImpl implements CategoryDao {
         if($categories == null) return $this->returnManyNullStatment();
         return $categories;
     }
+    function deleteCategoryByProductUuid($uuid)
+    {
+        $conn = $this->databaseConnection->getConnection();
+        $stmt = $conn->prepare(
+            "DELETE FROM product_category WHERE product_uuid = :uuid"
+        );
+        $stmt->execute([
+            'uuid'=>$uuid
+        ]);
+        $conn = null;
+
+    }
     private function returnNullStatment() {
         $arr = [
 

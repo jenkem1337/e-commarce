@@ -9,11 +9,12 @@ class CategoryRepositoryImpl implements CategoryRepository {
 	}
     
 	function persist(CategoryInterface $c) {
-        
-        
         $this->categoryDao->persist($c);
     }
-	
+	function deleteCategoryByProductUuid($uuid)
+    {
+        $this->categoryDao->deleteCategoryByProductUuid($uuid);
+    }
 	function deleteByUuid($uuid) {
         $this->categoryDao->deleteByUuid($uuid);
 	}

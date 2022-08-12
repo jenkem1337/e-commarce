@@ -14,6 +14,10 @@ abstract class ProductRepositoryDecorator implements ProductRepository {
     {
         return $this->productRepository->findAllProducts();
     }
+    function deleteProductByUuid(Product $p)
+    {
+        $this->productRepository->deleteProductByUuid($p);   
+    }
     function updateProductModelName(Product $p)
     {
         $this->productRepository->updateProductModelName($p);

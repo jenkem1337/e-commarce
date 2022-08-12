@@ -9,4 +9,5 @@ interface CategoryRepository {
     function findAll():IteratorAggregate;
     function findOneByName($categoryName):CategoryInterface;
     function addCategoryUuidToProduct($productUuid);
+    function deleteCategoryByProductUuid($uuid);
 }

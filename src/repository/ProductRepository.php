@@ -9,6 +9,7 @@ interface ProductRepository {
     function updateProductDescription(Product $p);
     function updateProductPrice(Product $p);
     function findAllProducts():IteratorAggregate;
+    function deleteProductByUuid(Product $product);
     function findAllWithPagination($startingLimit, $perPageForProduct):IteratorAggregate;
 
     //image

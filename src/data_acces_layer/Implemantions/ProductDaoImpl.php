@@ -57,6 +57,18 @@ class ProductDaoImpl implements ProductDao {
         $conn = null;
 
     }
+    function deleteSubscriberByProductUuid($pUuid)
+    {
+        $conn = $this->dbConnection->getConnection();
+        $stmt = $conn->prepare(
+            "DELETE FROM product_subscriber WHERE product_uuid = :uuid"
+        );
+        $stmt->execute([
+            'uuid'=>$pUuid
+        ]);
+        $conn = null;
+
+    }
 	function deleteByUuid($uuid) {
         $conn = $this->dbConnection->getConnection();
         $stmt = $conn->prepare(

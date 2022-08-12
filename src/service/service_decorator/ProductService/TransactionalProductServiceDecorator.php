@@ -63,6 +63,25 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
         }
 
     }
+    function deleteProduct(DeleteProductByUuidDto $dto): ResponseViewModel
+    {
+        try {
+            $dbConnection = $this->dbConnection->getConnection();
+            
+            $dbConnection->beginTransaction();
+            $response = parent::deleteProduct($dto);
+            
+            $dbConnection->commit();
+
+        } catch (Exception $e) {
+            $dbConnection->rollBack();
+            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
+        } finally {
+            $dbConnection = null;
+            return $response;
+        }
+
+    }
     function updateProductBrandName(ChangeProductBrandNameDto $dto): ResponseViewModel
     {
         try {

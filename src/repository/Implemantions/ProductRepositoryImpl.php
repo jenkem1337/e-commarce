@@ -145,6 +145,7 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
             }
             foreach($categoryIterator->getIterator() as $category){
                 if($category->isNull()) continue;
+                $category->setProductUuid($productDomainObject->getUuid());
                 $productDomainObject->addCategory($category);
             }
             foreach($rateIterator->getIterator() as $rate){
@@ -208,6 +209,7 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
         }
         foreach($categoryIterator->getIterator() as $category){
             if($category->isNull()) continue;
+            $category->setProductUuid($productDomainObject->getUuid());
             $productDomainObject->addCategory($category);
         }
         foreach($rateIterator->getIterator() as $rate){
@@ -220,6 +222,27 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
         }
         return $productDomainObject;
     }
+    
+    function deleteProductByUuid(Product $product)
+    {
+        foreach($product->getComments() as $comment){
+            $this->commentRepository->deleteByUuid($comment->getUuid());
+        }
+        foreach($product->getRates() as  $rate) {
+            $this->rateRepository->deleteRateByUuid($rate->getUuid());
+        }
+        foreach($product->getImages() as $image) {
+            $this->imageRepository->deleteByUuid($image->getUuid());
+        }
+        foreach($product->getSubscribers() as $subscriber){
+            $this->productDao->deleteSubscriberByProductUuid($subscriber->getProductUuid());
+        }
+        foreach($product->getCategories() as $category) {
+            $this->categoryRepository->deleteCategoryByProductUuid($category->getProductUuid());
+        }
+        $this->productDao->deleteByUuid($product->getUuid());
+    }
+    
     function updateProductBrandName(Product $p)
     {
         $this->productDao->updateBrandNameByUuid($p);

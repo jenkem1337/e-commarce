@@ -4,6 +4,7 @@ interface ProductDao {
     function persist(Product $p);
     function persistSubscriber(ProductSubscriber $ps);
     function deleteSubscriberByUserUuid($uuid);
+    function deleteSubscriberByProductUuid($pUuid);
     function deleteByUuid($uuid);
     function findAll();
     function findAllProductSubscriberByProductUuid($uuid);

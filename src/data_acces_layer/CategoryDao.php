@@ -8,4 +8,5 @@ interface CategoryDao {
     function findOneByName($categoryName);
     function addCategoryUuidToProduct(Category $c);
     function findAllByProductUuid($uuid);
+    function deleteCategoryByProductUuid($uuid);
 }

@@ -43,6 +43,19 @@ class ProductController {
             ]);
         });
     }
+    function deleteProduct($uuid){
+        $this->productService->deleteProduct(
+            new DeleteProductByUuidDto($uuid)
+        )->onSucsess(function (ProductDeletedResponseDto $response){
+            echo json_encode(['success_message' => $response->getSuccessMessage()]);
+        })->onError(function (ErrorResponseDto $err){
+            echo json_encode([
+                'error_message'=>$err->getErrorMessage(),
+                'status_code'=> $err->getErrorCode()
+            ]);
+        });
+    }
+
     function findAllProducts() {
         $this->productService->findAllProduct(new FindAllProductsDto)
                             ->onSucsess(function (AllProductResponseDto $products){
