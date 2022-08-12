@@ -51,6 +51,7 @@ class ProductControllerFactory implements Factory {
             new TransactionalProductServiceDecorator(
                 new ProductServiceImpl(
                     $productRepositoryImpl,
+                    new UploadServiceImpl,
                     new EmailServiceImpl(new PHPMailer(true)),
                     new ProductFactoryContext([
                         ProductFactory::class => new ConcreteProductFactory(),
