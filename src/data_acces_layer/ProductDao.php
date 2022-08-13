@@ -11,7 +11,7 @@ interface ProductDao {
     function findSubscriberByUserUuid($userUuid);
     function findAllWithPagination($startingLimit, $perPageForUsers);
     function findOneByUuid($uuid);
-    function findBySearching($value);
+    function findBySearching($value, $startingLimit, $perPageForUsers);
     function updateStockQuantityByUuid(Product $p);
     function updateModelNameByUuid(Product $p);
     function updateBrandNameByUuid(Product $p);

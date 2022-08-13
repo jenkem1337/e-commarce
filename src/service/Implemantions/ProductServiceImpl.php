@@ -115,7 +115,20 @@ class ProductServiceImpl implements ProductService {
             $productDomainObject->calculateAvarageRate();
         }
         return new AllProductWithPaginationResponseDto($products);
-    }   
+    }
+    function findProductsBySearch(FindProductsBySearchDto $dto): ResponseViewModel
+    {
+        $products = $this->productRepository->findProductsBySearch(
+            $dto->getSearchValue(), $dto->getStartingLimit(), $dto->getPerPageForProduct()
+        );
+        foreach($products->getIterator() as $productDomainObject) {
+            if($productDomainObject->isNull()) {
+                throw new NotFoundException('product');
+            }
+            $productDomainObject->calculateAvarageRate();
+        }
+        return new SearchedProductResponseDto($products);
+    }
     function updateProductBrandName(ChangeProductBrandNameDto $dto): ResponseViewModel
     {
         $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid());
