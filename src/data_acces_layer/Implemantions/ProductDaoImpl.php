@@ -45,14 +45,16 @@ class ProductDaoImpl implements ProductDao {
 
     }
 	
-	function deleteSubscriberByUserUuid($uuid)
+	function deleteSubscriberByUserAndProductUuid($userUuid, $productUuid)
     {
         $conn = $this->dbConnection->getConnection();
         $stmt = $conn->prepare(
-            "DELETE FROM product_subscriber WHERE user_uuid = :uuid"
+            "DELETE FROM product_subscriber 
+            WHERE (user_uuid = :user_uuid AND product_uuid = :product_uuid)"
         );
         $stmt->execute([
-            'uuid'=>$uuid
+            'user_uuid'=>$userUuid,
+            'product_uuid' => $productUuid
         ]);
         $conn = null;
 
