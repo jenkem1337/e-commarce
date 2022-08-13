@@ -55,7 +55,22 @@ class ProductController {
             ]);
         });
     }
+    function deleteProductSubscriber($productUuid) {
+        $jwtPayload = JwtPayloadDto::getInstance();
+        $userDetail = $jwtPayload->getPayload();
+        $jwtPayload->removePayload();
+        $this->productService->deleteProductSubscriber(
+                new DeleteProductSubscriberDto($productUuid, $userDetail->user_uuid)
+            )->onSucsess(function (ProductSubscriberDeletedResponseDto $response){
+            echo json_encode(['success_message' => $response->getSuccessMessage()]);
+        })->onError(function (ErrorResponseDto $err){
+            echo json_encode([
+                'error_message'=>$err->getErrorMessage(),
+                'status_code'=> $err->getErrorCode()
+            ]);
+        });
 
+    }
     function findAllProducts() {
         $this->productService->findAllProduct(new FindAllProductsDto)
                             ->onSucsess(function (AllProductResponseDto $products){

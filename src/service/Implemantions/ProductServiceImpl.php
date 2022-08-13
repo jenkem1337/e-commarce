@@ -73,6 +73,27 @@ class ProductServiceImpl implements ProductService {
         $this->productRepository->deleteProductByUuid($productDomainObject);
         return new ProductDeletedResponseDto('Product deleted successfully');
     }
+    function deleteProductSubscriber(DeleteProductSubscriberDto $dto): ResponseViewModel
+    {
+        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getProductUuid());
+        
+        if($productDomainObject->isNull()) throw new NotFoundException('product');
+        
+        if(!( count($productDomainObject->getSubscribers()->getItems()) >=1) ){
+            throw new DoesNotExistException('subscriber');
+        }
+        $flag = false;
+        foreach($productDomainObject->getSubscribers()->getIterator() as $subscriber) {
+            if($subscriber->getUserUuid() == $dto->getSubscriberUuid() && !($subscriber->isNull())){
+                $flag = true;
+            }
+        }
+        if($flag) $this->productRepository->deleteProductSubscriberByUserAndProductUuid($dto->getSubscriberUuid() ,$dto->getProductUuid());
+        if(!$flag) throw new DoesNotExistException('Product subscriber');
+        
+        return new ProductSubscriberDeletedResponseDto('Product subscriber deleted successfully');
+
+    }
     function findAllProduct(FindAllProductsDto $dto): ResponseViewModel
     {
         $products = $this->productRepository->findAllProducts();
@@ -80,6 +101,7 @@ class ProductServiceImpl implements ProductService {
             if($productDomainObject->isNull()) {
                 throw new NotFoundException('product');
             }
+            $productDomainObject->calculateAvarageRate();
         }
         return new AllProductResponseDto($products);
     }
@@ -90,6 +112,7 @@ class ProductServiceImpl implements ProductService {
             if($productDomainObject->isNull()) {
                 throw new NotFoundException('product');
             }
+            $productDomainObject->calculateAvarageRate();
         }
         return new AllProductWithPaginationResponseDto($products);
     }   

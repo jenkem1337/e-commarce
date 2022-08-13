@@ -242,7 +242,6 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
         }
         $this->productDao->deleteByUuid($product->getUuid());
     }
-    
     function updateProductBrandName(Product $p)
     {
         $this->productDao->updateBrandNameByUuid($p);
@@ -270,6 +269,10 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
             $this->imageRepository->persist($image);
         }
         
+    }
+    function deleteProductSubscriberByUserAndProductUuid($userUuid, $productUuid)
+    {
+        $this->productDao->deleteSubscriberByUserAndProductUuid($userUuid, $productUuid);
     }
     function deleteImageByUuid($uuid)
     {

@@ -45,4 +45,8 @@ abstract class ProductServiceDecorator implements ProductService {
 	{
 		return $this->productService->deleteProduct($dto);
 	}
+	function deleteProductSubscriber(DeleteProductSubscriberDto $dto): ResponseViewModel
+	{
+		return $this->productService->deleteProductSubscriber($dto);
+	}
 }
