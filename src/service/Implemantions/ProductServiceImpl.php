@@ -3,18 +3,20 @@ class ProductServiceImpl implements ProductService {
     private ProductRepository $productRepository;
     private EmailService $emailService;
     private ProductFactoryContext $productFactoryContext;
+    private ProductSubscriberFactory $productSubscriberFactory;
     private UploadService $uploadService;
 	function __construct(
         ProductRepository $productRepository,
         UploadService $uploadService,
         EmailService $emailService,
         ProductFactoryContext $productFactoryContext,
+        Factory $productSubscriberFactory
     ) {
 	    $this->productRepository     = $productRepository;
         $this->uploadService = $uploadService;
         $this->emailService = $emailService;
         $this->productFactoryContext = $productFactoryContext;
-
+        $this->productSubscriberFactory = $productSubscriberFactory;
 	}
     function craeteNewProduct(ProductCreationalDto $dto): ResponseViewModel
     {
@@ -60,6 +62,39 @@ class ProductServiceImpl implements ProductService {
             $dto->getUpdatedAt()
         );
     }
+    function createNewProductSubscriber(ProductSubscriberCreationalDto $dto): ResponseViewModel
+    {
+        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getProductUuid());
+        
+        ( $productDomainObject->isNull() ?? throw new NotFoundException('product') );
+
+        $isUserSubscriberBefore = false;
+        if(count($productDomainObject->getSubscribers()->getItems()) >=1){
+            foreach($productDomainObject->getSubscribers()->getIterator() as $subscriber){
+                if($subscriber->getUserUuid() == $dto->getUserUuid()){
+                    $isUserSubscriberBefore = true;
+                }
+            }
+    
+        }
+        if($isUserSubscriberBefore) throw new AlreadyExistException('product subscriber');
+
+        $productSubscriberDomainObject = $this->productSubscriberFactory->createInstance(
+            true,
+            $dto->getUuid(),
+            $dto->getProductUuid(),
+            $dto->getUserUuid(),
+            $dto->getCreatedAt(),
+            $dto->getUpdatedAt()
+        );
+
+        if((count($productDomainObject->getSubscribers()->getItems()) >=1)) {
+            $productDomainObject->getSubscribers()->clearItems();
+            $productDomainObject->getSubscribers()->add($productSubscriberDomainObject);
+        }
+        $this->productRepository->persistProductSubscriber($productDomainObject);
+        return new ProductSubscriberCreatedResponseDto('Subscribed to product successfully');
+    }
     function deleteProduct(DeleteProductByUuidDto $dto):ResponseViewModel 
     {
         $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid());
@@ -82,14 +117,16 @@ class ProductServiceImpl implements ProductService {
         if(!( count($productDomainObject->getSubscribers()->getItems()) >=1) ){
             throw new DoesNotExistException('subscriber');
         }
-        $flag = false;
+        $isUserSubscribedToProductBefore = false;
         foreach($productDomainObject->getSubscribers()->getIterator() as $subscriber) {
             if($subscriber->getUserUuid() == $dto->getSubscriberUuid() && !($subscriber->isNull())){
-                $flag = true;
+                $isUserSubscribedToProductBefore = true;
             }
         }
-        if($flag) $this->productRepository->deleteProductSubscriberByUserAndProductUuid($dto->getSubscriberUuid() ,$dto->getProductUuid());
-        if(!$flag) throw new DoesNotExistException('Product subscriber');
+        
+        if(!$isUserSubscribedToProductBefore) throw new DoesNotExistException('Product subscriber');
+        
+        $this->productRepository->deleteProductSubscriberByUserAndProductUuid($dto->getSubscriberUuid() ,$dto->getProductUuid());
         
         return new ProductSubscriberDeletedResponseDto('Product subscriber deleted successfully');
 

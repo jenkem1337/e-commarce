@@ -20,6 +20,13 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
             $this->categoryRepository->addCategoryUuidToProduct($category);
         }
     }
+    function persistProductSubscriber(Product $p)
+    {
+        foreach($p->getSubscribers()->getItems() as $subscriber){
+            $this->productDao->persistSubscriber($subscriber);
+        }
+    }
+
     function findAllWithPagination($startingLimit, $perPageForProduct): IteratorAggregate
     {
         $productCollection = new ProductCollection();

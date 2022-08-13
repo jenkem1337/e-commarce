@@ -19,6 +19,14 @@ class ProductRepositoryAggregateRootDecorator extends ProductRepositoryDecorator
     {
         parent::createProduct($p);
     }
+    function persistProductSubscriber(AggregateRoot $p)
+    {
+        parent::persistProductSubscriber($p);
+    }
+    function deleteProductByUuid(AggregateRoot $p)
+    {
+        parent::deleteProductByUuid($p);
+    }
     function updateProductBrandName(AggregateRoot $p)
     {
         parent::updateProductBrandName($p);

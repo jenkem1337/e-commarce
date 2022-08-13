@@ -57,6 +57,7 @@ class ProductControllerFactory implements Factory {
                         ProductFactory::class => new ConcreteProductFactory(),
                         ProductCategoryCreationalModelFactory::class => new ConcreteProductCategoryCreationalModelFactory()
                     ]),
+                    new ConcreteProductSubscriberFactory
                 ), MySqlPDOConnection::getInsatace()
             )
         );

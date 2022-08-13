@@ -83,6 +83,25 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
         }
 
     }
+    function createNewProductSubscriber(ProductSubscriberCreationalDto $dto): ResponseViewModel
+    {
+        try {
+            $dbConnection = $this->dbConnection->getConnection();
+            
+            $dbConnection->beginTransaction();
+            $response = parent::createNewProductSubscriber($dto);
+            
+            $dbConnection->commit();
+
+        } catch (Exception $e) {
+            $dbConnection->rollBack();
+            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
+        } finally {
+            $dbConnection = null;
+            return $response;
+        }
+
+    }
     function deleteProduct(DeleteProductByUuidDto $dto): ResponseViewModel
     {
         try {

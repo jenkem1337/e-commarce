@@ -26,6 +26,11 @@ abstract class ProductRepositoryDecorator implements ProductRepository {
     {
         $this->productRepository->deleteProductSubscriberByUserAndProductUuid($userUuid, $productUuid);
     }
+    function persistProductSubscriber(Product $p)
+    {
+        $this->productRepository->persistProductSubscriber($p);
+    }
+    
     function updateProductModelName(Product $p)
     {
         $this->productRepository->updateProductModelName($p);

@@ -3,6 +3,7 @@
 interface ProductService {
     //product
     function craeteNewProduct(ProductCreationalDto $dto):ResponseViewModel;
+    function createNewProductSubscriber(ProductSubscriberCreationalDto $dto): ResponseViewModel;
     function deleteProduct(DeleteProductByUuidDto $dto): ResponseViewModel;
     function deleteProductSubscriber(DeleteProductSubscriberDto $dto): ResponseViewModel;
     function findAllProduct(FindAllProductsDto $dto):ResponseViewModel;

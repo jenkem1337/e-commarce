@@ -2,6 +2,7 @@
 interface ProductRepository {
     //product
     function createProduct(Product $p);
+    function persistProductSubscriber(Product $p);
     function findOneProductByUuid($uuid):ProductInterface;
     function updateProductBrandName(Product $p);
     function updateProductModelName(Product $p);
