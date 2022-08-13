@@ -76,7 +76,7 @@ class ProductInMemoryDaoTest extends TestCase {
         $this->dao->persist(new ProductConstructorRuleRequiredDecorator(Uuid::uuid4(),'X Brand','Model ZZ','X Brand Model ZZ','Excelent product for developers',199.00,200,date('h'),date('h')));
         $this->dao->persist(new ProductConstructorRuleRequiredDecorator(Uuid::uuid4(),'X Brand','Model PP','X Brand Model PP','Excelent product for developers',199.00,200,date('h'),date('h')));
         $this->dao->persist(new ProductConstructorRuleRequiredDecorator(Uuid::uuid4(),'X Brand','Model OO','X Brand Model OO','Excelent product for developers',199.00,200,date('h'),date('h')));
-        $this->assertEquals(6, count($this->dao->findBySearching('x brand')));
+        $this->assertEquals(6, count($this->dao->findBySearching('x brand', 1,10)));
     }
     function test_update_stockquatity(){
         $product = new ProductConstructorRuleRequiredDecorator(Uuid::uuid4(),'X Brand','Model ZZ','X Brand Model ZZ','Excelent product for developers',199.00,200,date('h'),date('h'));
