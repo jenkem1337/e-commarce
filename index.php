@@ -4,8 +4,7 @@ header('Content-type: application/json');
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
 try {
-    //code...
-    $authController = (new AuthControllerFactory())->createInstance();
+$authController = (new AuthControllerFactory())->createInstance();
 $userController = (new UserControllerFactory())->createInstance();
 $categoryController = (new CategoryControllerFactory())->createInstance();
 $productController = (new ProductControllerFactory())->createInstance();
@@ -41,6 +40,7 @@ $f->registerRoute('GET', '/categories', new FindAllCategoryCommand($categoryCont
 $f->registerRoute('GET', '/categories/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})', new FindOneCategoryCommand($categoryController, new JwtAuthMiddleware));
         
 //Product Route
+$f->registerRoute("GET", '/products/search', new FindProductsBySearchCommand($productController));
 $f->registerRoute("GET", "/products/partial", new FindAllProductWithPaginationCommand($productController));
 $f->registerRoute("GET", "/products", new FindAllProductCommand($productController));
 $f->registerRoute("GET","/products/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})", new FindOneProductCommand($productController));
