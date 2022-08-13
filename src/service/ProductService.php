@@ -15,4 +15,5 @@ interface ProductService {
     function updateProductHeader(ChangeProductHeaderDto $dto): ResponseViewModel;
     function updateProductDescription(ChangeProductDescriptionDto $dto): ResponseViewModel;
     function updateProductPrice(ChangeProductPriceDto $dto): ResponseViewModel;
+    function updateProductStockQuantity(ChangeProductStockQuantityDto $dto):ResponseViewModel;
 }

@@ -23,6 +23,10 @@ class ProductRepositoryAggregateRootDecorator extends ProductRepositoryDecorator
     {
         parent::persistProductSubscriber($p);
     }
+    function updateProductStockQuantity(AggregateRoot $p)
+    {
+        parent::updateProductStockQuantity($p);
+    }
     function deleteProductByUuid(AggregateRoot $p)
     {
         parent::deleteProductByUuid($p);

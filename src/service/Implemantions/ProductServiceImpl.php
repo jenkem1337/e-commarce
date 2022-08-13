@@ -247,4 +247,25 @@ class ProductServiceImpl implements ProductService {
             $productDomainObject->getUpdatedAt()
         );
     }
+
+    function updateProductStockQuantity(ChangeProductStockQuantityDto $dto): ResponseViewModel
+    {
+        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getProductUuid());
+        
+        if($productDomainObject->isNull()) throw new NotFoundException('product');
+        
+        switch($dto->getUpdatingStrategy()){
+            
+            case StockQuantityChangingConstant::INCREMENT_QUANTITY:
+                $productDomainObject->incrementStockQuantity($dto->getQuantity());
+                break;
+            
+            case StockQuantityChangingConstant::DECREMENT_QUANTITY: 
+                $productDomainObject->decrementStockQuantity($dto->getQuantity());
+                break;
+        }
+        $this->productRepository->updateProductStockQuantity($productDomainObject);
+
+        return new ProductStockQuantityChangedResponseDto('Product stock quantity changed successfully');
+    }
 }

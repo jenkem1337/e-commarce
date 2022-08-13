@@ -332,6 +332,10 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
     {
         $this->productDao->updatePriceByUuid($p);
     }
+    function updateProductStockQuantity(Product $p)
+    {
+        $this->productDao->updateStockQuantityByUuid($p);
+    }
     function updateProductHeader(Product $p)
     {
         $this->productDao->updateHeaderByUuid($p);

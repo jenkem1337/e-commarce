@@ -1,4 +1,6 @@
 <?php
+
+use PhpParser\Node\Expr\PreDec;
 use Ramsey\Uuid\Uuid;
 
 class ProductController {
@@ -464,5 +466,21 @@ class ProductController {
         });
 
     }
+    function updateProductStockQuantity($productUuid){
+        $jsonBody = json_decode(file_get_contents('php://input'));
 
+        $this->productService->updateProductStockQuantity(
+            new ChangeProductStockQuantityDto(
+                $productUuid, $jsonBody->new_stock_quantity, $jsonBody->update_event_constant
+            )
+        )->onSucsess(function (ProductStockQuantityChangedResponseDto $response){
+            echo json_encode(['success_message' => $response->getSuccessMessage()]);
+        
+        })->onError(function (ErrorResponseDto $err){
+            echo json_encode([
+                'error_message'=>$err->getErrorMessage(),
+                'status_code'=> $err->getErrorCode()
+            ]);
+        });
+    }
 }

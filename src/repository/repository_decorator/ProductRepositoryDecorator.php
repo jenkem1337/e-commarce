@@ -18,6 +18,10 @@ abstract class ProductRepositoryDecorator implements ProductRepository {
     {
         $this->productRepository->deleteProductByUuid($p);   
     }
+    function updateProductStockQuantity(Product $p)
+    {
+        $this->productRepository->updateProductStockQuantity($p);
+    }
     function findProductsBySearch($searchValue, $startingLimit, $perPageForProduct): IteratorAggregate
     {
         return $this->productRepository->findProductsBySearch($searchValue, $startingLimit, $perPageForProduct);

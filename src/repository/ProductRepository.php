@@ -9,6 +9,7 @@ interface ProductRepository {
     function updateProductHeader(Product $p);
     function updateProductDescription(Product $p);
     function updateProductPrice(Product $p);
+    function updateProductStockQuantity(Product $p);
     function findAllProducts():IteratorAggregate;
     function findProductsBySearch($searchValue, $startingLimit, $perPageForProduct): IteratorAggregate;
     function findAllWithPagination($startingLimit, $perPageForProduct):IteratorAggregate;

@@ -26,6 +26,10 @@ abstract class ProductServiceDecorator implements ProductService {
 	{
 		return $this->productService->createNewProductSubscriber($dto);
 	}
+	function updateProductStockQuantity(ChangeProductStockQuantityDto $dto): ResponseViewModel
+	{
+		return $this->productService->updateProductStockQuantity($dto);
+	}
 	function updateProductBrandName(ChangeProductBrandNameDto $dto): ResponseViewModel{
 		return $this->productService->updateProductBrandName($dto);
 	}
