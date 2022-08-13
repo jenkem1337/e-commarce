@@ -145,15 +145,19 @@ class ProductDaoImpl implements ProductDao {
         return $product;
 	}
 	
-	function findBySearching($value) {
+	function findBySearching($value, $startingLimit, $perPageForUsers) {
         $conn = $this->dbConnection->getConnection();
         $stmt = $conn->prepare(
-            "SELECT * FROM products WHERE (
+            "SELECT * FROM products 
+            WHERE (
                 model LIKE :_value OR
                 brand LIKE :_value OR
                 _description LIKE :_value OR
                 header LIKE :_value 
-            )"    
+            )
+            ORDER BY created_at DESC 
+            LIMIT $startingLimit, $perPageForUsers" 
+            
         );
         $stmt->execute([
             '_value'=>"%".$value."%"
