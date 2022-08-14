@@ -26,7 +26,78 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
             $this->productDao->persistSubscriber($subscriber);
         }
     }
+    function findProductsByPriceRange($from, $to):IteratorAggregate
+    {
+        $productCollection = new ProductCollection();
+        $productObjects = $this->productDao->findByPriceRange($from, $to);
+        
+        foreach($productObjects as $productObject){       
+            $productSubscriberObjects = $this->productDao->findAllProductSubscriberByProductUuid($productObject->uuid);
+            $subscriberIterator = new SubscriberCollection();
 
+            foreach($productSubscriberObjects as $subscriber){
+                $userDomainObject = $this->userRepository->findOneUserByUuid($subscriber->user_uuid);
+                $productSubscriberDomainObject = $this->productSubscriberFactory->createInstance(
+                    false,
+                    $subscriber->uuid,
+                    $subscriber->product_uuid,
+                    $subscriber->user_uuid,
+                    $subscriber->created_at,
+                    $subscriber->updated_at
+                );
+
+                $productSubscriberDomainObject->setUserEmail($userDomainObject->getEmail());
+                $productSubscriberDomainObject->setUserFullName($userDomainObject->getFullname());
+                $subscriberIterator->add($productSubscriberDomainObject);
+            }
+
+
+            $commentIterator  = $this->commentRepository->findAllByProductUuid($productObject->uuid);
+            $categoryIterator = $this->categoryRepository->findAllByProductUuid($productObject->uuid);
+            $rateIterator     = $this->rateRepository->findAllByProductUuid($productObject->uuid);
+            $imageIterator    = $this->imageRepository->findAllByProductUuid($productObject->uuid);
+           
+            $productDomainObject = $this->productFactoryContext->executeFactory(
+                ProductFactory::class,
+                false,
+                $productObject->uuid,
+                $productObject->brand,
+                $productObject->model,
+                $productObject->header,
+                $productObject->_description,
+                $productObject->price,
+                $productObject->stockquantity,
+                $productObject->created_at,
+                $productObject->updated_at
+            );
+
+            foreach($subscriberIterator->getIterator() as $subscriber){
+                if($subscriber->isNull()) continue;
+                $productDomainObject->addSubscriber($subscriber);
+            }
+            foreach($commentIterator->getIterator() as $comment){
+                if($comment->isNull()) continue;
+                $productDomainObject->addComment($comment);
+            }
+            foreach($categoryIterator->getIterator() as $category){
+                if($category->isNull()) continue;
+                $productDomainObject->addCategory($category);
+            }
+            foreach($rateIterator->getIterator() as $rate){
+                if($rate->isNull()) continue;
+                $productDomainObject->addRate($rate);
+            }
+            foreach($imageIterator->getIterator() as $image){
+                if($image->isNull()) continue;
+                $productDomainObject->addImage($image);
+            }
+            $productCollection->add($productDomainObject);
+        }
+
+        
+        return $productCollection;
+
+    }
     function findAllWithPagination($startingLimit, $perPageForProduct): IteratorAggregate
     {
         $productCollection = new ProductCollection();

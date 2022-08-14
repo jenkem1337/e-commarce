@@ -268,4 +268,15 @@ class ProductServiceImpl implements ProductService {
 
         return new ProductStockQuantityChangedResponseDto('Product stock quantity changed successfully');
     }
+    function findProductsByPriceRange(FindProductsByPriceRangeDto $dto): ResponseViewModel
+    {
+        $products = $this->productRepository->findProductsByPriceRange($dto->getFrom(), $dto->getTo());
+        foreach($products->getIterator() as $productDomainObject) {
+            if($productDomainObject->isNull()) {
+                throw new NotFoundException('product');
+            }
+            $productDomainObject->calculateAvarageRate();
+        }
+        return new AllProductResponseDto($products);
+    }
 }

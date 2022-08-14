@@ -22,6 +22,10 @@ abstract class ProductServiceDecorator implements ProductService {
 	{
 		return $this->productService->findProductsBySearch($dto);
 	}
+	function findProductsByPriceRange(FindProductsByPriceRangeDto $dto): ResponseViewModel
+	{
+		return $this->productService->findProductsByPriceRange($dto);
+	}
 	function createNewProductSubscriber(ProductSubscriberCreationalDto $dto): ResponseViewModel
 	{
 		return $this->productService->createNewProductSubscriber($dto);

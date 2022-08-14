@@ -167,7 +167,24 @@ class ProductDaoImpl implements ProductDao {
         if($products == null) return $this->returnManyNullStatement();
         return $products;
 	}
-	
+	function findByPriceRange($from, $to)
+    {
+        $conn = $this->dbConnection->getConnection();
+        $stmt = $conn->prepare(
+            "SELECT * FROM products 
+            WHERE price BETWEEN :_from AND :_to" 
+            
+        );
+        $stmt->execute([
+            '_from' => (int)$from,
+            '_to' => (int)$to
+        ]);
+        $products = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $conn = null;
+        if($products == null) return $this->returnManyNullStatement();
+        return $products;
+
+    }
 	function updateStockQuantityByUuid(Product $p) {
         $conn = $this->dbConnection->getConnection();
         $stmt = $conn->prepare(

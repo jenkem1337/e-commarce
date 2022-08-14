@@ -22,6 +22,10 @@ abstract class ProductRepositoryDecorator implements ProductRepository {
     {
         $this->productRepository->updateProductStockQuantity($p);
     }
+    function findProductsByPriceRange($from, $to): IteratorAggregate
+    {
+        return $this->productRepository->findProductsByPriceRange($from, $to);
+    }
     function findProductsBySearch($searchValue, $startingLimit, $perPageForProduct): IteratorAggregate
     {
         return $this->productRepository->findProductsBySearch($searchValue, $startingLimit, $perPageForProduct);

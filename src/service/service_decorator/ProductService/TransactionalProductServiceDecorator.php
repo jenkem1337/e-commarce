@@ -102,6 +102,25 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
         }
 
     }
+    function findProductsByPriceRange(FindProductsByPriceRangeDto $dto): ResponseViewModel
+    {
+        try {
+            $dbConnection = $this->dbConnection->getConnection();
+            
+            $dbConnection->beginTransaction();
+            $response = parent::findProductsByPriceRange($dto);
+            
+            $dbConnection->commit();
+
+        } catch (Exception $e) {
+            $dbConnection->rollBack();
+            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
+        } finally {
+            $dbConnection = null;
+            return $response;
+        }
+
+    }
     function updateProductStockQuantity(ChangeProductStockQuantityDto $dto): ResponseViewModel
     {
         try {
