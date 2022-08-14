@@ -40,6 +40,7 @@ $f->registerRoute('GET', '/categories', new FindAllCategoryCommand($categoryCont
 $f->registerRoute('GET', '/categories/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})', new FindOneCategoryCommand($categoryController, new JwtAuthMiddleware));
         
 //Product Route
+$f->registerRoute("GET", "/products/price", new FindProductsByPriceRangeCommand($productController));
 $f->registerRoute("GET", '/products/search', new FindProductsBySearchCommand($productController));
 $f->registerRoute("GET", "/products/partial", new FindAllProductWithPaginationCommand($productController));
 $f->registerRoute("GET", "/products", new FindAllProductCommand($productController));
