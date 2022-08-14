@@ -248,6 +248,8 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'FindOneProductCommand' => __DIR__ . '/../..' . '/src/front_controller/front_controller_command/controller_commands/ProductController/FindOneProductCommand.php',
         'FindOneUserByUuidCommand' => __DIR__ . '/../..' . '/src/front_controller/front_controller_command/controller_commands/UserController/FindOneUserByUuidCommand.php',
         'FindOneUserByUuidDto' => __DIR__ . '/../..' . '/src/dto/request_dto/FindOneUserByUuidDto.php',
+        'FindProductsByPriceRangeCommand' => __DIR__ . '/../..' . '/src/front_controller/front_controller_command/controller_commands/ProductController/FindProductsByPriceRangeCommand.php',
+        'FindProductsByPriceRangeDto' => __DIR__ . '/../..' . '/src/dto/request_dto/FindProductsByPriceRangeDto.php',
         'FindProductsBySearchCommand' => __DIR__ . '/../..' . '/src/front_controller/front_controller_command/controller_commands/ProductController/FindProductsBySearchCommand.php',
         'FindProductsBySearchDto' => __DIR__ . '/../..' . '/src/dto/request_dto/FindProductsBySearchDto.php',
         'ForgettenPasswordDto' => __DIR__ . '/../..' . '/src/dto/request_dto/ForgettenPasswordDto.php',

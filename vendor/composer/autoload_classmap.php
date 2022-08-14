@@ -107,6 +107,8 @@ return array(
     'FindOneProductCommand' => $baseDir . '/src/front_controller/front_controller_command/controller_commands/ProductController/FindOneProductCommand.php',
     'FindOneUserByUuidCommand' => $baseDir . '/src/front_controller/front_controller_command/controller_commands/UserController/FindOneUserByUuidCommand.php',
     'FindOneUserByUuidDto' => $baseDir . '/src/dto/request_dto/FindOneUserByUuidDto.php',
+    'FindProductsByPriceRangeCommand' => $baseDir . '/src/front_controller/front_controller_command/controller_commands/ProductController/FindProductsByPriceRangeCommand.php',
+    'FindProductsByPriceRangeDto' => $baseDir . '/src/dto/request_dto/FindProductsByPriceRangeDto.php',
     'FindProductsBySearchCommand' => $baseDir . '/src/front_controller/front_controller_command/controller_commands/ProductController/FindProductsBySearchCommand.php',
     'FindProductsBySearchDto' => $baseDir . '/src/dto/request_dto/FindProductsBySearchDto.php',
     'ForgettenPasswordDto' => $baseDir . '/src/dto/request_dto/ForgettenPasswordDto.php',
