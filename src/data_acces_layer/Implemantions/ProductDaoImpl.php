@@ -96,14 +96,16 @@ class ProductDaoImpl implements ProductDao {
     {
         $conn= $this->dbConnection->getConnection();
         $stmt = $conn->prepare(
-            "SELECT * FROM product_subscriber WHERE product_uuid = :uuid"
+            "SELECT ps.uuid, ps.user_uuid, ps.product_uuid ,ps.created_at, ps.updated_at, u.uuid, u.full_name user_full_name, u.email user_email
+            FROM product_subscriber as ps, users as u
+            WHERE ps.product_uuid = :uuid AND ps.user_uuid = u.uuid"
         );
         $stmt->execute([
             "uuid"=>$uuid
         ]);
         $productSubscriber = $stmt->fetchAll(PDO::FETCH_OBJ);
         $conn = null;
-        if($productSubscriber == null) $this->returnManyNullForSubscriberStatement();
+        if($productSubscriber == null) return $this->returnManyNullForSubscriberStatement();
         return $productSubscriber;
 
     }
