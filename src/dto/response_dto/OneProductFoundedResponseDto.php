@@ -30,8 +30,10 @@ class OneProductFoundedResponseDto extends ResponseViewModel {
     protected $createdAt;
 
     protected $updatedAt;
+    protected IteratorAggregate $shippings;
 
-    public function __construct($uuid, $brand, $model, $header, $description, $price, $avarageRate, $stockQuantity, $categories, $comments, $rates, $images, $subscribers, $createdAt, $updatedAt)
+
+    public function __construct($uuid, $brand, $model, $header, $description, $price, $avarageRate, $stockQuantity, $categories, $comments, $rates, $images, $subscribers, $createdAt, $updatedAt, IteratorAggregate $shippings)
     {
         $this->uuid = $uuid;
         $this->brand = $brand;
@@ -48,6 +50,7 @@ class OneProductFoundedResponseDto extends ResponseViewModel {
         $this->subscribers = $subscribers;
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
+        $this->shippings = $shippings;
         parent::__construct('success', $this);
     }
 
@@ -225,5 +228,21 @@ class OneProductFoundedResponseDto extends ResponseViewModel {
             $subscriberArr[] = $subObj;
         }
         return $subscriberArr;
+    }
+
+    /**
+     * Get the value of shippings
+     */ 
+    public function getShippings()
+    {
+        $shippingArr = [];
+        foreach($this->shippings as $shipping){
+            $shippingObj = new stdClass;
+            $shippingObj->uuid = $shipping->getUuid();
+            $shippingObj->shiping_type = $shipping->getShippingType();
+            $shippingObj->price = $shipping->getPrice();
+            $shippingArr[] = $shippingObj;
+        }
+        return $shippingArr;
     }
 }

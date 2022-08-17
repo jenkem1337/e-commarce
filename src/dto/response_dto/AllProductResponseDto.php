@@ -2,10 +2,15 @@
 class AllProductResponseDto extends ResponseViewModel {
     protected IteratorAggregate $products;
 
-    public function __construct(IteratorAggregate $products)
+
+    protected IteratorAggregate $shippings;
+
+    public function __construct(IteratorAggregate $products, IteratorAggregate $shippings)
     {
         $this->products = $products;
+        $this->shippings = $shippings;
         parent::__construct('success', $this);
+
     }
 
     /**
@@ -14,5 +19,13 @@ class AllProductResponseDto extends ResponseViewModel {
     public function getProducts(): IteratorAggregate
     {
         return $this->products;
+    }
+
+    /**
+     * Get the value of shippings
+     */ 
+    public function getShippings():IteratorAggregate
+    {
+        return $this->shippings;
     }
 }
