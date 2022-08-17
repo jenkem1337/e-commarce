@@ -146,9 +146,6 @@ class UserRepositoryImpl implements UserRepository{
         
 
     }
-    function setProductMediator(AbstractProductRepositoryMediatorComponent $mediator){
-        $mediator->setUserRepository($this);
-    }
     
     function persistUser(User $user){
         $this->userDao->persist($user);
