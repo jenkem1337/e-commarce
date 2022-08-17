@@ -33,14 +33,6 @@ class ProductControllerFactory implements Factory {
             new ImageDaoImpl(MySqlPDOConnection::getInsatace()),
             new ConcreteImageFactory()
         );
-        $userRepositoryImpl = new UserRepositoryImpl(
-            new UserDaoImpl(MySqlPDOConnection::getInsatace()),
-            new RefreshTokenDaoImpl(new RedisConnection),
-            new ConcreteUserFactory,
-            new ConcreteRefreshTokenFactory
-        );
-        
-        $userRepositoryImpl->setProductMediator($productRepositoryImpl);
         $commentRepositoryImpl->setProductMediator($productRepositoryImpl);
         $rateRepositoryImpl->setProductMediator($productRepositoryImpl);
         $imageRepositoryImpl->setProductMediator($productRepositoryImpl);
@@ -51,6 +43,16 @@ class ProductControllerFactory implements Factory {
             new TransactionalProductServiceDecorator(
                 new ProductServiceImpl(
                     $productRepositoryImpl,
+                    new ShippingRepositoryImpl(
+                        new ShippingDaoImpl(MySqlPDOConnection::getInsatace()),
+                        new ShippingFactoryContext(
+                            [
+                                ShippingType::SAME_DAY => new ConcreteSameDayShippingFactory,
+                                ShippingType::TWO_DAY => new ConcreteTwoDayShippingFactory,
+                                ShippingType::LONG_DISTANCE => new ConcreteLongDistanceFactory
+                            ]
+                        )
+                    ),
                     new UploadServiceImpl,
                     new EmailServiceImpl(new PHPMailer(true)),
                     new ProductFactoryContext([

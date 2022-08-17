@@ -29,13 +29,6 @@ class CategoryControllerFactory implements Factory {
             new ImageDaoImpl(MySqlPDOConnection::getInsatace()),
             new ConcreteImageFactory()
         );
-        $userRepositoryImpl = new UserRepositoryImpl(
-            new UserDaoImpl(MySqlPDOConnection::getInsatace()),
-            new RefreshTokenDaoImpl(new RedisConnection),
-            new ConcreteUserFactory,
-            new ConcreteRefreshTokenFactory
-        );
-        $userRepositoryImpl->setProductMediator($productRepositoryImpl);
         $commentRepositoryImpl->setProductMediator($productRepositoryImpl);
         $rateRepositoryImpl->setProductMediator($productRepositoryImpl);
         $imageRepositoryImpl->setProductMediator($productRepositoryImpl);
