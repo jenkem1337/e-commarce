@@ -36,7 +36,6 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
             $subscriberIterator = new SubscriberCollection();
 
             foreach($productSubscriberObjects as $subscriber){
-                $userDomainObject = $this->userRepository->findOneUserByUuid($subscriber->user_uuid);
                 $productSubscriberDomainObject = $this->productSubscriberFactory->createInstance(
                     false,
                     $subscriber->uuid,
@@ -46,8 +45,8 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
                     $subscriber->updated_at
                 );
 
-                $productSubscriberDomainObject->setUserEmail($userDomainObject->getEmail());
-                $productSubscriberDomainObject->setUserFullName($userDomainObject->getFullname());
+                $productSubscriberDomainObject->setUserEmail($subscriber->user_full_name);
+                $productSubscriberDomainObject->setUserFullName($subscriber->user_email);
                 $subscriberIterator->add($productSubscriberDomainObject);
             }
 
@@ -108,7 +107,6 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
             $subscriberIterator = new SubscriberCollection();
 
             foreach($productSubscriberObjects as $subscriber){
-                $userDomainObject = $this->userRepository->findOneUserByUuid($subscriber->user_uuid);
                 $productSubscriberDomainObject = $this->productSubscriberFactory->createInstance(
                     false,
                     $subscriber->uuid,
@@ -118,8 +116,8 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
                     $subscriber->updated_at
                 );
 
-                $productSubscriberDomainObject->setUserEmail($userDomainObject->getEmail());
-                $productSubscriberDomainObject->setUserFullName($userDomainObject->getFullname());
+                $productSubscriberDomainObject->setUserEmail($subscriber->user_full_name);
+                $productSubscriberDomainObject->setUserFullName($subscriber->user_email);
                 $subscriberIterator->add($productSubscriberDomainObject);
             }
 
@@ -179,7 +177,6 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
             $subscriberIterator = new SubscriberCollection();
 
             foreach($productSubscriberObjects as $subscriber){
-                $userDomainObject = $this->userRepository->findOneUserByUuid($subscriber->user_uuid);
                 $productSubscriberDomainObject = $this->productSubscriberFactory->createInstance(
                     false,
                     $subscriber->uuid,
@@ -189,8 +186,8 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
                     $subscriber->updated_at
                 );
 
-                $productSubscriberDomainObject->setUserEmail($userDomainObject->getEmail());
-                $productSubscriberDomainObject->setUserFullName($userDomainObject->getFullname());
+                $productSubscriberDomainObject->setUserEmail($subscriber->user_full_name);
+                $productSubscriberDomainObject->setUserFullName($subscriber->user_email);
                 $subscriberIterator->add($productSubscriberDomainObject);
             }
 
@@ -245,7 +242,6 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
         $subscriberIterator = new SubscriberCollection();
 
         foreach($productSubscriberObjects as $subscriber){
-            $userDomainObject = $this->userRepository->findOneUserByUuid($subscriber->user_uuid);
             $productSubscriberDomainObject = $this->productSubscriberFactory->createInstance(
                 false,
                 $subscriber->uuid,
@@ -254,10 +250,11 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
                 $subscriber->created_at,
                 $subscriber->updated_at
             );
-            $productSubscriberDomainObject->setUserEmail($userDomainObject->getEmail());
-            $productSubscriberDomainObject->setUserFullName($userDomainObject->getFullname());
+
+            $productSubscriberDomainObject->setUserEmail($subscriber->user_full_name);
+            $productSubscriberDomainObject->setUserFullName($subscriber->user_email);
             $subscriberIterator->add($productSubscriberDomainObject);
-        }
+    }
 
         $commentIterator  = $this->commentRepository->findAllByProductUuid($uuid);
         $categoryIterator = $this->categoryRepository->findAllByProductUuid($uuid);
@@ -311,7 +308,6 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
             $subscriberIterator = new SubscriberCollection();
 
             foreach($productSubscriberObjects as $subscriber){
-                $userDomainObject = $this->userRepository->findOneUserByUuid($subscriber->user_uuid);
                 $productSubscriberDomainObject = $this->productSubscriberFactory->createInstance(
                     false,
                     $subscriber->uuid,
@@ -321,8 +317,8 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
                     $subscriber->updated_at
                 );
 
-                $productSubscriberDomainObject->setUserEmail($userDomainObject->getEmail());
-                $productSubscriberDomainObject->setUserFullName($userDomainObject->getFullname());
+                $productSubscriberDomainObject->setUserEmail($subscriber->user_full_name);
+                $productSubscriberDomainObject->setUserFullName($subscriber->user_email);
                 $subscriberIterator->add($productSubscriberDomainObject);
             }
 
