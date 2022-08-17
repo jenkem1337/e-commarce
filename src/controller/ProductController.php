@@ -1,6 +1,5 @@
 <?php
 
-use PhpParser\Node\Expr\PreDec;
 use Ramsey\Uuid\Uuid;
 
 class ProductController {
@@ -98,7 +97,15 @@ class ProductController {
     function findAllProducts() {
         $this->productService->findAllProduct(new FindAllProductsDto)
                             ->onSucsess(function (AllProductResponseDto $products){
-
+                                $shippings = [];
+                                foreach($products->getShippings() as $shipping){
+                                    $shippingObj = new stdClass;
+                                    $shippingObj = new stdClass;
+                                    $shippingObj->uuid = $shipping->getUuid();
+                                    $shippingObj->shiping_type = $shipping->getShippingType();
+                                    $shippingObj->price = $shipping->getPrice();
+                                    $shippings[] = $shippingObj;
+                                }
                                 foreach($products->getProducts() as $product) {
                                     $categories = [];
                                     $comments = [];
@@ -151,6 +158,7 @@ class ProductController {
                                         $subscribers[] = $subObj;
                             
                                     }
+                                    
                                     echo json_encode([
                                         'uuid'=>$product->getUuid(),
                                         'brand'=> $product->getBrand(),
@@ -165,6 +173,7 @@ class ProductController {
                                         'subscribers'=>$subscribers,
                                         'categories'=>$categories,
                                         'images'=>$images,
+                                        'shippings_methods' => $shippings,
                                         'created_at' => $product->getCreatedAt(),
                                         'updated_at'=>$product->getUpdatedAt()
                                     ]);
@@ -184,6 +193,16 @@ class ProductController {
         $this->productService->findAllProductWithPagination(
             new FindAllProductWithPaginationDto($perPageForProduct, $pageNum)
         )->onSucsess(function (AllProductWithPaginationResponseDto $products){
+            $shippings = [];
+            foreach($products->getShippings() as $shipping){
+                $shippingObj = new stdClass;
+                $shippingObj = new stdClass;
+                $shippingObj->uuid = $shipping->getUuid();
+                $shippingObj->shiping_type = $shipping->getShippingType();
+                $shippingObj->price = $shipping->getPrice();
+                $shippings[] = $shippingObj;
+            }
+
             foreach($products->getProducts() as $product) {
                 $categories = [];
                 $comments = [];
@@ -250,6 +269,7 @@ class ProductController {
                     'subscribers'=>$subscribers,
                     'categories'=>$categories,
                     'images'=>$images,
+                    'shipping_methods'=>$shippings,
                     'created_at' => $product->getCreatedAt(),
                     'updated_at'=>$product->getUpdatedAt()
                 ]);
@@ -270,6 +290,16 @@ class ProductController {
     $this->productService->findProductsBySearch(
         new FindProductsBySearchDto($searchValue, $perPageForProduct, $pageNum)
     )->onSucsess(function (SearchedProductResponseDto $products){
+        $shippings = [];
+        foreach($products->getShippings() as $shipping){
+            $shippingObj = new stdClass;
+            $shippingObj = new stdClass;
+            $shippingObj->uuid = $shipping->getUuid();
+            $shippingObj->shiping_type = $shipping->getShippingType();
+            $shippingObj->price = $shipping->getPrice();
+            $shippings[] = $shippingObj;
+        }
+
         foreach($products->getProducts() as $product) {
             $categories = [];
             $comments = [];
@@ -336,6 +366,7 @@ class ProductController {
                 'subscribers'=>$subscribers,
                 'categories'=>$categories,
                 'images'=>$images,
+                'shipping_methods' => $shippings,
                 'created_at' => $product->getCreatedAt(),
                 'updated_at'=>$product->getUpdatedAt()
             ]);
@@ -368,6 +399,7 @@ class ProductController {
                                     'subscribers'=>$response->getSubscribers(),
                                     'categories'=> $response->getCategories(),
                                     'images'=>$response->getImages(),
+                                    'shipping_methods'=>$response->getShippings(),
                                     'created_at' => $response->getCreatedAt(),
                                     'updated_at'=>$response->getUpdatedAt()
                                 ]);
@@ -489,6 +521,15 @@ class ProductController {
         $this->productService->findProductsByPriceRange(
             new FindProductsByPriceRangeDto($from, $to)
         )->onSucsess(function (AllProductResponseDto $products){
+            $shippings = [];
+            foreach($products->getShippings() as $shipping){
+                $shippingObj = new stdClass;
+                $shippingObj = new stdClass;
+                $shippingObj->uuid = $shipping->getUuid();
+                $shippingObj->shiping_type = $shipping->getShippingType();
+                $shippingObj->price = $shipping->getPrice();
+                $shippings[] = $shippingObj;
+            }
 
             foreach($products->getProducts() as $product) {
                 $categories = [];
@@ -556,6 +597,7 @@ class ProductController {
                     'subscribers'=>$subscribers,
                     'categories'=>$categories,
                     'images'=>$images,
+                    'shipping_methods'=>$shippings,
                     'created_at' => $product->getCreatedAt(),
                     'updated_at'=>$product->getUpdatedAt()
                 ]);
