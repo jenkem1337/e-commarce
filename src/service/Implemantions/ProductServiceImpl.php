@@ -1,18 +1,21 @@
 <?php
 class ProductServiceImpl implements ProductService {
     private ProductRepository $productRepository;
+    private ShippingRepository $shippingRepository;
     private EmailService $emailService;
     private ProductFactoryContext $productFactoryContext;
     private ProductSubscriberFactory $productSubscriberFactory;
     private UploadService $uploadService;
 	function __construct(
         ProductRepository $productRepository,
+        ShippingRepository $shippingRepository,
         UploadService $uploadService,
         EmailService $emailService,
         ProductFactoryContext $productFactoryContext,
         Factory $productSubscriberFactory
     ) {
 	    $this->productRepository     = $productRepository;
+        $this->shippingRepository = $shippingRepository;
         $this->uploadService = $uploadService;
         $this->emailService = $emailService;
         $this->productFactoryContext = $productFactoryContext;
@@ -41,8 +44,9 @@ class ProductServiceImpl implements ProductService {
             if($categoryDomainObject->isNull()){
                 throw new NotFoundException('category');
             }
-           
-            $categoriesResponseArray[]= $categoryDomainObject->getCategoryName();
+            $categoryObj = new stdClass;
+            $categoryObj->category_name = $categoryDomainObject->getCategoryName();
+            $categoriesResponseArray[]= $categoryObj;
             
             $categoryDomainObject->setProductUuid($productDomainObject->getUuid());
             $productDomainObject->addCategory($categoryDomainObject);            
@@ -134,37 +138,55 @@ class ProductServiceImpl implements ProductService {
     function findAllProduct(FindAllProductsDto $dto): ResponseViewModel
     {
         $products = $this->productRepository->findAllProducts();
+        $shippings = $this->shippingRepository->findAll();
+        
         foreach($products->getIterator() as $productDomainObject) {
             if($productDomainObject->isNull()) {
                 throw new NotFoundException('product');
             }
             $productDomainObject->calculateAvarageRate();
         }
-        return new AllProductResponseDto($products);
+
+        foreach($shippings->getIterator() as $shipping) {
+            if($shipping->isNull()) throw new NotFoundException('shipping');
+        }
+        return new AllProductResponseDto($products, $shippings);
     }
     function findAllProductWithPagination(FindAllProductWithPaginationDto $dto): ResponseViewModel
     {
         $products = $this->productRepository->findAllWithPagination($dto->getStartingLimit(), $dto->getPerPageForProduct());
+        $shippings = $this->shippingRepository->findAll();
+
         foreach($products->getIterator() as $productDomainObject) {
             if($productDomainObject->isNull()) {
                 throw new NotFoundException('product');
             }
             $productDomainObject->calculateAvarageRate();
         }
-        return new AllProductWithPaginationResponseDto($products);
+        foreach($shippings->getIterator() as $shipping) {
+            if($shipping->isNull()) throw new NotFoundException('shipping');
+        }
+
+        return new AllProductWithPaginationResponseDto($products,$shippings);
     }
     function findProductsBySearch(FindProductsBySearchDto $dto): ResponseViewModel
     {
         $products = $this->productRepository->findProductsBySearch(
             $dto->getSearchValue(), $dto->getStartingLimit(), $dto->getPerPageForProduct()
         );
+        $shippings = $this->shippingRepository->findAll();
+
         foreach($products->getIterator() as $productDomainObject) {
             if($productDomainObject->isNull()) {
                 throw new NotFoundException('product');
             }
             $productDomainObject->calculateAvarageRate();
         }
-        return new SearchedProductResponseDto($products);
+        foreach($shippings->getIterator() as $shipping) {
+            if($shipping->isNull()) throw new NotFoundException('shipping');
+        }
+
+        return new SearchedProductResponseDto($products, $shippings);
     }
     function updateProductBrandName(ChangeProductBrandNameDto $dto): ResponseViewModel
     {
@@ -225,10 +247,15 @@ class ProductServiceImpl implements ProductService {
     }
     function findOneProductByUuid(FindOneProductByUuidDto $dto):ResponseViewModel{
         $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid());
-        
+        $shippings = $this->shippingRepository->findAll();
+
         if($productDomainObject->isNull()) throw new NotFoundException('product');
-        
         $productDomainObject->calculateAvarageRate();
+
+        foreach($shippings->getIterator() as $shipping) {
+            if($shipping->isNull()) throw new NotFoundException('shipping');
+        }
+
         return new OneProductFoundedResponseDto(
             $productDomainObject->getUuid(),
             $productDomainObject->getBrand(),
@@ -244,7 +271,8 @@ class ProductServiceImpl implements ProductService {
             $productDomainObject->getImages(),
             $productDomainObject->getSubscribers(),
             $productDomainObject->getCreatedAt(),
-            $productDomainObject->getUpdatedAt()
+            $productDomainObject->getUpdatedAt(),
+            $shippings
         );
     }
 
@@ -271,12 +299,18 @@ class ProductServiceImpl implements ProductService {
     function findProductsByPriceRange(FindProductsByPriceRangeDto $dto): ResponseViewModel
     {
         $products = $this->productRepository->findProductsByPriceRange($dto->getFrom(), $dto->getTo());
+        $shippings = $this->shippingRepository->findAll();
+
+        foreach($shippings->getIterator() as $shipping) {
+            if($shipping->isNull()) throw new NotFoundException('shipping');
+        }
+
         foreach($products->getIterator() as $productDomainObject) {
             if($productDomainObject->isNull()) {
                 throw new NotFoundException('product');
             }
             $productDomainObject->calculateAvarageRate();
         }
-        return new AllProductResponseDto($products);
+        return new AllProductResponseDto($products,$shippings);
     }
 }
