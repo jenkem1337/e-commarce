@@ -18,18 +18,11 @@ class CategoryController {
                 date ('Y-m-d H:i:s')
             )
         );
-        $response->onSucsess(function (CategoryCreatedResponseDto $dto){
-            echo json_encode([
-                'uuid' => $dto->getUuid(),
-                'category_name'=>$dto->getCategoryName(),
-                'crated_at' => $dto->getCreatedAt(),
-                'updated_at'=>$dto->getUpdatedAt()
-            ]);
+        $response->onSucsess(function (CategoryCreatedResponseDto $response){
+            echo json_encode($response);
         })->onError(function(ErrorResponseDto $err) {
-            echo json_encode([
-                'error_message' => $err->getErrorMessage(),
-                'status_code' => $err->getErrorCode()
-            ]);
+            echo json_encode($err);    
+            http_response_code($err->getErrorCode());
     
         });
     }
@@ -40,14 +33,10 @@ class CategoryController {
         $this->categoryService->updateCategoryNameByUuid(
             new UpdateCategoryNameByUuidDto($uuid, $jsonBody->new_category_name)
         )->onSucsess(function (CategoryNameChangedResponseDto $response){
-            echo json_encode([
-                'success_message' => $response->getSuccessMessage()
-            ]);
+            echo json_encode($response);
         })->onError(function (ErrorResponseDto $err){
-            echo json_encode([
-                'error_message'=>$err->getErrorMessage(),
-                'status_code'=> $err->getErrorCode()
-            ]);
+            echo json_encode($err);    
+            http_response_code($err->getErrorCode());
         });
     }
 
@@ -55,45 +44,27 @@ class CategoryController {
         $this->categoryService->deleteCategoryByUuid(
             new DeleteCategoryDto($uuid)
         )->onSucsess(function (CategoryDeletedResponseDto $response){
-            echo json_encode([
-                'success_message' => $response->getSuccessfullMessage()
-            ]);
+            echo json_encode($response);
         })->onError(function (ErrorResponseDto $err){
-            echo json_encode([
-                'error_message'=>$err->getErrorMessage(),
-                'status_code'=> $err->getErrorCode()
-            ]);
+            echo json_encode($err);    
+            http_response_code($err->getErrorCode());
         });
     }
 
     function findAllCategory(){
         $this->categoryService->findAllCategory(new FindAllCategoryDto())
-                            ->onSucsess(function (AllCategoryResponseDto $response){
-                                foreach($response->getCategories() as $category){
-                                    echo json_encode( [
-                                        'uuid' => $category->getUuid(),
-                                        'category_name' => $category->getCategoryName(),
-                                        'created_at' => $category->getCreatedAt(),
-                                        'updated_at' => $category->getUpdatedAt()
-                                    ]);
-                                }
+                            ->onSucsess(function(AllCategoryResponseDto $res){
+                                echo json_encode($res);
                             });
     }
 
     function findOneCategoryByUuid($uuid){
         $this->categoryService->findOneCategoryByUuid(new FindCategoryByUuidDto($uuid))
                             ->onSucsess(function(OneCategoryFoundedResponseDto $response){
-                                echo json_encode([
-                                    'uuid'=>$response->getUuid(),
-                                    'category_name'=>$response->getCategoryName(),
-                                    'created_at'=>$response->getCreatedAt(),
-                                    'updated_at'=>$response->getUpdatedAt()
-                                ]);
+                                echo json_encode($response);
                             })->onError(function(ErrorResponseDto $err){
-                                echo json_encode([
-                                    'error_message'=>$err->getErrorMessage(),
-                                    'status_code'=> $err->getErrorCode()
-                                ]);
+                                echo json_encode($err);    
+                                http_response_code($err->getErrorCode());
                             });
     }
 }
