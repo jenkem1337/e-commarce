@@ -1,5 +1,5 @@
 <?php
-class OneCategoryFoundedResponseDto extends ResponseViewModel {
+class OneCategoryFoundedResponseDto extends ResponseViewModel implements JsonSerializable{
     protected $uuid;
 
     protected $categoryName;
@@ -49,6 +49,15 @@ class OneCategoryFoundedResponseDto extends ResponseViewModel {
     public function getUuid()
     {
         return $this->uuid;
+    }
+    function jsonSerialize(): mixed
+    {
+        return [
+            'uuid'=>$this->getUuid(),
+            'category_name'=>$this->getCategoryName(),
+            'created_at'=>$this->getCreatedAt(),
+            'updated_at'=>$this->getUpdatedAt()
+        ];
     }
 
 }

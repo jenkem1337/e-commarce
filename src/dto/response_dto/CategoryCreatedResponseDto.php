@@ -1,6 +1,6 @@
 <?php 
 
-class CategoryCreatedResponseDto extends ResponseViewModel {
+class CategoryCreatedResponseDto extends ResponseViewModel implements JsonSerializable {
     protected $uuid;
 
     protected $categoryName;
@@ -50,5 +50,15 @@ class CategoryCreatedResponseDto extends ResponseViewModel {
     public function getUuid()
     {
         return $this->uuid;
+    }
+
+    function jsonSerialize(): mixed
+    {
+        return [
+            'uuid' => $this->getUuid(),
+            'category_name'=>$this->getCategoryName(),
+            'crated_at' => $this->getCreatedAt(),
+            'updated_at'=>$this->getUpdatedAt()
+        ];
     }
 }

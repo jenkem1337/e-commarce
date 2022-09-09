@@ -1,5 +1,5 @@
 <?php
-class CategoryDeletedResponseDto extends ResponseViewModel {
+class CategoryDeletedResponseDto extends ResponseViewModel implements JsonSerializable {
     protected $successfullMessage;
 
     public function __construct($successfullMessage)
@@ -14,5 +14,9 @@ class CategoryDeletedResponseDto extends ResponseViewModel {
     public function getSuccessfullMessage()
     {
         return $this->successfullMessage;
+    }
+    function jsonSerialize(): mixed
+    {
+        return ['success_message'=> $this->getSuccessfullMessage()];
     }
 }
