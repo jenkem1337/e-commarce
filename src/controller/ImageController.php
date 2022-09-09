@@ -22,36 +22,23 @@ class ImageController {
             $imageObject = json_decode(json_encode($imageArr),false);
             $imageArrayItarator->append($imageObject);
         }
-        $this->imageService->uploadImageForProduct(
-            new ImageCreationalDto(
-                $imageArrayItarator,
-                $productUuid
-            )
-            
-            )->onSucsess(function (ImageCreatedResponseDto $responseDto){
-            echo json_encode([
-                'images' => $responseDto->getImages()
-                ]);
+        $this->imageService->uploadImageForProduct(new ImageCreationalDto($imageArrayItarator,$productUuid))
+            ->onSucsess(function (ImageCreatedResponseDto $responseDto){
+                echo json_encode($responseDto);
             
             })->onError(function (ErrorResponseDto $err){
-                echo json_encode([
-                    'error_message' => $err->getErrorMessage(),
-                    'status_code'=> $err->getErrorCode()
-                ]);
+                echo json_encode($err);    
+                http_response_code($err->getErrorCode());
             });
         
     }
     function deleteImageByUuid($imageUuid, $productUuid){
-        $this->imageService->deleteImageByUuid(new DeleteImageByUuidDto(
-            $productUuid,
-            $imageUuid
-        ))->onSucsess(function (ImageDeletedResponseDto $response){
-            echo json_encode(['success_message'  => $response->getSuccessMessage()]);
-        })->onError(function (ErrorResponseDto $err){
-            echo json_encode([
-                'error_message' => $err->getErrorMessage(),
-                'status_code'=> $err->getErrorCode()
-            ]);
-        });
+        $this->imageService->deleteImageByUuid(new DeleteImageByUuidDto($productUuid,$imageUuid))
+                        ->onSucsess(function (ImageDeletedResponseDto $response){
+                            echo json_encode($response);
+                        })->onError(function (ErrorResponseDto $err){
+                            echo json_encode($err);    
+                            http_response_code($err->getErrorCode());
+                        });
     }
 }
