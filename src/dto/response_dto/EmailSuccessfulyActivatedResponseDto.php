@@ -1,5 +1,5 @@
 <?php 
-class EmailSuccessfulyActivatedResponseDto extends ResponseViewModel{
+class EmailSuccessfulyActivatedResponseDto extends ResponseViewModel implements JsonSerializable{
     protected $fullname;
 
     protected $email;
@@ -72,5 +72,15 @@ class EmailSuccessfulyActivatedResponseDto extends ResponseViewModel{
     {
         return $this->fullname;
     }
-
+    function jsonSerialize(): mixed
+    {
+        return [
+            'uuid'=>$this->getUuid(),
+            'full_name'=>$this->getFullname(),
+            'email'=>$this->getEmail(),
+            'is_user_activated'=>$this->getIsUserActivaed(),
+            'created_at'=>$this->getCreated_at(),
+            'updated_at'=>$this->getUpdated_at()
+        ];
+    }
 }

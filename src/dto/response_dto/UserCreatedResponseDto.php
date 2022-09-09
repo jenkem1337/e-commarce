@@ -1,6 +1,6 @@
 <?php
 
-class UserCreatedResponseDto extends ResponseViewModel{
+class UserCreatedResponseDto extends ResponseViewModel implements JsonSerializable {
     protected $fullname;
 
     protected $email;
@@ -75,4 +75,16 @@ class UserCreatedResponseDto extends ResponseViewModel{
         return $this->fullname;
     }
 
+    function jsonSerialize(): mixed
+    {
+        return [
+            'uuid'=>$this->getUuid(),
+            'full_name'=>$this->getFullname(),
+            'email'=>$this->getEmail(),
+            'is_user_activated'=>$this->getIsUserActivaed(),
+            'activation_message'=> "Verification mail has been sended",
+            'created_at'=>$this->getCreated_at(),
+            'updated_at'=>$this->getUpdated_at()
+        ];
+    }
 }
