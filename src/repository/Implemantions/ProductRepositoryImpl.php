@@ -28,8 +28,8 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
                     $subscriber->updated_at
                 );
 
-                $productSubscriberDomainObject->setUserEmail($subscriber->user_full_name);
-                $productSubscriberDomainObject->setUserFullName($subscriber->user_email);
+                $productSubscriberDomainObject->setUserEmail($subscriber->user_email);
+                $productSubscriberDomainObject->setUserFullName($subscriber->user_full_name);
                 $subscriberIterator->add($productSubscriberDomainObject);
             }
 
@@ -122,10 +122,10 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
                 $subscriber->updated_at
             );
 
-            $productSubscriberDomainObject->setUserEmail($subscriber->user_full_name);
-            $productSubscriberDomainObject->setUserFullName($subscriber->user_email);
+            $productSubscriberDomainObject->setUserEmail($subscriber->user_email);
+            $productSubscriberDomainObject->setUserFullName($subscriber->user_full_name);
             $subscriberIterator->add($productSubscriberDomainObject);
-    }
+        }   
 
         $commentIterator  = $this->commentRepository->findAllByProductUuid($uuid);
         $categoryIterator = $this->categoryRepository->findAllByProductUuid($uuid);
