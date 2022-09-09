@@ -1,6 +1,6 @@
 <?php
 
-class ImageDeletedResponseDto extends ResponseViewModel{
+class ImageDeletedResponseDto extends ResponseViewModel implements JsonSerializable{
     protected $successMessage;
 
     public function __construct($successMessage)
@@ -17,5 +17,10 @@ class ImageDeletedResponseDto extends ResponseViewModel{
     public function getSuccessMessage()
     {
         return $this->successMessage;
+    }
+
+    function jsonSerialize(): mixed
+    {
+        return ['success_message' => $this->getSuccessMessage()];
     }
 }

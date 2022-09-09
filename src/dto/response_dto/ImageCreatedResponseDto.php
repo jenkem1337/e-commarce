@@ -1,6 +1,6 @@
 <?php
 
-class ImageCreatedResponseDto extends ResponseViewModel {
+class ImageCreatedResponseDto extends ResponseViewModel implements JsonSerializable {
     protected $images;
 
     public function __construct($images)
@@ -17,5 +17,11 @@ class ImageCreatedResponseDto extends ResponseViewModel {
     public function getImages()
     {
         return $this->images;
+    }
+    function jsonSerialize(): mixed
+    {
+        return [
+            'images' => $this->getImages()
+        ];
     }
 }
