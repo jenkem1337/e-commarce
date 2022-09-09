@@ -16,7 +16,7 @@ class AuthController {
         $jsonBody = json_decode(file_get_contents('php://input'));
         $userLoginDto = new UserLoginDto($jsonBody->email, $jsonBody->password); 
         $res = $this->authService->login($userLoginDto);
-        $res->onSucsess(function($response){
+        $res->onSucsess(function(UserLogedInResponseDto $response){
             
                 $refreshTokenModel = $response->getRefreshToken();
                 $issuedAt = time();
@@ -38,11 +38,8 @@ class AuthController {
                      "refresh_token"=>$refreshTokenModel->getRefreshToken()
                  ]);
      
-        })->onError(function($err){
-            echo json_encode([
-                'error_message' => $err->getErrorMessage(),
-                'status_code' => $err->getErrorCode()
-            ]);
+        })->onError(function(ErrorResponseDto $err){
+            echo json_encode($err);
             http_response_code($err->getErrorCode());
         });
         
@@ -63,25 +60,14 @@ class AuthController {
         );
 
         $res = $this->authService->register($userCreationalDto);
-        $res->onSucsess(function($response){
+        $res->onSucsess(function(UserCreatedResponseDto $response){
             
                 http_response_code(201);
-                echo json_encode([
-                    'uuid'=>$response->getUuid(),
-                    'full_name'=>$response->getFullname(),
-                    'email'=>$response->getEmail(),
-                    'is_user_activated'=>$response->getIsUserActivaed(),
-                    'activation_message'=> "Verification mail has been sended",
-                    'created_at'=>$response->getCreated_at(),
-                    'updated_at'=>$response->getUpdated_at()
-                ]);
+                echo json_encode($response);
             
     
-        })->onError(function($err){
-            echo json_encode([
-                'error_message' => $err->getErrorMessage(),
-                'status_code' => $err->getErrorCode()
-            ]);
+        })->onError(function(ErrorResponseDto $err){
+            echo json_encode($err);
             http_response_code($err->getErrorCode());
 
         });
@@ -93,7 +79,7 @@ class AuthController {
             $jsonBody = json_decode(file_get_contents('php://input'));
         
             $res = $this->authService->refreshToken(new RefreshTokenDto($jsonBody->refresh_token));
-            $res->onSucsess(function($response){
+            $res->onSucsess(function(RefreshTokenResponseDto $response){
                 
                     $refreshTokenModel = $response->getRefreshToken();
                     $issuedAt = time();
@@ -116,11 +102,8 @@ class AuthController {
                      ]);
                 
     
-            })->onError(function($err){
-                echo json_encode([
-                    'error_message' => $err->getErrorMessage(),
-                    'status_code' => $err->getErrorCode()
-                ]);    
+            })->onError(function(ErrorResponseDto $err){
+                echo json_encode($err);    
                 http_response_code($err->getErrorCode());
 
             });
@@ -129,21 +112,11 @@ class AuthController {
         $code = isset($_GET['code']) ? $_GET['code'] :"";
         $res = $this->authService->verifyUserAccount(new EmailVerificationDto($code));
         
-        $res->onSucsess(function($response){
+        $res->onSucsess(function(EmailSuccessfulyActivatedResponseDto $response){
                 http_response_code(200);
-                echo json_encode([
-                    'uuid'=>$response->getUuid(),
-                    'full_name'=>$response->getFullname(),
-                    'email'=>$response->getEmail(),
-                    'is_user_activated'=>$response->getIsUserActivaed(),
-                    'created_at'=>$response->getCreated_at(),
-                    'updated_at'=>$response->getUpdated_at()
-            ]);    
-        })->onError(function($err){
-            echo json_encode([
-                'error_message' => $err->getErrorMessage(),
-                'status_code' => $err->getErrorCode()
-            ]);    
+                echo json_encode($response);    
+        })->onError(function(ErrorResponseDto $err){
+            echo json_encode($err);    
             http_response_code($err->getErrorCode());
 
         });
