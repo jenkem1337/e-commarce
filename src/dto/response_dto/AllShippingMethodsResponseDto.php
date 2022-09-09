@@ -1,6 +1,6 @@
 <?php
 
-class AllShippingMethodsResponseDto extends ResponseViewModel {
+class AllShippingMethodsResponseDto extends ResponseViewModel implements JsonSerializable{
     protected IteratorAggregate $shippings;
 
     public function __construct(IteratorAggregate $shippings)
@@ -17,5 +17,20 @@ class AllShippingMethodsResponseDto extends ResponseViewModel {
     public function getShippings():IteratorAggregate
     {
         return $this->shippings;
+    }
+
+    function jsonSerialize(): mixed
+    {
+        $response = [];
+        foreach($this->getShippings() as $shipping){
+            $response[] = [
+                            'uuid'=>$shipping->getUuid(),
+                            'shipping_type' => $shipping->getShippingType(),
+                            'price' => $shipping->getPrice(),
+                            'created_at'=>$shipping->getCreatedAt(),
+                            'updated_at'=> $shipping->getUpdatedAt()
+                          ];
+        }
+        return $response;
     }
 }

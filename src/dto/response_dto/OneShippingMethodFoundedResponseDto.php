@@ -1,6 +1,6 @@
 <?php
 
-class OneShippingMethodFoundedResponseDto extends ResponseViewModel {
+class OneShippingMethodFoundedResponseDto extends ResponseViewModel implements JsonSerializable{
     protected $uuid;
 
     protected $type;
@@ -61,5 +61,17 @@ class OneShippingMethodFoundedResponseDto extends ResponseViewModel {
     public function getType()
     {
         return $this->type;
+    }
+
+    function jsonSerialize(): mixed
+    {
+        return [
+            'uuid'=>$this->getUuid(),
+            'shipping_type' => $this->getType(),
+            'price' => $this->getPrice(),
+            'created_at'=>$this->getCreatedAt(),
+            'updated_at'=> $this->getUpdatedAt()
+
+        ];
     }
 }
