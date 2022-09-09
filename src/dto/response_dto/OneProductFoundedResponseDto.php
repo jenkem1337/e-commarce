@@ -1,6 +1,6 @@
 <?php
 
-class OneProductFoundedResponseDto extends ResponseViewModel {
+class OneProductFoundedResponseDto extends ResponseViewModel implements JsonSerializable {
     protected $uuid;
 
     protected $brand;
@@ -244,5 +244,27 @@ class OneProductFoundedResponseDto extends ResponseViewModel {
             $shippingArr[] = $shippingObj;
         }
         return $shippingArr;
+    }
+
+    function jsonSerialize(): mixed
+    {
+        return [
+            'uuid'=>$this->getUuid(),
+            'brand'=> $this->getBrand(),
+            'model' => $this->getModel(),
+            'header'=>$this->getHeader(),
+            'description'=>$this->getDescription(),
+            'price'=>$this->getPrice(),
+            'stock_quantity'=>$this->getStockQuantity(),
+            'avarage_rate'=>$this->getAvarageRate(),
+            'comments'=> $this->getComments(),
+            'rates'=>$this->getRates(),
+            'subscribers'=>$this->getSubscribers(),
+            'categories'=> $this->getCategories(),
+            'images'=>$this->getImages(),
+            'shipping_methods'=>$this->getShippings(),
+            'created_at' => $this->getCreatedAt(),
+            'updated_at'=>$this->getUpdatedAt()
+        ];
     }
 }

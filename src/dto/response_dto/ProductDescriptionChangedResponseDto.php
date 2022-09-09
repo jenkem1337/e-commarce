@@ -1,6 +1,6 @@
 <?php
 
-class ProductDescriptionChangedResponseDto extends ResponseViewModel {
+class ProductDescriptionChangedResponseDto extends ResponseViewModel implements JsonSerializable{
     protected $successMessage;
 
     public function __construct($successMessage)
@@ -17,5 +17,9 @@ class ProductDescriptionChangedResponseDto extends ResponseViewModel {
     public function getSuccessMessage()
     {
         return $this->successMessage;
+    }
+    function jsonSerialize(): mixed
+    {
+        return ['success_message' => $this->getSuccessMessage()];
     }
 }

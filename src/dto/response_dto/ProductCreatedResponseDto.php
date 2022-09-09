@@ -1,5 +1,5 @@
 <?php
-class ProductCreatedResponseDto extends ResponseViewModel {
+class ProductCreatedResponseDto extends ResponseViewModel implements JsonSerializable {
     public function __construct(  
         protected $uuid,  
         protected $brand,
@@ -98,5 +98,21 @@ class ProductCreatedResponseDto extends ResponseViewModel {
         public function getUuid()
         {
                 return $this->uuid;
+        }
+
+        function jsonSerialize(): mixed
+        {
+                return [
+                        'uuid'=>$this->getUuid(),
+                        'brand'=> $this->getBrand(),
+                        'model' => $this->getModel(),
+                        'header'=>$this->getHeader(),
+                        'description'=>$this->getDescription(),
+                        'price'=>$this->getPrice(),
+                        'stock_quantity'=>$this->getStockQuantity(),
+                        'categories'=>$this->getCategories(),
+                        'created_at' => $this->getCreatedAt(),
+                        'updated_at'=>$this->getUpdatedAt()
+                ];
         }
 }

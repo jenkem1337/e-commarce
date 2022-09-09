@@ -1,6 +1,6 @@
 <?php
 
-class ErrorResponseDto extends ResponseViewModel {
+class ErrorResponseDto extends ResponseViewModel implements JsonSerializable {
     private $errorMessage;
     private $errorCode;
 
@@ -25,5 +25,12 @@ class ErrorResponseDto extends ResponseViewModel {
     public function getErrorCode()
     {
         return $this->errorCode;
+    }
+    function jsonSerialize()
+    {
+        return [
+            "error_message" => $this->getErrorMessage(),
+            "error_status_code" => $this->getErrorCode()
+        ];
     }
 }
