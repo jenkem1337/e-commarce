@@ -1,5 +1,5 @@
 <?php
-class OneUserFoundedResponseDto extends ResponseViewModel{
+class OneUserFoundedResponseDto extends ResponseViewModel implements JsonSerializable{
     
     protected $fullName;
 
@@ -97,4 +97,17 @@ class OneUserFoundedResponseDto extends ResponseViewModel{
         return $this->updatedAt;
     }
 
+    function jsonSerialize(): mixed
+    {
+        return [
+            "uuid"=>$this->getUuid(),
+            "full_name"=>$this->getFullname(),
+            "email"=>$this->getEmail(),
+            "password"=>$this->getPassword(),
+            "user_role"=>$this->getUserRole(),
+            "is_user_activated"=>$this->getIsUserActivated(),
+            "created_at"=>$this->getCreatedAt(),
+            "updated_at"=>$this->getUpdatedAt()
+        ];
+    }
 }

@@ -19,14 +19,11 @@ class UserController {
         
         $response->onSucsess(function(PasswordChangeResponseDto $res) {
             http_response_code(200); 
-            echo json_encode(["message"=>$res->getSuccesMessage()]);
+            echo json_encode($res);
 
         })->onError(function(ErrorResponseDto $err){
-            echo json_encode([
-                'error_message'=>$err->getErrorMessage(),
-                'status_code'=>$err->getErrorCode()
-            ]);
-            http_response_code($err->getErrorCode());
+            echo json_encode($err);    
+            http_response_code($err->getErrorCode());                                        
         });
     }
     function changeForgettenPassword(){
@@ -35,15 +32,11 @@ class UserController {
         $response = $this->userService->changeForgettenPassword(new ForgettenPasswordDto($jsonBody->verification_code, $jsonBody->new_password));       
 
         $response->onSucsess(function(ForgettenPasswordResponseDto $res){
-            echo json_encode(["message"=>$res->getSuccesMessage()]);
+            echo json_encode($res);
             http_response_code(200);
         })->onError(function(ErrorResponseDto $err){
-            echo json_encode([
-                'error_message'=>$err->getErrorMessage(),
-                'status_code'=>$err->getErrorCode()
-            ]);
-            http_response_code($err->getErrorCode());
-
+            echo json_encode($err);    
+            http_response_code($err->getErrorCode());                                        
         });
     }
     function sendChangeForgettenPasswordEmail(){
@@ -51,14 +44,11 @@ class UserController {
 
         $response = $this->authService->sendChangeForgettenPasswordEmail(new ForgettenPasswordEmailDto($jsonBody->email));
         $response->onSucsess(function(ForgettenPasswordEmailResponseDto $res){
-            echo json_encode(["message"=>$res->getSuccesMessage()]);
+            echo json_encode($res);
             http_response_code(200);
         })->onError(function(ErrorResponseDto $err){
-            echo json_encode([
-                'error_message'=>$err->getErrorMessage(),
-                'status_code'=>$err->getErrorCode()
-            ]);
-            http_response_code($err->getErrorCode());
+            echo json_encode($err);    
+            http_response_code($err->getErrorCode());                                        
 
         });
 
@@ -74,46 +64,22 @@ class UserController {
             )
         );
 
-        $responseList->onSucsess(function(AllUserResponseDto $iterator){
-            foreach($iterator->getUsers() as $response){
-                echo json_encode([
-                    "uuid"=>$response->getUuid(),
-                    "full_name"=>$response->getFullname(),
-                    "email"=>$response->getEmail(),
-                    "password"=>$response->getPassword(),
-                    "user_role"=>$response->getUserRole(),
-                    "is_user_activated"=>$response->getIsUserActiveted(),
-                    "created_at"=>$response->getCreatedAt(),
-                    "updated_at"=>$response->getUpdatedAt()
-                ]);
-           }
-   
+        $responseList->onSucsess(function(AllUserResponseDto $response){
+            echo json_encode($response);
         });
     }
     function findOneUserByUuid($uuid){
         $response = $this->userService->findOneUserByUuid(new FindOneUserByUuidDto($uuid));
         $response->onSucsess(function(OneUserFoundedResponseDto $res){
-            echo json_encode([
-                "uuid"=>$res->getUuid(),
-                "full_name"=>$res->getFullname(),
-                "email"=>$res->getEmail(),
-                "password"=>$res->getPassword(),
-                "user_role"=>$res->getUserRole(),
-                "is_user_activated"=>$res->getIsUserActivated(),
-                "created_at"=>$res->getCreatedAt(),
-                "updated_at"=>$res->getUpdatedAt()
-            ]);
+            echo json_encode($res);
             http_response_code(200);
         })->onError(function(ErrorResponseDto $err){
-            echo json_encode([
-                'error_message'=>$err->getErrorMessage(),
-                'status_code'=>$err->getErrorCode()
-            ]);
-            http_response_code($err->getErrorCode());
+            echo json_encode($err);    
+            http_response_code($err->getErrorCode());                                        
 
         });
         
-        }
+    }
     
     function changeFullName(){
         $jsonBody = json_decode(file_get_contents('php://input'));
@@ -125,15 +91,11 @@ class UserController {
 
         $response->onSucsess(function(FullNameChangedResponseDto $res){
             http_response_code(200);
-            echo json_encode(["message"=>$res->getSuccesMessage()]);
+            echo json_encode($res);
 
         })->onError(function(ErrorResponseDto $err){
-            echo json_encode([
-                'error_message'=>$err->getErrorMessage(),
-                'status_code'=>$err->getErrorCode()
-            ]);
-            http_response_code($err->getErrorCode());
-
+            echo json_encode($err);    
+            http_response_code($err->getErrorCode());                                        
         });
     }       
 }

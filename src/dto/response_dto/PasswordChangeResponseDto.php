@@ -1,6 +1,6 @@
 <?php
 
-class PasswordChangeResponseDto extends ResponseViewModel{
+class PasswordChangeResponseDto extends ResponseViewModel implements JsonSerializable{
 
     protected $succesMessage;
 
@@ -19,5 +19,10 @@ class PasswordChangeResponseDto extends ResponseViewModel{
     public function getSuccesMessage()
     {
         return $this->succesMessage;
+    }
+
+    function jsonSerialize(): mixed
+    {
+        return ['success_message' => $this->getSuccesMessage()];
     }
 }
