@@ -76,7 +76,7 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
         if(!$rate){
             throw new NullException('rate');
         }
-        $this->rate = $rate;
+        $this->rates = $rate;
     }
 
     function changePrice($price){

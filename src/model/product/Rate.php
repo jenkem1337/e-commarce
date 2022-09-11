@@ -1,7 +1,7 @@
 <?php
 
 class Rate extends BaseEntity implements RateInterface{
-    private $pruductUuid;
+    private $productUuid;
     private $userUuid;
     private $rateNumber;
     private $howManyPeopleRateIt;
@@ -31,7 +31,7 @@ class Rate extends BaseEntity implements RateInterface{
      */ 
     public function getPruductUuid()
     {
-        return $this->pruductUuid;
+        return $this->productUuid;
     }
 
     /**
