@@ -75,28 +75,28 @@ abstract class ProductRepositoryDecorator implements ProductRepository {
     {
         $this->productRepository->deleteImageByUuid($uuid);
     }
-    function createCategory(ProductForCreatingCategoryDecorator $c, $categoryUuidForFinding)
+    function createProductCategory(ProductForCreatingCategoryDecorator $c, $categoryUuidForFinding)
     {
-        $this->productRepository->createCategory($c, $categoryUuidForFinding);
+        $this->productRepository->createProductCategory($c, $categoryUuidForFinding);
     }
-    function findAllCategory(): ProductInterface
+    function findAllProductCategory(): ProductInterface
     {
-        return $this->productRepository->findAllCategory();
+        return $this->productRepository->findAllProductCategory();
     }
-    function findOneCategoryByName($categoryName): ProductInterface
+    function findOneProductCategoryByName($categoryName): ProductInterface
     {
-        return $this->productRepository->findOneCategoryByName($categoryName);
+        return $this->productRepository->findOneProductCategoryByName($categoryName);
     }
-    function findOneCategoryByUuid($uuid): ProductInterface
+    function findOneProductCategoryByUuid($uuid): ProductInterface
     {
-        return $this->productRepository->findOneCategoryByUuid($uuid);
+        return $this->productRepository->findOneProductCategoryByUuid($uuid);
     }
-    function updateCategoryNameByUuid(Product $c, $categoryUuidForFinding)
+    function updateProductCategoryNameByUuid(Product $c, $categoryUuidForFinding)
     {
-        $this->productRepository->updateCategoryNameByUuid($c, $categoryUuidForFinding);
+        $this->productRepository->updateProductCategoryNameByUuid($c, $categoryUuidForFinding);
     }
-    function deleteCategoryByUuid($uuid)
+    function deleteProductCategoryByUuid($uuid)
     {
-        $this->productRepository->deleteCategoryByUuid($uuid);
+        $this->productRepository->deleteProductCategoryByUuid($uuid);
     }
 }

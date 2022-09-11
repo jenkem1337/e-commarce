@@ -35,9 +35,9 @@ class ProductRepositoryAggregateRootDecorator extends ProductRepositoryDecorator
     {
         parent::updateProductBrandName($p);
     }
-    function createCategory(AggregateRoot $c, $categoryUuidForFinding)
+    function createProductCategory(AggregateRoot $c, $categoryUuidForFinding)
     {
-        parent::createCategory($c, $categoryUuidForFinding);
+        parent::createProductCategory($c, $categoryUuidForFinding);
     }
     function updateProductHeader(AggregateRoot $p)
     {
@@ -51,8 +51,8 @@ class ProductRepositoryAggregateRootDecorator extends ProductRepositoryDecorator
     {
         parent::updateProductDescription($p);
     }
-    function updateCategoryNameByUuid(AggregateRoot $c, $categoryUuidForFinding)
+    function updateProductCategoryNameByUuid(AggregateRoot $c, $categoryUuidForFinding)
     {
-        parent::updateCategoryNameByUuid($c, $categoryUuidForFinding);
+        parent::updateProductCategoryNameByUuid($c, $categoryUuidForFinding);
     }
 }

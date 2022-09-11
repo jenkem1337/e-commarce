@@ -38,7 +38,7 @@ class ProductServiceImpl implements ProductService {
         );
         $categoriesResponseArray = [];
         foreach($dto->getCategories() as $categoryUuid) {
-            $categoryDomainObject = $this->productRepository->findOneCategoryByUuid($categoryUuid)
+            $categoryDomainObject = $this->productRepository->findOneProductCategoryByUuid($categoryUuid)
                                                 ->getCategories()
                                                 ->getItem($categoryUuid);
             if($categoryDomainObject->isNull()){

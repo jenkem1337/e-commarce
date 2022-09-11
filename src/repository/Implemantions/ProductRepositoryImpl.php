@@ -234,13 +234,13 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
     {
         $this->imageRepository->deleteByUuid($uuid);
     }
-    function createCategory(ProductForCreatingCategoryDecorator $c,  $categoryUuidForFinding){
+    function createProductCategory(ProductForCreatingCategoryDecorator $c,  $categoryUuidForFinding){
         $categoryCollection = $c->getCategories();
         $category = $categoryCollection->getItem($categoryUuidForFinding);
 
         $this->categoryRepository->persist($category);
     }
-    function findAllCategory():ProductInterface{
+    function findAllProductCategory():ProductInterface{
         $categoryCollection = $this->categoryRepository->findAll();
         $productForCategoryDomainModel = $this->productFactoryContext->executeFactory(
             ProductCategoryCreationalModelFactory::class,
@@ -255,7 +255,7 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
         }
         return $productForCategoryDomainModel;
     }
-    function findOneCategoryByName($categoryName): ProductInterface
+    function findOneProductCategoryByName($categoryName): ProductInterface
     {
         $categoryDomainObject = $this->categoryRepository->findOneByName($categoryName);
         $productForCategoryDomainModel = $this->productFactoryContext->executeFactory(
@@ -266,7 +266,7 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
         return $productForCategoryDomainModel;
 
     }
-    function findOneCategoryByUuid($uuid):ProductInterface{
+    function findOneProductCategoryByUuid($uuid):ProductInterface{
         $categoryDomainObject = $this->categoryRepository->findByUuid($uuid);
         $productForCategoryDomainModel = $this->productFactoryContext->executeFactory(
             ProductCategoryCreationalModelFactory::class,
@@ -275,12 +275,12 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
         $productForCategoryDomainModel->addCategory($categoryDomainObject);
         return $productForCategoryDomainModel;
     }
-    function updateCategoryNameByUuid(Product $c, $categoryUuidForFinding) {
+    function updateProductCategoryNameByUuid(Product $c, $categoryUuidForFinding) {
         $category = $c->getCategories()->getItem($categoryUuidForFinding);
 
         $this->categoryRepository->updateNameByUuid($category);
     }
-    function deleteCategoryByUuid($uuid)
+    function deleteProductCategoryByUuid($uuid)
     {
         $this->categoryRepository->deleteByUuid($uuid);
     }

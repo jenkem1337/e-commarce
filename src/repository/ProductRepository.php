@@ -22,10 +22,10 @@ interface ProductRepository {
     function deleteImageByUuid($uuid);
 
     //category
-    function createCategory(ProductForCreatingCategoryDecorator $c, $categoryUuidForFinding);
-    function findAllCategory():ProductInterface;
-    function findOneCategoryByUuid($uuid):ProductInterface;
-    function updateCategoryNameByUuid(Product $c, $categoryUuidForFinding);
-    function findOneCategoryByName($categoryName):ProductInterface;
-    function deleteCategoryByUuid($uuid);
+    function createProductCategory(ProductForCreatingCategoryDecorator $c, $categoryUuidForFinding);
+    function findAllProductCategory():ProductInterface;
+    function findOneProductCategoryByUuid($uuid):ProductInterface;
+    function updateProductCategoryNameByUuid(Product $c, $categoryUuidForFinding);
+    function findOneProductCategoryByName($categoryName):ProductInterface;
+    function deleteProductCategoryByUuid($uuid);
 }

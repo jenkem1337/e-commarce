@@ -22,7 +22,7 @@ class CategoryServiceImpl implements CategoryService {
             $dto->getCreatedAt(),
             $dto->getUpdatedAt()
         );
-        $categories = $this->productAggregateRepository->findOneCategoryByName($dto->getCategoryName())
+        $categories = $this->productAggregateRepository->findOneProductCategoryByName($dto->getCategoryName())
                                             ->getCategories();
 
         foreach($categories->getIterator() as $category){
@@ -35,7 +35,7 @@ class CategoryServiceImpl implements CategoryService {
 
         $productForCategoryDomainObject->addCategory($categoryDomainObject);
         
-        $this->productAggregateRepository->createCategory($productForCategoryDomainObject, $categoryDomainObject->getUuid());
+        $this->productAggregateRepository->createProductCategory($productForCategoryDomainObject, $categoryDomainObject->getUuid());
         return new CategoryCreatedResponseDto(
             $dto->getUuid(),
             $dto->getCategoryName(),
@@ -45,7 +45,7 @@ class CategoryServiceImpl implements CategoryService {
     }
     function findOneCategoryByUuid(FindCategoryByUuidDto $dto): ResponseViewModel
     {
-        $category = $this->productAggregateRepository->findOneCategoryByUuid($dto->getUuid())
+        $category = $this->productAggregateRepository->findOneProductCategoryByUuid($dto->getUuid())
                                             ->getCategories()
                                             ->getItem($dto->getUuid());
         if($category->isNull()){
@@ -60,13 +60,13 @@ class CategoryServiceImpl implements CategoryService {
     }
     function findAllCategory(FindAllCategoryDto $dto): ResponseViewModel
     {
-        $productForCategoryDomainObject = $this->productAggregateRepository->findAllCategory();
+        $productForCategoryDomainObject = $this->productAggregateRepository->findAllProductCategory();
         $categoryCollection = $productForCategoryDomainObject->getCategories();
         return new AllCategoryResponseDto($categoryCollection->getIterator());
     }
     function updateCategoryNameByUuid(UpdateCategoryNameByUuidDto $dto): ResponseViewModel
     {
-        $productForCategoryDomainObject = $this->productAggregateRepository->findOneCategoryByUuid($dto->getUuid());
+        $productForCategoryDomainObject = $this->productAggregateRepository->findOneProductCategoryByUuid($dto->getUuid());
         $category = $productForCategoryDomainObject->getCategories()
                                                 ->getItem($dto->getUuid());
         if($category->isNull()){
@@ -76,18 +76,18 @@ class CategoryServiceImpl implements CategoryService {
 
         $productForCategoryDomainObject->addCategory($category);
 
-        $this->productAggregateRepository->updateCategoryNameByUuid($productForCategoryDomainObject ,$dto->getUuid());
+        $this->productAggregateRepository->updateProductCategoryNameByUuid($productForCategoryDomainObject ,$dto->getUuid());
         return new CategoryNameChangedResponseDto('Category name changed successfuly');
     }
     function deleteCategoryByUuid(DeleteCategoryDto $dto): ResponseViewModel
     {
-        $category = $this->productAggregateRepository->findOneCategoryByUuid($dto->getUuid())
+        $category = $this->productAggregateRepository->findOneProductCategoryByUuid($dto->getUuid())
                                             ->getCategories()
                                             ->getItem($dto->getUuid());
         if($category->isNull()){
             throw new DoesNotExistException('category');
         }
-        $this->productAggregateRepository->deleteCategoryByUuid($dto->getUuid());
+        $this->productAggregateRepository->deleteProductCategoryByUuid($dto->getUuid());
         return new CategoryDeletedResponseDto('Category deleted successfuly');
 
     }
