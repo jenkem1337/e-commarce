@@ -23,6 +23,7 @@ class TransactionalAuthServiceDecorator extends AuthServiceDecorator {
             $dbConnection->rollBack();
             $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
         } finally {
+            $this->databaseConnection->closeConnection();
             $dbConnection = null;
             return $response;
         }
@@ -42,6 +43,8 @@ class TransactionalAuthServiceDecorator extends AuthServiceDecorator {
             $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
 
         } finally {
+            $this->databaseConnection->closeConnection();
+
             $dbConnection = null;
             return $response;
         }
@@ -61,6 +64,8 @@ class TransactionalAuthServiceDecorator extends AuthServiceDecorator {
             $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
 
         } finally {
+            $this->databaseConnection->closeConnection();
+
             $dbConnection = null;
             return $response;
         }
@@ -80,6 +85,8 @@ class TransactionalAuthServiceDecorator extends AuthServiceDecorator {
             $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
 
         } finally {
+            $this->databaseConnection->closeConnection();
+
             $dbConnection = null;
             return $response;
         }
@@ -99,6 +106,8 @@ class TransactionalAuthServiceDecorator extends AuthServiceDecorator {
             $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
 
         } finally {
+            $this->databaseConnection->closeConnection();
+
             $dbConnection = null;
             return $response;
         }

@@ -7,7 +7,6 @@ interface ProductInterface {
         function changeBrand($newBrand);
         function changeModel($newModel);
         function changeDescription($description);
-        function setRate(RateInterface $rate);
         function changePrice($price);
         function calculateAvarageRate();
         function isPriceLessThanPreviousPrice();

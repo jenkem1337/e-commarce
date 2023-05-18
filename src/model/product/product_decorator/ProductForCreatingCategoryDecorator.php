@@ -6,7 +6,7 @@ use Ramsey\Uuid\Uuid;
 class ProductForCreatingCategoryDecorator extends ProductDecorator implements AggregateRoot, ProductInterface {
     function __construct()
     {
-        parent::__construct(Uuid::uuid4(),'', '', '', '', 0.0 , 0, new NullRate(), date('Y-m-d H:i:s'), date('Y-m-d H:i:s') );
+        parent::__construct(Uuid::uuid4(),'', '', '', '', 0.0 , 0, date('Y-m-d H:i:s'), date('Y-m-d H:i:s') );
     }
     function incrementStockQuantity(int $quantity){
         throw new Exception();

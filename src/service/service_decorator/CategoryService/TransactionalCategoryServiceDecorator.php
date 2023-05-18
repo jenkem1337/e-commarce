@@ -21,6 +21,7 @@ class TransactionalCategoryServiceDecorator extends CategoryServiceDecorator {
             $dbConnection->rollBack();
             $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
         } finally {
+            $this->dbConnection->closeConnection();
             $dbConnection = null;
             return $response;
         }
@@ -28,21 +29,10 @@ class TransactionalCategoryServiceDecorator extends CategoryServiceDecorator {
     }
     function findOneCategoryByUuid(FindCategoryByUuidDto $dto): ResponseViewModel
     {
-        try {
-            $dbConnection = $this->dbConnection->getConnection();
-            
-            $dbConnection->beginTransaction();
             $response = parent::findOneCategoryByUuid($dto);
             
-            $dbConnection->commit();
-
-        } catch (Exception $e) {
-            $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-        } finally {
-            $dbConnection = null;
+            $this->dbConnection->closeConnection();
             return $response;
-        }
 
     }
     function updateCategoryNameByUuid(UpdateCategoryNameByUuidDto $dto): ResponseViewModel
@@ -59,6 +49,7 @@ class TransactionalCategoryServiceDecorator extends CategoryServiceDecorator {
             $dbConnection->rollBack();
             $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
         } finally {
+            $this->dbConnection->closeConnection();
             $dbConnection = null;
             return $response;
         }
@@ -77,6 +68,7 @@ class TransactionalCategoryServiceDecorator extends CategoryServiceDecorator {
             $dbConnection->rollBack();
             $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
         } finally {
+            $this->dbConnection->closeConnection();
             $dbConnection = null;
             return $response;
         }

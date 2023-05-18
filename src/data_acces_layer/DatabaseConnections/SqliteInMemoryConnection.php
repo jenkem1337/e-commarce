@@ -28,4 +28,7 @@ class SqliteInMemoryConnection implements SingletonConnection {
         }
     
 	}
+    function closeConnection(){
+        $this->pdo = null;
+    }
 }

@@ -19,6 +19,8 @@ class TransactionalUserServiceDecorator extends UserServiceDecorator {
             $dbConnection->rollBack();
             $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
         }finally {
+            $this->databaseConnection->closeConnection();
+
             $dbConnection = null;
             return $response;
         }
@@ -36,31 +38,24 @@ class TransactionalUserServiceDecorator extends UserServiceDecorator {
             $dbConnection->rollBack();
             $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
         }finally {
+            $this->databaseConnection->closeConnection();
+
             $dbConnection = null;
             return $response;
         }
 
     }
     function listAllUser(ListAllUserDto $listAllUserDto):ResponseViewModel {
-        return parent::listAllUser($listAllUserDto);
+        $response =  parent::listAllUser($listAllUserDto);
+        $this->databaseConnection->closeConnection();
+        return $response;
     }
     function findOneUserByUuid(FindOneUserByUuidDto $userUuidDto):ResponseViewModel{
-        try {
-            $dbConnection =  $this->databaseConnection->getConnection();
-
-            $dbConnection->beginTransaction();
-            
             $response = parent::findOneUserByUuid($userUuidDto);
             
-            $dbConnection->commit();
-        } catch (\Exception $e) {
-            $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-        }finally {
-            $dbConnection = null;
-            return $response;
-        }
+            $this->databaseConnection->closeConnection();
 
+            return $response;
     }
     function changeFullName(ChangeFullNameDto $changeFullNameDto):ResponseViewModel{
         try {
@@ -75,6 +70,8 @@ class TransactionalUserServiceDecorator extends UserServiceDecorator {
             $dbConnection->rollBack();
             $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
         }finally {
+            $this->databaseConnection->closeConnection();
+
             $dbConnection = null;
             return $response;
         }

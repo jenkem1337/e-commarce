@@ -12,7 +12,7 @@ class Shipping extends BaseEntity implements AggregateRoot, ShippingInterface {
         if(!$shippingType) throw new NullException('shipping type');
         $this->shippingType = $shippingType;
         if(!$price) throw new NullException('price');
-        if($price < 0) throw new NegativeValueException('price');
+        if($price < 0) throw new NegativeValueException();
         $this->price = $price;
         parent::__construct($uuid, $createdAt, $updatedAt);
 
@@ -24,7 +24,7 @@ class Shipping extends BaseEntity implements AggregateRoot, ShippingInterface {
     }
     function changePrice($price){
         if(!$price) throw new NullException('price');
-        if($price < 0) throw new NegativeValueException('price');
+        if($price < 0) throw new NegativeValueException();
         $this->price = $price;
     }
     function changeShippingAddress($shippingAddress) {
