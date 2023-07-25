@@ -9,8 +9,8 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
     public static $files = array (
         'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
         '23c18046f52bef3eea034657bafda50f' => __DIR__ . '/..' . '/symfony/polyfill-php81/bootstrap.php',
-        '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+        '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         'e39a8b23c42d4e1452234d762b03835a' => __DIR__ . '/..' . '/ramsey/uuid/src/functions.php',
@@ -43,6 +43,7 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
             'Predis\\' => 7,
             'PhpParser\\' => 10,
             'PhpOption\\' => 10,
+            'PHPStan\\PhpDocParser\\' => 21,
             'PHPMailer\\PHPMailer\\' => 20,
         ),
         'G' => 
@@ -57,6 +58,7 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         array (
             'Dotenv\\' => 7,
             'Doctrine\\Instantiator\\' => 22,
+            'Doctrine\\Deprecations\\' => 22,
             'DeepCopy\\' => 9,
         ),
         'B' => 
@@ -116,6 +118,10 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         array (
             0 => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption',
         ),
+        'PHPStan\\PhpDocParser\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpstan/phpdoc-parser/src',
+        ),
         'PHPMailer\\PHPMailer\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
@@ -135,6 +141,10 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'Doctrine\\Instantiator\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/instantiator/src/Doctrine/Instantiator',
+        ),
+        'Doctrine\\Deprecations\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/deprecations/lib/Doctrine/Deprecations',
         ),
         'DeepCopy\\' => 
         array (
@@ -251,6 +261,7 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'FindCategoryByUuidDto' => __DIR__ . '/../..' . '/src/dto/request_dto/FindCategoryByUuidDto.php',
         'FindOneCategoryCommand' => __DIR__ . '/../..' . '/src/front_controller/front_controller_command/controller_commands/CategoryController/FindOneCategoryCommand.php',
         'FindOneProductByUuidDto' => __DIR__ . '/../..' . '/src/dto/request_dto/FindOneProductByUuidDto.php',
+        'FindOneProductByUuidListener' => __DIR__ . '/../..' . '/src/message_queue_listener/FindOneProductByUuidListener.php',
         'FindOneProductCommand' => __DIR__ . '/../..' . '/src/front_controller/front_controller_command/controller_commands/ProductController/FindOneProductCommand.php',
         'FindOneShippingMethodCommand' => __DIR__ . '/../..' . '/src/front_controller/front_controller_command/controller_commands/ShippingController/FindOneShippingMethod.php',
         'FindOneShippingMethodDto' => __DIR__ . '/../..' . '/src/dto/request_dto/FindOneShippingMethodDto.php',
@@ -298,6 +309,7 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'LengthMustBeGreaterThanException' => __DIR__ . '/../..' . '/src/exception/LengthMustBeGreaterException.php',
         'ListAllUserCommand' => __DIR__ . '/../..' . '/src/front_controller/front_controller_command/controller_commands/UserController/ListAllUserCommand.php',
         'ListAllUserDto' => __DIR__ . '/../..' . '/src/dto/request_dto/ListAllUserDto.php',
+        'Listener' => __DIR__ . '/../..' . '/src/message_queue_listener/Listener.php',
         'LoginCommand' => __DIR__ . '/../..' . '/src/front_controller/front_controller_command/controller_commands/AuthController/LoginCommand.php',
         'LongDistanceShippingFactory' => __DIR__ . '/../..' . '/src/model/shipping/factory/LongDistanceShippingFactory.php',
         'Middleware' => __DIR__ . '/../..' . '/src/middleware/AbstractMiddleware.php',
@@ -771,6 +783,7 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'ProductRepositoryImpl' => __DIR__ . '/../..' . '/src/repository/Implemantions/ProductRepositoryImpl.php',
         'ProductService' => __DIR__ . '/../..' . '/src/service/ProductService.php',
         'ProductServiceDecorator' => __DIR__ . '/../..' . '/src/service/service_decorator/ProductService/ProductServiceDecorator.php',
+        'ProductServiceFactory' => __DIR__ . '/../..' . '/src/service/factory/ProductServiceFactory.php',
         'ProductServiceImpl' => __DIR__ . '/../..' . '/src/service/Implemantions/ProductServiceImpl.php',
         'ProductStockQuantityChangedResponseDto' => __DIR__ . '/../..' . '/src/dto/response_dto/ProductStockQuantityChangedResponseDto.php',
         'ProductSubscriber' => __DIR__ . '/../..' . '/src/model/product/ProductSubscriber.php',

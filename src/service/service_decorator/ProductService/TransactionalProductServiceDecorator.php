@@ -165,9 +165,13 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
     }
     function findOneProductByUuid(FindOneProductByUuidDto $dto): ResponseViewModel
     {
+        try {
             $response = parent::findOneProductByUuid($dto);
-            
             $this->dbConnection->closeConnection();
+
+        } catch (\Exception $th) {
+            $response = new ErrorResponseDto($th->getMessage(), $th->getCode());
+        }
 
             return $response;
 
