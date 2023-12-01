@@ -75,7 +75,19 @@ class ProductController {
 
     }
     function findAllProducts() {
-        $this->productService->findAllProduct(new FindAllProductsDto)
+        $comments = isset($_GET['comments'])       ? $_GET['comments'] : "dont_get";
+        $images = isset($_GET['images'])           ? $_GET['images'] : "dont_get";
+        $subscribers = isset($_GET['subscribers']) ? $_GET['subscribers'] : "dont_get";
+        $categories = isset($_GET['categories'])   ? $_GET['categories'] : "dont_get";
+        $rates = isset($_GET['rates'])             ? $_GET['rates'] : "dont_get";
+        $filterArray = array(
+            "comments"=>$comments,
+            "images"=>$images,
+            "subscribers"=> $subscribers,
+            "categories"=> $categories,
+            "rates"=> $rates
+        );
+        $this->productService->findAllProduct(new FindAllProductsDto($filterArray))
                             ->onSucsess(function (AllProductResponseDto $response){
                                 echo json_encode($response);
                             })->onError(function (ErrorResponseDto $err){
@@ -85,8 +97,22 @@ class ProductController {
    }
    function findAllProductWithPagination() {
         $pageNum = isset($_GET['page']) ? $_GET['page'] : 1;
-        $perPageForProduct = 10;
-        $this->productService->findAllProductWithPagination(new FindAllProductWithPaginationDto($perPageForProduct, $pageNum))
+        $perPageForProduct = isset($_GET['per_page']) ? $_GET['per_page'] : 10;
+
+        $comments = isset($_GET['comments'])       ? $_GET['comments'] : "dont_get";
+        $images = isset($_GET['images'])           ? $_GET['images'] : "dont_get";
+        $subscribers = isset($_GET['subscribers']) ? $_GET['subscribers'] : "dont_get";
+        $categories = isset($_GET['categories'])   ? $_GET['categories'] : "dont_get";
+        $rates = isset($_GET['rates'])             ? $_GET['rates'] : "dont_get";
+        $filterArray = array(
+            "comments"=>$comments,
+            "images"=>$images,
+            "subscribers"=> $subscribers,
+            "categories"=> $categories,
+            "rates"=> $rates
+        );
+
+        $this->productService->findAllProductWithPagination(new FindAllProductWithPaginationDto($perPageForProduct, $pageNum, $filterArray))
                             ->onSucsess(function (AllProductWithPaginationResponseDto $response){
                                 echo json_encode($response);
                             })->onError(function (ErrorResponseDto $err) {
@@ -96,9 +122,23 @@ class ProductController {
    }
    function findProductsBySearch(){
     $pageNum = isset($_GET['page']) ? $_GET['page'] : 1;
+    $perPageForProduct = isset($_GET['per_page']) ? $_GET['per_page'] : 10;
+
     $searchValue = isset($_GET['search_val']) ? $_GET['search_val'] : '';
-    $perPageForProduct = 10;
-    $this->productService->findProductsBySearch(new FindProductsBySearchDto($searchValue, $perPageForProduct, $pageNum))
+    $comments = isset($_GET['comments'])       ? $_GET['comments'] : "dont_get";
+    $images = isset($_GET['images'])           ? $_GET['images'] : "dont_get";
+    $subscribers = isset($_GET['subscribers']) ? $_GET['subscribers'] : "dont_get";
+    $categories = isset($_GET['categories'])   ? $_GET['categories'] : "dont_get";
+    $rates = isset($_GET['rates'])             ? $_GET['rates'] : "dont_get";
+    $filterArray = array(
+        "comments"=>$comments,
+        "images"=>$images,
+        "subscribers"=> $subscribers,
+        "categories"=> $categories,
+        "rates"=> $rates
+    );
+
+    $this->productService->findProductsBySearch(new FindProductsBySearchDto($searchValue, $perPageForProduct, $pageNum, $filterArray))
                         ->onSucsess(function (SearchedProductResponseDto $response){
                                 echo json_encode($response);
                         })->onError(function (ErrorResponseDto $err) {
@@ -108,8 +148,20 @@ class ProductController {
 
    }
    function findOneProductByUuid($uuid){
-        
-       $this->productService->findOneProductByUuid(new FindOneProductByUuidDto($uuid))
+        $comments = isset($_GET['comments'])       ? $_GET['comments'] : "dont_get";
+        $images = isset($_GET['images'])           ? $_GET['images'] : "dont_get";
+        $subscribers = isset($_GET['subscribers']) ? $_GET['subscribers'] : "dont_get";
+        $categories = isset($_GET['categories'])   ? $_GET['categories'] : "dont_get";
+        $rates = isset($_GET['rates'])             ? $_GET['rates'] : "dont_get";
+        $filterArray = array(
+            "comments"=>$comments,
+            "images"=>$images,
+            "subscribers"=> $subscribers,
+            "categories"=> $categories,
+            "rates"=> $rates
+        );
+
+       $this->productService->findOneProductByUuid(new FindOneProductByUuidDto($uuid, $filterArray))
                             ->onSucsess(function(OneProductFoundedResponseDto $response){
                                 echo json_encode($response);
                             })->onError(function (ErrorResponseDto $err){
@@ -197,7 +249,20 @@ class ProductController {
     function findProductByPriceRange(){
         $from = isset($_GET['from']) ? $_GET['from'] : '';
         $to = isset($_GET['to']) ? $_GET['to'] : '';
-        $this->productService->findProductsByPriceRange(new FindProductsByPriceRangeDto($from, $to))
+        $comments = isset($_GET['comments'])       ? $_GET['comments'] : "dont_get";
+        $images = isset($_GET['images'])           ? $_GET['images'] : "dont_get";
+        $subscribers = isset($_GET['subscribers']) ? $_GET['subscribers'] : "dont_get";
+        $categories = isset($_GET['categories'])   ? $_GET['categories'] : "dont_get";
+        $rates = isset($_GET['rates'])             ? $_GET['rates'] : "dont_get";
+        $filterArray = array(
+            "comments"=>$comments,
+            "images"=>$images,
+            "subscribers"=> $subscribers,
+            "categories"=> $categories,
+            "rates"=> $rates
+        );
+    
+        $this->productService->findProductsByPriceRange(new FindProductsByPriceRangeDto($from, $to, $filterArray))
                             ->onSucsess(function (AllProductResponseDto $response){
                                 echo json_encode($response);
                             })->onError(function (ErrorResponseDto $err){

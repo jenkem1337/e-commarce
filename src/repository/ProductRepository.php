@@ -3,17 +3,17 @@ interface ProductRepository {
     //product
     function createProduct(Product $p);
     function persistProductSubscriber(Product $p);
-    function findOneProductByUuid($uuid):ProductInterface;
+    function findOneProductByUuid($uuid, $filter): ProductInterface;
     function updateProductBrandName(Product $p);
     function updateProductModelName(Product $p);
     function updateProductHeader(Product $p);
     function updateProductDescription(Product $p);
     function updateProductPrice(Product $p);
     function updateProductStockQuantity(Product $p);
-    function findAllProducts(): IteratorAggregate;
-    function findProductsByPriceRange($from, $to): IteratorAggregate;
-    function findProductsBySearch($searchValue, $startingLimit, $perPageForProduct): IteratorAggregate;
-    function findAllWithPagination($startingLimit, $perPageForProduct): IteratorAggregate;
+    function findAllProducts($filter): IteratorAggregate;
+    function findProductsByPriceRange($from, $to, $filter): IteratorAggregate;
+    function findProductsBySearch($searchValue, $startingLimit, $perPageForProduct, $filter): IteratorAggregate;
+    function findAllWithPagination($startingLimit, $perPageForProduct, $filter): IteratorAggregate;
     function deleteProductByUuid(Product $product);
     function deleteProductSubscriberByUserAndProductUuid($userUuid, $productUuid);
 
@@ -27,5 +27,7 @@ interface ProductRepository {
     function findOneProductCategoryByUuid($uuid):ProductInterface;
     function updateProductCategoryNameByUuid(Product $c, $categoryUuidForFinding);
     function findOneProductCategoryByName($categoryName):ProductInterface;
+    function findASetOfProductCategoryByUuids($uuids):ProductInterface;
     function deleteProductCategoryByUuid($uuid);
+    function findOneProductWithOnlySubscriberByUuid($uuid, $userUuid): ProductInterface;
 }

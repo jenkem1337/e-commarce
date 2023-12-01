@@ -30,7 +30,9 @@ class CategoryRepositoryImpl implements CategoryRepository {
                 $category->created_at,
                 $category->updated_at
             );
-            $categoryArray->add($categoryDomainObject);
+            if(!$categoryDomainObject->isNull()){   
+                $categoryArray->add($categoryDomainObject);
+            }
         }
         return $categoryArray;
     }
@@ -44,6 +46,26 @@ class CategoryRepositoryImpl implements CategoryRepository {
             $category->updated_at
         );
 	}
+
+    function findASetOfByUuids($uuids):CategoryCollection {
+        $categories = $this->categoryDao->findASetOfByUuids($uuids);
+        $categoryCollection = new CategoryCollection();
+        foreach($categories as $category){
+            $categoryDomainObject = $this->categoryFactory->createInstance(
+                false,
+                $category->uuid,
+                $category->category_name,
+                $category->created_at,
+                $category->updated_at
+            );
+            if(!$categoryDomainObject->isNull()) {
+                $categoryCollection->add($categoryDomainObject);
+            }
+        }
+        return $categoryCollection;
+
+    }
+    
 	
 	function updateNameByUuid(CategoryInterface $c) {
         $this->categoryDao->updateNameByUuid($c);
@@ -69,7 +91,9 @@ class CategoryRepositoryImpl implements CategoryRepository {
                 $category->created_at,
                 $category->updated_at
             );
-            $categoryCollection->add($categoryDomainObect);
+            if(!$categoryDomainObect->isNull()) {
+                $categoryCollection->add($categoryDomainObect);
+            }
         }
         return $categoryCollection;
 	}

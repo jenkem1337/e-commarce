@@ -96,7 +96,7 @@ class ProductDaoImpl implements ProductDao {
     {
         $conn= $this->dbConnection->getConnection();
         $stmt = $conn->prepare(
-            "SELECT ps.uuid, ps.user_uuid, ps.product_uuid ,ps.created_at, ps.updated_at, u.uuid, u.full_name user_full_name, u.email user_email
+            "SELECT ps.uuid, ps.user_uuid, ps.product_uuid ,ps.created_at, ps.updated_at, u.full_name as user_full_name, u.email as user_email
             FROM product_subscriber as ps, users as u
             WHERE ps.product_uuid = :uuid AND ps.user_uuid = u.uuid"
         );
@@ -300,6 +300,24 @@ class ProductDaoImpl implements ProductDao {
         ];
         return json_decode(json_encode($arr),false);
     } 
+
+    function findOneOrEmptySubscriberByUuid($uuid, $userUuid){
+        $conn= $this->dbConnection->getConnection();
+        $stmt = $conn->prepare(
+            "SELECT ps.uuid, ps.user_uuid, ps.product_uuid ,ps.created_at, ps.updated_at, u.full_name , u.email
+            FROM product_subscriber as ps
+            JOIN users as u ON ps.user_uuid = u.uuid
+            WHERE ps.product_uuid = :uuid and ps.user_uuid = :user_uuid LIMIT 1");
+        $stmt->execute([
+            "uuid"=>$uuid,
+            "user_uuid"=> $userUuid
+        ]);
+        $productSubscriber = $stmt->fetch(PDO::FETCH_OBJ);
+        $conn = null;
+        if($productSubscriber == null) return $this->returnNullForSubscriberStatement();
+        return $productSubscriber;
+
+    }
     private function returnManyNullStatement(){
         $productArr = array();
         $product = new stdClass();
@@ -325,8 +343,22 @@ class ProductDaoImpl implements ProductDao {
         $product_subscriber->user_uuid = null;
         $product_subscriber->created_at= null;
         $product_subscriber->updated_at = null;
+        $product_subscriber->user_full_name = null;
+        $product_subscriber->user_email = null;
         $productArr[] = $product_subscriber;
         return $productArr;
     }
+    private function returnNullForSubscriberStatement(){
+        $product_subscriber = new stdClass();
+        $product_subscriber->uuid = null;
+        $product_subscriber->product_uuid = null;
+        $product_subscriber->user_uuid = null;
+        $product_subscriber->created_at= null;
+        $product_subscriber->updated_at = null;
+        $product_subscriber->user_full_name = null;
+        $product_subscriber->user_email = null;
+        return $product_subscriber;
+    }
+
 
 }

@@ -24,14 +24,13 @@ class CategoryServiceImpl implements CategoryService {
         );
         $categories = $this->productAggregateRepository->findOneProductCategoryByName($dto->getCategoryName())
                                             ->getCategories();
-
-        foreach($categories->getIterator() as $category){
+        /*foreach($categories->getIterator() as $category){
             if($category->getCategoryName() == $dto->getCategoryName()){
                  if(!($category->isNull())){
                     throw new AlreadyExistException('category');
                 }
             }
-        }
+        }*/
 
         $productForCategoryDomainObject->addCategory($categoryDomainObject);
         

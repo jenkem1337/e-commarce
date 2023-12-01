@@ -99,4 +99,13 @@ abstract class ProductRepositoryDecorator implements ProductRepository {
     {
         $this->productRepository->deleteProductCategoryByUuid($uuid);
     }
+
+    function findASetOfProductCategoryByUuids($uuids):ProductInterface {
+        return $this->productRepository->findASetOfProductCategoryByUuids($uuids);
+    }
+
+    function findOneProductWithOnlySubscriberByUuid($uuid, $userUuid){
+        return $this->productRepository->findOneProductWithOnlySubscriberByUuid($uuid, $userUuid);
+    }
+ 
 }

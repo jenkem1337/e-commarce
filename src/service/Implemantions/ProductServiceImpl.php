@@ -1,21 +1,18 @@
 <?php
 class ProductServiceImpl implements ProductService {
     private ProductRepository $productRepository;
-    private ShippingRepository $shippingRepository;
     private EmailService $emailService;
     private ProductFactoryContext $productFactoryContext;
     private ProductSubscriberFactory $productSubscriberFactory;
     private UploadService $uploadService;
 	function __construct(
         ProductRepository $productRepository,
-        ShippingRepository $shippingRepository,
         UploadService $uploadService,
         EmailService $emailService,
         ProductFactoryContext $productFactoryContext,
         Factory $productSubscriberFactory
     ) {
 	    $this->productRepository     = $productRepository;
-        $this->shippingRepository = $shippingRepository;
         $this->uploadService = $uploadService;
         $this->emailService = $emailService;
         $this->productFactoryContext = $productFactoryContext;
@@ -36,21 +33,18 @@ class ProductServiceImpl implements ProductService {
             $dto->getCreatedAt(),
             $dto->getUpdatedAt()
         );
-        $categoriesResponseArray = [];
-        foreach($dto->getCategories() as $categoryUuid) {
-            $categoryDomainObject = $this->productRepository->findOneProductCategoryByUuid($categoryUuid)
-                                                ->getCategories()
-                                                ->getItem($categoryUuid);
-            if($categoryDomainObject->isNull()){
-                throw new NotFoundException('category');
-            }
-            $categoryObj = new stdClass;
-            $categoryObj->category_name = $categoryDomainObject->getCategoryName();
-            $categoriesResponseArray[]= $categoryObj;
-            
-            $categoryDomainObject->setProductUuid($productDomainObject->getUuid());
-            $productDomainObject->addCategory($categoryDomainObject);            
+        
+        $productForCategoryDomainModel = $this->productRepository->findASetOfProductCategoryByUuids($dto->getCategories());
+        
+        if(count($productForCategoryDomainModel->getCategories()->getItems()) == 0){
+            throw new NotFoundException("Category(ies)");
         }
+
+        foreach($productForCategoryDomainModel->getCategories() as $category){
+            $category->setProductUuid($productDomainObject->getUuid());
+            $productDomainObject->addCategory($category);            
+        }
+
         $this->productRepository->createProduct($productDomainObject);
         
         return new ProductCreatedResponseDto(
@@ -61,27 +55,20 @@ class ProductServiceImpl implements ProductService {
             $dto->getDescription(),
             $dto->getPrice(),
             $dto->getStockQuantity(),
-            $categoriesResponseArray,
+            $productDomainObject->getCategories()->getItems(),
             $dto->getCreatedAt(),
             $dto->getUpdatedAt()
         );
     }
     function createNewProductSubscriber(ProductSubscriberCreationalDto $dto): ResponseViewModel
     {
-        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getProductUuid());
+        $productDomainObject = $this->productRepository->findOneProductWithOnlySubscriberByUuid($dto->getProductUuid(), $dto->getUserUuid());
         
-        ( $productDomainObject->isNull() ?? throw new NotFoundException('product') );
-
-        $isUserSubscriberBefore = false;
-        if(count($productDomainObject->getSubscribers()->getItems()) >=1){
-            foreach($productDomainObject->getSubscribers()->getIterator() as $subscriber){
-                if($subscriber->getUserUuid() == $dto->getUserUuid()){
-                    $isUserSubscriberBefore = true;
-                }
-            }
-    
+        $productDomainObject->isNull() ?? throw new NotFoundException('product');
+        
+        if(count($productDomainObject->getSubscribers()->getItems()) == 1){
+            throw new AlreadyExistException('product subscriber');
         }
-        if($isUserSubscriberBefore) throw new AlreadyExistException('product subscriber');
 
         $productSubscriberDomainObject = $this->productSubscriberFactory->createInstance(
             true,
@@ -91,17 +78,19 @@ class ProductServiceImpl implements ProductService {
             $dto->getCreatedAt(),
             $dto->getUpdatedAt()
         );
-
-        if((count($productDomainObject->getSubscribers()->getItems()) >=1)) {
-            $productDomainObject->getSubscribers()->clearItems();
-            $productDomainObject->getSubscribers()->add($productSubscriberDomainObject);
-        }
+        $productDomainObject->getSubscribers()->add($productSubscriberDomainObject);        
         $this->productRepository->persistProductSubscriber($productDomainObject);
         return new ProductSubscriberCreatedResponseDto('Subscribed to product successfully');
     }
     function deleteProduct(DeleteProductByUuidDto $dto):ResponseViewModel 
     {
-        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid());
+        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid(), [
+            "comments"=>"get",
+            "subscribers"=>"get",
+            "categories"=>"get",
+            "rates"=> "get",
+            "images"=>"get"
+        ]);
         if($productDomainObject->isNull()) throw new NotFoundException('product');
         
         if(count($productDomainObject->getImages()->getItems()) >= 1){
@@ -114,83 +103,44 @@ class ProductServiceImpl implements ProductService {
     }
     function deleteProductSubscriber(DeleteProductSubscriberDto $dto): ResponseViewModel
     {
-        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getProductUuid());
+        $productDomainObject = $this->productRepository->findOneProductWithOnlySubscriberByUuid($dto->getProductUuid(), $dto->getSubscriberUuid());
         
         if($productDomainObject->isNull()) throw new NotFoundException('product');
         
-        if(!( count($productDomainObject->getSubscribers()->getItems()) >=1) ){
-            throw new DoesNotExistException('subscriber');
-        }
-        $isUserSubscribedToProductBefore = false;
-        foreach($productDomainObject->getSubscribers()->getIterator() as $subscriber) {
-            if($subscriber->getUserUuid() == $dto->getSubscriberUuid() && !($subscriber->isNull())){
-                $isUserSubscribedToProductBefore = true;
-            }
-        }
-        
-        if(!$isUserSubscribedToProductBefore) throw new DoesNotExistException('Product subscriber');
-        
-        $this->productRepository->deleteProductSubscriberByUserAndProductUuid($dto->getSubscriberUuid() ,$dto->getProductUuid());
-        
+        if((count($productDomainObject->getSubscribers()->getItems()) == 1) ){
+            $this->productRepository->deleteProductSubscriberByUserAndProductUuid($dto->getSubscriberUuid() ,$dto->getProductUuid());
+        } else {
+            throw new DoesNotExistException('Your subscription');
+        }        
         return new ProductSubscriberDeletedResponseDto('Product subscriber deleted successfully');
 
     }
     function findAllProduct(FindAllProductsDto $dto): ResponseViewModel
     {
-        $products = $this->productRepository->findAllProducts();
-        $shippings = $this->shippingRepository->findAll();
-        
-        foreach($products->getIterator() as $productDomainObject) {
-            if($productDomainObject->isNull()) {
-                throw new NotFoundException('product');
-            }
-            $productDomainObject->calculateAvarageRate();
-        }
-
-        foreach($shippings->getIterator() as $shipping) {
-            if($shipping->isNull()) throw new NotFoundException('shipping');
-        }
-        return new AllProductResponseDto($products, $shippings);
+        $products = $this->productRepository->findAllProducts($dto->getFilters());
+        return new AllProductResponseDto($products);
     }
     function findAllProductWithPagination(FindAllProductWithPaginationDto $dto): ResponseViewModel
     {
-        $products = $this->productRepository->findAllWithPagination($dto->getStartingLimit(), $dto->getPerPageForProduct());
-        $shippings = $this->shippingRepository->findAll();
-
-        foreach($products->getIterator() as $productDomainObject) {
-            if($productDomainObject->isNull()) {
-                throw new NotFoundException('product');
-            }
-            $productDomainObject->calculateAvarageRate();
-        }
-        foreach($shippings->getIterator() as $shipping) {
-            if($shipping->isNull()) throw new NotFoundException('shipping');
-        }
-
-        return new AllProductWithPaginationResponseDto($products,$shippings);
+        $products = $this->productRepository->findAllWithPagination($dto->getStartingLimit(), $dto->getPerPageForProduct(), $dto->getFilter());
+        return new AllProductWithPaginationResponseDto($products);
     }
     function findProductsBySearch(FindProductsBySearchDto $dto): ResponseViewModel
     {
         $products = $this->productRepository->findProductsBySearch(
-            $dto->getSearchValue(), $dto->getStartingLimit(), $dto->getPerPageForProduct()
+            $dto->getSearchValue(), $dto->getStartingLimit(), $dto->getPerPageForProduct(), $dto->getFilter()
         );
-        $shippings = $this->shippingRepository->findAll();
-
-        foreach($products->getIterator() as $productDomainObject) {
-            if($productDomainObject->isNull()) {
-                throw new NotFoundException('product');
-            }
-            $productDomainObject->calculateAvarageRate();
-        }
-        foreach($shippings->getIterator() as $shipping) {
-            if($shipping->isNull()) throw new NotFoundException('shipping');
-        }
-
-        return new SearchedProductResponseDto($products, $shippings);
+        return new SearchedProductResponseDto($products);
     }
     function updateProductBrandName(ChangeProductBrandNameDto $dto): ResponseViewModel
     {
-        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid());
+        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid(), [
+            "comments"=>false,
+            "subscribers"=>false,
+            "categories"=>false,
+            "rates"=> false,
+            "images"=>false
+        ]);
         
         if($productDomainObject->isNull()) throw new NotFoundException('product');
 
@@ -201,7 +151,13 @@ class ProductServiceImpl implements ProductService {
     }
     function updateProductModelName(ChangeProductModelNameDto $dto): ResponseViewModel
     {
-        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid());
+        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid(),  [
+            "comments"=>false,
+            "subscribers"=>false,
+            "categories"=>false,
+            "rates"=> false,
+            "images"=>false
+        ]);
         if($productDomainObject->isNull()) throw new NotFoundException('product');
         $productDomainObject->changeModel($dto->getNewModelName());
 
@@ -211,7 +167,13 @@ class ProductServiceImpl implements ProductService {
     }
     function updateProductHeader(ChangeProductHeaderDto $dto): ResponseViewModel
     {
-        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid());
+        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid(),  [
+            "comments"=>false,
+            "subscribers"=>false,
+            "categories"=>false,
+            "rates"=> false,
+            "images"=>false
+        ]);
         if($productDomainObject->isNull()) throw new NotFoundException('product');
         $productDomainObject->changeHeader($dto->getNewHeaderName());
 
@@ -222,7 +184,13 @@ class ProductServiceImpl implements ProductService {
     }
     function updateProductDescription(ChangeProductDescriptionDto $dto): ResponseViewModel
     {
-        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid());
+        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid(),  [
+            "comments"=>false,
+            "subscribers"=>false,
+            "categories"=>false,
+            "rates"=> false,
+            "images"=>false
+        ]);
         if($productDomainObject->isNull()) throw new NotFoundException('product');
         $productDomainObject->changeDescription($dto->getNewDescription());
 
@@ -233,7 +201,13 @@ class ProductServiceImpl implements ProductService {
     }
     function updateProductPrice(ChangeProductPriceDto $dto): ResponseViewModel
     {
-        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid());
+        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid(),  [
+            "comments"=>false,
+            "subscribers"=>false,
+            "categories"=>false,
+            "rates"=> false,
+            "images"=>false
+        ]);
         if($productDomainObject->isNull()) throw new NotFoundException('product');
         $productDomainObject->changePrice($dto->getNewPrice());
         
@@ -246,15 +220,11 @@ class ProductServiceImpl implements ProductService {
         return new ProductPriceChangedResponseDto('Product price changed successfully');
     }
     function findOneProductByUuid(FindOneProductByUuidDto $dto):ResponseViewModel{
-        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid());
-        $shippings = $this->shippingRepository->findAll();
+        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid(),$dto->getFilter());
 
         if($productDomainObject->isNull()) throw new NotFoundException('product');
         $productDomainObject->calculateAvarageRate();
 
-        foreach($shippings->getIterator() as $shipping) {
-            if($shipping->isNull()) throw new NotFoundException('shipping');
-        }
 
         return new OneProductFoundedResponseDto(
             $productDomainObject->getUuid(),
@@ -272,13 +242,18 @@ class ProductServiceImpl implements ProductService {
             $productDomainObject->getSubscribers(),
             $productDomainObject->getCreatedAt(),
             $productDomainObject->getUpdatedAt(),
-            $shippings
         );
     }
 
     function updateProductStockQuantity(ChangeProductStockQuantityDto $dto): ResponseViewModel
     {
-        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getProductUuid());
+        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getProductUuid(), [
+            "comments"=>false,
+            "subscribers"=>false,
+            "categories"=>false,
+            "rates"=> false,
+            "images"=>false
+        ]);
         
         if($productDomainObject->isNull()) throw new NotFoundException('product');
         
@@ -298,19 +273,13 @@ class ProductServiceImpl implements ProductService {
     }
     function findProductsByPriceRange(FindProductsByPriceRangeDto $dto): ResponseViewModel
     {
-        $products = $this->productRepository->findProductsByPriceRange($dto->getFrom(), $dto->getTo());
-        $shippings = $this->shippingRepository->findAll();
-
-        foreach($shippings->getIterator() as $shipping) {
-            if($shipping->isNull()) throw new NotFoundException('shipping');
-        }
-
+        $products = $this->productRepository->findProductsByPriceRange($dto->getFrom(), $dto->getTo(), $dto->getFilter());
         foreach($products->getIterator() as $productDomainObject) {
             if($productDomainObject->isNull()) {
                 throw new NotFoundException('product');
             }
             $productDomainObject->calculateAvarageRate();
         }
-        return new AllProductResponseDto($products,$shippings);
+        return new AllProductResponseDto($products);
     }
 }

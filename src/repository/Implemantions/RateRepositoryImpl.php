@@ -68,7 +68,9 @@ class RateRepositoryImpl implements RateRepository {
                 $rateObject->updated_at
             );
             $rateDomainObject->rateIt($rateObject->rate_num);
-            $rateArray->add($rateDomainObject);
+            if(!$rateDomainObject->isNull()){
+                $rateArray->add($rateDomainObject);
+            }
         }
         return $rateArray;
 

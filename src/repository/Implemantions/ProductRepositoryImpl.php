@@ -12,33 +12,10 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
         $this->productSubscriberFactory = $productSubscriberFactory;
         $this->productDao = $productDao;
 	}
-    private function getManyProductDomainModelFromSubEntities($productObjects): IteratorAggregate{
+    private function getManyProductDomainModelFromSubEntities($productObjects, $filter): IteratorAggregate{
         $productCollection = new ProductCollection();
-        foreach($productObjects as $productObject){       
-            $productSubscriberObjects = $this->productDao->findAllProductSubscriberByProductUuid($productObject->uuid);
-            $subscriberIterator = new SubscriberCollection();
-
-            foreach($productSubscriberObjects as $subscriber){
-                $productSubscriberDomainObject = $this->productSubscriberFactory->createInstance(
-                    false,
-                    $subscriber->uuid,
-                    $subscriber->product_uuid,
-                    $subscriber->user_uuid,
-                    $subscriber->created_at,
-                    $subscriber->updated_at
-                );
-
-                $productSubscriberDomainObject->setUserEmail($subscriber->user_email);
-                $productSubscriberDomainObject->setUserFullName($subscriber->user_full_name);
-                $subscriberIterator->add($productSubscriberDomainObject);
-            }
-
-
-            $commentIterator  = $this->commentRepository->findAllByProductUuid($productObject->uuid);
-            $categoryIterator = $this->categoryRepository->findAllByProductUuid($productObject->uuid);
-            $rateIterator     = $this->rateRepository->findAllByProductUuid($productObject->uuid);
-            $imageIterator    = $this->imageRepository->findAllByProductUuid($productObject->uuid);
-           
+        foreach($productObjects as $productObject){ 
+            
             $productDomainObject = $this->productFactoryContext->executeFactory(
                 ProductFactory::class,
                 false,
@@ -52,28 +29,52 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
                 $productObject->created_at,
                 $productObject->updated_at
             );
-
-            foreach($subscriberIterator->getIterator() as $subscriber){
-                if($subscriber->isNull()) continue;
-                $productDomainObject->addSubscriber($subscriber);
+ 
+            if($filter["subscribers"] == "get"){
+                $productSubscriberObjects = $this->productDao->findAllProductSubscriberByProductUuid($productObject->uuid);
+                $subscriberIterator = new SubscriberCollection();
+    
+                foreach($productSubscriberObjects as $subscriber){
+                    $productSubscriberDomainObject = $this->productSubscriberFactory->createInstance(
+                        false,
+                        $subscriber->uuid,
+                        $subscriber->product_uuid,
+                        $subscriber->user_uuid,
+                        $subscriber->created_at,
+                        $subscriber->updated_at
+                    );
+    
+                    $productSubscriberDomainObject->setUserEmail($subscriber->user_email);
+                    $productSubscriberDomainObject->setUserFullName($subscriber->user_full_name);
+                    
+                    if(!$productSubscriberDomainObject->isNull()) {
+                        $subscriberIterator->add($productSubscriberDomainObject);
+                    }
+                }
+                $productDomainObject->swapSubscribersCollection($subscriberIterator);
+    
             }
-            foreach($commentIterator->getIterator() as $comment){
-                if($comment->isNull()) continue;
-                $productDomainObject->addComment($comment);
+                
+            if($filter["comments"] == "get"){
+                $commentIterator  = $this->commentRepository->findAllByProductUuid($productObject->uuid);
+                $productDomainObject->swapCommentCollection($commentIterator);
             }
-            foreach($categoryIterator->getIterator() as $category){
-                if($category->isNull()) continue;
-                $productDomainObject->addCategory($category);
+            if($filter["categories"] == "get"){
+                $categoryIterator = $this->categoryRepository->findAllByProductUuid($productObject->uuid);
+                $productDomainObject->swapCategoryCollection($categoryIterator);   
             }
-            foreach($rateIterator->getIterator() as $rate){
-                if($rate->isNull()) continue;
-                $productDomainObject->addRate($rate);
+            if($filter["rates"] == "get"){
+                $rateIterator     = $this->rateRepository->findAllByProductUuid($productObject->uuid);
+                $productDomainObject->swapRateCollection($rateIterator);
+                $productDomainObject->calculateAvarageRate();
             }
-            foreach($imageIterator->getIterator() as $image){
-                if($image->isNull()) continue;
-                $productDomainObject->addImage($image);
+            if($filter["images"] == "get"){
+                $imageIterator    = $this->imageRepository->findAllByProductUuid($productObject->uuid);
+                $productDomainObject->swapImageCollection($imageIterator);
             }
-            $productCollection->add($productDomainObject);
+            if(!$productDomainObject->isNull()){
+                $productCollection->add($productDomainObject);
+            }
         }
         return $productCollection;
     }
@@ -91,47 +92,25 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
             $this->productDao->persistSubscriber($subscriber);
         }
     }
-    function findProductsByPriceRange($from, $to):IteratorAggregate
+    function findProductsByPriceRange($from, $to, $filter):IteratorAggregate
     {
         $productObjects = $this->productDao->findByPriceRange($from, $to);
-        return $this->getManyProductDomainModelFromSubEntities($productObjects);
+        return $this->getManyProductDomainModelFromSubEntities($productObjects, $filter);
     }
-    function findAllWithPagination($startingLimit, $perPageForProduct): IteratorAggregate
+    function findAllWithPagination($startingLimit, $perPageForProduct, $filter): IteratorAggregate
     {
         $productObjects = $this->productDao->findAllWithPagination($startingLimit, $perPageForProduct);
-        return $this->getManyProductDomainModelFromSubEntities($productObjects);
+        return $this->getManyProductDomainModelFromSubEntities($productObjects, $filter);
     }
-    function findAllProducts(): IteratorAggregate
+    function findAllProducts($filter): IteratorAggregate
     {
         $productObjects = $this->productDao->findAll();
-        return $this->getManyProductDomainModelFromSubEntities($productObjects);
+        return $this->getManyProductDomainModelFromSubEntities($productObjects, $filter);
     }
-    function findOneProductByUuid($uuid): ProductInterface
+    function findOneProductByUuid($uuid, $filter): ProductInterface
     {
         $productObject    = $this->productDao->findOneByUuid($uuid);
-        $productSubscriberObjects = $this->productDao->findAllProductSubscriberByProductUuid($uuid);
-        $subscriberIterator = new SubscriberCollection();
-
-        foreach($productSubscriberObjects as $subscriber){
-            $productSubscriberDomainObject = $this->productSubscriberFactory->createInstance(
-                false,
-                $subscriber->uuid,
-                $subscriber->product_uuid,
-                $subscriber->user_uuid,
-                $subscriber->created_at,
-                $subscriber->updated_at
-            );
-
-            $productSubscriberDomainObject->setUserEmail($subscriber->user_email);
-            $productSubscriberDomainObject->setUserFullName($subscriber->user_full_name);
-            $subscriberIterator->add($productSubscriberDomainObject);
-        }   
-
-        $commentIterator  = $this->commentRepository->findAllByProductUuid($uuid);
-        $categoryIterator = $this->categoryRepository->findAllByProductUuid($uuid);
-        $rateIterator     = $this->rateRepository->findAllByProductUuid($uuid);
-        $imageIterator    = $this->imageRepository->findAllByProductUuid($uuid);
-
+        
         $productDomainObject = $this->productFactoryContext->executeFactory(
             ProductFactory::class,
             false,
@@ -145,34 +124,57 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
             $productObject->created_at,
             $productObject->updated_at
         );
-        foreach($subscriberIterator->getIterator() as $subscriber){
-            if($subscriber->isNull()) continue;
-            $productDomainObject->addSubscriber($subscriber);
+
+        $productSubscriberObjects = $this->productDao->findAllProductSubscriberByProductUuid($uuid);
+        
+        if($filter["subscribers"] == "get"){
+            $productSubscriberObjects = $this->productDao->findAllProductSubscriberByProductUuid($productObject->uuid);
+            $subscriberIterator = new SubscriberCollection();
+
+            foreach($productSubscriberObjects as $subscriber){
+                $productSubscriberDomainObject = $this->productSubscriberFactory->createInstance(
+                    false,
+                    $subscriber->uuid,
+                    $subscriber->product_uuid,
+                    $subscriber->user_uuid,
+                    $subscriber->created_at,
+                    $subscriber->updated_at
+                );
+
+                $productSubscriberDomainObject->setUserEmail($subscriber->user_email);
+                $productSubscriberDomainObject->setUserFullName($subscriber->user_full_name);
+                
+                if(!$productSubscriberDomainObject->isNull()){
+                    $subscriberIterator->add($productSubscriberDomainObject);
+                }
+            }
+            $productDomainObject->swapSubscribersCollection($subscriberIterator);
         }
-        foreach($commentIterator->getIterator() as $comment){
-            if($comment->isNull()) continue;
-            $productDomainObject->addComment($comment);
+            
+        if($filter["comments"] == "get"){
+            $commentIterator  = $this->commentRepository->findAllByProductUuid($productObject->uuid);
+            $productDomainObject->swapCommentCollection($commentIterator);
         }
-        foreach($categoryIterator->getIterator() as $category){
-            if($category->isNull()) continue;
-            $category->setProductUuid($productDomainObject->getUuid());
-            $productDomainObject->addCategory($category);
+        if($filter["categories"] == "get"){
+            $categoryIterator = $this->categoryRepository->findAllByProductUuid($productObject->uuid);
+            $productDomainObject->swapCategoryCollection($categoryIterator);   
         }
-        foreach($rateIterator->getIterator() as $rate){
-            if($rate->isNull()) continue;
-            $productDomainObject->addRate($rate);
+        if($filter["rates"] == "get"){
+            $rateIterator     = $this->rateRepository->findAllByProductUuid($productObject->uuid);
+            $productDomainObject->swapRateCollection($rateIterator);
+            $productDomainObject->calculateAvarageRate();
         }
-        foreach($imageIterator->getIterator() as $image){
-            if($image->isNull()) continue;
-            $productDomainObject->addImage($image);
+        if($filter["images"] == "get"){
+            $imageIterator    = $this->imageRepository->findAllByProductUuid($productObject->uuid);
+            $productDomainObject->swapImageCollection($imageIterator);
         }
         return $productDomainObject;
     }
     
-    function findProductsBySearch($searchValue, $startingLimit, $perPageForProduct): IteratorAggregate
+    function findProductsBySearch($searchValue, $startingLimit, $perPageForProduct, $filter): IteratorAggregate
     {
         $productObjects = $this->productDao->findBySearching($searchValue, $startingLimit, $perPageForProduct);
-        return $this->getManyProductDomainModelFromSubEntities($productObjects);
+        return $this->getManyProductDomainModelFromSubEntities($productObjects, $filter);
     }
     
     function deleteProductByUuid(Product $product)
@@ -275,6 +277,15 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
         $productForCategoryDomainModel->addCategory($categoryDomainObject);
         return $productForCategoryDomainModel;
     }
+    function findASetOfProductCategoryByUuids($uuids): ProductInterface {
+        $categoryDomainObjects = $this->categoryRepository->findASetOfByUuids($uuids);
+        $productForCategoryDomainModel = $this->productFactoryContext->executeFactory(
+            ProductCategoryCreationalModelFactory::class,
+            true
+        );
+        $productForCategoryDomainModel->swapCategoryCollection($categoryDomainObjects);
+        return $productForCategoryDomainModel;
+    }
     function updateProductCategoryNameByUuid(Product $c, $categoryUuidForFinding) {
         $category = $c->getCategories()->getItem($categoryUuidForFinding);
 
@@ -285,4 +296,39 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
         $this->categoryRepository->deleteByUuid($uuid);
     }
 
+    function findOneProductWithOnlySubscriberByUuid($uuid, $userUuid): ProductInterface{
+        $productObject = $this->productDao->findOneByUuid($uuid);
+        $subscriberObj = $this->productDao->findOneOrEmptySubscriberByUuid($uuid, $userUuid);
+        $productSubscriberDomainObject = $this->productSubscriberFactory->createInstance(
+            false,
+            $subscriberObj->uuid,
+            $subscriberObj->product_uuid,
+            $subscriberObj->user_uuid,
+            $subscriberObj->created_at,
+            $subscriberObj->updated_at
+        );
+        $productSubscriberDomainObject->setUserEmail($subscriberObj->email);
+        $productSubscriberDomainObject->setUserFullName($subscriberObj->full_name);
+
+        $productDomainObject = $this->productFactoryContext->executeFactory(
+            ProductFactory::class,
+            false,
+            $productObject->uuid,
+            $productObject->brand,
+            $productObject->model,
+            $productObject->header,
+            $productObject->_description,
+            $productObject->price,
+            $productObject->stockquantity,
+            $productObject->created_at,
+            $productObject->updated_at
+        );
+        if(!$productSubscriberDomainObject->isNull()){
+            $productDomainObject->addSubscriber($productSubscriberDomainObject);
+        }
+        return $productDomainObject;
+    }
+
+
+    
 }

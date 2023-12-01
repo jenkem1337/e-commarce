@@ -17,5 +17,4 @@ class RedisConnection implements DatabaseConnection {
     function getConnection(): Client{
         return $this->redis;
     }
-    function closeConnection(){}
 }

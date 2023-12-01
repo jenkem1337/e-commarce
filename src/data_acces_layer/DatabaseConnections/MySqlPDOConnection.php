@@ -31,7 +31,4 @@ class MySqlPDOConnection implements SingletonConnection{
     {
         return $this->pdo;
     }
-    function closeConnection(){
-        $this->pdo = null;
-    }
 }

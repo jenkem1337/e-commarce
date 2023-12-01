@@ -55,4 +55,5 @@ class ProductRepositoryAggregateRootDecorator extends ProductRepositoryDecorator
     {
         parent::updateProductCategoryNameByUuid($c, $categoryUuidForFinding);
     }
+
 }

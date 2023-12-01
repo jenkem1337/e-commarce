@@ -30,10 +30,9 @@ class OneProductFoundedResponseDto extends ResponseViewModel implements JsonSeri
     protected $createdAt;
 
     protected $updatedAt;
-    protected IteratorAggregate $shippings;
 
 
-    public function __construct($uuid, $brand, $model, $header, $description, $price, $avarageRate, $stockQuantity, $categories, $comments, $rates, $images, $subscribers, $createdAt, $updatedAt, IteratorAggregate $shippings)
+    public function __construct($uuid, $brand, $model, $header, $description, $price, $avarageRate, $stockQuantity, $categories, $comments, $rates, $images, $subscribers, $createdAt, $updatedAt)
     {
         $this->uuid = $uuid;
         $this->brand = $brand;
@@ -50,7 +49,6 @@ class OneProductFoundedResponseDto extends ResponseViewModel implements JsonSeri
         $this->subscribers = $subscribers;
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
-        $this->shippings = $shippings;
         parent::__construct('success', $this);
     }
 
@@ -233,18 +231,6 @@ class OneProductFoundedResponseDto extends ResponseViewModel implements JsonSeri
     /**
      * Get the value of shippings
      */ 
-    public function getShippings()
-    {
-        $shippingArr = [];
-        foreach($this->shippings as $shipping){
-            $shippingObj = new stdClass;
-            $shippingObj->uuid = $shipping->getUuid();
-            $shippingObj->shiping_type = $shipping->getShippingType();
-            $shippingObj->price = $shipping->getPrice();
-            $shippingArr[] = $shippingObj;
-        }
-        return $shippingArr;
-    }
 
     function jsonSerialize(): mixed
     {
@@ -262,7 +248,6 @@ class OneProductFoundedResponseDto extends ResponseViewModel implements JsonSeri
             'subscribers'=>$this->getSubscribers(),
             'categories'=> $this->getCategories(),
             'images'=>$this->getImages(),
-            'shipping_methods'=>$this->getShippings(),
             'created_at' => $this->getCreatedAt(),
             'updated_at'=>$this->getUpdatedAt()
         ];

@@ -1,10 +1,8 @@
 <?php
 
 class TransactionalShippingServiceDecorator extends ShippingServiceDecorator {
-    private DatabaseConnection $dbConnection;
     function __construct(ShippingService $service, DatabaseConnection $dbConnection)
     {
-        $this->dbConnection = $dbConnection;
         parent::__construct($service);
     }
 
@@ -12,15 +10,11 @@ class TransactionalShippingServiceDecorator extends ShippingServiceDecorator {
     {
             $response = parent::findAll($dto);
             
-            $this->dbConnection->closeConnection();
             return $response;
     }
     function findOneByUuid(FindOneShippingMethodDto $dto): ResponseViewModel
     {
             $response = parent::findOneByUuid($dto);
-            
-
-            $this->dbConnection->closeConnection();
 
             return  $response;
     }

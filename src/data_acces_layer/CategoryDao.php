@@ -9,4 +9,6 @@ interface CategoryDao {
     function addCategoryUuidToProduct(Category $c);
     function findAllByProductUuid($uuid);
     function deleteCategoryByProductUuid($uuid);
+
+    function findASetOfByUuids($uuids);
 }

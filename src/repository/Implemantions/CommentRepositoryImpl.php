@@ -62,7 +62,9 @@ class CommentRepositoryImpl implements CommentRepository {
                 $commentObject->created_at,
                 $commentObject->updated_at
             );
-            $commentArray->add($commentDomainObject);
+            if(!$commentDomainObject->isNull()){
+                $commentArray->add($commentDomainObject);
+            }
         }
         return $commentArray;
     }

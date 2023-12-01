@@ -20,4 +20,5 @@ interface ProductDao {
     function updateDescriptionByUuid(Product $p);
     function updateHeaderByUuid(Product $p);
     function updateAvarageRateByUuid(Product $p);
+    function findOneOrEmptySubscriberByUuid($uuid, $userUuid);
 }

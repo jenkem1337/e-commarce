@@ -39,16 +39,6 @@ class ProductServiceFactory implements Factory {
        return new TransactionalProductServiceDecorator(
                 new ProductServiceImpl(
                     $productRepositoryImpl,
-                    new ShippingRepositoryImpl(
-                        new ShippingDaoImpl(MySqlPDOConnection::getInsatace()),
-                        new ShippingFactoryContext(
-                            [
-                                ShippingType::SAME_DAY => new ConcreteSameDayShippingFactory,
-                                ShippingType::TWO_DAY => new ConcreteTwoDayShippingFactory,
-                                ShippingType::LONG_DISTANCE => new ConcreteLongDistanceFactory
-                            ]
-                        )
-                    ),
                     new UploadServiceImpl,
                     new EmailServiceImpl(new PHPMailer(true)),
                     new ProductFactoryContext([

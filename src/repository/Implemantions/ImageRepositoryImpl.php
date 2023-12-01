@@ -46,7 +46,9 @@ class ImageRepositoryImpl implements ImageRepository {
                 $imageObject->created_at,
                 $imageObject->updated_at
             );
-            $imageArray->add($imageDomainObject);
+            if(!$imageDomainObject->isNull()){
+                $imageArray->add($imageDomainObject);
+            }
         }
         return $imageArray;
 

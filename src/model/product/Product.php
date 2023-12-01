@@ -114,6 +114,23 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
     function addRate(RateInterface $rate){
         $this->rates->add($rate);
     }
+
+    function swapSubscribersCollection(IteratorAggregate $i) {
+        $this->subscribers = $i;
+    }
+    function swapCategoryCollection(IteratorAggregate $i) {
+        $this->categories = $i;
+    }
+    function swapImageCollection(IteratorAggregate $i) {
+        $this->images = $i;
+    }
+    function swapRateCollection(IteratorAggregate $i) {
+        $this->rates = $i;
+    }
+    function swapCommentCollection(IteratorAggregate $i) {
+        $this->comments = $i;
+    }
+
     function calculateAvarageRate(){
         $howManyPeopleRateIt = count($this->rates->getItems());
         $sumOfRate = $this->getSumOfRate() ?? 0;

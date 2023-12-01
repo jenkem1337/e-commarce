@@ -21,34 +21,23 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
             $dbConnection->rollBack();
             $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
         } finally {
-            $this->dbConnection->closeConnection();
-            $dbConnection = null;
             return $response;
         }
     }
     function findAllProduct(FindAllProductsDto $dto): ResponseViewModel
     {
             $response = parent::findAllProduct($dto);
-            
-            $this->dbConnection->closeConnection();
-
             return $response;
     }
     function findAllProductWithPagination(FindAllProductWithPaginationDto $dto): ResponseViewModel
     {
             $response = parent::findAllProductWithPagination($dto);
-            
-            $this->dbConnection->closeConnection();
-
             return $response;
     }
 
     function findProductBySearch(FindProductsBySearchDto $dto): ResponseViewModel
     {
             $response = parent::findProductsBySearch($dto);
-            
-            $this->dbConnection->closeConnection();
-
             return $response;
 
     }
@@ -63,11 +52,9 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
             $dbConnection->commit();
 
         } catch (Exception $e) {
-            $this->dbConnection->closeConnection();
             $dbConnection->rollBack();
             $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
         } finally {
-            $dbConnection = null;
             return $response;
         }
 
@@ -75,8 +62,6 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
     function findProductsByPriceRange(FindProductsByPriceRangeDto $dto): ResponseViewModel
     {
             $response = parent::findProductsByPriceRange($dto);
-            
-            $this->dbConnection->closeConnection();
             return $response;
         
     }
@@ -95,8 +80,6 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
             $dbConnection->rollBack();
             $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
         } finally {
-            $this->dbConnection->closeConnection();
-            $dbConnection = null;
             return $response;
         }
 
@@ -115,8 +98,6 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
             $dbConnection->rollBack();
             $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
         } finally {
-            $this->dbConnection->closeConnection();
-            $dbConnection = null;
             return $response;
         }
 
@@ -136,8 +117,6 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
             $dbConnection->rollBack();
             $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
         } finally {
-            $this->dbConnection->closeConnection();
-            $dbConnection = null;
             return $response;
         }
 
@@ -156,9 +135,6 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
             $dbConnection->rollBack();
             $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
         } finally {
-            $this->dbConnection->closeConnection();
-
-            $dbConnection = null;
             return $response;
         }
 
@@ -167,8 +143,6 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
     {
         try {
             $response = parent::findOneProductByUuid($dto);
-            $this->dbConnection->closeConnection();
-
         } catch (\Exception $th) {
             $response = new ErrorResponseDto($th->getMessage(), $th->getCode());
         }
@@ -191,9 +165,7 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
             $dbConnection->rollBack();
             $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
         } finally {
-            $this->dbConnection->closeConnection();
-
-            $dbConnection = null;
+            
             return $response;
         }
 
@@ -212,9 +184,6 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
             $dbConnection->rollBack();
             $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
         } finally {
-            $this->dbConnection->closeConnection();
-
-            $dbConnection = null;
             return $response;
         }
 
@@ -233,9 +202,6 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
             $dbConnection->rollBack();
             $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
         } finally {
-            $this->dbConnection->closeConnection();
-
-            $dbConnection = null;
             return $response;
         }
     }
@@ -253,9 +219,6 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
                 $dbConnection->rollBack();
                 $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
             } finally {
-                $this->dbConnection->closeConnection();
-
-                $dbConnection = null;
                 return $response;
             }
     

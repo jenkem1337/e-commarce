@@ -3,12 +3,10 @@ class SearchedProductResponseDto extends ResponseViewModel implements JsonSerial
     protected IteratorAggregate $products;
 
 
-    protected IteratorAggregate $shippings;
 
-    public function __construct(IteratorAggregate $products, IteratorAggregate $shippings)
+    public function __construct(IteratorAggregate $products)
     {
         $this->products = $products;
-        $this->shippings = $shippings;
         parent::__construct('success', $this);
 
     }
@@ -24,22 +22,10 @@ class SearchedProductResponseDto extends ResponseViewModel implements JsonSerial
     /**
      * Get the value of shippings
      */ 
-    public function getShippings():IteratorAggregate
-    {
-        return $this->shippings;
-    }
 
     function jsonSerialize(): mixed
     {
         $response= [];
-        $shippings = [];
-        foreach($this->getShippings() as $shipping){
-            $shippingObj = new stdClass;
-            $shippingObj->uuid = $shipping->getUuid();
-            $shippingObj->shiping_type = $shipping->getShippingType();
-            $shippingObj->price = $shipping->getPrice();
-            $shippings[] = $shippingObj;
-        }
         foreach($this->getProducts() as $product) {
             $categories = [];
             $comments = [];
@@ -107,7 +93,6 @@ class SearchedProductResponseDto extends ResponseViewModel implements JsonSerial
                 'subscribers'=>$subscribers,
                 'categories'=>$categories,
                 'images'=>$images,
-                'shippings_methods' => $shippings,
                 'created_at' => $product->getCreatedAt(),
                 'updated_at'=>$product->getUpdatedAt()
             ];

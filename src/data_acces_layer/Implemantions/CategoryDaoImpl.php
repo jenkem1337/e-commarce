@@ -41,6 +41,19 @@ class CategoryDaoImpl implements CategoryDao {
         if($category == null) return $this->returnNullStatment();
         return $category;
 	}
+
+    function findASetOfByUuids($uuids) {
+        $in = str_repeat('?,', count($uuids) - 1) . '?';
+        
+        $conn = $this->databaseConnection->getConnection();
+        $stmt = $conn->prepare("SELECT * FROM category WHERE uuid IN ($in)");
+        $stmt->execute($uuids);
+        $category = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $conn = null; 
+        if($category == null) return $this->returnManyNullStatment();
+        return $category;
+
+    }
 	
 	function updateNameByUuid(Category $c) {
         $conn = $this->databaseConnection->getConnection();
@@ -95,7 +108,7 @@ class CategoryDaoImpl implements CategoryDao {
         $stmt = $conn->prepare(
             "SELECT c.uuid, c.category_name, c.created_at, c.updated_at FROM category as c
             INNER JOIN product_category as pc
-            ON pc.category_uuid = c.uuid
+                ON pc.category_uuid = c.uuid
             WHERE product_uuid = :product_uuid"
         );
         $stmt->execute([

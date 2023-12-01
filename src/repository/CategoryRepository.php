@@ -10,4 +10,5 @@ interface CategoryRepository {
     function findOneByName($categoryName):CategoryInterface;
     function addCategoryUuidToProduct($productUuid);
     function deleteCategoryByProductUuid($uuid);
+    function findASetOfByUuids($uuids): CategoryCollection;
 }

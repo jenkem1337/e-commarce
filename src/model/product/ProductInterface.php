@@ -15,6 +15,13 @@ interface ProductInterface {
         function addRate(RateInterface $rate);
         function addComment(CommentInterface $comment);
         function addImage(ImageInterface $img);
+        function swapSubscribersCollection(IteratorAggregate $i);
+        function swapCategoryCollection(IteratorAggregate $i);
+        function swapRateCollection(IteratorAggregate $i);
+        function swapCommentCollection(IteratorAggregate $i);
+        function swapImageCollection(IteratorAggregate $i);
+
+
         public function getBrand();
         public function getModel();
     

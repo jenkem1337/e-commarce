@@ -21,9 +21,6 @@ class TransactionalImageServiceDecorator extends ImageServiceDecorator {
             $dbConnection->rollBack();
             $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
         } finally {
-            $this->dbConnection->closeConnection();
-
-            $dbConnection = null;
             return $response;
         }
 
@@ -41,9 +38,6 @@ class TransactionalImageServiceDecorator extends ImageServiceDecorator {
             $dbConnection->rollBack();
             $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
         } finally {
-            $this->dbConnection->closeConnection();
-
-            $dbConnection = null;
             return $response;
         }
 

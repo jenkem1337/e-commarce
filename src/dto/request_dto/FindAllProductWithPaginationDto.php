@@ -6,12 +6,14 @@ class FindAllProductWithPaginationDto {
     protected $pageNum;
 
     protected $startingLimit;
+    protected $filter;
 
-    public function __construct($perPageForProduct, $pageNum)
+    public function __construct($perPageForProduct, $pageNum, $filter)
     {
         $this->perPageForProduct = $perPageForProduct;
         $this->pageNum = $pageNum;
         $this->startingLimit = ($this->pageNum-1)*$this->perPageForProduct;
+        $this->filter = $filter;
     }
 
 
@@ -40,4 +42,12 @@ class FindAllProductWithPaginationDto {
         return $this->perPageForProduct;
     }
 
+
+    /**
+     * Get the value of filter
+     */ 
+    public function getFilter()
+    {
+        return $this->filter;
+    }
 }

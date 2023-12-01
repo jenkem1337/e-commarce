@@ -6,6 +6,11 @@ class NullProduct implements ProductInterface {
     {
         
     }
+    function swapCategoryCollection(IteratorAggregate $i){}
+    function swapCommentCollection(IteratorAggregate $i){}
+    function swapImageCollection(IteratorAggregate $i){}
+    function swapRateCollection(IteratorAggregate $i){}
+    function swapSubscribersCollection(IteratorAggregate $i) {}
     function incrementStockQuantity(int $quantity){}
     function decrementStockQuantity(int $quantity){}
     function changeHeader($header){}

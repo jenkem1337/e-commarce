@@ -4,11 +4,13 @@ class FindProductsByPriceRangeDto {
     protected $from;
 
     protected $to;
+    protected $filter;
 
-    public function __construct($from, $to)
+    public function __construct($from, $to, $filter) 
     {
         $this->from = $from;
         $this->to = $to;
+        $this->filter = $filter;
     }
 
 
@@ -27,5 +29,13 @@ class FindProductsByPriceRangeDto {
     public function getTo()
     {
         return $this->to;
+    }
+
+    /**
+     * Get the value of filter
+     */ 
+    public function getFilter()
+    {
+        return $this->filter;
     }
 }

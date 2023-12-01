@@ -19,9 +19,6 @@ class TransactionalUserServiceDecorator extends UserServiceDecorator {
             $dbConnection->rollBack();
             $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
         }finally {
-            $this->databaseConnection->closeConnection();
-
-            $dbConnection = null;
             return $response;
         }
     }
@@ -38,23 +35,16 @@ class TransactionalUserServiceDecorator extends UserServiceDecorator {
             $dbConnection->rollBack();
             $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
         }finally {
-            $this->databaseConnection->closeConnection();
-
-            $dbConnection = null;
             return $response;
         }
 
     }
     function listAllUser(ListAllUserDto $listAllUserDto):ResponseViewModel {
         $response =  parent::listAllUser($listAllUserDto);
-        $this->databaseConnection->closeConnection();
         return $response;
     }
     function findOneUserByUuid(FindOneUserByUuidDto $userUuidDto):ResponseViewModel{
             $response = parent::findOneUserByUuid($userUuidDto);
-            
-            $this->databaseConnection->closeConnection();
-
             return $response;
     }
     function changeFullName(ChangeFullNameDto $changeFullNameDto):ResponseViewModel{
@@ -70,9 +60,6 @@ class TransactionalUserServiceDecorator extends UserServiceDecorator {
             $dbConnection->rollBack();
             $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
         }finally {
-            $this->databaseConnection->closeConnection();
-
-            $dbConnection = null;
             return $response;
         }
 
