@@ -10,9 +10,9 @@ abstract class ProductRepositoryDecorator implements ProductRepository {
     {
         $this->productRepository->createProduct($p);
     }
-    function findAllProducts(): IteratorAggregate
+    function findAllProducts($filter): IteratorAggregate
     {
-        return $this->productRepository->findAllProducts();
+        return $this->productRepository->findAllProducts($filter);
     }
     function deleteProductByUuid(Product $p)
     {
@@ -22,13 +22,13 @@ abstract class ProductRepositoryDecorator implements ProductRepository {
     {
         $this->productRepository->updateProductStockQuantity($p);
     }
-    function findProductsByPriceRange($from, $to): IteratorAggregate
+    function findProductsByPriceRange($from, $to, $filter): IteratorAggregate
     {
-        return $this->productRepository->findProductsByPriceRange($from, $to);
+        return $this->productRepository->findProductsByPriceRange($from, $to, $filter);
     }
-    function findProductsBySearch($searchValue, $startingLimit, $perPageForProduct): IteratorAggregate
+    function findProductsBySearch($searchValue, $startingLimit, $perPageForProduct, $filter): IteratorAggregate
     {
-        return $this->productRepository->findProductsBySearch($searchValue, $startingLimit, $perPageForProduct);
+        return $this->productRepository->findProductsBySearch($searchValue, $startingLimit, $perPageForProduct, $filter);
     }
     function deleteProductSubscriberByUserAndProductUuid($userUuid, $productUuid)
     {
@@ -43,9 +43,9 @@ abstract class ProductRepositoryDecorator implements ProductRepository {
     {
         $this->productRepository->updateProductModelName($p);
     }
-    function findAllWithPagination($startingLimit, $perPageForProduct): IteratorAggregate
+    function findAllWithPagination($startingLimit, $perPageForProduct, $filter): IteratorAggregate
     {
-        return $this->productRepository->findAllWithPagination($startingLimit, $perPageForProduct);
+        return $this->productRepository->findAllWithPagination($startingLimit, $perPageForProduct, $filter);
     }
     function updateProductHeader(Product $p)
     {
@@ -55,9 +55,9 @@ abstract class ProductRepositoryDecorator implements ProductRepository {
     {
         $this->productRepository->updateProductDescription($p);
     }
-    function findOneProductByUuid($uuid):ProductInterface
+    function findOneProductByUuid($uuid, $filter):ProductInterface
     {
-        return $this->productRepository->findOneProductByUuid($uuid);
+        return $this->productRepository->findOneProductByUuid($uuid, $filter);
     }
     function updateProductBrandName(Product $p)
     {
@@ -77,7 +77,12 @@ abstract class ProductRepositoryDecorator implements ProductRepository {
     }
     function createProductCategory(ProductForCreatingCategoryDecorator $c, $categoryUuidForFinding)
     {
-        $this->productRepository->createProductCategory($c, $categoryUuidForFinding);
+        try {
+            $this->productRepository->createProductCategory($c, $categoryUuidForFinding);
+
+        } catch (\PDOException $th) {
+            throw new AlreadyExistException("This category name is");
+        }
     }
     function findAllProductCategory(): ProductInterface
     {
@@ -104,7 +109,7 @@ abstract class ProductRepositoryDecorator implements ProductRepository {
         return $this->productRepository->findASetOfProductCategoryByUuids($uuids);
     }
 
-    function findOneProductWithOnlySubscriberByUuid($uuid, $userUuid){
+    function findOneProductWithOnlySubscriberByUuid($uuid, $userUuid): ProductInterface{
         return $this->productRepository->findOneProductWithOnlySubscriberByUuid($uuid, $userUuid);
     }
  

@@ -1,7 +1,7 @@
 <?php
 
 class ShippingDaoImpl implements ShippingDao {
-    private SingletonConnection $databaseConnection;
+    private DatabaseConnection $databaseConnection;
     function __construct(DatabaseConnection $dbConn)
     {
         $this->databaseConnection = $dbConn;

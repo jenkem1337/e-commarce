@@ -2,8 +2,8 @@
 
 use Ramsey\Uuid\Uuid;
 class CategoryDaoImpl implements CategoryDao {
-    protected SingletonConnection $databaseConnection;
-	function __construct(SingletonConnection $databaseConnection) {
+    protected DatabaseConnection $databaseConnection;
+	function __construct(DatabaseConnection $databaseConnection) {
         $this->databaseConnection = $databaseConnection;
 	}
 	function persist(Category $c) {

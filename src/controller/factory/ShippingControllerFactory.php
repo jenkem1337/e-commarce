@@ -7,7 +7,7 @@ class ShippingControllerFactory implements Factory {
             new TransactionalShippingServiceDecorator(
                 new ShippingServiceImpl(
                     new ShippingRepositoryImpl(
-                        new ShippingDaoImpl(MySqlPDOConnection::getInsatace()),
+                        new ShippingDaoImpl(MySqlPDOConnection::getInstance()),
                         new ShippingFactoryContext(
                             [
                                 ShippingType::SAME_DAY => new ConcreteSameDayShippingFactory,
@@ -17,7 +17,7 @@ class ShippingControllerFactory implements Factory {
                         )
                     )
                 ), 
-                MySqlPDOConnection::getInsatace()
+                MySqlPDOConnection::getInstance()
             )
         );
     }

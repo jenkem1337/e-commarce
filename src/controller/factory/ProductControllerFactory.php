@@ -13,24 +13,24 @@ class ProductControllerFactory implements Factory {
                 ProductCategoryCreationalModelFactory::class => new ConcreteProductCategoryCreationalModelFactory()
             ]),
             new ConcreteProductSubscriberFactory,
-            new ProductDaoImpl(MySqlPDOConnection::getInsatace())
+            new ProductDaoImpl(MySqlPDOConnection::getInstance())
         );
         
         
         $categoryRepositoryImpl = new CategoryRepositoryImpl(
-            new CategoryDaoImpl(MySqlPDOConnection::getInsatace()),
+            new CategoryDaoImpl(MySqlPDOConnection::getInstance()),
             new  ConcreteCategoryFactory()
         );
         $rateRepositoryImpl = new RateRepositoryImpl(
-            new RateDaoImpl(MySqlPDOConnection::getInsatace()),
+            new RateDaoImpl(MySqlPDOConnection::getInstance()),
             new ConcreteRateFactory()
         );
         $commentRepositoryImpl = new CommentRepositoryImpl(
-            new CommentDaoImpl(MySqlPDOConnection::getInsatace()),
+            new CommentDaoImpl(MySqlPDOConnection::getInstance()),
             new ConcreteCommentFactory()
         );
         $imageRepositoryImpl = new ImageRepositoryImpl(
-            new ImageDaoImpl(MySqlPDOConnection::getInsatace()),
+            new ImageDaoImpl(MySqlPDOConnection::getInstance()),
             new ConcreteImageFactory()
         );
         $commentRepositoryImpl->setProductMediator($productRepositoryImpl);
@@ -38,11 +38,12 @@ class ProductControllerFactory implements Factory {
         $imageRepositoryImpl->setProductMediator($productRepositoryImpl);
         $categoryRepositoryImpl->setProductMediator($productRepositoryImpl);
 
+        $productRepositoryAggregateRootDecorator = new ProductRepositoryAggregateRootDecorator($productRepositoryImpl);
 
         return new ProductController(
             new TransactionalProductServiceDecorator(
                 new ProductServiceImpl(
-                    $productRepositoryImpl,
+                    $productRepositoryAggregateRootDecorator,
                     new UploadServiceImpl,
                     new EmailServiceImpl(new PHPMailer(true)),
                     new ProductFactoryContext([
@@ -50,7 +51,7 @@ class ProductControllerFactory implements Factory {
                         ProductCategoryCreationalModelFactory::class => new ConcreteProductCategoryCreationalModelFactory()
                     ]),
                     new ConcreteProductSubscriberFactory
-                ), MySqlPDOConnection::getInsatace()
+                ), MySqlPDOConnection::getInstance()
             )
         );
     }

@@ -1,8 +1,8 @@
 <?php
 
 class RateDaoImpl implements RateDao {
-    protected SingletonConnection $dbConnection;
-	function __construct(SingletonConnection $dbConn) {
+    protected DatabaseConnection $dbConnection;
+	function __construct(DatabaseConnection $dbConn) {
         $this->dbConnection = $dbConn;
 	}
 	function persist(Rate $r) {

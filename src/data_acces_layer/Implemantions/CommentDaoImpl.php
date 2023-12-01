@@ -1,9 +1,9 @@
 <?php
 
 class CommentDaoImpl implements CommentDao {
-    protected SingletonConnection $dbConnection;
+    protected DatabaseConnection $dbConnection;
 
-    function __construct(SingletonConnection $dbConn)
+    function __construct(DatabaseConnection $dbConn)
     {
         $this->dbConnection = $dbConn;
     }

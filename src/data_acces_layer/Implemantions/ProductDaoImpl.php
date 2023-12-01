@@ -2,8 +2,8 @@
 require './vendor/autoload.php';
 
 class ProductDaoImpl implements ProductDao {
-    protected SingletonConnection $dbConnection;
-	function __construct(SingletonConnection $dbConnection) {
+    protected DatabaseConnection $dbConnection;
+	function __construct(DatabaseConnection $dbConnection) {
         $this->dbConnection = $dbConnection;
 	}
 	function persist(Product $p) {

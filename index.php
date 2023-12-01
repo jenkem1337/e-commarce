@@ -4,6 +4,8 @@ header('Content-type: application/json');
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
 try {
+Dotenv\Dotenv::createImmutable(__DIR__)->load();
+
 $authController = (new AuthControllerFactory())->createInstance();
 $userController = (new UserControllerFactory())->createInstance();
 $categoryController = (new CategoryControllerFactory())->createInstance();
@@ -12,11 +14,8 @@ $imageController = (new ImageControllerFactory())->createInstance();
 $shippingController = (new ShippingControllerFactory)->createInstance();
 
         
-Dotenv\Dotenv::createImmutable(__DIR__)->load();
 
 $f = new FrontController();
-$database = MySqlPDOConnection::getInsatace();
-$database->createDatabaseConnection();
 
 //Auth Route
 $f->registerRoute("POST", "/auth/register", new RegisterCommand($authController));

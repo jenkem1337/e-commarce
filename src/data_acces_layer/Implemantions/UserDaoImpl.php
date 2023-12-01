@@ -1,9 +1,9 @@
 <?php
 
 class UserDaoImpl implements UserDao{
-    private SingletonConnection $dbConnection;
+    private DatabaseConnection $dbConnection;
 
-    public function __construct(SingletonConnection $dbConnection)
+    public function __construct(DatabaseConnection $dbConnection)
     {  
         $this->dbConnection = $dbConnection;
     }
