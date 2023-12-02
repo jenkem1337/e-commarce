@@ -1,23 +1,29 @@
 <?php
+
+use PhpParser\JsonDecoder;
+use Predis\Client;
 class ProductServiceImpl implements ProductService {
     private ProductRepository $productRepository;
     private EmailService $emailService;
     private ProductFactoryContext $productFactoryContext;
     private ProductSubscriberFactory $productSubscriberFactory;
     private UploadService $uploadService;
+    private Client $redisClient;
 	function __construct(
         ProductRepository $productRepository,
         UploadService $uploadService,
         EmailService $emailService,
         ProductFactoryContext $productFactoryContext,
-        Factory $productSubscriberFactory
+        Factory $productSubscriberFactory,
+        Client $redisClient
     ) {
 	    $this->productRepository     = $productRepository;
         $this->uploadService = $uploadService;
         $this->emailService = $emailService;
         $this->productFactoryContext = $productFactoryContext;
         $this->productSubscriberFactory = $productSubscriberFactory;
-	}
+        $this->redisClient = $redisClient;
+    }
     function craeteNewProduct(ProductCreationalDto $dto): ResponseViewModel
     {
         $productDomainObject = $this->productFactoryContext->executeFactory(
@@ -203,19 +209,33 @@ class ProductServiceImpl implements ProductService {
     {
         $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid(),  [
             "comments"=>false,
-            "subscribers"=>false,
+            "subscribers"=>"get",
             "categories"=>false,
             "rates"=> false,
             "images"=>false
         ]);
+
         if($productDomainObject->isNull()) throw new NotFoundException('product');
+        
         $productDomainObject->changePrice($dto->getNewPrice());
         
-        if($productDomainObject->isPriceLessThanPreviousPrice()) {
+        //i think i need to use async library or something else in production ready couse of latency
+        if($productDomainObject->isPriceLessThanPreviousPrice()){
+            foreach($productDomainObject->getSubscribers() as $subscribers) {
+                $this->redisClient->publish("price_changed_send_mail",json_encode([
+                    "subscriber_full_name"=>$subscribers->getUserFullName(),
+                    "subscriber_email"=>$subscribers->getUserEmail(),
+                    "product_uuid"=>$productDomainObject->getUuid(),
+                    "new_price"=>$productDomainObject->getPrice(),
+                    "old_price"=>$productDomainObject->getPreviousPrice()
+                ]));
+            }
+        }
+        /*if($productDomainObject->isPriceLessThanPreviousPrice()) {
             foreach($productDomainObject->getSubscribers() as $subscribers) {
                 $this->emailService->notifyProductSubscribersForPriceChanged($productDomainObject, $subscribers);
             }
-        }
+        }*/
         $this->productRepository->updateProductPrice($productDomainObject);
         return new ProductPriceChangedResponseDto('Product price changed successfully');
     }

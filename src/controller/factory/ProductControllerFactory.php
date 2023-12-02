@@ -1,7 +1,7 @@
 <?php
 
 use PHPMailer\PHPMailer\PHPMailer;
-
+use Predis\Client;
 
 class ProductControllerFactory implements Factory {
     function createInstance($isMustBeConcreteObjcet = false, ...$params):ProductController
@@ -12,11 +12,13 @@ class ProductControllerFactory implements Factory {
                 ProductFactory::class => new ConcreteProductFactory(),
                 ProductCategoryCreationalModelFactory::class => new ConcreteProductCategoryCreationalModelFactory()
             ]),
-            new ConcreteProductSubscriberFactory,
             new ProductDaoImpl(MySqlPDOConnection::getInstance())
         );
         
-        
+        $productSubscriberRepoImpl = new ProductSubscriberRepositoryImpl(
+            new ProductDaoImpl(MySqlPDOConnection::getInstance()),
+            new ConcreteProductSubscriberFactory(),
+        );
         $categoryRepositoryImpl = new CategoryRepositoryImpl(
             new CategoryDaoImpl(MySqlPDOConnection::getInstance()),
             new  ConcreteCategoryFactory()
@@ -37,6 +39,7 @@ class ProductControllerFactory implements Factory {
         $rateRepositoryImpl->setProductMediator($productRepositoryImpl);
         $imageRepositoryImpl->setProductMediator($productRepositoryImpl);
         $categoryRepositoryImpl->setProductMediator($productRepositoryImpl);
+        $productSubscriberRepoImpl->setProductMediator($productRepositoryImpl);
 
         $productRepositoryAggregateRootDecorator = new ProductRepositoryAggregateRootDecorator($productRepositoryImpl);
 
@@ -50,7 +53,8 @@ class ProductControllerFactory implements Factory {
                         ProductFactory::class => new ConcreteProductFactory(),
                         ProductCategoryCreationalModelFactory::class => new ConcreteProductCategoryCreationalModelFactory()
                     ]),
-                    new ConcreteProductSubscriberFactory
+                    new ConcreteProductSubscriberFactory,
+                    new Client('tcp://127.0.0.1:6379'."?read_write_timeout=0")
                 ), MySqlPDOConnection::getInstance()
             )
         );

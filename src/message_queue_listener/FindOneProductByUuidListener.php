@@ -12,7 +12,13 @@ class FindOneProductByUuidListener implements Listener {
     }
     function handle(...$params): void
     {
-        $response = $this->productService->findOneProductByUuid(new FindOneProductByUuidDto($params[0]));
+        $response = $this->productService->findOneProductByUuid(new FindOneProductByUuidDto($params[0], [
+            "categories"=>false,
+            "subscribers"=>false,
+            "rates"=>false,
+            "images"=>false,
+            "comments"=>false,
+        ]));
         
         $response->onSucsess(function (OneProductFoundedResponseDto $dto){
             $this->connection->publish("one-product-founded", json_encode(

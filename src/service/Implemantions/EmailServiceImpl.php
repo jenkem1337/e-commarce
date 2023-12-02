@@ -66,21 +66,21 @@ class EmailServiceImpl implements EmailService {
 
         }
     }
-    function notifyProductSubscribersForPriceChanged(Product $p, ProductSubscriber $ps)
-    {
+    function notifyProductSubscribersForPriceChanged(SendPriceReducedEmailDto $dto){
+    
         try {
             $this->serverOptions();
             
             $this->phpMailer->setFrom($_ENV['EMAIL'], "ADMIN");
-            $this->phpMailer->addAddress($ps->getUserEmail(), $ps->getUserFullName());
+            $this->phpMailer->addAddress($dto->getEmail(), $dto->getFullName());
     
-            $productSubscriberName = $ps->getUserFullName();
-            $productActualPrice = $p->getPrice();
-            $productPreviousPrice = $p->getPreviousPrice();
-            $productUuid = $p->getUuid();
+            $productSubscriberName = $dto->getFullName();
+            $productActualPrice = $dto->getActualPrice();
+            $productPreviousPrice = $dto->getOldPrice();
+            $productUuid = $dto->getProductUuid();
 
             $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https://" : "http://";
-            $url.=$_SERVER['HTTP_HOST'];
+            $url.=$_SERVER['HTTP_HOST'] ?? "localhost";
             $url.="/products/$productUuid";
 
 
@@ -88,7 +88,6 @@ class EmailServiceImpl implements EmailService {
             $this->phpMailer->Subject = "Subscribed Product Price Less Than Before Lets Examine";
             $this->phpMailer->Body = "Hi $productSubscriberName. Your subscribed product price down to $productActualPrice from $productPreviousPrice. Let's examine product from $url.";
             $this->phpMailer->send();
-
         } catch (Exception $e) {
             echo json_encode(["mailler_err"=>$this->phpMailer->ErrorInfo]);
             die();

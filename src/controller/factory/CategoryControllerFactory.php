@@ -8,11 +8,14 @@ class CategoryControllerFactory implements Factory {
                 ProductFactory::class => new ConcreteProductFactory(),
                 ProductCategoryCreationalModelFactory::class => new ConcreteProductCategoryCreationalModelFactory()
             ]),
-            new ConcreteProductSubscriberFactory,
             new ProductDaoImpl(MySqlPDOConnection::getInstance())
         );
         
         
+        $productSubscriberRepoImpl = new ProductSubscriberRepositoryImpl(
+            new ProductDaoImpl(MySqlPDOConnection::getInstance()),
+            new ConcreteProductSubscriberFactory(),
+        );
         $categoryRepositoryImpl = new CategoryRepositoryImpl(
             new CategoryDaoImpl(MySqlPDOConnection::getInstance()),
             new  ConcreteCategoryFactory()
@@ -33,6 +36,7 @@ class CategoryControllerFactory implements Factory {
         $rateRepositoryImpl->setProductMediator($productRepositoryImpl);
         $imageRepositoryImpl->setProductMediator($productRepositoryImpl);
         $categoryRepositoryImpl->setProductMediator($productRepositoryImpl);
+        $productSubscriberRepoImpl->setProductMediator($productRepositoryImpl);
         
         $productRepositoryAggregateRootDecorator = new ProductRepositoryAggregateRootDecorator($productRepositoryImpl);
         
