@@ -8,7 +8,7 @@
     ],
     "autoload": {
         "classmap": ["src/",
-                    "src/tests"
+                    "src/Tests"
                 ]
     },
     "require-dev": {
