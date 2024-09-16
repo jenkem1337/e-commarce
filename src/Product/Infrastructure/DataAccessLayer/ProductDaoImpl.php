@@ -1,9 +1,10 @@
 <?php
 require './vendor/autoload.php';
 
-class ProductDaoImpl implements ProductDao {
+class ProductDaoImpl extends AbstractDataAccessObject implements ProductDao {
     protected DatabaseConnection $dbConnection;
 	function __construct(DatabaseConnection $dbConnection) {
+        parent::__construct($dbConnection);
         $this->dbConnection = $dbConnection;
 	}
 	function persist(Product $p) {
