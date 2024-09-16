@@ -8,7 +8,11 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
         ProductDao $productDao) {
         $this->productFactoryContext = $productFactoryContext;
         $this->productDao = $productDao;
+        
 	}
+    function saveChanges($e){
+        $this->productDao->saveChanges($e);
+    }
     private function getManyProductDomainModelFromSubEntities($productObjects, $filter): IteratorAggregate{
         $productCollection = new ProductCollection();
         foreach($productObjects as $productObject){ 
