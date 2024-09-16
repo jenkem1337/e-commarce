@@ -219,7 +219,7 @@ class ProductServiceImpl implements ProductService {
         
         $productDomainObject->changePrice($dto->getNewPrice());
         
-        //i think i need to use async library or something else in production ready couse of latency
+        //i think i need to use async library or something else in production ready because of latency
         if($productDomainObject->isPriceLessThanPreviousPrice()){
             foreach($productDomainObject->getSubscribers() as $subscribers) {
                 $this->redisClient->publish("price_changed_send_mail",json_encode([
@@ -236,7 +236,7 @@ class ProductServiceImpl implements ProductService {
                 $this->emailService->notifyProductSubscribersForPriceChanged($productDomainObject, $subscribers);
             }
         }*/
-        $this->productRepository->updateProductPrice($productDomainObject);
+        $this->productRepository->saveChanges($productDomainObject);
         return new ProductPriceChangedResponseDto('Product price changed successfully');
     }
     function findOneProductByUuid(FindOneProductByUuidDto $dto):ResponseViewModel{
