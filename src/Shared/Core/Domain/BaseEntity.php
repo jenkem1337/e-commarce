@@ -3,6 +3,7 @@ use Ramsey\Uuid\Uuid;
 
 abstract class BaseEntity {
     private $uuid;
+    private $transactionLogQueue;
     private $createdAt;
     private $updatedAt;
 
@@ -25,6 +26,7 @@ abstract class BaseEntity {
         $this->uuid = $uuid;
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
+        $this->transactionLogQueue = new SplQueue();
     }
 
     /**
@@ -53,5 +55,20 @@ abstract class BaseEntity {
 
     function isNull(){
         return false;
+    }
+
+    function appendLog(TransactionLog $log){
+        if(!$log){
+            throw new Exception("Entity transaction log must not be null or undefined");
+        }
+        $this->transactionLogQueue->enqueue($log);
+    }
+
+    /**
+     * Get the value of transactionLogQueue
+     */ 
+    public function getTransactionLogQueue()
+    {
+        return $this->transactionLogQueue;
     }
 }
