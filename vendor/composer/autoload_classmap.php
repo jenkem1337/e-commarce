@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AbstractDataAccessObject' => $baseDir . '/src/Shared/Infrasturcture/DataSource/AbstractDataAccessObject.php',
     'AbstractProductRepositoryMediatorComponent' => $baseDir . '/src/Product/Infrastructure/Repository/MediatorComponent/AbstractProductRepositoryMediatorComponent.php',
     'AggregateRoot' => $baseDir . '/src/Shared/Core/Domain/AggregateRoot.php',
     'AllCategoryResponseDto' => $baseDir . '/src/Shared/Application/DTO/ResponseDTO/AllCategoryResponseDto.php',
@@ -85,6 +86,7 @@ return array(
     'DeleteCategoryDto' => $baseDir . '/src/Shared/Application/DTO/RequestDTO/DeleteCategoryDto.php',
     'DeleteImageByUuidDto' => $baseDir . '/src/Shared/Application/DTO/RequestDTO/DeleteImageByUuidDto.php',
     'DeleteImageCommand' => $baseDir . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ImageController/DeleteImageCommand.php',
+    'DeleteLog' => $baseDir . '/src/Shared/Core/Domain/DeleteLog.php',
     'DeleteProductByUuidDto' => $baseDir . '/src/Shared/Application/DTO/RequestDTO/DeleteProductByUuidDto.php',
     'DeleteProductCommand' => $baseDir . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ProductController/DeleteProductCommand.php',
     'DeleteProductSubscriberCommand' => $baseDir . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ProductController/DeleteProductSubscriberCommand.php',
@@ -145,6 +147,7 @@ return array(
     'ImageServiceImpl' => $baseDir . '/src/Product/Core/Service/ImageServiceImpl.php',
     'ImageTest' => $baseDir . '/src/tests/unit/model/image/ImageTest.php',
     'IncorrectException' => $baseDir . '/src/Shared/Core/Exception/IncorrectException.php',
+    'InsertLog' => $baseDir . '/src/Shared/Core/Domain/InsertLog.php',
     'IsAdminMiddleware' => $baseDir . '/src/Shared/Application/Middleware/Auth/IsAdminMiddleware.php',
     'IsNotSamePropertyException' => $baseDir . '/src/Shared/Core/Exception/IsNotSamePropertyException.php',
     'JwtAuthMiddleware' => $baseDir . '/src/Shared/Application/Middleware/Auth/JwtAuthMiddleware.php',
@@ -662,6 +665,7 @@ return array(
     'Role' => $baseDir . '/src/User/Core/Domain/Role.php',
     'SameDayShippingFactory' => $baseDir . '/src/Shipping/Core/Domain/Factory/SameDayShippingFactory.php',
     'SamePropertyException' => $baseDir . '/src/Shared/Core/Exception/SamePropertyException.php',
+    'SaveChangesInterface' => $baseDir . '/src/Shared/Infrasturcture/DataSource/SaveChangesInterface.php',
     'SearchedProductResponseDto' => $baseDir . '/src/Shared/Application/DTO/ResponseDTO/SearchedProductResponseDto.php',
     'SebastianBergmann\\CliParser\\AmbiguousOptionException' => $vendorDir . '/sebastian/cli-parser/src/exceptions/AmbiguousOptionException.php',
     'SebastianBergmann\\CliParser\\Exception' => $vendorDir . '/sebastian/cli-parser/src/exceptions/Exception.php',
@@ -887,6 +891,8 @@ return array(
     'TheSeer\\Tokenizer\\TokenCollectionException' => $vendorDir . '/theseer/tokenizer/src/TokenCollectionException.php',
     'TheSeer\\Tokenizer\\Tokenizer' => $vendorDir . '/theseer/tokenizer/src/Tokenizer.php',
     'TheSeer\\Tokenizer\\XMLSerializer' => $vendorDir . '/theseer/tokenizer/src/XMLSerializer.php',
+    'TransactionLog' => $baseDir . '/src/Shared/Core/Domain/TransactionLog.php',
+    'TransactionOperation' => $baseDir . '/src/Shared/Core/Domain/TransactionOperation.php',
     'TransactionalAuthServiceDecorator' => $baseDir . '/src/User/Core/Service/Decorator/AuthService/TransactionalAuthServiceDecorator.php',
     'TransactionalCategoryServiceDecorator' => $baseDir . '/src/Product/Core/Service/Decorator/CategoryService/TransactionalCategoryServiceDecorator.php',
     'TransactionalImageServiceDecorator' => $baseDir . '/src/Product/Core/Service/Decorator/ImageService/TransactionalImageServiceDecorator.php',
@@ -897,6 +903,7 @@ return array(
     'UnhandledMatchError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
     'UpdateCategoryNameByUuidCommand' => $baseDir . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/CategoryController/UpdateCategoryNameByUuidCommand.php',
     'UpdateCategoryNameByUuidDto' => $baseDir . '/src/Shared/Application/DTO/RequestDTO/UpdateCategoryNameByUuidDto.php',
+    'UpdateLog' => $baseDir . '/src/Shared/Core/Domain/UpdateLog.php',
     'UpdateProductBrandNameCommand' => $baseDir . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ProductController/UpdateProductBrandNameCommand.php',
     'UpdateProductDescriptionCommand' => $baseDir . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ProductController/UpdateProductDescriptionCommand.php',
     'UpdateProductHeaderCommand' => $baseDir . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ProductController/UpdateProductHeaderCommand.php',

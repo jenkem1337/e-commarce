@@ -157,6 +157,7 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
     );
 
     public static $classMap = array (
+        'AbstractDataAccessObject' => __DIR__ . '/../..' . '/src/Shared/Infrasturcture/DataSource/AbstractDataAccessObject.php',
         'AbstractProductRepositoryMediatorComponent' => __DIR__ . '/../..' . '/src/Product/Infrastructure/Repository/MediatorComponent/AbstractProductRepositoryMediatorComponent.php',
         'AggregateRoot' => __DIR__ . '/../..' . '/src/Shared/Core/Domain/AggregateRoot.php',
         'AllCategoryResponseDto' => __DIR__ . '/../..' . '/src/Shared/Application/DTO/ResponseDTO/AllCategoryResponseDto.php',
@@ -236,6 +237,7 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'DeleteCategoryDto' => __DIR__ . '/../..' . '/src/Shared/Application/DTO/RequestDTO/DeleteCategoryDto.php',
         'DeleteImageByUuidDto' => __DIR__ . '/../..' . '/src/Shared/Application/DTO/RequestDTO/DeleteImageByUuidDto.php',
         'DeleteImageCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ImageController/DeleteImageCommand.php',
+        'DeleteLog' => __DIR__ . '/../..' . '/src/Shared/Core/Domain/DeleteLog.php',
         'DeleteProductByUuidDto' => __DIR__ . '/../..' . '/src/Shared/Application/DTO/RequestDTO/DeleteProductByUuidDto.php',
         'DeleteProductCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ProductController/DeleteProductCommand.php',
         'DeleteProductSubscriberCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ProductController/DeleteProductSubscriberCommand.php',
@@ -296,6 +298,7 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'ImageServiceImpl' => __DIR__ . '/../..' . '/src/Product/Core/Service/ImageServiceImpl.php',
         'ImageTest' => __DIR__ . '/../..' . '/src/tests/unit/model/image/ImageTest.php',
         'IncorrectException' => __DIR__ . '/../..' . '/src/Shared/Core/Exception/IncorrectException.php',
+        'InsertLog' => __DIR__ . '/../..' . '/src/Shared/Core/Domain/InsertLog.php',
         'IsAdminMiddleware' => __DIR__ . '/../..' . '/src/Shared/Application/Middleware/Auth/IsAdminMiddleware.php',
         'IsNotSamePropertyException' => __DIR__ . '/../..' . '/src/Shared/Core/Exception/IsNotSamePropertyException.php',
         'JwtAuthMiddleware' => __DIR__ . '/../..' . '/src/Shared/Application/Middleware/Auth/JwtAuthMiddleware.php',
@@ -813,6 +816,7 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'Role' => __DIR__ . '/../..' . '/src/User/Core/Domain/Role.php',
         'SameDayShippingFactory' => __DIR__ . '/../..' . '/src/Shipping/Core/Domain/Factory/SameDayShippingFactory.php',
         'SamePropertyException' => __DIR__ . '/../..' . '/src/Shared/Core/Exception/SamePropertyException.php',
+        'SaveChangesInterface' => __DIR__ . '/../..' . '/src/Shared/Infrasturcture/DataSource/SaveChangesInterface.php',
         'SearchedProductResponseDto' => __DIR__ . '/../..' . '/src/Shared/Application/DTO/ResponseDTO/SearchedProductResponseDto.php',
         'SebastianBergmann\\CliParser\\AmbiguousOptionException' => __DIR__ . '/..' . '/sebastian/cli-parser/src/exceptions/AmbiguousOptionException.php',
         'SebastianBergmann\\CliParser\\Exception' => __DIR__ . '/..' . '/sebastian/cli-parser/src/exceptions/Exception.php',
@@ -1038,6 +1042,8 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'TheSeer\\Tokenizer\\TokenCollectionException' => __DIR__ . '/..' . '/theseer/tokenizer/src/TokenCollectionException.php',
         'TheSeer\\Tokenizer\\Tokenizer' => __DIR__ . '/..' . '/theseer/tokenizer/src/Tokenizer.php',
         'TheSeer\\Tokenizer\\XMLSerializer' => __DIR__ . '/..' . '/theseer/tokenizer/src/XMLSerializer.php',
+        'TransactionLog' => __DIR__ . '/../..' . '/src/Shared/Core/Domain/TransactionLog.php',
+        'TransactionOperation' => __DIR__ . '/../..' . '/src/Shared/Core/Domain/TransactionOperation.php',
         'TransactionalAuthServiceDecorator' => __DIR__ . '/../..' . '/src/User/Core/Service/Decorator/AuthService/TransactionalAuthServiceDecorator.php',
         'TransactionalCategoryServiceDecorator' => __DIR__ . '/../..' . '/src/Product/Core/Service/Decorator/CategoryService/TransactionalCategoryServiceDecorator.php',
         'TransactionalImageServiceDecorator' => __DIR__ . '/../..' . '/src/Product/Core/Service/Decorator/ImageService/TransactionalImageServiceDecorator.php',
@@ -1048,6 +1054,7 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
         'UpdateCategoryNameByUuidCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/CategoryController/UpdateCategoryNameByUuidCommand.php',
         'UpdateCategoryNameByUuidDto' => __DIR__ . '/../..' . '/src/Shared/Application/DTO/RequestDTO/UpdateCategoryNameByUuidDto.php',
+        'UpdateLog' => __DIR__ . '/../..' . '/src/Shared/Core/Domain/UpdateLog.php',
         'UpdateProductBrandNameCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ProductController/UpdateProductBrandNameCommand.php',
         'UpdateProductDescriptionCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ProductController/UpdateProductDescriptionCommand.php',
         'UpdateProductHeaderCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ProductController/UpdateProductHeaderCommand.php',
