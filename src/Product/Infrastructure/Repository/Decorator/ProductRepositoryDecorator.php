@@ -6,6 +6,9 @@ abstract class ProductRepositoryDecorator implements ProductRepository {
     {
         $this->productRepository = $r;
     }
+    function saveChanges($e){
+        $this->productRepository->saveChanges($e);
+    }
     function createProduct(Product $p)
     {
         $this->productRepository->createProduct($p);

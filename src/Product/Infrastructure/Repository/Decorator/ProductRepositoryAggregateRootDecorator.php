@@ -7,6 +7,9 @@ class ProductRepositoryAggregateRootDecorator extends ProductRepositoryDecorator
     {
         parent::__construct($repo);
     }
+    function saveChanges($e){
+        parent::saveChanges($e);
+    }
     function persistImage(AggregateRoot $p)
     {
         parent::persistImage($p);
