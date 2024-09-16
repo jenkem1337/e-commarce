@@ -86,6 +86,10 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
         }
         $this->previousPrice = $this->price;
         $this->price = $price;
+        $this->appendLog(new UpdateLog($this->getUuid(), "products", [
+            "price" => $this->price,
+            "prev_price" => $this->previousPrice,
+        ]));
     }
 
     function isPriceLessThanPreviousPrice(){
