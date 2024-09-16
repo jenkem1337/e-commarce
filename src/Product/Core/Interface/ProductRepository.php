@@ -1,6 +1,7 @@
 <?php
 interface ProductRepository {
     //product
+    function saveChanges($e);
     function createProduct(Product $p);
     function persistProductSubscriber(Product $p);
     function findOneProductByUuid($uuid, $filter): ProductInterface;
