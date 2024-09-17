@@ -4,12 +4,14 @@ abstract class TransactionLog {
     private $table;
     private $operation;
     private $data;
+    private $whichWhereIdenty;
 
-    function __construct($entityID, $table, $operation, $data){
+    function __construct($entityID, $table, $whichWhereIdenty, $operation, $data){
         $this->entityID = $entityID;
         $this->operation = $operation;
         $this->data = $data;
         $this->table = $table;
+        $this->whichWhereIdenty = $whichWhereIdenty;
     }
 
     /**
@@ -42,5 +44,13 @@ abstract class TransactionLog {
     public function getTable()
     {
         return $this->table;
+    }
+
+    /**
+     * Get the value of whichWhereIdenty
+     */ 
+    public function getWhichWhereIdenty()
+    {
+        return $this->whichWhereIdenty;
     }
 }

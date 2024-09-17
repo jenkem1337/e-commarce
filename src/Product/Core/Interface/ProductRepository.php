@@ -5,12 +5,7 @@ interface ProductRepository {
     function createProduct(Product $p);
     function persistProductSubscriber(Product $p);
     function findOneProductByUuid($uuid, $filter): ProductInterface;
-    function updateProductBrandName(Product $p);
-    function updateProductModelName(Product $p);
-    function updateProductHeader(Product $p);
-    function updateProductDescription(Product $p);
-    function updateProductPrice(Product $p);
-    function updateProductStockQuantity(Product $p);
+   
     function findAllProducts($filter): IteratorAggregate;
     function findProductsByPriceRange($from, $to, $filter): IteratorAggregate;
     function findProductsBySearch($searchValue, $startingLimit, $perPageForProduct, $filter): IteratorAggregate;

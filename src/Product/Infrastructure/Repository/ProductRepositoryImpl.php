@@ -157,30 +157,7 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
         }
         $this->productDao->deleteByUuid($product->getUuid());
     }
-    function updateProductBrandName(Product $p)
-    {
-        $this->productDao->updateBrandNameByUuid($p);
-    }
-    function updateProductModelName(Product $p)
-    {
-        $this->productDao->updateModelNameByUuid($p);
-    }
-    function updateProductPrice(Product $p)
-    {
-        $this->productDao->updatePriceByUuid($p);
-    }
-    function updateProductStockQuantity(Product $p)
-    {
-        $this->productDao->updateStockQuantityByUuid($p);
-    }
-    function updateProductHeader(Product $p)
-    {
-        $this->productDao->updateHeaderByUuid($p);
-    }
-    function updateProductDescription(Product $p)
-    {
-        $this->productDao->updateDescriptionByUuid($p);
-    }
+    
     function persistImage(Product $p)
     {
         $images = $p->getImages()->getItems();

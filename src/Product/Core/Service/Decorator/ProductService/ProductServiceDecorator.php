@@ -34,30 +34,10 @@ abstract class ProductServiceDecorator implements ProductService {
 	{
 		return $this->productService->updateProductStockQuantity($dto);
 	}
-	function updateProductBrandName(ChangeProductBrandNameDto $dto): ResponseViewModel{
-		return $this->productService->updateProductBrandName($dto);
+	function updateProductDetailsByUuid(ProductDetailDto $dto): ResponseViewModel{
+		return $this->productService->updateProductDetailsByUuid($dto);
 	}
-	function findOneProductByUuid(FindOneProductByUuidDto $dto): ResponseViewModel
-	{
-		return $this->productService->findOneProductByUuid($dto);
-	}
-	function updateProductModelName(ChangeProductModelNameDto $dto): ResponseViewModel
-	{
-		return $this->productService->updateProductModelName($dto);
-	}
-	function updateProductHeader(ChangeProductHeaderDto $dto): ResponseViewModel
-	{
-		return $this->productService->updateProductHeader($dto);
-	}
-	function updateProductPrice(ChangeProductPriceDto $dto): ResponseViewModel
-	{
-		return $this->productService->updateProductPrice($dto);
-	}
-	function updateProductDescription(ChangeProductDescriptionDto $dto): ResponseViewModel
-	{
-		return $this->productService->updateProductDescription($dto);
-	}
-	function deleteProduct(DeleteProductByUuidDto $dto): ResponseViewModel
+		function deleteProduct(DeleteProductByUuidDto $dto): ResponseViewModel
 	{
 		return $this->productService->deleteProduct($dto);
 	}

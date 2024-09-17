@@ -13,11 +13,7 @@ class NullProduct implements ProductInterface {
     function swapSubscribersCollection(IteratorAggregate $i) {}
     function incrementStockQuantity(int $quantity){}
     function decrementStockQuantity(int $quantity){}
-    function changeHeader($header){}
-
-    function changeDescription($description){}
-    public function getPreviousPrice(){}
-    function changePrice($price){}
+    function changeDetails($model, $brand, $header, $description, $price){}
     function calculateAvarageRate(){}
     function isPriceLessThanPreviousPrice(){}
 
@@ -63,7 +59,7 @@ class NullProduct implements ProductInterface {
     public function getCategories():CategoryCollection{
         return new CategoryCollection();
     }
-
+    function getPreviousPrice(){}
     public function getUuid(){}
 
     public function getCreatedAt(){}

@@ -14,16 +14,16 @@ abstract class AbstractDataAccessObject {
                     $this->insertEntity($log->getTable(),$log->getData());
                     break;
                 case TransactionOperation::$UPDATE:
-                    $this->updateEntity($log->getTable(), $log->getEntityID(), $log->getData());
+                    $this->updateEntity($log->getTable(), $log->getEntityID(), $log->getWhichWhereIdenty(),$log->getData());
                     break;
                 case TransactionOperation::$DELETE:
-                    $this->deleteEntity($log->getTable(), $log->getEntityID());
+                    $this->deleteEntity($log->getTable(), $log->getEntityID(), $log->getWhichWhereIdenty());
                     break;
                 default: throw new Exception("Unknown transaction log operation");
             }
         }
     }
-    protected function insertEntity($table, $metadata) {
+    private function insertEntity($table, $metadata) {
         $columns = implode(", ", array_keys($metadata));
         
         $placeholders = implode(", ", array_fill(0, count($metadata), '?'));
@@ -37,8 +37,8 @@ abstract class AbstractDataAccessObject {
         $stmt->execute(array_values($metadata));
     }
 
-    // UPDATE sorgusu oluşturur ve veritabanında günceller
-    protected function updateEntity($table, $entityId, $metadata) {
+    
+    private function updateEntity($table, $entityId, $whichWhereIdenty, $metadata) {
         $setClause = [];
         
         foreach ($metadata as $column => $value) {
@@ -49,17 +49,17 @@ abstract class AbstractDataAccessObject {
         
         $conn = $this->databaseConnection->getConnection();
         
-        $sql = "UPDATE $table SET $setClause WHERE uuid = ?";
-        
+        $sql = "UPDATE $table SET $setClause WHERE $whichWhereIdenty = ?";
+
         $stmt = $conn->prepare($sql);
         
         $stmt->execute(array_merge(array_values($metadata), [$entityId]));
     }
 
-    // DELETE sorgusu oluşturur ve veritabanından siler
-    protected function deleteEntity($table,$entityId) {
+    
+    private function deleteEntity($table,$entityId, $whichWhereIdenty) {
         $conn = $this->databaseConnection->getConnection();
-        $sql = "DELETE FROM $table WHERE uuid = ?";
+        $sql = "DELETE FROM $table WHERE $whichWhereIdenty = ?";
         $stmt =$conn->prepare($sql);
         $stmt->execute([$entityId]);
     }

@@ -171,68 +171,15 @@ class ProductController {
         
     }
 
-    function updateProductBrandName($uuid){
+    function updateProductDetails($productUuid){
         $jsonBody = json_decode(file_get_contents('php://input'));
-        
-        $this->productService->updateProductBrandName(new ChangeProductBrandNameDto($uuid, $jsonBody->new_brand_name))
-                            ->onSucsess(function (ProductBrandNameChangedSuccessfullyResponseDto $response){
-                                echo json_encode($response);
-                            
-                            })->onError(function (ErrorResponseDto $err){
-                                echo json_encode($err);    
-                                http_response_code($err->getErrorCode());                                        
-                            });
-    }
-
-    function updateProductModelName($uuid){
-        $jsonBody = json_decode(file_get_contents('php://input'));
-        
-        $this->productService->updateProductModelName(new ChangeProductModelNameDto($uuid, $jsonBody->new_model_name))
-                            ->onSucsess(function (ProductModelNameChangedResponseDto $response){
+        $this->productService->updateProductDetailsByUuid(new ProductDetailDto($productUuid, $jsonBody->brand, $jsonBody->model, $jsonBody->header, $jsonBody->description, $jsonBody->price))
+                            ->onSucsess(function (ProductDetailsChangedResponseDto $response) {
                                 echo json_encode($response);
                             })->onError(function (ErrorResponseDto $err){
                                 echo json_encode($err);    
                                 http_response_code($err->getErrorCode());                                        
                             });
-    }
-    function updateProductHeader($uuid){
-        $jsonBody = json_decode(file_get_contents('php://input'));
-        
-        $this->productService->updateProductHeader(new ChangeProductHeaderDto($uuid, $jsonBody->new_header))
-                            ->onSucsess(function (ProductHeaderChangedResponseDto $response){
-                                echo json_encode($response);
-                            })->onError(function (ErrorResponseDto $err){
-                                echo json_encode($err);    
-                                http_response_code($err->getErrorCode());                                        
-                            });
-
-    }
-    function updateProductDescription($uuid){
-        $jsonBody = json_decode(file_get_contents('php://input'));
-        
-        $this->productService->updateProductDescription(new ChangeProductDescriptionDto($uuid, $jsonBody->new_description))
-                            ->onSucsess(function (ProductDescriptionChangedResponseDto $response){
-                                echo json_encode($response);
-                            
-                            })->onError(function (ErrorResponseDto $err){
-                                echo json_encode($err);    
-                                http_response_code($err->getErrorCode());                                        
-                            });
-
-    }
-
-    function updateProductPrice($uuid) {
-        $jsonBody = json_decode(file_get_contents('php://input'));
-        
-        $this->productService->updateProductPrice(new ChangeProductPriceDto($uuid, $jsonBody->new_price))
-                            ->onSucsess(function (ProductPriceChangedResponseDto $response){
-                                echo json_encode($response);
-                            
-                            })->onError(function (ErrorResponseDto $err){
-                                echo json_encode($err);    
-                                http_response_code($err->getErrorCode());                                        
-                            });
-
     }
     function updateProductStockQuantity($productUuid){
         $jsonBody = json_decode(file_get_contents('php://input'));

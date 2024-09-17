@@ -121,24 +121,7 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
         }
 
     }
-    function updateProductBrandName(ChangeProductBrandNameDto $dto): ResponseViewModel
-    {
-        try {
-            $dbConnection = $this->dbConnection->getConnection();
-            
-            $dbConnection->beginTransaction();
-            $response = parent::updateProductBrandName($dto);
-            
-            $dbConnection->commit();
-
-        } catch (Exception $e) {
-            $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-        } finally {
-            return $response;
-        }
-
-    }
+    
     function findOneProductByUuid(FindOneProductByUuidDto $dto): ResponseViewModel
     {
         try {
@@ -151,50 +134,12 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
 
     }
     
-    function updateProductModelName(ChangeProductModelNameDto $dto): ResponseViewModel
-    {
+    function updateProductDetailsByUuid(ProductDetailDto $dto): ResponseViewModel {
         try {
             $dbConnection = $this->dbConnection->getConnection();
             
             $dbConnection->beginTransaction();
-            $response = parent::updateProductModelName($dto);
-            
-            $dbConnection->commit();
-
-        } catch (Exception $e) {
-            $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-        } finally {
-            
-            return $response;
-        }
-
-    }
-    function updateProductHeader(ChangeProductHeaderDto $dto): ResponseViewModel
-    {
-        try {
-            $dbConnection = $this->dbConnection->getConnection();
-            
-            $dbConnection->beginTransaction();
-            $response = parent::updateProductHeader($dto);
-            
-            $dbConnection->commit();
-
-        } catch (Exception $e) {
-            $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-        } finally {
-            return $response;
-        }
-
-    }
-    function updateProductDescription(ChangeProductDescriptionDto $dto): ResponseViewModel
-    {
-        try {
-            $dbConnection = $this->dbConnection->getConnection();
-            
-            $dbConnection->beginTransaction();
-            $response = parent::updateProductDescription($dto);
+            $response = parent::updateProductDetailsByUuid($dto);
             
             $dbConnection->commit();
 
@@ -205,24 +150,6 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
             return $response;
         }
     }
-        function updateProductPrice(ChangeProductPriceDto $dto): ResponseViewModel
-        {
-            try {
-                $dbConnection = $this->dbConnection->getConnection();
-                
-                $dbConnection->beginTransaction();
-                $response = parent::updateProductPrice($dto);
-                
-                $dbConnection->commit();
-    
-            } catch (Exception $e) {
-                $dbConnection->rollBack();
-                $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-            } finally {
-                return $response;
-            }
-    
-        }
 
     
 }

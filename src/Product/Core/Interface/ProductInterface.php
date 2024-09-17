@@ -3,12 +3,8 @@
 interface ProductInterface {
         function incrementStockQuantity(int $quantity);
         function decrementStockQuantity(int $quantity);
-        function changeHeader($header);
-        function changeBrand($newBrand);
-        function changeModel($newModel);
-        function changeDescription($description);
-        function changePrice($price);
         function calculateAvarageRate();
+        function changeDetails($model, $brand, $header, $description, $price);
         function isPriceLessThanPreviousPrice();
         function addSubscriber(ProductSubscriberInterface $sub);
         function addCategory(CategoryInterface $category);

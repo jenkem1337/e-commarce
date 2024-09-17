@@ -138,107 +138,7 @@ class ProductServiceImpl implements ProductService {
         );
         return new SearchedProductResponseDto($products);
     }
-    function updateProductBrandName(ChangeProductBrandNameDto $dto): ResponseViewModel
-    {
-        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid(), [
-            "comments"=>false,
-            "subscribers"=>false,
-            "categories"=>false,
-            "rates"=> false,
-            "images"=>false
-        ]);
-        
-        if($productDomainObject->isNull()) throw new NotFoundException('product');
-
-        $productDomainObject->changeBrand($dto->getNewBrandName());
-        $this->productRepository->updateProductBrandName($productDomainObject);
-        
-        return new ProductBrandNameChangedSuccessfullyResponseDto('Product brand name changed successfully');
-    }
-    function updateProductModelName(ChangeProductModelNameDto $dto): ResponseViewModel
-    {
-        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid(),  [
-            "comments"=>false,
-            "subscribers"=>false,
-            "categories"=>false,
-            "rates"=> false,
-            "images"=>false
-        ]);
-        if($productDomainObject->isNull()) throw new NotFoundException('product');
-        $productDomainObject->changeModel($dto->getNewModelName());
-
-        $this->productRepository->updateProductModelName($productDomainObject);
-        
-        return new ProductModelNameChangedResponseDto('Product model name changed successfully');
-    }
-    function updateProductHeader(ChangeProductHeaderDto $dto): ResponseViewModel
-    {
-        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid(),  [
-            "comments"=>false,
-            "subscribers"=>false,
-            "categories"=>false,
-            "rates"=> false,
-            "images"=>false
-        ]);
-        if($productDomainObject->isNull()) throw new NotFoundException('product');
-        $productDomainObject->changeHeader($dto->getNewHeaderName());
-
-        $this->productRepository->updateProductHeader($productDomainObject);
-        
-        return new ProductHeaderChangedResponseDto('Product header changed successfully');
-
-    }
-    function updateProductDescription(ChangeProductDescriptionDto $dto): ResponseViewModel
-    {
-        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid(),  [
-            "comments"=>false,
-            "subscribers"=>false,
-            "categories"=>false,
-            "rates"=> false,
-            "images"=>false
-        ]);
-        if($productDomainObject->isNull()) throw new NotFoundException('product');
-        $productDomainObject->changeDescription($dto->getNewDescription());
-
-        $this->productRepository->updateProductDescription($productDomainObject);
-        
-        return new ProductDescriptionChangedResponseDto('Product description changed successfully');
-
-    }
-    function updateProductPrice(ChangeProductPriceDto $dto): ResponseViewModel
-    {
-        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid(),  [
-            "comments"=>false,
-            "subscribers"=>"get",
-            "categories"=>false,
-            "rates"=> false,
-            "images"=>false
-        ]);
-
-        if($productDomainObject->isNull()) throw new NotFoundException('product');
-        
-        $productDomainObject->changePrice($dto->getNewPrice());
-        
-        //i think i need to use async library or something else in production ready because of latency
-        if($productDomainObject->isPriceLessThanPreviousPrice()){
-            foreach($productDomainObject->getSubscribers() as $subscribers) {
-                $this->redisClient->publish("price_changed_send_mail",json_encode([
-                    "subscriber_full_name"=>$subscribers->getUserFullName(),
-                    "subscriber_email"=>$subscribers->getUserEmail(),
-                    "product_uuid"=>$productDomainObject->getUuid(),
-                    "new_price"=>$productDomainObject->getPrice(),
-                    "old_price"=>$productDomainObject->getPreviousPrice()
-                ]));
-            }
-        }
-        /*if($productDomainObject->isPriceLessThanPreviousPrice()) {
-            foreach($productDomainObject->getSubscribers() as $subscribers) {
-                $this->emailService->notifyProductSubscribersForPriceChanged($productDomainObject, $subscribers);
-            }
-        }*/
-        $this->productRepository->saveChanges($productDomainObject);
-        return new ProductPriceChangedResponseDto('Product price changed successfully');
-    }
+   
     function findOneProductByUuid(FindOneProductByUuidDto $dto):ResponseViewModel{
         $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid(),$dto->getFilter());
 
@@ -264,7 +164,26 @@ class ProductServiceImpl implements ProductService {
             $productDomainObject->getUpdatedAt(),
         );
     }
-
+    function updateProductDetailsByUuid(ProductDetailDto $dto): ResponseViewModel {
+        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid(),[
+            "comments"=>false,
+            "subscribers"=>false,
+            "categories"=>false,
+            "rates"=> false,
+            "images"=>false
+        ]);
+        if($productDomainObject->isNull()) throw new NotFoundException('product');
+        
+        $productDomainObject->changeDetails(
+            $dto->getModel(),
+            $dto->getBrand(),
+            $dto->getHeader(),
+            $dto->getDescription(),
+            $dto->getPrice()
+        );
+        $this->productRepository->saveChanges($productDomainObject);
+        return new ProductDetailsChangedResponseDto("Product details changed successfully");
+    }
     function updateProductStockQuantity(ChangeProductStockQuantityDto $dto): ResponseViewModel
     {
         $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getProductUuid(), [
@@ -287,7 +206,7 @@ class ProductServiceImpl implements ProductService {
                 $productDomainObject->decrementStockQuantity($dto->getQuantity());
                 break;
         }
-        $this->productRepository->updateProductStockQuantity($productDomainObject);
+        $this->productRepository->saveChanges($productDomainObject);
 
         return new ProductStockQuantityChangedResponseDto('Product stock quantity changed successfully');
     }

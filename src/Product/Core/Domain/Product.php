@@ -34,6 +34,9 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
     function incrementStockQuantity(int $quantity){
         $quantity = abs($quantity);
         $this->stockQuantity += $quantity;
+        $this->appendLog(new UpdateLog($this->getUuid(), "products", "uuid", [
+            "stockquantity" => $this->stockQuantity
+        ]));
     }
 
     function decrementStockQuantity(int $quantity){
@@ -42,37 +45,55 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
         if($this->stockQuantity < 0){
             throw new NegativeValueException();
         }
+        $this->appendLog(new UpdateLog($this->getUuid(), "products", "uuid", [
+            "stockquantity" => $this->stockQuantity
+        ]));
     }
-    function changeModel($newModel){
-        if(!$newModel) throw new NullException('new model');
-        if($this->model == $newModel) throw new SamePropertyException('new model', 'model');
-        $this->model = $newModel;
+    function changeDetails($model, $brand, $header, $description, $price){
+        self::checkModel($model);
+        self::checkBrand($brand);
+        self::checkHeader($header);
+        self::checkDescription($description);
+        self::checkPrice($price);
+        
+        $this->brand = trim($brand);
+        $this->model = trim($model);
+        $this->header = trim($header);
+        $this->description = trim($description);
+        $this->previousPrice = $this->price;
+        $this->price = $price;
+        
+        $this->appendLog(new UpdateLog($this->getUuid(), "products", "uuid", [
+            "brand" => $this->brand,
+            "model" => $this->model,
+            "header" => $this->header,
+            "_description" => $this->description,
+            "price" => $this->price,
+            "prev_price" => $this->previousPrice,
+            "updated_at" => date('Y-m-d H:i:s')
+        ]));
     }
-    function changeBrand($newBrand) {
-        if(!$newBrand) throw new NullException('new brand');
-        if($this->brand == $newBrand) throw new SamePropertyException('new brand','brand');
-        $this->brand = $newBrand; 
+    private function checkModel($newModel){
+        if(!trim($newModel)) 
+                    throw new NullException('new model');        
     }
-    function changeHeader($header){
-        if(!$header){
+    private function checkBrand($newBrand) {
+        if(!trim($newBrand)) 
+                    throw new NullException('new brand');
+        
+    }
+    private function checkHeader($header){
+        if(!trim($header)){
             throw new NullException('header');
         }
-        if($header == $this->header){
-            throw new SamePropertyException('new header', 'header');
-        }
-        $this->header = $header;
     }
 
-    function changeDescription($description){
-        if(!$description){
+    private function checkDescription($description){
+        if(!trim($description)){
             throw new NullException('description');
-        }
-        if($description == $this->description){
-            throw new SamePropertyException('new description', 'description');
-        }
-        $this->description = $description;
+        }   
     }
-    function changePrice($price){
+    private function checkPrice($price){
         
         if(!$price){
             throw new NullException('price');
@@ -80,16 +101,6 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
         if($price < 0){
             throw new NegativeValueException();
         }
-
-        if($price == $this->price){
-            throw new SamePropertyException('new price', 'price');
-        }
-        $this->previousPrice = $this->price;
-        $this->price = $price;
-        $this->appendLog(new UpdateLog($this->getUuid(), "products", [
-            "price" => $this->price,
-            "prev_price" => $this->previousPrice,
-        ]));
     }
 
     function isPriceLessThanPreviousPrice(){
