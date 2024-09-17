@@ -47,11 +47,7 @@ $f->registerRoute("GET","/products/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[08
 $f->registerRoute("POST", "/products/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/subscriber", new CreateNewProductSubscriberCommand($productController, new JwtAuthMiddleware));
 $f->registerRoute('POST', '/products', new CreateNewProductCommand($productController, new JwtAuthMiddleware));
 $f->registerRoute("PATCH", "/products/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/stock-quantity",new UpdateProductStockQuantityCommand($productController, new JwtAuthMiddleware));
-$f->registerRoute("PATCH", "/products/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/brand", new UpdateProductBrandNameCommand($productController, new JwtAuthMiddleware));
-$f->registerRoute("PATCH", '/products/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/model', new UpdateProductModelNameCommand($productController, new JwtAuthMiddleware));
-$f->registerRoute("PATCH", "/products/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/header", new UpdateProductHeaderCommand($productController, new JwtAuthMiddleware));
-$f->registerRoute("PATCH", '/products/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/description', new UpdateProductDescriptionCommand($productController, new JwtAuthMiddleware));
-$f->registerRoute("PATCH", '/products/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/price', new UpdateProductPriceCommand($productController, new JwtAuthMiddleware));
+$f->registerRoute("PUT", "/products/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})", new UpdateProductDetailsCommand($productController, new JwtAuthMiddleware));
 $f->registerRoute("DELETE", "/products/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})", new DeleteProductCommand($productController, new JwtAuthMiddleware));
 $f->registerRoute("DELETE", '/products/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/subscriber', new DeleteProductSubscriberCommand($productController, new JwtAuthMiddleware));
 
