@@ -49,8 +49,10 @@ class ProductSubscriberRepositoryImpl implements ProductSubscriberRepository {
             $subscriberObj->created_at,
             $subscriberObj->updated_at
         );
-        $productSubscriberDomainObject->setUserEmail($subscriberObj->email);
-        $productSubscriberDomainObject->setUserFullName($subscriberObj->full_name);
+        if(isset($subscriberObj->email) && isset($subscriberObj->full_name)){
+            $productSubscriberDomainObject->setUserEmail($subscriberObj->email);
+            $productSubscriberDomainObject->setUserFullName($subscriberObj->full_name);    
+        }
         return $productSubscriberDomainObject;
     }
 

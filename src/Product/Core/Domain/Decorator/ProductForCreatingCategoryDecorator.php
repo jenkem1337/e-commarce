@@ -26,7 +26,7 @@ class ProductForCreatingCategoryDecorator extends ProductDecorator implements Ag
     function setRate(RateInterface $rate){
         throw new Exception();    
     }
-
+    
     function changePrice($price){
         
         throw new Exception();    

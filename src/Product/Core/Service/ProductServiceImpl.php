@@ -72,29 +72,19 @@ class ProductServiceImpl implements ProductService {
         
         $productDomainObject->isNull() ?? throw new NotFoundException('product');
         
-        if(count($productDomainObject->getSubscribers()->getItems()) == 1){
-            throw new AlreadyExistException('product subscriber');
-        }
-
-        $productSubscriberDomainObject = $this->productSubscriberFactory->createInstance(
-            true,
-            $dto->getUuid(),
-            $dto->getProductUuid(),
-            $dto->getUserUuid(),
-            $dto->getCreatedAt(),
-            $dto->getUpdatedAt()
-        );
-        $productDomainObject->getSubscribers()->add($productSubscriberDomainObject);        
-        $this->productRepository->persistProductSubscriber($productDomainObject);
+        $productDomainObject->subscribeToProduct($dto->getUserUuid());
+        
+        $this->productRepository->saveChanges($productDomainObject);
+        
         return new ProductSubscriberCreatedResponseDto('Subscribed to product successfully');
     }
     function deleteProduct(DeleteProductByUuidDto $dto):ResponseViewModel 
     {
         $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid(), [
-            "comments"=>"get",
-            "subscribers"=>"get",
-            "categories"=>"get",
-            "rates"=> "get",
+            "comments"=>false,
+            "subscribers"=>false,
+            "categories"=>false,
+            "rates"=> false,
             "images"=>"get"
         ]);
         if($productDomainObject->isNull()) throw new NotFoundException('product');

@@ -1,5 +1,5 @@
 <?php
-
+use Ramsey\Uuid\Uuid;
 abstract class Product extends BaseEntity implements AggregateRoot, ProductInterface{
     protected $brand;
     protected $model;
@@ -107,7 +107,21 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
 
     function isPriceLessThanPreviousPrice(){
         return ($this->price < $this->previousPrice) ? true : false;
-    } 
+    }
+    function subscribeToProduct($userUuid){
+        if(count($this->getSubscribers()->getItems()) == 1){
+            throw new AlreadyExistException('product subscriber');
+        }
+        $productSubscriber = new ProductSubscriber(UUID::uuid4(), $this->getUuid(), $userUuid, date('Y-m-d H:i:s'), date('Y-m-d H:i:s'));
+        $this->addSubscriber($productSubscriber);
+        $this->appendLog(new InsertLog($this->getUuid(), "product_subscriber", "", [
+            "uuid" => UUID::uuid4(),
+            "user_uuid" => $productSubscriber->getUserUuid(),
+            "product_uuid" => $this->getUuid(),
+            "created_at" => date('Y-m-d H:i:s'),
+            "updated_at" => date('Y-m-d H:i:s')
+        ]));
+    }
     function addSubscriber(ProductSubscriberInterface $sub){
         if(!$sub) throw new NullException('subscriber');
         $this->subscribers->add($sub);
