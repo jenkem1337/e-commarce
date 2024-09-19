@@ -1,6 +1,6 @@
 <?php
 class InsertLog extends TransactionLog {
-    function __construct($entityID, $table, $whichWhereIdenty,$data) {
-        parent::__construct($entityID, $table, $whichWhereIdenty,TransactionOperation::$INSERT, $data);
+    function __construct($table, $metadata) {
+        parent::__construct( $table,TransactionOperation::$INSERT, $metadata);
     }
 }

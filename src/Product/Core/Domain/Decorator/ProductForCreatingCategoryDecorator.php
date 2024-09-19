@@ -42,8 +42,10 @@ class ProductForCreatingCategoryDecorator extends ProductDecorator implements Ag
         parent::addCategory($category);
     }
 
-    function addComment(CommentInterface $comment){
-        throw new Exception();    }
+    function addComment(CommentInterface $comment):void{
+        throw new Exception();    
+    }
+        
     function addImage(ImageInterface $img){
         throw new Exception();
     }

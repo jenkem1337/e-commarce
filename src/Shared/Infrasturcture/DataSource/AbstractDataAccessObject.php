@@ -11,13 +11,13 @@ abstract class AbstractDataAccessObject {
             
             switch($log->getOperation()) {
                 case TransactionOperation::$INSERT:
-                    $this->insertEntity($log->getTable(),$log->getData());
+                    $this->insertEntity($log->getTable(),$log->getMetadata());
                     break;
                 case TransactionOperation::$UPDATE:
-                    $this->updateEntity($log->getTable(), $log->getEntityID(), $log->getWhichWhereIdenty(),$log->getData());
+                    $this->updateEntity($log->getTable(), $log->getMetadata());
                     break;
                 case TransactionOperation::$DELETE:
-                    $this->deleteEntity($log->getTable(), $log->getData());
+                    $this->deleteEntity($log->getTable(), $log->getMetadata());
                     break;
                 default: throw new Exception("Unknown transaction log operation");
             }
@@ -38,32 +38,37 @@ abstract class AbstractDataAccessObject {
     }
 
     
-    private function updateEntity($table, $entityId, $whichWhereIdenty, $metadata) {
+    private function updateEntity($table, $metadata) {
         $setClause = [];
-        
-        foreach ($metadata as $column => $value) {
+        foreach ($metadata["setter"] as $column => $value) {
             $setClause[] = "$column = ?";
         }
-        
         $setClause = implode(", ", $setClause);
-        
-        $conn = $this->databaseConnection->getConnection();
-        
-        $sql = "UPDATE $table SET $setClause WHERE $whichWhereIdenty = ?";
-
-        $stmt = $conn->prepare($sql);
-        
-        $stmt->execute(array_merge(array_values($metadata), [$entityId]));
-    }
-
     
-    private function deleteEntity($table, $whereConditions) {
+        $whereClause = [];
+        $values = array_values($metadata["setter"]);  
+    
+        foreach ($metadata["whereCondation"] as $column => $value) {
+            $whereClause[] = "$column = ?";
+            $values[] = $value;
+        }
+        $whereClauseString = implode( " AND ", $whereClause);
+    
+        $conn = $this->databaseConnection->getConnection();
+        $sql = "UPDATE $table SET $setClause WHERE $whereClauseString";
+        $stmt = $conn->prepare($sql);
+    
+        $stmt->execute($values);
+    }
+    
+    
+    private function deleteEntity($table, $metadata) {
         $conn = $this->databaseConnection->getConnection();
     
         $whereClause = [];
         $values = [];
     
-        foreach ($whereConditions as $column => $value) {
+        foreach ($metadata["whereCondation"] as $column => $value) {
             $whereClause[] = "$column = ?";
             $values[] = $value;
         }

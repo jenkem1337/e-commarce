@@ -34,9 +34,15 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
     function incrementStockQuantity(int $quantity){
         $quantity = abs($quantity);
         $this->stockQuantity += $quantity;
-        $this->appendLog(new UpdateLog($this->getUuid(), "products", "uuid", [
-            "stockquantity" => $this->stockQuantity,
-            "updated_at" => date('Y-m-d H:i:s')
+        $this->appendLog(new UpdateLog( "products", [
+            "setter" => [
+                "stockquantity" => $this->stockQuantity,
+                "updated_at" => date('Y-m-d H:i:s')
+
+            ],
+            "whereCondation" => [
+                "uuid" => $this->getUuid()
+            ]
         ]));
     }
 
@@ -46,9 +52,15 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
         if($this->stockQuantity < 0){
             throw new NegativeValueException();
         }
-        $this->appendLog(new UpdateLog($this->getUuid(), "products", "uuid", [
-            "stockquantity" => $this->stockQuantity,
-            "updated_at" => date('Y-m-d H:i:s')
+        $this->appendLog(new UpdateLog( "products", [
+            "setter" => [
+                "stockquantity" => $this->stockQuantity,
+                "updated_at" => date('Y-m-d H:i:s')
+
+            ],
+            "whereCondation" => [
+                "uuid" => $this->getUuid()
+            ]
         ]));
     }
     function changeDetails($model, $brand, $header, $description, $price){
@@ -65,14 +77,19 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
         $this->previousPrice = $this->price;
         $this->price = $price;
         
-        $this->appendLog(new UpdateLog($this->getUuid(), "products", "uuid", [
-            "brand" => $this->brand,
-            "model" => $this->model,
-            "header" => $this->header,
-            "_description" => $this->description,
-            "price" => $this->price,
-            "prev_price" => $this->previousPrice,
-            "updated_at" => date('Y-m-d H:i:s')
+        $this->appendLog(new UpdateLog("products", [
+            "setter" => [
+                "brand" => $this->brand,
+                "model" => $this->model,
+                "header" => $this->header,
+                "_description" => $this->description,
+                "price" => $this->price,
+                "prev_price" => $this->previousPrice,
+                "updated_at" => date('Y-m-d H:i:s')
+            ],
+            "whereCondation" => [
+                "uuid" => $this->getUuid()
+            ]
         ]));
     }
     private function checkModel($newModel){
@@ -114,7 +131,7 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
         }
         $productSubscriber = new ProductSubscriber(UUID::uuid4(), $this->getUuid(), $userUuid, date('Y-m-d H:i:s'), date('Y-m-d H:i:s'));
         $this->addSubscriber($productSubscriber);
-        $this->appendLog(new InsertLog($this->getUuid(), "product_subscriber", "", [
+        $this->appendLog(new InsertLog("product_subscriber", [
             "uuid" => UUID::uuid4(),
             "user_uuid" => $productSubscriber->getUserUuid(),
             "product_uuid" => $this->getUuid(),
@@ -124,9 +141,11 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
     }
     function unSubscribeToProduct($userUuid) {
         if((count($this->getSubscribers()->getItems()) == 1) ){
-            $this->appendLog(new DeleteLog(null, "product_subscriber", null, [
-                "user_uuid" => $userUuid,
-                "product_uuid" => $this->getUuid()
+            $this->appendLog(new DeleteLog("product_subscriber", [
+            "whereCondation" => [
+                    "user_uuid" => $userUuid,
+                    "product_uuid" => $this->getUuid()
+                ]
             ]));
         } else {
             throw new DoesNotExistException('Your subscription');
@@ -143,7 +162,7 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
         $this->categories->add($category);
     }
 
-    function addComment(CommentInterface $comment){
+    function addComment(CommentInterface $comment): void{
         if(!$comment){
             throw new NullException("comment");
         }

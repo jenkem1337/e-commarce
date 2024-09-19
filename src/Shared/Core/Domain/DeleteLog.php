@@ -1,6 +1,6 @@
 <?php
 class DeleteLog extends TransactionLog {
-    function __construct($entityID, $table, $whichWhereIdenty, $data) {
-        parent::__construct($entityID, $table, $whichWhereIdenty,TransactionOperation::$DELETE, $data);
+    function __construct($table, $metadata) {
+        parent::__construct($table,TransactionOperation::$DELETE, $metadata);
     }
 }
