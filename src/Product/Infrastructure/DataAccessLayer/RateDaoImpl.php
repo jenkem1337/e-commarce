@@ -105,6 +105,16 @@ class RateDaoImpl implements RateDao {
         ]);
 	}
 
+    function deleteAllByProductUuid($productUuid){
+        $conn = $this->dbConnection->getConnection();
+        $stmt = $conn->prepare(
+            "DELETE FROM rates WHERE product_uuid = :product_uuid"
+        );
+        $stmt->execute([
+            'product_uuid'=>$productUuid
+        ]);
+    }
+
     private function returnNullStatment() {
         $arr = [
             'uuid'=>null,

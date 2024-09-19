@@ -13,7 +13,5 @@ interface ProductDao extends SaveChangesInterface{
     function findOneByUuid($uuid);
     function findByPriceRange($from, $to);
     function findBySearching($value, $startingLimit, $perPageForUsers);
-    
-    function updateAvarageRateByUuid(Product $p);
     function findOneOrEmptySubscriberByUuid($uuid, $userUuid);
 }

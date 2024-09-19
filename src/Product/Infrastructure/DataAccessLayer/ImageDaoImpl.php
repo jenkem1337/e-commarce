@@ -33,6 +33,17 @@ class ImageDaoImpl implements ImageDao {
         ]);
         $conn= null;
     }
+
+    function deleteAllByProductUuid($productUuid) {
+        $conn = $this->dbConnection->getConnection();
+        $stmt = $conn->prepare(
+            "DELETE FROM image WHERE product_uuid = :product_uuid"
+        );
+        $stmt->execute([
+            'product_uuid'=>$productUuid
+        ]);
+        $conn= null;
+    }
     function findAll()
     {
         $conn= $this->dbConnection->getConnection();

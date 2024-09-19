@@ -189,18 +189,6 @@ class ProductDaoImpl extends AbstractDataAccessObject implements ProductDao {
 
     }
 	
-	function updateAvarageRateByUuid(Product $p) {
-        $conn = $this->dbConnection->getConnection();
-        $stmt = $conn->prepare(
-            "UPDATE products SET rate = :rate, updated_at = NOW()
-            WHERE uuid = :uuid"
-        );
-        $stmt->execute([
-            'uuid'=>$p->getUuid(),
-            'rate'=>$p->getAvarageRate()
-        ]);
-        $conn = null;
-	}
     private function returnNullStatment() {
         $arr = [
             'uuid'=>null,

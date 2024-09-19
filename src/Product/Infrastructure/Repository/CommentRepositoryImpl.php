@@ -86,6 +86,9 @@ class CommentRepositoryImpl implements CommentRepository {
     {
         $this->commentDao->deleteByUuid($uuid);
     }
+    function deleteAllByProductUuid($productUuid){
+        $this->commentDao->deleteAllByProductUuid($productUuid);
+    }
     function updateByUuid(Comment $c)
     {
         $this->commentDao->updateByUuid($c);

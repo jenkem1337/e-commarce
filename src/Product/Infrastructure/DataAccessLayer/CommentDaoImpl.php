@@ -34,6 +34,17 @@ class CommentDaoImpl implements CommentDao {
         ]);
         $conn=null; 
 	}
+
+    function deleteAllByProductUuid($productUuid) {
+        $conn = $this->dbConnection->getConnection();
+        $stmt = $conn->prepare(
+            "DELETE FROM comment WHERE product_uuid = :product_uuid"
+        );
+        $stmt->execute([
+            'product_uuid'=>$productUuid
+        ]);
+        $conn=null;
+    }
 		
 	function findAll() {
         $conn = $this->dbConnection->getConnection();
