@@ -1,7 +1,7 @@
 <?php
 
 
-class FindAllProductCommand implements Command {
+class FindProductByCriteriaCommand implements Command {
     private ProductController $controller;
     function __construct(ProductController $cont)
     {
@@ -10,6 +10,6 @@ class FindAllProductCommand implements Command {
 
     function process($params = [])
     {
-            return $this->controller->findAllProducts();
+            return $this->controller->findProductsByCriteria();
     }
 }

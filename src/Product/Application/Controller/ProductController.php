@@ -74,7 +74,7 @@ class ProductController {
                             });
 
     }
-    function findAllProducts() {
+    function findProductsByCriteria() {
         $comments = isset($_GET['comments'])       ? $_GET['comments'] : "dont_get";
         $images = isset($_GET['images'])           ? $_GET['images'] : "dont_get";
         $subscribers = isset($_GET['subscribers']) ? $_GET['subscribers'] : "dont_get";
@@ -87,35 +87,10 @@ class ProductController {
             "categories"=> $categories,
             "rates"=> $rates
         );
-        $this->productService->findAllProduct(new FindAllProductsDto($filterArray))
+        $this->productService->findProductsByCriteria(new FindAllProductsDto($filterArray))
                             ->onSucsess(function (AllProductResponseDto $response){
                                 echo json_encode($response);
                             })->onError(function (ErrorResponseDto $err){
-                                echo json_encode($err);    
-                                http_response_code($err->getErrorCode());                                        
-                            });
-   }
-   function findAllProductWithPagination() {
-        $pageNum = isset($_GET['page']) ? $_GET['page'] : 1;
-        $perPageForProduct = isset($_GET['per_page']) ? $_GET['per_page'] : 10;
-
-        $comments = isset($_GET['comments'])       ? $_GET['comments'] : "dont_get";
-        $images = isset($_GET['images'])           ? $_GET['images'] : "dont_get";
-        $subscribers = isset($_GET['subscribers']) ? $_GET['subscribers'] : "dont_get";
-        $categories = isset($_GET['categories'])   ? $_GET['categories'] : "dont_get";
-        $rates = isset($_GET['rates'])             ? $_GET['rates'] : "dont_get";
-        $filterArray = array(
-            "comments"=>$comments,
-            "images"=>$images,
-            "subscribers"=> $subscribers,
-            "categories"=> $categories,
-            "rates"=> $rates
-        );
-
-        $this->productService->findAllProductWithPagination(new FindAllProductWithPaginationDto($perPageForProduct, $pageNum, $filterArray))
-                            ->onSucsess(function (AllProductWithPaginationResponseDto $response){
-                                echo json_encode($response);
-                            })->onError(function (ErrorResponseDto $err) {
                                 echo json_encode($err);    
                                 http_response_code($err->getErrorCode());                                        
                             });
@@ -191,30 +166,6 @@ class ProductController {
                             })->onError(function (ErrorResponseDto $err){
                                 echo json_encode($err);    
                                 http_response_code($err->getErrorCode());                                        
-                            });
-    }
-    function findProductByPriceRange(){
-        $from = isset($_GET['from']) ? $_GET['from'] : '';
-        $to = isset($_GET['to']) ? $_GET['to'] : '';
-        $comments = isset($_GET['comments'])       ? $_GET['comments'] : "dont_get";
-        $images = isset($_GET['images'])           ? $_GET['images'] : "dont_get";
-        $subscribers = isset($_GET['subscribers']) ? $_GET['subscribers'] : "dont_get";
-        $categories = isset($_GET['categories'])   ? $_GET['categories'] : "dont_get";
-        $rates = isset($_GET['rates'])             ? $_GET['rates'] : "dont_get";
-        $filterArray = array(
-            "comments"=>$comments,
-            "images"=>$images,
-            "subscribers"=> $subscribers,
-            "categories"=> $categories,
-            "rates"=> $rates
-        );
-    
-        $this->productService->findProductsByPriceRange(new FindProductsByPriceRangeDto($from, $to, $filterArray))
-                            ->onSucsess(function (AllProductResponseDto $response){
-                                echo json_encode($response);
-                            })->onError(function (ErrorResponseDto $err){
-                                echo json_encode($err);    
-                                http_response_code($err->getErrorCode());
                             });
     }
 }

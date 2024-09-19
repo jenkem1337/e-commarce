@@ -24,14 +24,9 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
             return $response;
         }
     }
-    function findAllProduct(FindAllProductsDto $dto): ResponseViewModel
+    function findProductsByCriteria(FindAllProductsDto $dto): ResponseViewModel
     {
-            $response = parent::findAllProduct($dto);
-            return $response;
-    }
-    function findAllProductWithPagination(FindAllProductWithPaginationDto $dto): ResponseViewModel
-    {
-            $response = parent::findAllProductWithPagination($dto);
+            $response = parent::findProductsByCriteria($dto);
             return $response;
     }
 
@@ -58,12 +53,6 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
             return $response;
         }
 
-    }
-    function findProductsByPriceRange(FindProductsByPriceRangeDto $dto): ResponseViewModel
-    {
-            $response = parent::findProductsByPriceRange($dto);
-            return $response;
-        
     }
 
     function updateProductStockQuantity(ChangeProductStockQuantityDto $dto): ResponseViewModel

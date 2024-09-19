@@ -5,10 +5,8 @@ interface ProductRepository {
     function createProduct(Product $p);
     function findOneProductByUuid($uuid, $filter): ProductInterface;
    
-    function findAllProducts($filter): IteratorAggregate;
-    function findProductsByPriceRange($from, $to, $filter): IteratorAggregate;
+    function findProductsByCriteria($filter): IteratorAggregate;
     function findProductsBySearch($searchValue, $startingLimit, $perPageForProduct, $filter): IteratorAggregate;
-    function findAllWithPagination($startingLimit, $perPageForProduct, $filter): IteratorAggregate;
     function deleteProductByUuid(Product $product);
 
     //image

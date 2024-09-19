@@ -7,14 +7,8 @@ class ProductSubscriberRepositoryImpl implements ProductSubscriberRepository {
         $this->productSubscriberFactory = $productSubscriberFactory;
     }   
 
-    function persist(ProductSubscriber $productSubscriber){
-        $this->productDao->persistSubscriber($productSubscriber);
-    }
     function deleteByProductUuid($productUuid){
         $this->productDao->deleteSubscriberByProductUuid($productUuid);
-    }
-    function deleteByProductUuidAndUserUuid($uUuid, $pUuid ){
-        $this->productDao->deleteSubscriberByUserAndProductUuid($uUuid, $pUuid);
     }
     function findAllProductSubscriberByProductUuid($uuid): SubscriberCollection{
         $productSubscriberObjects = $this->productDao->findAllProductSubscriberByProductUuid($uuid);

@@ -28,38 +28,7 @@ class ProductDaoImpl extends AbstractDataAccessObject implements ProductDao {
         ]);
         $conn = null;
 	}
-    function persistSubscriber(ProductSubscriber $ps)
-    {
-        $conn = $this->dbConnection->getConnection();
-        $stmt = $conn->prepare(
-            "INSERT INTO product_subscriber (uuid, user_uuid, product_uuid, created_at, updated_at)
-            VALUES (:uuid, :user_uuid, :product_uuid, :created_at, :updated_at)"
-        );
-        $stmt->execute([
-            'uuid'=>$ps->getUuid(),
-            'user_uuid'=>$ps->getUserUuid(),
-            'product_uuid'=>$ps->getProductUuid(),
-            'created_at'=>$ps->getCreatedAt(),
-            'updated_at'=>$ps->getUpdatedAt()
-        ]);
-        $conn = null;
-
-    }
 	
-	function deleteSubscriberByUserAndProductUuid($userUuid, $productUuid)
-    {
-        $conn = $this->dbConnection->getConnection();
-        $stmt = $conn->prepare(
-            "DELETE FROM product_subscriber 
-            WHERE (user_uuid = :user_uuid AND product_uuid = :product_uuid)"
-        );
-        $stmt->execute([
-            'user_uuid'=>$userUuid,
-            'product_uuid' => $productUuid
-        ]);
-        $conn = null;
-
-    }
     function deleteSubscriberByProductUuid($pUuid)
     {
         $conn = $this->dbConnection->getConnection();
@@ -82,7 +51,7 @@ class ProductDaoImpl extends AbstractDataAccessObject implements ProductDao {
         ]);
         $conn = null;
 	}
-	function findAll(){
+	function findProductsByCriteria(){
         $conn =  $this->dbConnection->getConnection();
         $stmt = $conn->prepare("SELECT * FROM products ORDER BY created_at DESC");
         $stmt->execute();

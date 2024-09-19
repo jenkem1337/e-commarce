@@ -109,15 +109,10 @@ class ProductServiceImpl implements ProductService {
         
         return new ProductSubscriberDeletedResponseDto('Product subscriber deleted successfully');
     }
-    function findAllProduct(FindAllProductsDto $dto): ResponseViewModel
+    function findProductsByCriteria(FindAllProductsDto $dto): ResponseViewModel
     {
-        $products = $this->productRepository->findAllProducts($dto->getFilters());
+        $products = $this->productRepository->findProductsByCriteria($dto->getFilters());
         return new AllProductResponseDto($products);
-    }
-    function findAllProductWithPagination(FindAllProductWithPaginationDto $dto): ResponseViewModel
-    {
-        $products = $this->productRepository->findAllWithPagination($dto->getStartingLimit(), $dto->getPerPageForProduct(), $dto->getFilter());
-        return new AllProductWithPaginationResponseDto($products);
     }
     function findProductsBySearch(FindProductsBySearchDto $dto): ResponseViewModel
     {
@@ -197,16 +192,5 @@ class ProductServiceImpl implements ProductService {
         $this->productRepository->saveChanges($productDomainObject);
 
         return new ProductStockQuantityChangedResponseDto('Product stock quantity changed successfully');
-    }
-    function findProductsByPriceRange(FindProductsByPriceRangeDto $dto): ResponseViewModel
-    {
-        $products = $this->productRepository->findProductsByPriceRange($dto->getFrom(), $dto->getTo(), $dto->getFilter());
-        foreach($products->getIterator() as $productDomainObject) {
-            if($productDomainObject->isNull()) {
-                throw new NotFoundException('product');
-            }
-            $productDomainObject->calculateAvarageRate();
-        }
-        return new AllProductResponseDto($products);
     }
 }
