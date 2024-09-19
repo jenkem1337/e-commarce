@@ -122,6 +122,16 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
             "updated_at" => date('Y-m-d H:i:s')
         ]));
     }
+    function unSubscribeToProduct($userUuid) {
+        if((count($this->getSubscribers()->getItems()) == 1) ){
+            $this->appendLog(new DeleteLog(null, "product_subscriber", null, [
+                "user_uuid" => $userUuid,
+                "product_uuid" => $this->getUuid()
+            ]));
+        } else {
+            throw new DoesNotExistException('Your subscription');
+        }    
+    }
     function addSubscriber(ProductSubscriberInterface $sub){
         if(!$sub) throw new NullException('subscriber');
         $this->subscribers->add($sub);

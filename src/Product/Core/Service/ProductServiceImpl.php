@@ -103,13 +103,11 @@ class ProductServiceImpl implements ProductService {
         
         if($productDomainObject->isNull()) throw new NotFoundException('product');
         
-        if((count($productDomainObject->getSubscribers()->getItems()) == 1) ){
-            $this->productRepository->deleteProductSubscriberByUserAndProductUuid($dto->getSubscriberUuid() ,$dto->getProductUuid());
-        } else {
-            throw new DoesNotExistException('Your subscription');
-        }        
-        return new ProductSubscriberDeletedResponseDto('Product subscriber deleted successfully');
+        $productDomainObject->unSubscribeToProduct($dto->getSubscriberUuid()); 
 
+        $this->productRepository->saveChanges($productDomainObject);
+        
+        return new ProductSubscriberDeletedResponseDto('Product subscriber deleted successfully');
     }
     function findAllProduct(FindAllProductsDto $dto): ResponseViewModel
     {

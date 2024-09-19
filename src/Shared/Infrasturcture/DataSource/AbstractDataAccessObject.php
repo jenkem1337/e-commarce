@@ -17,7 +17,7 @@ abstract class AbstractDataAccessObject {
                     $this->updateEntity($log->getTable(), $log->getEntityID(), $log->getWhichWhereIdenty(),$log->getData());
                     break;
                 case TransactionOperation::$DELETE:
-                    $this->deleteEntity($log->getTable(), $log->getEntityID(), $log->getWhichWhereIdenty());
+                    $this->deleteEntity($log->getTable(), $log->getData());
                     break;
                 default: throw new Exception("Unknown transaction log operation");
             }
@@ -57,11 +57,21 @@ abstract class AbstractDataAccessObject {
     }
 
     
-    private function deleteEntity($table,$entityId, $whichWhereIdenty) {
+    private function deleteEntity($table, $whereConditions) {
         $conn = $this->databaseConnection->getConnection();
-        $sql = "DELETE FROM $table WHERE $whichWhereIdenty = ?";
-        $stmt =$conn->prepare($sql);
-        $stmt->execute([$entityId]);
+    
+        $whereClause = [];
+        $values = [];
+    
+        foreach ($whereConditions as $column => $value) {
+            $whereClause[] = "$column = ?";
+            $values[] = $value;
+        }
+    
+        $whereClauseString = implode(" AND ", $whereClause);
+        $sql = "DELETE FROM $table WHERE $whereClauseString";
+    
+        $stmt = $conn->prepare($sql);
+        $stmt->execute($values);
     }
-
 }

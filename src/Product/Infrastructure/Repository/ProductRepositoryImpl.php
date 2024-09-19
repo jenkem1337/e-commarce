@@ -67,12 +67,6 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
             $this->categoryRepository->addCategoryUuidToProduct($category);
         }
     }
-    function persistProductSubscriber(Product $p)
-    {
-        foreach($p->getSubscribers()->getItems() as $subscriber){
-            $this->productDao->persistSubscriber($subscriber);
-        }
-    }
     function findProductsByPriceRange($from, $to, $filter):IteratorAggregate
     {
         $productObjects = $this->productDao->findByPriceRange($from, $to);
@@ -156,10 +150,6 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
             $this->imageRepository->persist($image);
         }
         
-    }
-    function deleteProductSubscriberByUserAndProductUuid($userUuid, $productUuid)
-    {
-        $this->productSubscriberRepository->deleteByProductUuidAndUserUuid($userUuid, $productUuid);
     }
     function deleteImageByUuid($uuid)
     {

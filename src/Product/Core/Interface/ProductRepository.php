@@ -3,7 +3,6 @@ interface ProductRepository {
     //product
     function saveChanges($e);
     function createProduct(Product $p);
-    function persistProductSubscriber(Product $p);
     function findOneProductByUuid($uuid, $filter): ProductInterface;
    
     function findAllProducts($filter): IteratorAggregate;
@@ -11,7 +10,6 @@ interface ProductRepository {
     function findProductsBySearch($searchValue, $startingLimit, $perPageForProduct, $filter): IteratorAggregate;
     function findAllWithPagination($startingLimit, $perPageForProduct, $filter): IteratorAggregate;
     function deleteProductByUuid(Product $product);
-    function deleteProductSubscriberByUserAndProductUuid($userUuid, $productUuid);
 
     //image
     function persistImage(Product $p);

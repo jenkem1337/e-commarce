@@ -7,6 +7,7 @@ interface ProductInterface {
         function changeDetails($model, $brand, $header, $description, $price);
         function isPriceLessThanPreviousPrice();
         function subscribeToProduct($userUuid);
+        function unSubscribeToProduct($userUuid);
         function addSubscriber(ProductSubscriberInterface $sub);
         function addCategory(CategoryInterface $category);
         function addRate(RateInterface $rate);
