@@ -140,21 +140,12 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
     
     function deleteProductByUuid(Product $product)
     {
-        foreach($product->getComments() as $comment){
-            $this->commentRepository->deleteByUuid($comment->getUuid());
-        }
-        foreach($product->getRates() as  $rate) {
-            $this->rateRepository->deleteRateByUuid($rate->getUuid());
-        }
-        foreach($product->getImages() as $image) {
-            $this->imageRepository->deleteByUuid($image->getUuid());
-        }
-        foreach($product->getSubscribers() as $subscriber){
-            $this->productSubscriberRepository->deleteByProductUuid($subscriber->getProductUuid());
-        }
-        foreach($product->getCategories() as $category) {
-            $this->categoryRepository->deleteCategoryByProductUuid($category->getProductUuid());
-        }
+        $this->commentRepository->deleteAllByProductUuid($product->getUuid());
+        $this->rateRepository->deleteAllByProductUuid($product->getUuid());
+        $this->imageRepository->deleteAllByProductUuid($product->getUuid());
+        $this->productSubscriberRepository->deleteByProductUuid($product->getUuid());
+        $this->categoryRepository->deleteCategoryByProductUuid($product->getUuid());
+        
         $this->productDao->deleteByUuid($product->getUuid());
     }
     

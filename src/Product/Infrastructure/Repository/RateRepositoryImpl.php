@@ -21,6 +21,9 @@ class RateRepositoryImpl implements RateRepository {
     {
         $this->rateDao->deleteRateByUuid($uuid);
     }
+    function deleteAllByProductUuid($productUuid){
+        $this->rateDao->deleteAllByProductUuid($productUuid);
+    }
     function findAll(): RateCollection
     {
         $rateArray = new RateCollection();

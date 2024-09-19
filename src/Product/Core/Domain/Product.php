@@ -35,7 +35,8 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
         $quantity = abs($quantity);
         $this->stockQuantity += $quantity;
         $this->appendLog(new UpdateLog($this->getUuid(), "products", "uuid", [
-            "stockquantity" => $this->stockQuantity
+            "stockquantity" => $this->stockQuantity,
+            "updated_at" => date('Y-m-d H:i:s')
         ]));
     }
 
@@ -46,7 +47,8 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
             throw new NegativeValueException();
         }
         $this->appendLog(new UpdateLog($this->getUuid(), "products", "uuid", [
-            "stockquantity" => $this->stockQuantity
+            "stockquantity" => $this->stockQuantity,
+            "updated_at" => date('Y-m-d H:i:s')
         ]));
     }
     function changeDetails($model, $brand, $header, $description, $price){

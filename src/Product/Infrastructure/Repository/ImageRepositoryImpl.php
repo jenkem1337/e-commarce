@@ -16,6 +16,9 @@ class ImageRepositoryImpl implements ImageRepository {
     {
         $this->imageDao->deleteByUuid($uuid);
     }
+    function deleteAllByProductUuid($productUuid){
+        $this->imageDao->deleteAllByProductUuid($productUuid);
+    }
     function findAll():IteratorAggregate
     {
         $imageObjects = $this->imageDao->findAll();
