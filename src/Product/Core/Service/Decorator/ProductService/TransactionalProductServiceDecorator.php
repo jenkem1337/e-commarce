@@ -24,7 +24,7 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
             return $response;
         }
     }
-    function findProductsByCriteria(FindAllProductsDto $dto): ResponseViewModel
+    function findProductsByCriteria(FindProductsByCriteriaDto $dto): ResponseViewModel
     {
             $response = parent::findProductsByCriteria($dto);
             return $response;

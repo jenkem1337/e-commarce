@@ -51,10 +51,65 @@ class ProductDaoImpl extends AbstractDataAccessObject implements ProductDao {
         ]);
         $conn = null;
 	}
-	function findProductsByCriteria(){
+	function findProductsByCriteria(FindProductsByCriteriaDto $findProductsByCriteriaDto){
+        
+        $selectQuery = "SELECT product.uuid, product.brand, product.model, product.header, product._description, product.price, product.stockquantity, product.created_at, product.updated_at ";
+        
+        $categoriesJoinQuery = "";
+        
+        $whereQuery = " WHERE ";
+        $isWhereConditionSetted = false;
+        
+        if($findProductsByCriteriaDto->getPriceLowerBound()){
+            if(!$isWhereConditionSetted){
+                $whereQuery .= " product.price >= :price_lower_bound";
+                $isWhereConditionSetted = true;
+            } else {
+                $whereQuery .= " AND product.price >= :price_lower_bound";
+            }
+        }
+        if ($findProductsByCriteriaDto->getPriceUpperBound()){
+            if(!$isWhereConditionSetted){
+                $whereQuery .= "product.price <= :price_upper_bound";
+                $isWhereConditionSetted = true;
+            } 
+            else {
+                $whereQuery .= " AND product.price <= :price_upper_bound";
+            }
+        }
+        if(count($findProductsByCriteriaDto->getSpesificCategories()) > 0) {
+            $categoriesJoinQuery .= " JOIN product_category as pc ON pc.product_uuid = product.uuid";
+            
+            if(!$isWhereConditionSetted){
+                $whereQuery .= " pc.category_uuid IN (:category_uuids)";
+                $isWhereConditionSetted = true;
+            } 
+            else {
+                $whereQuery .= " AND pc.category_uuid IN (:category_uuids)";
+            }
+        }
+        $startLimit = (int) $findProductsByCriteriaDto->getStartingLimit(); 
+        $perPage = (int) $findProductsByCriteriaDto->getPerPageForProduct();
+
+        $whereQuery .= " LIMIT $startLimit, $perPage" ;
+        $selectQuery .= " FROM products as product";
+        $sql = $selectQuery . "" . $categoriesJoinQuery . "" . $whereQuery;
         $conn =  $this->dbConnection->getConnection();
-        $stmt = $conn->prepare("SELECT * FROM products ORDER BY created_at DESC");
-        $stmt->execute();
+        $stmt = $conn->prepare($sql);
+        if(count($findProductsByCriteriaDto->getSpesificCategories()) == 0){
+            $stmt->execute([
+                "price_lower_bound" => $findProductsByCriteriaDto->getPriceLowerBound(),
+                "price_upper_bound" => $findProductsByCriteriaDto->getPriceUpperBound(),
+            ]);
+    
+        } else {
+            $stmt->execute([
+                "price_lower_bound" => $findProductsByCriteriaDto->getPriceLowerBound(),
+                "price_upper_bound" => $findProductsByCriteriaDto->getPriceUpperBound(),
+                "category_uuids"    => implode(", ", $findProductsByCriteriaDto->getSpesificCategories()),
+            ]);
+    
+        }
         $products = $stmt->fetchAll(PDO::FETCH_OBJ);    
         $conn = null;
         if($products == null) return $this->returnManyNullStatement();
@@ -139,8 +194,7 @@ class ProductDaoImpl extends AbstractDataAccessObject implements ProductDao {
         if($products == null) return $this->returnManyNullStatement();
         return $products;
 	}
-	function findByPriceRange($from, $to)
-    {
+	function findByPriceRange($from, $to){
         $conn = $this->dbConnection->getConnection();
         $stmt = $conn->prepare(
             "SELECT * FROM products 
@@ -155,10 +209,9 @@ class ProductDaoImpl extends AbstractDataAccessObject implements ProductDao {
         $conn = null;
         if($products == null) return $this->returnManyNullStatement();
         return $products;
-
     }
 	
-    private function returnNullStatment() {
+    function returnNullStatment() {
         $arr = [
             'uuid'=>null,
             'brand' => null,
@@ -192,7 +245,7 @@ class ProductDaoImpl extends AbstractDataAccessObject implements ProductDao {
         return $productSubscriber;
 
     }
-    private function returnManyNullStatement(){
+     function returnManyNullStatement(){
         $productArr = array();
         $product = new stdClass();
         $product->uuid = null;
@@ -209,7 +262,7 @@ class ProductDaoImpl extends AbstractDataAccessObject implements ProductDao {
         $productArr[] = $product;
         return $productArr;
     }
-    private function returnManyNullForSubscriberStatement(){
+    function returnManyNullForSubscriberStatement(){
         $productArr = array();
         $product_subscriber = new stdClass();
         $product_subscriber->uuid = null;
@@ -222,7 +275,7 @@ class ProductDaoImpl extends AbstractDataAccessObject implements ProductDao {
         $productArr[] = $product_subscriber;
         return $productArr;
     }
-    private function returnNullForSubscriberStatement(){
+     function returnNullForSubscriberStatement(){
         $product_subscriber = new stdClass();
         $product_subscriber->uuid = null;
         $product_subscriber->product_uuid = null;
@@ -233,6 +286,4 @@ class ProductDaoImpl extends AbstractDataAccessObject implements ProductDao {
         $product_subscriber->user_email = null;
         return $product_subscriber;
     }
-
-
 }

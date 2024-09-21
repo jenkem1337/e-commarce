@@ -75,11 +75,16 @@ class ProductController {
 
     }
     function findProductsByCriteria() {
-        $comments = isset($_GET['comments'])       ? $_GET['comments'] : "dont_get";
-        $images = isset($_GET['images'])           ? $_GET['images'] : "dont_get";
-        $subscribers = isset($_GET['subscribers']) ? $_GET['subscribers'] : "dont_get";
-        $categories = isset($_GET['categories'])   ? $_GET['categories'] : "dont_get";
-        $rates = isset($_GET['rates'])             ? $_GET['rates'] : "dont_get";
+        $jsonBody = json_decode(file_get_contents('php://input'));
+        
+        $pageNum = isset($_GET['page']) ? $_GET['page'] : 1;
+        $perPageForProduct = isset($_GET['per_page']) ? $_GET['per_page'] : 10;
+    
+        $comments       = isset($jsonBody->comments)    ? $jsonBody->comments : false;
+        $images         = isset($jsonBody->images)      ? $jsonBody->images : false;
+        $subscribers    = isset($jsonBody->subscribers) ? $jsonBody->subscribers: false;
+        $categories     = isset($jsonBody->categories)  ? $jsonBody->categories : false;
+        $rates          = isset($jsonBody->rates)       ? $jsonBody->rates : false;
         $filterArray = array(
             "comments"=>$comments,
             "images"=>$images,
@@ -87,7 +92,7 @@ class ProductController {
             "categories"=> $categories,
             "rates"=> $rates
         );
-        $this->productService->findProductsByCriteria(new FindAllProductsDto($filterArray))
+        $this->productService->findProductsByCriteria(new FindProductsByCriteriaDto($jsonBody->specific_categories, $jsonBody->price_lower_bound, $jsonBody->price_upper_bound, $jsonBody->rate_lower_bound, $jsonBody->rate_upper_bound, $perPageForProduct, $pageNum, $filterArray ))
                             ->onSucsess(function (AllProductResponseDto $response){
                                 echo json_encode($response);
                             })->onError(function (ErrorResponseDto $err){

@@ -265,6 +265,7 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'FindOneUserByUuidCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/UserController/FindOneUserByUuidCommand.php',
         'FindOneUserByUuidDto' => __DIR__ . '/../..' . '/src/Shared/Application/DTO/RequestDTO/FindOneUserByUuidDto.php',
         'FindProductByCriteriaCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ProductController/FindProductByCriteriaCommand.php',
+        'FindProductsByCriteriaDto' => __DIR__ . '/../..' . '/src/Shared/Application/DTO/RequestDTO/FindProductsByCriteria.php',
         'FindProductsByPriceRangeCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ProductController/FindProductsByPriceRangeCommand.php',
         'FindProductsByPriceRangeDto' => __DIR__ . '/../..' . '/src/Shared/Application/DTO/RequestDTO/FindProductsByPriceRangeDto.php',
         'FindProductsBySearchCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ProductController/FindProductsBySearchCommand.php',

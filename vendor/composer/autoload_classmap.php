@@ -114,6 +114,7 @@ return array(
     'FindOneUserByUuidCommand' => $baseDir . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/UserController/FindOneUserByUuidCommand.php',
     'FindOneUserByUuidDto' => $baseDir . '/src/Shared/Application/DTO/RequestDTO/FindOneUserByUuidDto.php',
     'FindProductByCriteriaCommand' => $baseDir . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ProductController/FindProductByCriteriaCommand.php',
+    'FindProductsByCriteriaDto' => $baseDir . '/src/Shared/Application/DTO/RequestDTO/FindProductsByCriteria.php',
     'FindProductsByPriceRangeCommand' => $baseDir . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ProductController/FindProductsByPriceRangeCommand.php',
     'FindProductsByPriceRangeDto' => $baseDir . '/src/Shared/Application/DTO/RequestDTO/FindProductsByPriceRangeDto.php',
     'FindProductsBySearchCommand' => $baseDir . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ProductController/FindProductsBySearchCommand.php',
