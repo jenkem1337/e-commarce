@@ -4,7 +4,7 @@ interface ProductDao extends SaveChangesInterface{
     function persist(Product $p);
     function deleteSubscriberByProductUuid($pUuid);
     function deleteByUuid($uuid);
-    function findProductsByCriteria();
+    function findProductsByCriteria(FindProductsByCriteriaDto $findProductsByCriteriaDto);
     function findAllProductSubscriberByProductUuid($uuid);
     function findSubscriberByUserUuid($userUuid);
     function findOneByUuid($uuid);

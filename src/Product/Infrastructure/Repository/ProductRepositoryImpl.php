@@ -67,10 +67,10 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
             $this->categoryRepository->addCategoryUuidToProduct($category);
         }
     }
-    function findProductsByCriteria($filter): IteratorAggregate
+    function findProductsByCriteria(FindProductsByCriteriaDto $findProductsByCriteriaDto): IteratorAggregate
     {
-        $productObjects = $this->productDao->findProductsByCriteria();
-        return $this->getManyProductDomainModelFromSubEntities($productObjects, $filter);
+        $productObjects = $this->productDao->findProductsByCriteria($findProductsByCriteriaDto);
+        return $this->getManyProductDomainModelFromSubEntities($productObjects, $findProductsByCriteriaDto->getFilters());
     }
     function findOneProductByUuid($uuid, $filter): ProductInterface
     {

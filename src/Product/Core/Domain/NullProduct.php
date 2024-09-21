@@ -23,6 +23,8 @@ class NullProduct implements ProductInterface {
     }
 
     function addComment(CommentInterface $comment){}
+    function subscribeToProduct($userUuid){}
+    function unSubscribeToProduct($userUuid){}
     function addSubscriber(ProductSubscriberInterface $sub){}
 
     function addImage(ImageInterface $img){}

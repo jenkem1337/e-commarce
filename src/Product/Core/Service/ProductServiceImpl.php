@@ -109,9 +109,9 @@ class ProductServiceImpl implements ProductService {
         
         return new ProductSubscriberDeletedResponseDto('Product subscriber deleted successfully');
     }
-    function findProductsByCriteria(FindAllProductsDto $dto): ResponseViewModel
+    function findProductsByCriteria(FindProductsByCriteriaDto $dto): ResponseViewModel
     {
-        $products = $this->productRepository->findProductsByCriteria($dto->getFilters());
+        $products = $this->productRepository->findProductsByCriteria($dto);
         return new AllProductResponseDto($products);
     }
     function findProductsBySearch(FindProductsBySearchDto $dto): ResponseViewModel
