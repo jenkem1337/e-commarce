@@ -54,7 +54,7 @@ class AuthController {
             $jsonBody->full_name,
             $jsonBody->email,
             $jsonBody->password,
-            false,
+            0,
             date ('Y-m-d H:i:s'),
             date ('Y-m-d H:i:s')
         );

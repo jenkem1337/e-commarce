@@ -37,7 +37,7 @@ class User extends BaseEntity implements AggregateRoot, UserInterface{
         $this->fullname = $fullname;
         $this->email = $email;
         $this->password = $password;
-        $this->isUserActiveted = (bool) $isUserActiveted;
+        $this->isUserActiveted = $isUserActiveted;
         $this->userRole = Role::STRAIGHT;
     }
 
@@ -102,7 +102,7 @@ class User extends BaseEntity implements AggregateRoot, UserInterface{
 
     function isUserActiveted(){
         $bool = $this->getIsUserActiveted();
-        if($bool == false){
+        if($bool == 0){
             throw new NotActivatedException('user');
         }
         else{return true;}
