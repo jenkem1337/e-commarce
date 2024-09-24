@@ -9,7 +9,7 @@ class CategoryDaoImpl implements CategoryDao {
 	function persist(Category $c) {
         $conn = $this->databaseConnection->getConnection();
         $stmt = $conn->prepare(
-            "INSERT INTO category (uuid, category_name, created_at, updated_at) 
+            "INSERT INTO categories (uuid, category_name, created_at, updated_at) 
              VALUES (:uuid, :category_name, :created_at, :updated_at)"
         );
         $stmt->execute([
@@ -23,7 +23,7 @@ class CategoryDaoImpl implements CategoryDao {
 	
 	function deleteByUuid($uuid) {
         $conn = $this->databaseConnection->getConnection();
-        $stmt = $conn->prepare("DELETE FROM category WHERE uuid = :uuid");
+        $stmt = $conn->prepare("DELETE FROM categories WHERE uuid = :uuid");
         $stmt->execute([
             'uuid'=> $uuid
         ]); 
@@ -32,7 +32,7 @@ class CategoryDaoImpl implements CategoryDao {
 	
 	function findByUuid($uuid) {
         $conn = $this->databaseConnection->getConnection();
-        $stmt = $conn->prepare("SELECT * FROM category WHERE uuid = :uuid LIMIT 1");
+        $stmt = $conn->prepare("SELECT * FROM categories WHERE uuid = :uuid LIMIT 1");
         $stmt->execute([
             'uuid'=>$uuid
         ]);
@@ -46,7 +46,7 @@ class CategoryDaoImpl implements CategoryDao {
         $in = str_repeat('?,', count($uuids) - 1) . '?';
         
         $conn = $this->databaseConnection->getConnection();
-        $stmt = $conn->prepare("SELECT * FROM category WHERE uuid IN ($in)");
+        $stmt = $conn->prepare("SELECT * FROM categories WHERE uuid IN ($in)");
         $stmt->execute($uuids);
         $category = $stmt->fetchAll(PDO::FETCH_OBJ);
         $conn = null; 
@@ -57,7 +57,7 @@ class CategoryDaoImpl implements CategoryDao {
 	
 	function updateNameByUuid(Category $c) {
         $conn = $this->databaseConnection->getConnection();
-        $stmt = $conn->prepare("UPDATE category SET category_name = :category_name, updated_at=NOW() WHERE uuid = :uuid");
+        $stmt = $conn->prepare("UPDATE categories SET category_name = :category_name, updated_at=NOW() WHERE uuid = :uuid");
         $stmt->execute([
              'category_name'=>$c->getCategoryName(),
              'uuid'=> $c->getUuid()
@@ -67,7 +67,7 @@ class CategoryDaoImpl implements CategoryDao {
 	
 	function findAll() {
         $conn = $this->databaseConnection->getConnection();
-        $stmt = $conn->prepare("SELECT * FROM category ORDER BY created_at DESC");
+        $stmt = $conn->prepare("SELECT * FROM categories ORDER BY created_at DESC");
         $stmt->execute();
         $categories = $stmt->fetchAll(PDO::FETCH_OBJ);
         $conn = null;
@@ -77,7 +77,7 @@ class CategoryDaoImpl implements CategoryDao {
 	function findOneByName($categoryName)
     {
         $conn = $this->databaseConnection->getConnection();
-        $stmt = $conn->prepare("SELECT * FROM category WHERE category_name = :category_name LIMIT 1");
+        $stmt = $conn->prepare("SELECT * FROM categories WHERE category_name = :category_name LIMIT 1");
         $stmt->execute([
             'category_name'=>$categoryName
         ]);
@@ -106,7 +106,7 @@ class CategoryDaoImpl implements CategoryDao {
     function findAllByProductUuid($uuid){
         $conn = $this->databaseConnection->getConnection();
         $stmt = $conn->prepare(
-            "SELECT c.uuid, c.category_name, c.created_at, c.updated_at FROM category as c
+            "SELECT c.uuid, c.category_name, c.created_at, c.updated_at FROM categories as c
             INNER JOIN product_category as pc
                 ON pc.category_uuid = c.uuid
             WHERE product_uuid = :product_uuid"
