@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '5883a4120fa888686d10a3a4dbd9ccdadc8e55bf',
+        'reference' => 'a746a746a0c67a1f5fab845cce3379da3a30888b',
         'name' => 'hasan/htdocs',
         'dev' => true,
     ),
@@ -61,7 +61,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '5883a4120fa888686d10a3a4dbd9ccdadc8e55bf',
+            'reference' => 'a746a746a0c67a1f5fab845cce3379da3a30888b',
             'dev_requirement' => false,
         ),
         'myclabs/deep-copy' => array(
