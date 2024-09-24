@@ -9,8 +9,8 @@ class RedisConnection implements DatabaseConnection {
     {
         $this->redis = new Predis\Client(array(
             "scheme" => "tcp",
-            "host" => "127.0.0.1",
-            "port" => 6379,
+            "host" => $_ENV['REDIS_HOST'],
+            "port" => (int) $_ENV['REDIS_PORT'],
             "password" => "")
         );
     }
