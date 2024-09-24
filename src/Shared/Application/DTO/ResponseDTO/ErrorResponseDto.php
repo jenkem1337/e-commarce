@@ -25,8 +25,10 @@ class ErrorResponseDto extends ResponseViewModel implements JsonSerializable {
     public function getErrorCode()
     {
         return $this->errorCode;
+
     }
-    function jsonSerialize()
+    
+    function jsonSerialize():mixed
     {
         return [
             "error_message" => $this->getErrorMessage(),
