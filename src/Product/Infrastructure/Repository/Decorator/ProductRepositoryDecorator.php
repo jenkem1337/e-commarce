@@ -39,12 +39,10 @@ abstract class ProductRepositoryDecorator implements ProductRepository {
     }
     function createProductCategory(ProductForCreatingCategoryDecorator $c, $categoryUuidForFinding)
     {
-        try {
+
             $this->productRepository->createProductCategory($c, $categoryUuidForFinding);
 
-        } catch (\PDOException $th) {
-            throw new AlreadyExistException("This category name is");
-        }
+
     }
     function findAllProductCategory(): ProductInterface
     {
