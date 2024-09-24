@@ -60,10 +60,13 @@ $f->registerRoute("GET", "/shippings/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[
 $f->run($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']); 
 
 } catch (\Exception $err) {
-    (new ErrorResponseDto($err->getMessage(), $err->getCode()))->onError(function (ErrorResponseDto $err) {
-        echo json_encode([
-            'error_message' => $err->getErrorMessage(),
-            'status_code' => $err->getErrorCode()
-        ]);
-    });
+    $errorDetails = [
+        'message' => $err->getMessage(),
+        'code' => $err->getCode(),
+        'file' => $err->getFile(),
+        'line' => $err->getLine(),
+        'trace' => $err->getTrace()
+    ];
+
+    echo json_encode($errorDetails, JSON_PRETTY_PRINT);
 }
