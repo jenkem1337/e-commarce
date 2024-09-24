@@ -16,13 +16,11 @@ class TransactionalCategoryServiceDecorator extends CategoryServiceDecorator {
             $response = parent::createNewCategory($dto);
             
             $dbConnection->commit();
-
+            return $response;
         } catch (Exception $e) {
             $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-        } finally {
-            return $response;
-        }
+            throw $e;
+        } 
 
     }
     function findOneCategoryByUuid(FindCategoryByUuidDto $dto): ResponseViewModel
@@ -38,13 +36,12 @@ class TransactionalCategoryServiceDecorator extends CategoryServiceDecorator {
             $response = parent::updateCategoryNameByUuid($dto);
             
             $dbConnection->commit();
+            return $response;
 
         } catch (Exception $e) {
             $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-        } finally {
-            return $response;
-        }
+            throw $e;
+        } 
     }
     function deleteCategoryByUuid(DeleteCategoryDto $dto): ResponseViewModel
     {
@@ -55,13 +52,12 @@ class TransactionalCategoryServiceDecorator extends CategoryServiceDecorator {
             $response = parent::deleteCategoryByUuid($dto);
             
             $dbConnection->commit();
+            return $response;
 
         } catch (Exception $e) {
             $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-        } finally {
-            return $response;
-        }
+            throw $e;
+        } 
 
     }
 

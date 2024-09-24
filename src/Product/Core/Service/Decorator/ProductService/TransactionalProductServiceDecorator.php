@@ -16,13 +16,11 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
             $response = parent::craeteNewProduct($dto);
             
             $dbConnection->commit();
-
+            return $response;
         } catch (Exception $e) {
             $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-        } finally {
-            return $response;
-        }
+            throw $e;
+        } 
     }
     function findProductsByCriteria(FindProductsByCriteriaDto $dto): ResponseViewModel
     {
@@ -45,13 +43,11 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
             $response = parent::createNewProductSubscriber($dto);
             
             $dbConnection->commit();
-
+            return $response;
         } catch (Exception $e) {
             $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-        } finally {
-            return $response;
-        }
+            throw $e;
+        } 
 
     }
 
@@ -64,13 +60,11 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
             $response = parent::updateProductStockQuantity($dto);
             
             $dbConnection->commit();
-
+            return $response;
         } catch (Exception $e) {
             $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-        } finally {
-            return $response;
-        }
+            throw $e;
+        } 
 
     }
     function deleteProduct(DeleteProductByUuidDto $dto): ResponseViewModel
@@ -82,13 +76,11 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
             $response = parent::deleteProduct($dto);
             
             $dbConnection->commit();
-
+            return $response;
         } catch (Exception $e) {
             $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-        } finally {
-            return $response;
-        }
+            throw $e;
+        } 
 
     }
 
@@ -101,13 +93,12 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
             $response = parent::deleteProductSubscriber($dto);
             
             $dbConnection->commit();
+            return $response;
 
         } catch (Exception $e) {
             $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-        } finally {
-            return $response;
-        }
+            throw $e;
+        } 
 
     }
     
@@ -115,11 +106,12 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
     {
         try {
             $response = parent::findOneProductByUuid($dto);
+            return $response;
+
         } catch (\Exception $th) {
-            $response = new ErrorResponseDto($th->getMessage(), $th->getCode());
+            throw $th;
         }
 
-            return $response;
 
     }
     
@@ -131,13 +123,11 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
             $response = parent::updateProductDetailsByUuid($dto);
             
             $dbConnection->commit();
-
+            return $response;
         } catch (Exception $e) {
             $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-        } finally {
-            return $response;
-        }
+            throw $e;
+        } 
     }
 
     

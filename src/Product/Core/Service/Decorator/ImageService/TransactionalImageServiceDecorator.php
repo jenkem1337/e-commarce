@@ -16,14 +16,12 @@ class TransactionalImageServiceDecorator extends ImageServiceDecorator {
             $response = parent::uploadImageForProduct($dto);
             
             $dbConnection->commit();
+            return $response;
 
         } catch (Exception $e) {
             $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-        } finally {
-            return $response;
-        }
-
+            throw $e;
+        } 
     }
     function deleteImageByUuid(DeleteImageByUuidDto $dto):ResponseViewModel{
         try {
@@ -33,13 +31,13 @@ class TransactionalImageServiceDecorator extends ImageServiceDecorator {
             $response = parent::deleteImageByUuid($dto);
             
             $dbConnection->commit();
+            return $response;
 
         } catch (Exception $e) {
             $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-        } finally {
-            return $response;
-        }
+            throw $e;
+
+        } 
 
     }
 

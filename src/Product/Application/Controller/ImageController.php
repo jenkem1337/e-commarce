@@ -22,23 +22,14 @@ class ImageController {
             $imageObject = json_decode(json_encode($imageArr),false);
             $imageArrayItarator->append($imageObject);
         }
-        $this->imageService->uploadImageForProduct(new ImageCreationalDto($imageArrayItarator,$productUuid))
-            ->onSucsess(function (ImageCreatedResponseDto $responseDto){
-                echo json_encode($responseDto);
-            
-            })->onError(function (ErrorResponseDto $err){
-                echo json_encode($err);    
-                http_response_code($err->getErrorCode());
-            });
-        
+        $response = $this->imageService->uploadImageForProduct(new ImageCreationalDto($imageArrayItarator,$productUuid));
+        echo json_encode($response);
+        http_response_code(201);
+
     }
     function deleteImageByUuid($imageUuid, $productUuid){
-        $this->imageService->deleteImageByUuid(new DeleteImageByUuidDto($productUuid,$imageUuid))
-                        ->onSucsess(function (ImageDeletedResponseDto $response){
-                            echo json_encode($response);
-                        })->onError(function (ErrorResponseDto $err){
-                            echo json_encode($err);    
-                            http_response_code($err->getErrorCode());
-                        });
+        $response = $this->imageService->deleteImageByUuid(new DeleteImageByUuidDto($productUuid,$imageUuid));
+        echo json_encode($response);
+        http_response_code(201);
     }
 }

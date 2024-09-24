@@ -15,11 +15,11 @@ class TransactionalUserServiceDecorator extends UserServiceDecorator {
             $response = parent::changePassword($dto);
             
             $dbConnection->commit();
+            return $response;
+
         } catch (\Exception $e) {
             $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-        }finally {
-            return $response;
+            throw $e;
         }
     }
     function changeForgettenPassword(ForgettenPasswordDto $forgettenPasswordDto):ResponseViewModel{
@@ -31,11 +31,11 @@ class TransactionalUserServiceDecorator extends UserServiceDecorator {
             $response = parent::changeForgettenPassword($forgettenPasswordDto);
             
             $dbConnection->commit();
+            return $response;
+
         } catch (\Exception $e) {
             $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-        }finally {
-            return $response;
+            throw $e;
         }
 
     }
@@ -56,11 +56,11 @@ class TransactionalUserServiceDecorator extends UserServiceDecorator {
             $response = parent::changeFullName($changeFullNameDto);
             
             $dbConnection->commit();
+            return $response;
+
         } catch (\Exception $e) {
             $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-        }finally {
-            return $response;
+            throw $e;
         }
 
     }

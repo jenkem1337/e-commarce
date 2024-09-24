@@ -11,7 +11,7 @@ class ProductController {
     function createNewProduct(){
         $jsonBody = json_decode(file_get_contents('php://input'));
 
-        $this->productService->craeteNewProduct(
+        $response = $this->productService->craeteNewProduct(
             new ProductCreationalDto(
                 Uuid::uuid4(),
                 $jsonBody->brand,
@@ -23,20 +23,18 @@ class ProductController {
                 $jsonBody->categories,
                 date ('Y-m-d H:i:s'),
                 date ('Y-m-d H:i:s')    
-            )
-            )->onSucsess(function (ProductCreatedResponseDto $response){
-            echo json_encode($response);
-        })->onError(function (ErrorResponseDto $err){
-            echo json_encode($err);    
-            http_response_code($err->getErrorCode());
-        });
+                )
+            );
+        echo json_encode($response);
+        http_response_code(201);
+    
     }
     function createNewProductSubscriber($productUuid){
         $jwtPayload = JwtPayloadDto::getInstance();
         $userDetail = $jwtPayload->getPayload();
         $jwtPayload->removePayload();
         
-        $this->productService->createNewProductSubscriber(
+        $response = $this->productService->createNewProductSubscriber(
             new ProductSubscriberCreationalDto(
                 Uuid::uuid4(),
                 $productUuid,
@@ -44,34 +42,26 @@ class ProductController {
                 date ('Y-m-d H:i:s'),
                 date ('Y-m-d H:i:s')
             )
-        )->onSucsess(function (ProductSubscriberCreatedResponseDto $response){
-            echo json_encode($response);
-        })->onError(function (ErrorResponseDto $err){
-            echo json_encode($err);    
-            http_response_code($err->getErrorCode());
-        });
+        );
+        echo json_encode($response);
+        http_response_code(201);
+
     }
     function deleteProduct($uuid){
-        $this->productService->deleteProduct(new DeleteProductByUuidDto($uuid))
-                            ->onSucsess(function (ProductDeletedResponseDto $response){
-                                echo json_encode($response);
-                            })->onError(function (ErrorResponseDto $err){
-                                echo json_encode($err);    
-                                http_response_code($err->getErrorCode());
-                            });
+        $response = $this->productService->deleteProduct(new DeleteProductByUuidDto($uuid));
+        echo json_encode($response);
+        http_response_code(201);
+
     }
     function deleteProductSubscriber($productUuid) {
         $jwtPayload = JwtPayloadDto::getInstance();
         $userDetail = $jwtPayload->getPayload();
         $jwtPayload->removePayload();
         
-        $this->productService->deleteProductSubscriber(new DeleteProductSubscriberDto($productUuid, $userDetail->user_uuid))
-                            ->onSucsess(function (ProductSubscriberDeletedResponseDto $response){
-                                echo json_encode($response);
-                            })->onError(function (ErrorResponseDto $err){
-                                echo json_encode($err);    
-                                http_response_code($err->getErrorCode());
-                            });
+        $response = $this->productService->deleteProductSubscriber(new DeleteProductSubscriberDto($productUuid, $userDetail->user_uuid));
+        echo json_encode($response);
+        http_response_code(201);
+
 
     }
     function findProductsByCriteria() {
@@ -92,13 +82,10 @@ class ProductController {
             "categories"=> $categories,
             "rates"=> $rates
         );
-        $this->productService->findProductsByCriteria(new FindProductsByCriteriaDto($jsonBody->specific_categories, $jsonBody->price_lower_bound, $jsonBody->price_upper_bound, $jsonBody->rate_lower_bound, $jsonBody->rate_upper_bound, $perPageForProduct, $pageNum, $filterArray ))
-                            ->onSucsess(function (AllProductResponseDto $response){
-                                echo json_encode($response);
-                            })->onError(function (ErrorResponseDto $err){
-                                echo json_encode($err);    
-                                http_response_code($err->getErrorCode());                                        
-                            });
+        $response = $this->productService->findProductsByCriteria(new FindProductsByCriteriaDto($jsonBody->specific_categories, $jsonBody->price_lower_bound, $jsonBody->price_upper_bound, $jsonBody->rate_lower_bound, $jsonBody->rate_upper_bound, $perPageForProduct, $pageNum, $filterArray ));
+        echo json_encode($response);
+        http_response_code(201);
+
    }
    function findProductsBySearch(){
     $pageNum = isset($_GET['page']) ? $_GET['page'] : 1;
@@ -118,13 +105,10 @@ class ProductController {
         "rates"=> $rates
     );
 
-    $this->productService->findProductsBySearch(new FindProductsBySearchDto($searchValue, $perPageForProduct, $pageNum, $filterArray))
-                        ->onSucsess(function (SearchedProductResponseDto $response){
-                                echo json_encode($response);
-                        })->onError(function (ErrorResponseDto $err) {
-                            echo json_encode($err);    
-                            http_response_code($err->getErrorCode());                                        
-                        });
+    $response = $this->productService->findProductsBySearch(new FindProductsBySearchDto($searchValue, $perPageForProduct, $pageNum, $filterArray));
+    echo json_encode($response);
+    http_response_code(201);
+
 
    }
    function findOneProductByUuid($uuid){
@@ -141,36 +125,25 @@ class ProductController {
             "rates"=> $rates
         );
 
-       $this->productService->findOneProductByUuid(new FindOneProductByUuidDto($uuid, $filterArray))
-                            ->onSucsess(function(OneProductFoundedResponseDto $response){
-                                echo json_encode($response);
-                            })->onError(function (ErrorResponseDto $err){
-                                echo json_encode($err);    
-                                http_response_code($err->getErrorCode());                                                
-                            });
-        
+       $response = $this->productService->findOneProductByUuid(new FindOneProductByUuidDto($uuid, $filterArray));
+       echo json_encode($response);
+       http_response_code(201);
+
     }
 
     function updateProductDetails($productUuid){
         $jsonBody = json_decode(file_get_contents('php://input'));
-        $this->productService->updateProductDetailsByUuid(new ProductDetailDto($productUuid, $jsonBody->brand, $jsonBody->model, $jsonBody->header, $jsonBody->description, $jsonBody->price))
-                            ->onSucsess(function (ProductDetailsChangedResponseDto $response) {
-                                echo json_encode($response);
-                            })->onError(function (ErrorResponseDto $err){
-                                echo json_encode($err);    
-                                http_response_code($err->getErrorCode());                                        
-                            });
+        $response = $this->productService->updateProductDetailsByUuid(new ProductDetailDto($productUuid, $jsonBody->brand, $jsonBody->model, $jsonBody->header, $jsonBody->description, $jsonBody->price));
+        echo json_encode($response);
+        http_response_code(201);
+
     }
     function updateProductStockQuantity($productUuid){
         $jsonBody = json_decode(file_get_contents('php://input'));
 
-        $this->productService->updateProductStockQuantity(new ChangeProductStockQuantityDto($productUuid, $jsonBody->new_stock_quantity, $jsonBody->update_event_constant))
-                            ->onSucsess(function (ProductStockQuantityChangedResponseDto $response){
-                                echo json_encode($response);
-                            
-                            })->onError(function (ErrorResponseDto $err){
-                                echo json_encode($err);    
-                                http_response_code($err->getErrorCode());                                        
-                            });
+        $response = $this->productService->updateProductStockQuantity(new ChangeProductStockQuantityDto($productUuid, $jsonBody->new_stock_quantity, $jsonBody->update_event_constant));
+        echo json_encode($response);
+        http_response_code(201);
+
     }
 }
