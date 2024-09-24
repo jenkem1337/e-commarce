@@ -15,7 +15,7 @@ interface ProductRepository {
 
     //category
     function createProductCategory(ProductForCreatingCategoryDecorator $c, $categoryUuidForFinding);
-    function findAllProductCategory():ProductInterface;
+    function findAllProductCategory():mixed;
     function findOneProductCategoryByUuid($uuid):ProductInterface;
     function updateProductCategoryNameByUuid(Product $c, $categoryUuidForFinding);
     function findOneProductCategoryByName($categoryName):ProductInterface;

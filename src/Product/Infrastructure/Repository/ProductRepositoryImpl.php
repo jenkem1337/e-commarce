@@ -151,14 +151,14 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
 
         $this->categoryRepository->persist($category);
     }
-    function findAllProductCategory():ProductInterface{
+    function findAllProductCategory():mixed{
         $categoryCollection = $this->categoryRepository->findAll();
-        $productForCategoryDomainModel = $this->productFactoryContext->executeFactory(
+        /*$productForCategoryDomainModel = $this->productFactoryContext->executeFactory(
             ProductCategoryCreationalModelFactory::class,
             false
         );
-        $productForCategoryDomainModel->swapCategoryCollection($categoryCollection);
-        return $productForCategoryDomainModel;
+        $productForCategoryDomainModel->swapCategoryCollection($categoryCollection);*/
+        return $categoryCollection;
     }
     function findOneProductCategoryByName($categoryName): ProductInterface
     {

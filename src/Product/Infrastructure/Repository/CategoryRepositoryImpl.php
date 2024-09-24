@@ -80,10 +80,10 @@ class CategoryRepositoryImpl implements CategoryRepository {
             $category->updated_at
         );
     }
-	function findAll():IteratorAggregate {
-        $categoryCollection = new CategoryCollection();
+	function findAll():mixed {
+        //$categoryCollection = new CategoryCollection();
         $categories = $this->categoryDao->findAll();
-        foreach ($categories as $category) {
+        /*foreach ($categories as $category) {
             $categoryDomainObect = $this->categoryFactory->createInstance(
                 false,
                 $category->uuid,
@@ -94,8 +94,8 @@ class CategoryRepositoryImpl implements CategoryRepository {
             if(!$categoryDomainObect->isNull()) {
                 $categoryCollection->add($categoryDomainObect);
             }
-        }
-        return $categoryCollection;
+        }*/
+        return $categories;
 	}
 	
 	/**

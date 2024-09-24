@@ -1,5 +1,5 @@
 <?php
-class SuccessResponse implements JsonSerializable{
+class SuccessResponse implements ResponseViewModel, JsonSerializable{
     private array $data;
     function __construct($data){
         $this->data = $data;

@@ -44,7 +44,7 @@ abstract class ProductRepositoryDecorator implements ProductRepository {
 
 
     }
-    function findAllProductCategory(): ProductInterface
+    function findAllProductCategory(): mixed
     {
         return $this->productRepository->findAllProductCategory();
     }
