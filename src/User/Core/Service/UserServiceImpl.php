@@ -11,9 +11,9 @@ class UserServiceImpl implements UserService{
         $user = $this->userRepository->findUserByEmail($dto->getEmail());
         $user->changePassword($dto->getOldPassword(), $dto->getNewPassword());
         $this->userRepository->updatePassword($user);
-        return new PasswordChangeResponseDto(
-            "Password changed successfuly"
-        );
+        return new SuccessResponse([
+            "message" => "Password changed successfuly"
+        ]);
     }
     function changeForgettenPassword(ForgettenPasswordDto $forgettenPasswordDto): ResponseViewModel
     {
@@ -25,9 +25,9 @@ class UserServiceImpl implements UserService{
         $this->userRepository->updatePassword($user);
         $this->userRepository->updateForgettenPasswordCode($user);
 
-        return new ForgettenPasswordResponseDto(
-            "Your password changed successfuly."
-        );
+        return new SuccessResponse([
+            "message" => "Password changed successfuly"
+        ]);
     }
 
     function listAllUser(ListAllUserDto $listAllUserDto): ResponseViewModel
@@ -44,16 +44,18 @@ class UserServiceImpl implements UserService{
     {
         $user = $this->userRepository->findOneUserByUuid($userUuidDto->getUuid());
         if($user->isNull()) throw new DoesNotExistException('user');
-        return new OneUserFoundedResponseDto(
-            $user->getUuid(),
-            $user->getFullname(),
-            $user->getEmail(),
-            $user->getPassword(),
-            $user->getUserRole(),
-            $user->getIsUserActiveted(),
-            $user->getCreatedAt(),
-            $user->getUpdatedAt()
-        );
+        return new SuccessResponse([
+            "data" => [
+                "uuid" => $user->getUuid(),
+                "full_name" => $user->getFullname(),
+                "email" => $user->getEmail(),
+                "password" => $user->getPassword(),
+                "user_role" => $user->getUserRole(),
+                "is_user_activeted" => $user->getIsUserActiveted(),
+                "created_at" => $user->getCreatedAt(),
+                "updated_at" => $user->getUpdatedAt()
+            ]
+        ]);
     }
 
     function changeFullName(ChangeFullNameDto $changeFullNameDto): ResponseViewModel
@@ -62,8 +64,9 @@ class UserServiceImpl implements UserService{
         $user->changeFullName($changeFullNameDto->getNewFullname());
 
         $this->userRepository->updateFullName($user);
-        return new FullNameChangedResponseDto(
-            "Full name changed successfuly"
-        );
+        return new SuccessResponse([
+            "message" => "Full name changed successfuly",
+            "data" => ["full_name" => $user->getFullname()]
+        ]);
     }
 }

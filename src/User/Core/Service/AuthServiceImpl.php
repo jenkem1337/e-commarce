@@ -40,13 +40,18 @@ class AuthServiceImpl implements AuthService{
         $user->comparePassword($userLoginDto->getPassword());
         $user->isUserActiveted();
 
-        return new UserLogedInResponseDto(
-            $user->getUuid(),
-            $user->getFullname(),
-            $user->getEmail(),
-            $user->getUserRole(),
-            $user->getRefreshTokenModel()
-        );
+        return new SuccessResponse([
+                "message" => "User loged in successfully !",
+                "data" => [
+                    "uuid" => $user->getUuid(),
+                    "full_name" => $user->getFullname(),
+                    "email" => $user->getEmail(),
+                    "role" => $user->getUserRole(),
+                    "refresh_token" => $user->getRefreshTokenModel()->getRefreshToken()
+                ]
+            ]);
+
+            
 
     }
     
@@ -76,14 +81,16 @@ class AuthServiceImpl implements AuthService{
         $this->userRepository->persistUser($user);
         $this->emailService->sendVerificationCode($user);
 
-        return new UserCreatedResponseDto(
-            $userCreationalDto->getUuid(),
-            $userCreationalDto->getFullname(),
-            $userCreationalDto->getEmail(),
-            $userCreationalDto->getIsUserActivaed(),
-            $userCreationalDto->getCreated_at(),
-            $userCreationalDto->getUpdated_at()
-        );
+        return new SuccessResponse([
+            "message" => "User registered successfully !",
+            "data" => [
+                "uuid" => $user->getUuid(),
+                "full_name" => $user->getFullname(),
+                "email" => $user->getEmail(),
+                "role" => $user->getUserRole(),
+                "refresh_token" => $user->getRefreshTokenModel()->getRefreshToken()
+            ]
+        ]);
 
     }
 
@@ -97,14 +104,17 @@ class AuthServiceImpl implements AuthService{
             throw new RefreshTokenExpireTimeEndedException();
         }
 
-       return new RefreshTokenResponseDto(
-        $userWithRefreshTokenModel->getUuid(),
-        $userWithRefreshTokenModel->getFullname(),
-        $userWithRefreshTokenModel->getEmail(),
-        $userWithRefreshTokenModel->getUserRole(),
-        $userWithRefreshTokenModel->getRefreshTokenModel()
-       );
-    }
+        return new SuccessResponse([
+            "message" => "Token refreshed successfully !",
+            "data" => [
+                "uuid" => $userWithRefreshTokenModel->getUuid(),
+                "full_name" => $userWithRefreshTokenModel->getFullname(),
+                "email" => $userWithRefreshTokenModel->getEmail(),
+                "role" => $userWithRefreshTokenModel->getUserRole(),
+                "refresh_token" => $userWithRefreshTokenModel->getRefreshTokenModel()->getRefreshToken()
+            ]
+        ]);
+}
 
 
     function verifyUserAccount(EmailVerificationDto $emailVerificationDto):ResponseViewModel{
@@ -116,15 +126,18 @@ class AuthServiceImpl implements AuthService{
         $this->userRepository->updateUserActivatedState($user);
 
         $updatedUser = $this->userRepository->findUserByEmail($user->getEmail());
-        return new EmailSuccessfulyActivatedResponseDto(
-            $updatedUser->getUuid(),
-            $updatedUser->getFullname(),
-            $updatedUser->getEmail(),
-            $updatedUser->getIsUserActiveted(),
-            $updatedUser->getCreatedAt(),
-            $updatedUser->getUpdatedAt()
-
-        );
+        return new SuccessResponse([
+            "message" => "Email verifyed successfully",
+            "data" => [
+                "uuid" => $updatedUser->getUuid(),
+                "full_name" => $updatedUser->getFullname(),
+                "email" => $updatedUser->getEmail(),
+                "is_user_activated" => $updatedUser->getIsUserActiveted(),
+                "craeted_at" => $updatedUser->getCreatedAt(),
+                "updated_at" => $updatedUser->getUpdatedAt()
+    
+            ]
+        ]);
     }
 
     function sendChangeForgettenPasswordEmail(ForgettenPasswordEmailDto $forgettenPasswordMailDto): ResponseViewModel
@@ -138,8 +151,11 @@ class AuthServiceImpl implements AuthService{
         $this->userRepository->updateForgettenPasswordCode($user);
         $this->emailService->sendChangeForgettenPasswordEmail($user);
         
-        return new ForgettenPasswordEmailResponseDto(
-            "Email successfuly sended, take your code and create new password :)"
-        );
+        return new SuccessResponse([
+            "message" => "Email successfuly sended, take your code and create new password :)",
+            "data" => [
+                "email" => $forgettenPasswordMailDto->getEmail()
+            ]
+        ]);
     }
 }

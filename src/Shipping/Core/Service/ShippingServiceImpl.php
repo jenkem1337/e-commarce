@@ -9,21 +9,24 @@ class ShippingServiceImpl implements ShippingService {
     function findAll(FindAllShippingMethodDto $dto): ResponseViewModel
     {
         $shippings = $this->shippingRepository->findAll();
-        foreach($shippings->getIterator() as $shipping) {
-            if($shipping->isNull()) throw new NotFoundException('shipping');
-        }
-        return new AllShippingMethodsResponseDto($shippings);
+        return new SuccessResponse([
+            "data" => $shippings->getIterator()
+        ]);
     }
     function findOneByUuid(FindOneShippingMethodDto $dto): ResponseViewModel
     {
         $shippingDomainModel = $this->shippingRepository->findOneByUuid($dto->getUuid());
         if($shippingDomainModel->isNull()) throw new NotFoundException('shipping');
-        return new OneShippingMethodFoundedResponseDto(
-            $shippingDomainModel->getUuid(),
-            $shippingDomainModel->getShippingType(),
-            $shippingDomainModel->getPrice(),
-            $shippingDomainModel->getCreatedAt(),
-            $shippingDomainModel->getUpdatedAt()
-        );
+        return new SuccessResponse([
+            "message" => "A shipping founded",
+            "data" => [
+                "uuid" => $shippingDomainModel->getUuid(),
+                "shipping_type" => $shippingDomainModel->getShippingType(),
+                "price" => $shippingDomainModel->getPrice(),
+                "created_at" => $shippingDomainModel->getCreatedAt(),
+                "updated_at" => $shippingDomainModel->getUpdatedAt()
+    
+            ]
+        ]);
     }
 }
