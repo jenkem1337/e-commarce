@@ -10,7 +10,10 @@ class ProductSubscriberRepositoryImpl implements ProductSubscriberRepository {
     function deleteByProductUuid($productUuid){
         $this->productDao->deleteSubscriberByProductUuid($productUuid);
     }
-    function findAllProductSubscriberByProductUuid($uuid): SubscriberCollection{
+    function findAllProductSubscriberByProductUuid($uuid) {
+        return $this->productDao->findAllProductSubscriberByProductUuid($uuid);
+    }
+    function findAllProductSubscriberByProductAggregateUuid($uuid): SubscriberCollection{
         $productSubscriberObjects = $this->productDao->findAllProductSubscriberByProductUuid($uuid);
         $subscriberIterator = new SubscriberCollection();
 

@@ -213,6 +213,7 @@ class ProductDaoImpl extends AbstractDataAccessObject implements ProductDao {
 	
     function returnNullStatment() {
         $arr = [
+            "isNull" => null,
             'uuid'=>null,
             'brand' => null,
             'model'=>null, 

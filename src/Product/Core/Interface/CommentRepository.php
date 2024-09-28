@@ -6,7 +6,8 @@ interface CommentRepository {
     function findAll():IteratorAggregate;
     function findOneByUuid($uuid): CommentInterface;
     function updateByUuid(Comment $c);
-    function findAllByProductUuid($productUuid): IteratorAggregate;
+    function findAllByProductAggregateUuid($productUuid): IteratorAggregate;
+    function findAllByProductUuid($productUuid);
     function findAllByUserUuid($userUuid): IteratorAggregate;
 
 }

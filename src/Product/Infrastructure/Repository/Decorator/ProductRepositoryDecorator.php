@@ -13,7 +13,7 @@ abstract class ProductRepositoryDecorator implements ProductRepository {
     {
         $this->productRepository->createProduct($p);
     }
-    function findProductsByCriteria($filter): IteratorAggregate
+    function findProductsByCriteria($filter)
     {
         return $this->productRepository->findProductsByCriteria($filter);
     }
@@ -21,13 +21,17 @@ abstract class ProductRepositoryDecorator implements ProductRepository {
     {
         $this->productRepository->deleteProductByUuid($p);   
     }
-    function findProductsBySearch($searchValue, $startingLimit, $perPageForProduct, $filter): IteratorAggregate
+    function findProductsBySearch($searchValue, $startingLimit, $perPageForProduct, $filter)
     {
         return $this->productRepository->findProductsBySearch($searchValue, $startingLimit, $perPageForProduct, $filter);
     }
-    function findOneProductByUuid($uuid, $filter):ProductInterface
+    function findOneProductAggregateByUuid($uuid, $filter):ProductInterface
     {
+        return $this->productRepository->findOneProductAggregateByUuid($uuid, $filter);
+    }
+    function findOneProductByUuid($uuid, $filter) {
         return $this->productRepository->findOneProductByUuid($uuid, $filter);
+
     }
     function persistImage(Product $p)
     {

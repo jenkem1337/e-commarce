@@ -18,7 +18,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
 	function deleteByUuid($uuid) {
         $this->categoryDao->deleteByUuid($uuid);
 	}
-    function findAllByProductUuid($productUuid): IteratorAggregate
+    function findAllByProductAggregateUuid($productUuid): IteratorAggregate
     {
         $categories =  $this->categoryDao->findAllByProductUuid($productUuid);
         $categoryArray = new CategoryCollection();
@@ -35,6 +35,9 @@ class CategoryRepositoryImpl implements CategoryRepository {
             }
         }
         return $categoryArray;
+    }
+    function findAllByProductUuid($productUuid) {
+        return $this->categoryDao->findAllByProductUuid($productUuid);
     }
 	function findByUuid($uuid):CategoryInterface {
         $category = $this->categoryDao->findByUuid($uuid);
