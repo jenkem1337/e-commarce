@@ -1,3 +1,5 @@
 <?php
 
-interface ResponseViewModel {}
+interface ResponseViewModel {
+    function getData():array;
+}

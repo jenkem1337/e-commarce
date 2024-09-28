@@ -89,7 +89,7 @@ class ProductServiceImpl implements ProductService {
     }
     function deleteProduct(DeleteProductByUuidDto $dto):ResponseViewModel 
     {
-        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid(), [
+        $productDomainObject = $this->productRepository->findOneProductAggregateByUuid($dto->getUuid(), [
             "comments"=>false,
             "subscribers"=>false,
             "categories"=>false,
@@ -132,43 +132,31 @@ class ProductServiceImpl implements ProductService {
     function findProductsByCriteria(FindProductsByCriteriaDto $dto): ResponseViewModel
     {
         $products = $this->productRepository->findProductsByCriteria($dto);
-        return new AllProductResponseDto($products);
+        return new SuccessResponse([
+            "data" => $products
+        ]);
     }
     function findProductsBySearch(FindProductsBySearchDto $dto): ResponseViewModel
     {
         $products = $this->productRepository->findProductsBySearch(
             $dto->getSearchValue(), $dto->getStartingLimit(), $dto->getPerPageForProduct(), $dto->getFilter()
         );
-        return new SearchedProductResponseDto($products);
+        return new SuccessResponse([
+            "data" => $products
+        ]);
     }
    
     function findOneProductByUuid(FindOneProductByUuidDto $dto):ResponseViewModel{
-        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid(),$dto->getFilter());
+        $productObject = $this->productRepository->findOneProductByUuid($dto->getUuid(),$dto->getFilter());
 
-        if($productDomainObject->isNull()) throw new NotFoundException('product');
-        $productDomainObject->calculateAvarageRate();
-
-
-        return new OneProductFoundedResponseDto(
-            $productDomainObject->getUuid(),
-            $productDomainObject->getBrand(),
-            $productDomainObject->getModel(),
-            $productDomainObject->getHeader(),
-            $productDomainObject->getDescription(),
-            $productDomainObject->getPrice(),
-            $productDomainObject->getAvarageRate(),
-            $productDomainObject->getStockQuantity(),
-            $productDomainObject->getCategories(),
-            $productDomainObject->getComments(),
-            $productDomainObject->getRates(),
-            $productDomainObject->getImages(),
-            $productDomainObject->getSubscribers(),
-            $productDomainObject->getCreatedAt(),
-            $productDomainObject->getUpdatedAt(),
-        );
+        if($productObject->isNull) throw new NotFoundException('product');
+        
+        return new SuccessResponse([
+            "data" => $productObject
+        ]);
     }
     function updateProductDetailsByUuid(ProductDetailDto $dto): ResponseViewModel {
-        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid(),[
+        $productDomainObject = $this->productRepository->findOneProductAggregateByUuid($dto->getUuid(),[
             "comments"=>false,
             "subscribers"=>false,
             "categories"=>false,
@@ -199,7 +187,7 @@ class ProductServiceImpl implements ProductService {
     }
     function updateProductStockQuantity(ChangeProductStockQuantityDto $dto): ResponseViewModel
     {
-        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getProductUuid(), [
+        $productDomainObject = $this->productRepository->findOneProductAggregateByUuid($dto->getProductUuid(), [
             "comments"=>false,
             "subscribers"=>false,
             "categories"=>false,
