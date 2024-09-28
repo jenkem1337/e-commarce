@@ -3,10 +3,11 @@ interface ProductRepository {
     //product
     function saveChanges($e);
     function createProduct(Product $p);
-    function findOneProductByUuid($uuid, $filter): ProductInterface;
-   
-    function findProductsByCriteria(FindProductsByCriteriaDto $findProductsByCriteriaDto): IteratorAggregate;
-    function findProductsBySearch($searchValue, $startingLimit, $perPageForProduct, $filter): IteratorAggregate;
+    function findOneProductByUuid($uuid, $filter);
+    function findOneProductAggregateByUuid($uuid, $filter): ProductInterface;
+    
+    function findProductsByCriteria(FindProductsByCriteriaDto $findProductsByCriteriaDto);
+    function findProductsBySearch($searchValue, $startingLimit, $perPageForProduct, $filter);
     function deleteProductByUuid(Product $product);
 
     //image
@@ -15,7 +16,7 @@ interface ProductRepository {
 
     //category
     function createProductCategory(ProductForCreatingCategoryDecorator $c, $categoryUuidForFinding);
-    function findAllProductCategory():ProductInterface;
+    function findAllProductCategory():mixed;
     function findOneProductCategoryByUuid($uuid):ProductInterface;
     function updateProductCategoryNameByUuid(Product $c, $categoryUuidForFinding);
     function findOneProductCategoryByName($categoryName):ProductInterface;

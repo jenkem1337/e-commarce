@@ -63,10 +63,8 @@ $f->run($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
     $errorDetails = [
         'message' => $err->getMessage(),
         'code' => $err->getCode(),
-        'file' => $err->getFile(),
-        'line' => $err->getLine(),
         'trace' => $err->getTrace()
     ];
-
+    http_response_code($err->getCode());
     echo json_encode($errorDetails, JSON_PRETTY_PRINT);
 }

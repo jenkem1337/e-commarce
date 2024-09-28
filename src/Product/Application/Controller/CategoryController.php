@@ -18,53 +18,39 @@ class CategoryController {
                 date ('Y-m-d H:i:s')
             )
         );
-        $response->onSucsess(function (CategoryCreatedResponseDto $response){
-            echo json_encode($response);
-        })->onError(function(ErrorResponseDto $err) {
-            echo json_encode($err);    
-            http_response_code($err->getErrorCode());
-    
-        });
+        echo json_encode($response);
+        http_response_code(201);
     }
 
     function updateCategoryByUuid($uuid){
         $jsonBody = json_decode(file_get_contents('php://input'));
         
-        $this->categoryService->updateCategoryNameByUuid(
+        $response = $this->categoryService->updateCategoryNameByUuid(
             new UpdateCategoryNameByUuidDto($uuid, $jsonBody->new_category_name)
-        )->onSucsess(function (CategoryNameChangedResponseDto $response){
-            echo json_encode($response);
-        })->onError(function (ErrorResponseDto $err){
-            echo json_encode($err);    
-            http_response_code($err->getErrorCode());
-        });
+        );
+        echo json_encode($response);
+        http_response_code(201);
+
     }
 
     function deleteCategoryByUuid($uuid){
-        $this->categoryService->deleteCategoryByUuid(
-            new DeleteCategoryDto($uuid)
-        )->onSucsess(function (CategoryDeletedResponseDto $response){
-            echo json_encode($response);
-        })->onError(function (ErrorResponseDto $err){
-            echo json_encode($err);    
-            http_response_code($err->getErrorCode());
-        });
+        $response = $this->categoryService->deleteCategoryByUuid(new DeleteCategoryDto($uuid));
+        echo json_encode($response);
+        http_response_code(201);
+
     }
 
     function findAllCategory(){
-        $this->categoryService->findAllCategory(new FindAllCategoryDto())
-                            ->onSucsess(function(AllCategoryResponseDto $res){
-                                echo json_encode($res);
-                            });
+        $response = $this->categoryService->findAllCategory(new FindAllCategoryDto());
+        echo json_encode($response);
+        http_response_code(201);
+
     }
 
     function findOneCategoryByUuid($uuid){
-        $this->categoryService->findOneCategoryByUuid(new FindCategoryByUuidDto($uuid))
-                            ->onSucsess(function(OneCategoryFoundedResponseDto $response){
-                                echo json_encode($response);
-                            })->onError(function(ErrorResponseDto $err){
-                                echo json_encode($err);    
-                                http_response_code($err->getErrorCode());
-                            });
+        $response = $this->categoryService->findOneCategoryByUuid(new FindCategoryByUuidDto($uuid));
+        echo json_encode($response);
+        http_response_code(201);
+
     }
 }

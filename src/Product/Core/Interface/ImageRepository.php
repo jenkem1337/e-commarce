@@ -7,5 +7,6 @@ interface ImageRepository {
     function findAll():IteratorAggregate;
     function findImageByProductUuid($pUuid):ImageInterface;
     function findOneByUuid($uuid): ImageInterface;
-    function findAllByProductUuid($pUuid):IteratorAggregate;
+    function findAllByProductAggregateUuid($pUuid):IteratorAggregate;
+    function findAllByProductUuid($pUuid);
 }

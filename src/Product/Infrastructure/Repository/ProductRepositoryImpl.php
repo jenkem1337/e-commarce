@@ -13,51 +13,33 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
     function saveChanges($e){
         $this->productDao->saveChanges($e);
     }
-    private function getManyProductDomainModelFromSubEntities($productObjects, $filter): IteratorAggregate{
-        $productCollection = new ProductCollection();
+    private function getManyProductEntityFromSubEntitiesForReads($productObjects, $filter){
         foreach($productObjects as $productObject){ 
             
-            $productDomainObject = $this->productFactoryContext->executeFactory(
-                ProductFactory::class,
-                false,
-                $productObject->uuid,
-                $productObject->brand,
-                $productObject->model,
-                $productObject->header,
-                $productObject->_description,
-                $productObject->price,
-                $productObject->stockquantity,
-                $productObject->created_at,
-                $productObject->updated_at
-            );
  
             if($filter["subscribers"] == "get"){
                 $subscriberCollection = $this->productSubscriberRepository->findAllProductSubscriberByProductUuid($productObject->uuid);
-                $productDomainObject->swapSubscribersCollection($subscriberCollection);
+                $productObject->subscriers = $subscriberCollection;
             }
                 
             if($filter["comments"] == "get"){
                 $commentIterator  = $this->commentRepository->findAllByProductUuid($productObject->uuid);
-                $productDomainObject->swapCommentCollection($commentIterator);
+                $productObject->comments = $commentIterator;
             }
             if($filter["categories"] == "get"){
                 $categoryIterator = $this->categoryRepository->findAllByProductUuid($productObject->uuid);
-                $productDomainObject->swapCategoryCollection($categoryIterator);   
+                $productObject->categories = $categoryIterator;
             }
             if($filter["rates"] == "get"){
                 $rateIterator     = $this->rateRepository->findAllByProductUuid($productObject->uuid);
-                $productDomainObject->swapRateCollection($rateIterator);
-                $productDomainObject->calculateAvarageRate();
+                $productObject->rates = $rateIterator;
             }
             if($filter["images"] == "get"){
                 $imageIterator    = $this->imageRepository->findAllByProductUuid($productObject->uuid);
-                $productDomainObject->swapImageCollection($imageIterator);
-            }
-            if(!$productDomainObject->isNull()){
-                $productCollection->add($productDomainObject);
+                $productObject->images = $imageIterator;
             }
         }
-        return $productCollection;
+        return $productObjects;
     }
     function createProduct(Product $p)
     {
@@ -67,12 +49,41 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
             $this->categoryRepository->addCategoryUuidToProduct($category);
         }
     }
-    function findProductsByCriteria(FindProductsByCriteriaDto $findProductsByCriteriaDto): IteratorAggregate
+    function findProductsByCriteria(FindProductsByCriteriaDto $findProductsByCriteriaDto)
     {
         $productObjects = $this->productDao->findProductsByCriteria($findProductsByCriteriaDto);
-        return $this->getManyProductDomainModelFromSubEntities($productObjects, $findProductsByCriteriaDto->getFilters());
+        return $this->getManyProductEntityFromSubEntitiesForReads($productObjects, $findProductsByCriteriaDto->getFilters());
     }
-    function findOneProductByUuid($uuid, $filter): ProductInterface
+    function findOneProductByUuid($uuid, $filter) {
+        $productObject    = $this->productDao->findOneByUuid($uuid);
+                
+        if($filter["subscribers"] == "get"){
+            $subscriberCollection = $this->productSubscriberRepository->findAllProductSubscriberByProductAggregateUuid($productObject->uuid);
+            $productObject->subscriers = $subscriberCollection;
+
+        }
+            
+        if($filter["comments"] == "get"){
+            $commentIterator  = $this->commentRepository->findAllByProductAggregateUuid($productObject->uuid);
+            $productObject->comments = $commentIterator;
+
+        }
+        if($filter["categories"] == "get"){
+            $categoryIterator = $this->categoryRepository->findAllByProductAggregateUuid($productObject->uuid);
+            $productObject->categories = $categoryIterator;
+
+        }
+        if($filter["rates"] == "get"){
+            $rateIterator     = $this->rateRepository->findAllByProductAggregateUuid($productObject->uuid);
+            $productObject->rates = $rateIterator;
+        }
+        if($filter["images"] == "get"){
+            $imageIterator    = $this->imageRepository->findAllByProductAggregateUuid($productObject->uuid);
+            $productObject->images = $imageIterator;
+        }
+        return $productObject;
+    }
+    function findOneProductAggregateByUuid($uuid, $filter): ProductInterface
     {
         $productObject    = $this->productDao->findOneByUuid($uuid);
         
@@ -92,34 +103,34 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
 
         
         if($filter["subscribers"] == "get"){
-            $subscriberCollection = $this->productSubscriberRepository->findAllProductSubscriberByProductUuid($productObject->uuid);
+            $subscriberCollection = $this->productSubscriberRepository->findAllProductSubscriberByProductAggregateUuid($productObject->uuid);
             $productDomainObject->swapSubscribersCollection($subscriberCollection);
         }
             
         if($filter["comments"] == "get"){
-            $commentIterator  = $this->commentRepository->findAllByProductUuid($productObject->uuid);
+            $commentIterator  = $this->commentRepository->findAllByProductAggregateUuid($productObject->uuid);
             $productDomainObject->swapCommentCollection($commentIterator);
         }
         if($filter["categories"] == "get"){
-            $categoryIterator = $this->categoryRepository->findAllByProductUuid($productObject->uuid);
+            $categoryIterator = $this->categoryRepository->findAllByProductAggregateUuid($productObject->uuid);
             $productDomainObject->swapCategoryCollection($categoryIterator);   
         }
         if($filter["rates"] == "get"){
-            $rateIterator     = $this->rateRepository->findAllByProductUuid($productObject->uuid);
+            $rateIterator     = $this->rateRepository->findAllByProductAggregateUuid($productObject->uuid);
             $productDomainObject->swapRateCollection($rateIterator);
             $productDomainObject->calculateAvarageRate();
         }
         if($filter["images"] == "get"){
-            $imageIterator    = $this->imageRepository->findAllByProductUuid($productObject->uuid);
+            $imageIterator    = $this->imageRepository->findAllByProductAggregateUuid($productObject->uuid);
             $productDomainObject->swapImageCollection($imageIterator);
         }
         return $productDomainObject;
     }
     
-    function findProductsBySearch($searchValue, $startingLimit, $perPageForProduct, $filter): IteratorAggregate
+    function findProductsBySearch($searchValue, $startingLimit, $perPageForProduct, $filter)
     {
         $productObjects = $this->productDao->findBySearching($searchValue, $startingLimit, $perPageForProduct);
-        return $this->getManyProductDomainModelFromSubEntities($productObjects, $filter);
+        return $this->getManyProductEntityFromSubEntitiesForReads($productObjects, $filter);
     }
     
     function deleteProductByUuid(Product $product)
@@ -151,14 +162,14 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
 
         $this->categoryRepository->persist($category);
     }
-    function findAllProductCategory():ProductInterface{
+    function findAllProductCategory():mixed{
         $categoryCollection = $this->categoryRepository->findAll();
-        $productForCategoryDomainModel = $this->productFactoryContext->executeFactory(
+        /*$productForCategoryDomainModel = $this->productFactoryContext->executeFactory(
             ProductCategoryCreationalModelFactory::class,
             false
         );
-        $productForCategoryDomainModel->swapCategoryCollection($categoryCollection);
-        return $productForCategoryDomainModel;
+        $productForCategoryDomainModel->swapCategoryCollection($categoryCollection);*/
+        return $categoryCollection;
     }
     function findOneProductCategoryByName($categoryName): ProductInterface
     {

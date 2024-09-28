@@ -18,7 +18,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
 	function deleteByUuid($uuid) {
         $this->categoryDao->deleteByUuid($uuid);
 	}
-    function findAllByProductUuid($productUuid): IteratorAggregate
+    function findAllByProductAggregateUuid($productUuid): IteratorAggregate
     {
         $categories =  $this->categoryDao->findAllByProductUuid($productUuid);
         $categoryArray = new CategoryCollection();
@@ -35,6 +35,9 @@ class CategoryRepositoryImpl implements CategoryRepository {
             }
         }
         return $categoryArray;
+    }
+    function findAllByProductUuid($productUuid) {
+        return $this->categoryDao->findAllByProductUuid($productUuid);
     }
 	function findByUuid($uuid):CategoryInterface {
         $category = $this->categoryDao->findByUuid($uuid);
@@ -80,10 +83,10 @@ class CategoryRepositoryImpl implements CategoryRepository {
             $category->updated_at
         );
     }
-	function findAll():IteratorAggregate {
-        $categoryCollection = new CategoryCollection();
+	function findAll():mixed {
+        //$categoryCollection = new CategoryCollection();
         $categories = $this->categoryDao->findAll();
-        foreach ($categories as $category) {
+        /*foreach ($categories as $category) {
             $categoryDomainObect = $this->categoryFactory->createInstance(
                 false,
                 $category->uuid,
@@ -94,8 +97,8 @@ class CategoryRepositoryImpl implements CategoryRepository {
             if(!$categoryDomainObect->isNull()) {
                 $categoryCollection->add($categoryDomainObect);
             }
-        }
-        return $categoryCollection;
+        }*/
+        return $categories;
 	}
 	
 	/**

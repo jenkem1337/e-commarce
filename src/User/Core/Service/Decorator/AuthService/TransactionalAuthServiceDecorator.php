@@ -18,13 +18,12 @@ class TransactionalAuthServiceDecorator extends AuthServiceDecorator {
             $response = parent::login($userLoginDto);
             
             $dbConnection->commit();
+            return $response;
 
         } catch (Exception $e) {
             $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-        } finally {
-            return $response;
-        }
+            throw $e;
+        } 
     }
     function register(UserCreationalDto $userCreationalDto): ResponseViewModel
     {
@@ -35,13 +34,11 @@ class TransactionalAuthServiceDecorator extends AuthServiceDecorator {
             $response = parent::register($userCreationalDto);
             
             $dbConnection->commit();
+            return $response;
 
         } catch (Exception $e) {
             $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-
-        } finally {
-            return $response;
+            throw $e;
         }
     }
     function verifyUserAccount(EmailVerificationDto $emailVerificationDto): ResponseViewModel
@@ -53,14 +50,12 @@ class TransactionalAuthServiceDecorator extends AuthServiceDecorator {
             $response = parent::verifyUserAccount($emailVerificationDto);
             
             $dbConnection->commit();
+            return $response;
 
         } catch (Exception $e) {
             $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-
-        } finally {
-            return $response;
-        }
+            throw $e;
+        } 
     }
     function refreshToken(RefreshTokenDto $refDto): ResponseViewModel
     {
@@ -71,14 +66,12 @@ class TransactionalAuthServiceDecorator extends AuthServiceDecorator {
             $response= parent::refreshToken($refDto);
             
             $dbConnection->commit();
+            return $response;
 
         } catch (Exception $e) {
             $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-
-        } finally {
-            return $response;
-        }
+            throw $e;
+        } 
     }
     function sendChangeForgettenPasswordEmail(ForgettenPasswordEmailDto $forgettenPasswordMailDto): ResponseViewModel
     {
@@ -89,13 +82,11 @@ class TransactionalAuthServiceDecorator extends AuthServiceDecorator {
             $response= parent::sendChangeForgettenPasswordEmail($forgettenPasswordMailDto);
             
             $dbConnection->commit();
+            return $response;
 
         } catch (\Exception $e) {
             $dbConnection->rollBack();
-            $response = new ErrorResponseDto($e->getMessage(), $e->getCode());
-
-        } finally {
-            return $response;
-        }
+            throw $e;
+        } 
     }
 }

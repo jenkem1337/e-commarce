@@ -36,7 +36,10 @@ class ImageServiceImpl implements ImageService {
         $this->productAggregateRepository->persistImage($productDomainObject);
         $this->uploadService->uploadNewProductImages($dto->getImageIterator(), $productDomainObject->getUuid());
         
-        return new ImageCreatedResponseDto($dto->getImageIterator());
+        return new SuccessResponse([
+            "message" => "Images uploaded successfully !",
+            "data" => $dto->getImageIterator()->getArrayCopy()
+        ]);
     }
     function deleteImageByUuid(DeleteImageByUuidDto $dto): ResponseViewModel
     {
@@ -51,7 +54,10 @@ class ImageServiceImpl implements ImageService {
         $this->productAggregateRepository->deleteImageByUuid($imageDomainObject->getUuid());
         $this->uploadService->deleteImageByUuid($imageDomainObject->getImageName(), $productDomainObject->getUuid());
         
-        return new ImageDeletedResponseDto('Image deleted successfully');
+        return new SuccessResponse([
+            "message" => 'Image deleted successfully',
+            "data" => ["image_uuid" => $dto->getImageUuid()]
+        ]);
     }
 
 }

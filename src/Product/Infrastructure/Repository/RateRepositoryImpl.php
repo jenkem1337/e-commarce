@@ -57,7 +57,11 @@ class RateRepositoryImpl implements RateRepository {
         return $rateDomainObject;
 
     }
-    function findAllByProductUuid($pUuid): IteratorAggregate
+    function findAllByProductUuid($productUuid){
+        $rateObjects = $this->rateDao->findAllByProductUuid($productUuid);
+        return $rateObjects;
+    }
+    function findAllByProductAggregateUuid($pUuid): IteratorAggregate
     {
         $rateArray = new RateCollection();
         $rateObjects = $this->rateDao->findAllByProductUuid($pUuid);

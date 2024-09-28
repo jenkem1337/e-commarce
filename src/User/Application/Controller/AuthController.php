@@ -15,33 +15,27 @@ class AuthController {
 
         $jsonBody = json_decode(file_get_contents('php://input'));
         $userLoginDto = new UserLoginDto($jsonBody->email, $jsonBody->password); 
-        $res = $this->authService->login($userLoginDto);
-        $res->onSucsess(function(UserLogedInResponseDto $response){
-            
-                $refreshTokenModel = $response->getRefreshToken();
-                $issuedAt = time();
-                $expireTime = $issuedAt + (60 * 60 * 24);
-                 $payload = [
-                     "exp"=> $expireTime ,
-                     "iat"=>$issuedAt,
-                     "user_uuid"=>$response->getUuid(),
-                     "full_name"=>$response->getFullName(),
-                     "email"=>$response->getEmail(),
-                     "user_role"=>$response->getUserRole()
-                 ];
-                 
-                 $token = JWT::encode($payload,  $_ENV["SECRET_KEY"], "HS256");
-                 http_response_code(200);
-                 echo json_encode([
-                     "message"=>"Login Process Succesful",
-                     "access_token"=> $token,
-                     "refresh_token"=>$refreshTokenModel->getRefreshToken()
-                 ]);
-     
-        })->onError(function(ErrorResponseDto $err){
-            echo json_encode($err);
-            http_response_code($err->getErrorCode());
-        });
+        $response = $this->authService->login($userLoginDto);
+        $issuedAt = time();
+        $expireTime = $issuedAt + (60 * 60 * 24);
+         $payload = [
+             "exp"=> $expireTime ,
+             "iat"=>$issuedAt,
+             "user_uuid"=>$response->getData()["data"]["uuid"],
+             "full_name"=>$response->getData()["data"]["full_name"],
+             "email"=>$response->getData()["data"]["email"],
+             "user_role"=>$response->getData()["data"]["role"]
+         ];
+         
+         $token = JWT::encode($payload,  $_ENV["SECRET_KEY"], "HS256");
+         http_response_code(200);
+         $refreshToken = $response->getData()["data"]["refresh_token"];
+         echo json_encode([
+             "message"=>"Login Process Succesful",
+             "access_token"=> $token,
+             "refresh_token"=>$refreshToken
+         ]);
+
         
     }
     
@@ -59,18 +53,10 @@ class AuthController {
             date ('Y-m-d H:i:s')
         );
 
-        $res = $this->authService->register($userCreationalDto);
-        $res->onSucsess(function(UserCreatedResponseDto $response){
-            
-                http_response_code(201);
-                echo json_encode($response);
-            
-    
-        })->onError(function(ErrorResponseDto $err){
-            echo json_encode($err);
-            http_response_code($err->getErrorCode());
+        $response = $this->authService->register($userCreationalDto);
+        http_response_code(200);
+        echo json_encode($response);    
 
-        });
 
     }
 
@@ -78,47 +64,32 @@ class AuthController {
             
             $jsonBody = json_decode(file_get_contents('php://input'));
         
-            $res = $this->authService->refreshToken(new RefreshTokenDto($jsonBody->refresh_token));
-            $res->onSucsess(function(RefreshTokenResponseDto $response){
-                
-                    $refreshTokenModel = $response->getRefreshToken();
-                    $issuedAt = time();
-                    $expireTime = $issuedAt + (60 * 60 * 24);
-                     $payload = [
-                         "exp"=> $expireTime ,
-                         "iat"=>$issuedAt,
-                         "user_uuid"=>$response->getUuid(),
-                         "full_name"=>$response->getFullName(),
-                         "email"=>$response->getEmail(),
-                         "user_role"=>$response->getUserRole()
-                     ];
-                     
-                     $token = JWT::encode($payload,  $_ENV["SECRET_KEY"], "HS256");
-                     http_response_code(201);
-                     echo json_encode([
-                         "message"=>"Token Refreshed",
-                         "access_token"=> $token,
-                         "refresh_token"=>$refreshTokenModel->getRefreshToken()
-                     ]);
-                
-    
-            })->onError(function(ErrorResponseDto $err){
-                echo json_encode($err);    
-                http_response_code($err->getErrorCode());
-
-            });
-    }
+            $response = $this->authService->refreshToken(new RefreshTokenDto($jsonBody->refresh_token));
+            $issuedAt = time();
+            $expireTime = $issuedAt + (60 * 60 * 24);
+             $payload = [
+                 "exp"=> $expireTime ,
+                 "iat"=>$issuedAt,
+                 "user_uuid"=>$response->getData()["data"]["uuid"],
+                 "full_name"=>$response->getData()["data"]["full_name"],
+                 "email"=>$response->getData()["data"]["email"],
+                 "user_role"=>$response->getData()["data"]["role"]
+             ];
+             
+             $token = JWT::encode($payload,  $_ENV["SECRET_KEY"], "HS256");
+             http_response_code(200);
+             $refreshToken = $response->getData()["data"]["refresh_token"];
+             echo json_encode([
+                 "message"=>"Token Refreshed",
+                 "access_token"=> $token,
+                 "refresh_token"=>$refreshToken
+             ]);
+        }
     function verifyUserAccount(){
         $code = isset($_GET['code']) ? $_GET['code'] :"";
-        $res = $this->authService->verifyUserAccount(new EmailVerificationDto($code));
-        
-        $res->onSucsess(function(EmailSuccessfulyActivatedResponseDto $response){
-                http_response_code(200);
-                echo json_encode($response);    
-        })->onError(function(ErrorResponseDto $err){
-            echo json_encode($err);    
-            http_response_code($err->getErrorCode());
+        $response = $this->authService->verifyUserAccount(new EmailVerificationDto($code));
+        http_response_code(200);
+        echo json_encode($response);    
 
-        });
     }
 }

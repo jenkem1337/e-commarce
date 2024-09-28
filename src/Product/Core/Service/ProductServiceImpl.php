@@ -53,18 +53,21 @@ class ProductServiceImpl implements ProductService {
 
         $this->productRepository->createProduct($productDomainObject);
         
-        return new ProductCreatedResponseDto(
-            $dto->getUuid(),
-            $dto->getBrand(),
-            $dto->getModel(),
-            $dto->getHeader(),
-            $dto->getDescription(),
-            $dto->getPrice(),
-            $dto->getStockQuantity(),
-            $productDomainObject->getCategories()->getItems(),
-            $dto->getCreatedAt(),
-            $dto->getUpdatedAt()
-        );
+        return new SuccessResponse([
+                "message" => "Product created successfully !",
+                "data" => [
+                    "uuid" => $dto->getUuid(),
+                    "brand"=>$dto->getBrand(),
+                    "model"=>$dto->getModel(),
+                    "header"=>$dto->getHeader(),
+                    "description"=>$dto->getDescription(),
+                    "price"=>$dto->getPrice(),
+                    "stock_quantity"=>$dto->getStockQuantity(),
+                    "categories"=>$productDomainObject->getCategories()->getItems(),
+                    "created_at"=>$dto->getCreatedAt(),
+                    "updated_at"=>$dto->getUpdatedAt()
+                ]
+            ]);
     }
     function createNewProductSubscriber(ProductSubscriberCreationalDto $dto): ResponseViewModel
     {
@@ -76,11 +79,17 @@ class ProductServiceImpl implements ProductService {
         
         $this->productRepository->saveChanges($productDomainObject);
         
-        return new ProductSubscriberCreatedResponseDto('Subscribed to product successfully');
+        return new SuccessResponse([
+            "message" => 'Subscribed to product successfully',
+            "data" => [
+                "product_uuid" => $dto->getProductUuid(),
+                "user_uuid" =>  $dto->getUserUuid(),
+            ] 
+        ]);
     }
     function deleteProduct(DeleteProductByUuidDto $dto):ResponseViewModel 
     {
-        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid(), [
+        $productDomainObject = $this->productRepository->findOneProductAggregateByUuid($dto->getUuid(), [
             "comments"=>false,
             "subscribers"=>false,
             "categories"=>false,
@@ -95,7 +104,12 @@ class ProductServiceImpl implements ProductService {
             }
         }
         $this->productRepository->deleteProductByUuid($productDomainObject);
-        return new ProductDeletedResponseDto('Product deleted successfully');
+        return new SuccessResponse([
+            "message" => 'Product deleted successfully',
+            "data" => [
+                "product_uuid" => $dto->getUuid(),
+            ] 
+        ]);
     }
     function deleteProductSubscriber(DeleteProductSubscriberDto $dto): ResponseViewModel
     {
@@ -107,48 +121,42 @@ class ProductServiceImpl implements ProductService {
 
         $this->productRepository->saveChanges($productDomainObject);
         
-        return new ProductSubscriberDeletedResponseDto('Product subscriber deleted successfully');
+        return new SuccessResponse([
+            "message" => 'Subscriber deleted successfully',
+            "data" => [
+                "product_uuid" => $dto->getProductUuid(),
+                "user_uuid" =>  $dto->getSubscriberUuid(),
+            ] 
+        ]);
     }
     function findProductsByCriteria(FindProductsByCriteriaDto $dto): ResponseViewModel
     {
         $products = $this->productRepository->findProductsByCriteria($dto);
-        return new AllProductResponseDto($products);
+        return new SuccessResponse([
+            "data" => $products
+        ]);
     }
     function findProductsBySearch(FindProductsBySearchDto $dto): ResponseViewModel
     {
         $products = $this->productRepository->findProductsBySearch(
             $dto->getSearchValue(), $dto->getStartingLimit(), $dto->getPerPageForProduct(), $dto->getFilter()
         );
-        return new SearchedProductResponseDto($products);
+        return new SuccessResponse([
+            "data" => $products
+        ]);
     }
    
     function findOneProductByUuid(FindOneProductByUuidDto $dto):ResponseViewModel{
-        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid(),$dto->getFilter());
+        $productObject = $this->productRepository->findOneProductByUuid($dto->getUuid(),$dto->getFilter());
 
-        if($productDomainObject->isNull()) throw new NotFoundException('product');
-        $productDomainObject->calculateAvarageRate();
-
-
-        return new OneProductFoundedResponseDto(
-            $productDomainObject->getUuid(),
-            $productDomainObject->getBrand(),
-            $productDomainObject->getModel(),
-            $productDomainObject->getHeader(),
-            $productDomainObject->getDescription(),
-            $productDomainObject->getPrice(),
-            $productDomainObject->getAvarageRate(),
-            $productDomainObject->getStockQuantity(),
-            $productDomainObject->getCategories(),
-            $productDomainObject->getComments(),
-            $productDomainObject->getRates(),
-            $productDomainObject->getImages(),
-            $productDomainObject->getSubscribers(),
-            $productDomainObject->getCreatedAt(),
-            $productDomainObject->getUpdatedAt(),
-        );
+        if($productObject->isNull) throw new NotFoundException('product');
+        
+        return new SuccessResponse([
+            "data" => $productObject
+        ]);
     }
     function updateProductDetailsByUuid(ProductDetailDto $dto): ResponseViewModel {
-        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getUuid(),[
+        $productDomainObject = $this->productRepository->findOneProductAggregateByUuid($dto->getUuid(),[
             "comments"=>false,
             "subscribers"=>false,
             "categories"=>false,
@@ -165,11 +173,21 @@ class ProductServiceImpl implements ProductService {
             $dto->getPrice()
         );
         $this->productRepository->saveChanges($productDomainObject);
-        return new ProductDetailsChangedResponseDto("Product details changed successfully");
+        return new SuccessResponse([
+            "message" => "Product details changed successfully",
+            "data" => [
+                "uuid" => $dto->getUuid(),
+                "brand"=>$dto->getBrand(),
+                "model"=>$dto->getModel(),
+                "header"=>$dto->getHeader(),
+                "description"=>$dto->getDescription(),
+                "price"=>$dto->getPrice(),
+            ]
+        ]);
     }
     function updateProductStockQuantity(ChangeProductStockQuantityDto $dto): ResponseViewModel
     {
-        $productDomainObject = $this->productRepository->findOneProductByUuid($dto->getProductUuid(), [
+        $productDomainObject = $this->productRepository->findOneProductAggregateByUuid($dto->getProductUuid(), [
             "comments"=>false,
             "subscribers"=>false,
             "categories"=>false,
@@ -191,6 +209,12 @@ class ProductServiceImpl implements ProductService {
         }
         $this->productRepository->saveChanges($productDomainObject);
 
-        return new ProductStockQuantityChangedResponseDto('Product stock quantity changed successfully');
+        return new SuccessResponse([
+            "message" => "Product quantity changed successfully",
+            "data" => [
+                "uuid" => $dto->getProductUuid(),
+                "stock_quantity" => $productDomainObject->getStockQuantity()
+            ] 
+        ]);
     }
 }

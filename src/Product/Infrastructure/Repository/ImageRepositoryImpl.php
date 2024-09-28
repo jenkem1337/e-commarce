@@ -36,7 +36,10 @@ class ImageRepositoryImpl implements ImageRepository {
         }
         return $imageArray;
     }
-    function findAllByProductUuid($pUuid):IteratorAggregate
+    function findAllByProductUuid($pUuid): mixed {
+        return $this->imageDao->findAllByProductUuid($pUuid);
+    }
+    function findAllByProductAggregateUuid($pUuid):IteratorAggregate
     {
         $imageObjects = $this->imageDao->findAllByProductUuid($pUuid);
         $imageArray = new ImageCollection();

@@ -48,7 +48,10 @@ class CommentRepositoryImpl implements CommentRepository {
         }
         return $commentArray;
     }
-    function findAllByProductUuid($productUuid): IteratorAggregate
+    function findAllByProductUuid($productUuid) {
+        return $this->commentDao->findAllByProductUuid($productUuid);
+    }
+    function findAllByProductAggregateUuid($productUuid): IteratorAggregate
     {
         $commentObjects = $this->commentDao->findAllByProductUuid($productUuid);
         $commentArray = new CommentCollection();

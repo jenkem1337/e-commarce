@@ -7,5 +7,6 @@ interface RateRepository {
     function updateRateNumberByUuid(Rate $r);
     function deleteRateByUuid($uuid);
     function deleteAllByProductUuid($productUuid);
-    function findAllByProductUuid($pUuid):IteratorAggregate;
+    function findAllByProductUuid($productUuid);
+    function findAllByProductAggregateUuid($pUuid):IteratorAggregate;
 }
