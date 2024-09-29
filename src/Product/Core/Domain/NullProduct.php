@@ -23,6 +23,7 @@ class NullProduct implements ProductInterface {
     }
 
     function addComment(CommentInterface $comment){}
+    function addCategories(CategoryCollection $categoryCollection){}
     function subscribeToProduct($userUuid){}
     function unSubscribeToProduct($userUuid){}
     function addSubscriber(ProductSubscriberInterface $sub){}
@@ -58,8 +59,8 @@ class NullProduct implements ProductInterface {
         return new SubscriberCollection();
     }
 
-    public function getCategories():CategoryCollection{
-        return new CategoryCollection();
+    public function getCategories():CategoryUuidCollection{
+        return new CategoryUuidCollection();
     }
     function getPreviousPrice(){}
     public function getUuid(){}
