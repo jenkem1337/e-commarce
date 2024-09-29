@@ -2,14 +2,15 @@
 
 class CategoryRepositoryImpl implements CategoryRepository {
     private CategoryDao $categoryDao;
-    private CategoryFactory $categoryFactory;
-	function __construct(CategoryDao $categoryDao, Factory $categoryFactory) {
+	function __construct(CategoryDao $categoryDao) {
 	    $this->categoryDao = $categoryDao;
-        $this->categoryFactory = $categoryFactory;
 	}
     
 	function persist(CategoryInterface $c) {
         $this->categoryDao->persist($c);
+    }
+    function saveChanges(CategoryInterface $category){
+        $this->categoryDao->saveChanges($category);
     }
 	function deleteCategoryByProductUuid($uuid)
     {
@@ -23,8 +24,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
         $categories =  $this->categoryDao->findAllByProductUuid($productUuid);
         $categoryArray = new CategoryCollection();
         foreach($categories as $category){
-            $categoryDomainObject = $this->categoryFactory->createInstance(
-                false,
+            $categoryDomainObject = Category::newInstance(
                 $category->uuid,
                 $category->category_name,
                 $category->created_at,
@@ -41,8 +41,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
     }
 	function findByUuid($uuid):CategoryInterface {
         $category = $this->categoryDao->findByUuid($uuid);
-        return $this->categoryFactory->createInstance(
-            false,
+        return Category::newInstance(
             $category->uuid,
             $category->category_name,
             $category->created_at,
@@ -54,8 +53,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
         $categories = $this->categoryDao->findASetOfByUuids($uuids);
         $categoryCollection = new CategoryCollection();
         foreach($categories as $category){
-            $categoryDomainObject = $this->categoryFactory->createInstance(
-                false,
+            $categoryDomainObject = Category::newInstance(
                 $category->uuid,
                 $category->category_name,
                 $category->created_at,
@@ -75,8 +73,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
 	}
     function findOneByName($categoryName):CategoryInterface{
         $category = $this->categoryDao->findOneByName($categoryName);
-        return $this->categoryFactory->createInstance(
-            false,
+        return Category::newInstance(
             $category->uuid,
             $category->category_name,
             $category->created_at,
@@ -110,8 +107,4 @@ class CategoryRepositoryImpl implements CategoryRepository {
 	function addCategoryUuidToProduct($productUuid) {
         $this->categoryDao->addCategoryUuidToProduct($productUuid);
 	}
-    function setProductMediator(AbstractProductRepositoryMediatorComponent $m)
-    {
-        $m->setCategoryRepository($this);
-    }
 }
