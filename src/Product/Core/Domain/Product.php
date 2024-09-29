@@ -1,6 +1,6 @@
 <?php
 use Ramsey\Uuid\Uuid;
-abstract class Product extends BaseEntity implements AggregateRoot, ProductInterface{
+class Product extends BaseEntity implements AggregateRoot, ProductInterface{
     protected $brand;
     protected $model;
     protected $header;
@@ -11,12 +11,33 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
     protected $previousPrice;
     protected RateCollection $rates;
     protected SubscriberCollection $subscribers;
-    protected CategoryCollection $categories;
+    protected CategoryUuidCollection $categories;
     protected CommentCollection $comments;
     protected ImageCollection $images;
     function __construct($uuid, string $brand = null,string $model = null ,string $header = null, string $description = null, float $price = null ,int $stockQuantity = null,$createdAt, $updatedAt)
     {
         parent::__construct($uuid,$createdAt, $updatedAt);
+        if(!$brand){
+            throw new NullException("brand");
+        }
+        if(!$model){
+            throw new NullException("model");
+        }
+        if(!$header){
+            throw new NullException("header");
+        }
+        if(!$description){
+            throw new NullException("description");
+        }
+        if(!$price){
+            throw new NullException('price');
+        }
+        if($price < 0){
+            throw new NegativeValueException();
+        }
+        if($stockQuantity<0){
+            throw new NegativeValueException();
+        }
 
         $this->brand = $brand;
         $this->model = $model;
@@ -26,11 +47,40 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
         $this->stockQuantity = $stockQuantity;
         $this->rates       = new RateCollection();
         $this->comments    = new CommentCollection();
-        $this->categories  = new CategoryCollection();
+        $this->categories  = new CategoryUuidCollection();
         $this->images      = new ImageCollection();
         $this->subscribers = new SubscriberCollection();
     }
+    public static function newInstance($uuid, $brand,$model, $header,  $description, $price, $stockQuantity, $createdAt, $updatedAt):ProductInterface {
+        try {
+            
+    
+            return new Product($uuid, $brand,$model, $header,  $description, $price, $stockQuantity, $createdAt, $updatedAt);
+        } catch (\Throwable $th) {
+            return new NullProduct();
+        }
+    }
+    public static function newStrictInstance($uuid, $brand,$model, $header,  $description, $price, $stockQuantity, $createdAt, $updatedAt):ProductInterface{
+        return new Product($uuid, $brand,$model, $header,  $description, $price, $stockQuantity, $createdAt, $updatedAt);
+    }
+    public static function newInstanceWithInsertLog($uuid, $brand,$model, $header,  $description, $price, $stockQuantity) {
 
+        $product =  new Product($uuid, $brand,$model, $header,  $description, $price, $stockQuantity, date('Y-m-d H:i:s'), date('Y-m-d H:i:s'));
+        $product->appendLog(new InsertLog("products", [
+            "uuid" => $product->getUuid(),
+            "brand" => $product->getBrand(),
+            "model" => $product->getModel(),
+            "header" => $product->getHeader(),
+            "_description" => $product->getDescription(),
+            "price" => $product->getPrice(),
+            "stockquantity" => $product->getStockQuantity(),
+            "rate" => null,
+            "prev_price" => null,
+            "created_at" => $product->getCreatedAt(),
+            "updated_at" => $product->getUpdatedAt()
+        ]));
+        return $product;
+    }
     function incrementStockQuantity(int $quantity){
         $quantity = abs($quantity);
         $this->stockQuantity += $quantity;
@@ -160,8 +210,24 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
             throw new NullException('category');
         }
         $this->categories->add($category);
+        $this->appendLog(new InsertLog("product_category", [
+            "uuid" => UUID::uuid4(),
+            "product_uuid" => $this->getUuid(),
+            "category_uuid" => $category->getUuid(),
+            "created_at" => date('Y-m-d H:i:s'),
+            "updated_at" => date('Y-m-d H:i:s')
+        ]));
     }
+    function addCategories(CategoryCollection $categoryCollection) {
+        if(count($categoryCollection->getItems()) == 0){
+            throw new NotFoundException("Category(ies)");
+        }
 
+        foreach($categoryCollection->getItems() as $category){
+            $this->addCategory($category);            
+        }
+
+    }
     function addComment(CommentInterface $comment): void{
         if(!$comment){
             throw new NullException("comment");
@@ -293,7 +359,7 @@ abstract class Product extends BaseEntity implements AggregateRoot, ProductInter
     /**
      * Get the value of categories
      */ 
-    public function getCategories():CategoryCollection
+    public function getCategories():CategoryUuidCollection
     {
         return $this->categories;
     }
