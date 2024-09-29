@@ -1,5 +1,6 @@
 <?php
 interface CategoryDao {
+    function saveChanges(Category $category);
     function persist(Category $c);
     function deleteByUuid($uuid);
     function findByUuid($uuid);

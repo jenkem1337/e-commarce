@@ -1,6 +1,7 @@
 <?php
 
 interface CategoryRepository {
+    function saveChanges(CategoryInterface $category);
     function persist(CategoryInterface $c);
     function deleteByUuid($uuid);
     function findByUuid($uuid):CategoryInterface;
