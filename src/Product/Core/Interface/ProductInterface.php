@@ -10,6 +10,7 @@ interface ProductInterface {
         function unSubscribeToProduct($userUuid);
         function addSubscriber(ProductSubscriberInterface $sub);
         function addCategory(CategoryInterface $category);
+        function addCategories(CategoryCollection $categoryCollection);
         function addRate(RateInterface $rate);
         function addComment(CommentInterface $comment);
         function addImage(ImageInterface $img);
@@ -39,7 +40,7 @@ interface ProductInterface {
     
         public function getSubscribers():SubscriberCollection;
     
-        public function getCategories():CategoryCollection;
+        public function getCategories():CategoryUuidCollection;
 
         public function getUuid();
 
