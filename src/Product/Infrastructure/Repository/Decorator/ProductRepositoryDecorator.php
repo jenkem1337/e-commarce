@@ -41,38 +41,6 @@ abstract class ProductRepositoryDecorator implements ProductRepository {
     {
         $this->productRepository->deleteImageByUuid($uuid);
     }
-    function createProductCategory(ProductForCreatingCategoryDecorator $c, $categoryUuidForFinding)
-    {
-
-            $this->productRepository->createProductCategory($c, $categoryUuidForFinding);
-
-
-    }
-    function findAllProductCategory(): mixed
-    {
-        return $this->productRepository->findAllProductCategory();
-    }
-    function findOneProductCategoryByName($categoryName): ProductInterface
-    {
-        return $this->productRepository->findOneProductCategoryByName($categoryName);
-    }
-    function findOneProductCategoryByUuid($uuid): ProductInterface
-    {
-        return $this->productRepository->findOneProductCategoryByUuid($uuid);
-    }
-    function updateProductCategoryNameByUuid(Product $c, $categoryUuidForFinding)
-    {
-        $this->productRepository->updateProductCategoryNameByUuid($c, $categoryUuidForFinding);
-    }
-    function deleteProductCategoryByUuid($uuid)
-    {
-        $this->productRepository->deleteProductCategoryByUuid($uuid);
-    }
-
-    function findASetOfProductCategoryByUuids($uuids):ProductInterface {
-        return $this->productRepository->findASetOfProductCategoryByUuids($uuids);
-    }
-
     function findOneProductWithOnlySubscriberByUuid($uuid, $userUuid): ProductInterface{
         return $this->productRepository->findOneProductWithOnlySubscriberByUuid($uuid, $userUuid);
     }

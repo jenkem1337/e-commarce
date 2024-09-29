@@ -8,10 +8,6 @@ class ProductControllerFactory implements Factory {
     {
 
         $productRepositoryImpl = new ProductRepositoryImpl(
-            new ProductFactoryContext([
-                ProductFactory::class => new ConcreteProductFactory(),
-                ProductCategoryCreationalModelFactory::class => new ConcreteProductCategoryCreationalModelFactory()
-            ]),
             new ProductDaoImpl(MySqlPDOConnection::getInstance())
         );
         
@@ -21,7 +17,6 @@ class ProductControllerFactory implements Factory {
         );
         $categoryRepositoryImpl = new CategoryRepositoryImpl(
             new CategoryDaoImpl(MySqlPDOConnection::getInstance()),
-            new  ConcreteCategoryFactory()
         );
         $rateRepositoryImpl = new RateRepositoryImpl(
             new RateDaoImpl(MySqlPDOConnection::getInstance()),
@@ -38,7 +33,6 @@ class ProductControllerFactory implements Factory {
         $commentRepositoryImpl->setProductMediator($productRepositoryImpl);
         $rateRepositoryImpl->setProductMediator($productRepositoryImpl);
         $imageRepositoryImpl->setProductMediator($productRepositoryImpl);
-        $categoryRepositoryImpl->setProductMediator($productRepositoryImpl);
         $productSubscriberRepoImpl->setProductMediator($productRepositoryImpl);
 
         $productRepositoryAggregateRootDecorator = new ProductRepositoryAggregateRootDecorator($productRepositoryImpl);
@@ -47,14 +41,9 @@ class ProductControllerFactory implements Factory {
             new TransactionalProductServiceDecorator(
                 new ProductServiceImpl(
                     $productRepositoryAggregateRootDecorator,
+                    $categoryRepositoryImpl,
                     new UploadServiceImpl,
                     new EmailServiceImpl(new PHPMailer(true)),
-                    new ProductFactoryContext([
-                        ProductFactory::class => new ConcreteProductFactory(),
-                        ProductCategoryCreationalModelFactory::class => new ConcreteProductCategoryCreationalModelFactory()
-                    ]),
-                    new ConcreteProductSubscriberFactory,
-                    new Client('tcp://127.0.0.1:6379'."?read_write_timeout=0")
                 ), MySqlPDOConnection::getInstance()
             )
         );

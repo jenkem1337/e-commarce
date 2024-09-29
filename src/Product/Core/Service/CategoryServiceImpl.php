@@ -1,31 +1,21 @@
 <?php
 
 class CategoryServiceImpl implements CategoryService {
-    private ProductRepository $productAggregateRepository;
-    private CategoryFactory $categoryFactory;
-    private ProductFactoryContext $productAggregateFactoryContext;
-	function __construct(ProductRepository $productAggregateRepository, CategoryFactory $categoryFactory, ProductFactoryContext $productAggregateFactoryContext) {
-	    $this->productAggregateRepository = $productAggregateRepository;
-	    $this->categoryFactory = $categoryFactory;
-	    $this->productAggregateFactoryContext = $productAggregateFactoryContext;
+    private CategoryRepository $categoryRepository;
+	function __construct(CategoryRepository $categoryRepository) {
+	    $this->categoryRepository = $categoryRepository;
 	}
     function createNewCategory(CategoryCreationalDto $dto): ResponseViewModel
     {
-        $productForCategoryDomainObject = $this->productAggregateFactoryContext->executeFactory(
-            ProductCategoryCreationalModelFactory::class,
-            true
-        );
-        $categoryDomainObject = $this->categoryFactory->createInstance(
-            true,
+        $categoryDomainObject = Category::newInstanceWithInsertLog(
             $dto->getUuid(),
             $dto->getCategoryName(),
             $dto->getCreatedAt(),
             $dto->getUpdatedAt()
         );
 
-        $productForCategoryDomainObject->addCategory($categoryDomainObject);
         
-        $this->productAggregateRepository->createProductCategory($productForCategoryDomainObject, $categoryDomainObject->getUuid());
+        $this->categoryRepository->saveChanges($categoryDomainObject);
         return new SuccessResponse([
             "message" => "Category created",
             "data" => [
@@ -39,9 +29,8 @@ class CategoryServiceImpl implements CategoryService {
     }
     function findOneCategoryByUuid(FindCategoryByUuidDto $dto): ResponseViewModel
     {
-        $category = $this->productAggregateRepository->findOneProductCategoryByUuid($dto->getUuid())
-                                            ->getCategories()
-                                            ->getItem($dto->getUuid());
+        $category = $this->categoryRepository->findByUuid($dto->getUuid());
+                                            
         if($category->isNull()){
             throw new NotFoundException('category');
         }
@@ -58,7 +47,7 @@ class CategoryServiceImpl implements CategoryService {
     }
     function findAllCategory(FindAllCategoryDto $dto): ResponseViewModel
     {
-        $categoryCollection = $this->productAggregateRepository->findAllProductCategory();
+        $categoryCollection = $this->categoryRepository->findAll();
         return new SuccessResponse([
             "data" => $categoryCollection
             ]
@@ -66,17 +55,14 @@ class CategoryServiceImpl implements CategoryService {
     }
     function updateCategoryNameByUuid(UpdateCategoryNameByUuidDto $dto): ResponseViewModel
     {
-        $productForCategoryDomainObject = $this->productAggregateRepository->findOneProductCategoryByUuid($dto->getUuid());
-        $category = $productForCategoryDomainObject->getCategories()
-                                                ->getItem($dto->getUuid());
+        $category = $this->categoryRepository->findByUuid($dto->getUuid());
+        
         if($category->isNull()){
             throw new DoesNotExistException('category');
         }
         $category->changeCategoryName($dto->getNewCategoryName());
 
-        $productForCategoryDomainObject->addCategory($category);
-
-        $this->productAggregateRepository->updateProductCategoryNameByUuid($productForCategoryDomainObject ,$dto->getUuid());
+        $this->categoryRepository->saveChanges($$category);
         return new SuccessResponse([
             "message" => "Category name updated successfully",
             "data" => [
@@ -88,13 +74,11 @@ class CategoryServiceImpl implements CategoryService {
     }
     function deleteCategoryByUuid(DeleteCategoryDto $dto): ResponseViewModel
     {
-        $category = $this->productAggregateRepository->findOneProductCategoryByUuid($dto->getUuid())
-                                            ->getCategories()
-                                            ->getItem($dto->getUuid());
+        $category = $this->categoryRepository->findByUuid($dto->getUuid());
         if($category->isNull()){
             throw new DoesNotExistException('category');
         }
-        $this->productAggregateRepository->deleteProductCategoryByUuid($dto->getUuid());
+        $this->categoryRepository->deleteByUuid($dto->getUuid());
         return new SuccessResponse([
             "message" => "Category deleted successfully",
             "data" => [

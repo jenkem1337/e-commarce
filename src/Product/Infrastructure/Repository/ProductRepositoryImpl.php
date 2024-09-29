@@ -2,11 +2,8 @@
 
 class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent implements ProductRepository{
     private ProductDao $productDao;
-    private ProductFactoryContext $productFactoryContext;
 	function __construct(
-        ProductFactoryContext $productFactoryContext,
         ProductDao $productDao) {
-        $this->productFactoryContext = $productFactoryContext;
         $this->productDao = $productDao;
         
 	}
@@ -26,10 +23,10 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
                 $commentIterator  = $this->commentRepository->findAllByProductUuid($productObject->uuid);
                 $productObject->comments = $commentIterator;
             }
-            if($filter["categories"] == "get"){
-                $categoryIterator = $this->categoryRepository->findAllByProductUuid($productObject->uuid);
-                $productObject->categories = $categoryIterator;
-            }
+            //if($filter["categories"] == "get"){
+            //    $categoryIterator = $this->categoryRepository->findAllByProductUuid($productObject->uuid);
+            //    $productObject->categories = $categoryIterator;
+            //}
             if($filter["rates"] == "get"){
                 $rateIterator     = $this->rateRepository->findAllByProductUuid($productObject->uuid);
                 $productObject->rates = $rateIterator;
@@ -43,11 +40,11 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
     }
     function createProduct(Product $p)
     {
-        $categories = $p->getCategories()->getItems();
+        //$categories = $p->getCategories()->getItems();
         $this->productDao->persist($p);
-        foreach($categories as $category){
-            $this->categoryRepository->addCategoryUuidToProduct($category);
-        }
+        //foreach($categories as $category){
+        //    $this->categoryRepository->addCategoryUuidToProduct($category);
+        //}
     }
     function findProductsByCriteria(FindProductsByCriteriaDto $findProductsByCriteriaDto)
     {
@@ -68,11 +65,10 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
             $productObject->comments = $commentIterator;
 
         }
-        if($filter["categories"] == "get"){
-            $categoryIterator = $this->categoryRepository->findAllByProductAggregateUuid($productObject->uuid);
-            $productObject->categories = $categoryIterator;
-
-        }
+        //if($filter["categories"] == "get"){
+        //    $categoryIterator = $this->categoryRepository->findAllByProductAggregateUuid($productObject->uuid);
+        //    $productObject->categories = $categoryIterator;
+        //}
         if($filter["rates"] == "get"){
             $rateIterator     = $this->rateRepository->findAllByProductAggregateUuid($productObject->uuid);
             $productObject->rates = $rateIterator;
@@ -87,9 +83,8 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
     {
         $productObject    = $this->productDao->findOneByUuid($uuid);
         
-        $productDomainObject = $this->productFactoryContext->executeFactory(
-            ProductFactory::class,
-            false,
+        $productDomainObject = Product::newInstance(
+
             $productObject->uuid,
             $productObject->brand,
             $productObject->model,
@@ -111,10 +106,10 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
             $commentIterator  = $this->commentRepository->findAllByProductAggregateUuid($productObject->uuid);
             $productDomainObject->swapCommentCollection($commentIterator);
         }
-        if($filter["categories"] == "get"){
-            $categoryIterator = $this->categoryRepository->findAllByProductAggregateUuid($productObject->uuid);
-            $productDomainObject->swapCategoryCollection($categoryIterator);   
-        }
+        //if($filter["categories"] == "get"){
+        //    $categoryIterator = $this->categoryRepository->findAllByProductAggregateUuid($productObject->uuid);
+        //    $productDomainObject->swapCategoryCollection($categoryIterator);   
+        //}
         if($filter["rates"] == "get"){
             $rateIterator     = $this->rateRepository->findAllByProductAggregateUuid($productObject->uuid);
             $productDomainObject->swapRateCollection($rateIterator);
@@ -139,7 +134,7 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
         $this->rateRepository->deleteAllByProductUuid($product->getUuid());
         $this->imageRepository->deleteAllByProductUuid($product->getUuid());
         $this->productSubscriberRepository->deleteByProductUuid($product->getUuid());
-        $this->categoryRepository->deleteCategoryByProductUuid($product->getUuid());
+        //$this->categoryRepository->deleteCategoryByProductUuid($product->getUuid());
         
         $this->productDao->deleteByUuid($product->getUuid());
     }
@@ -156,66 +151,11 @@ class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent i
     {
         $this->imageRepository->deleteByUuid($uuid);
     }
-    function createProductCategory(ProductForCreatingCategoryDecorator $c,  $categoryUuidForFinding){
-        $categoryCollection = $c->getCategories();
-        $category = $categoryCollection->getItem($categoryUuidForFinding);
-
-        $this->categoryRepository->persist($category);
-    }
-    function findAllProductCategory():mixed{
-        $categoryCollection = $this->categoryRepository->findAll();
-        /*$productForCategoryDomainModel = $this->productFactoryContext->executeFactory(
-            ProductCategoryCreationalModelFactory::class,
-            false
-        );
-        $productForCategoryDomainModel->swapCategoryCollection($categoryCollection);*/
-        return $categoryCollection;
-    }
-    function findOneProductCategoryByName($categoryName): ProductInterface
-    {
-        $categoryDomainObject = $this->categoryRepository->findOneByName($categoryName);
-        $productForCategoryDomainModel = $this->productFactoryContext->executeFactory(
-            ProductCategoryCreationalModelFactory::class,
-            true
-        );
-        $productForCategoryDomainModel->addCategory($categoryDomainObject);
-        return $productForCategoryDomainModel;
-
-    }
-    function findOneProductCategoryByUuid($uuid):ProductInterface{
-        $categoryDomainObject = $this->categoryRepository->findByUuid($uuid);
-        $productForCategoryDomainModel = $this->productFactoryContext->executeFactory(
-            ProductCategoryCreationalModelFactory::class,
-            true
-        );
-        $productForCategoryDomainModel->addCategory($categoryDomainObject);
-        return $productForCategoryDomainModel;
-    }
-    function findASetOfProductCategoryByUuids($uuids): ProductInterface {
-        $categoryDomainObjects = $this->categoryRepository->findASetOfByUuids($uuids);
-        $productForCategoryDomainModel = $this->productFactoryContext->executeFactory(
-            ProductCategoryCreationalModelFactory::class,
-            true
-        );
-        $productForCategoryDomainModel->swapCategoryCollection($categoryDomainObjects);
-        return $productForCategoryDomainModel;
-    }
-    function updateProductCategoryNameByUuid(Product $c, $categoryUuidForFinding) {
-        $category = $c->getCategories()->getItem($categoryUuidForFinding);
-
-        $this->categoryRepository->updateNameByUuid($category);
-    }
-    function deleteProductCategoryByUuid($uuid)
-    {
-        $this->categoryRepository->deleteByUuid($uuid);
-    }
 
     function findOneProductWithOnlySubscriberByUuid($uuid, $userUuid): ProductInterface{
         $productObject = $this->productDao->findOneByUuid($uuid);
         $productSubscriberDomainObject = $this->productSubscriberRepository->findOneOrEmptySubscriberByUuid($productObject->uuid, $userUuid);
-        $productDomainObject = $this->productFactoryContext->executeFactory(
-            ProductFactory::class,
-            false,
+        $productDomainObject = Product::newInstance(
             $productObject->uuid,
             $productObject->brand,
             $productObject->model,

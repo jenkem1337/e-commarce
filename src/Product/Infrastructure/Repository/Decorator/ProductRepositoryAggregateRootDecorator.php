@@ -23,13 +23,5 @@ class ProductRepositoryAggregateRootDecorator extends ProductRepositoryDecorator
     {
         parent::deleteProductByUuid($p);
     }
-    function createProductCategory(AggregateRoot $c, $categoryUuidForFinding)
-    {
-        parent::createProductCategory($c, $categoryUuidForFinding);
-    }
-    function updateProductCategoryNameByUuid(AggregateRoot $c, $categoryUuidForFinding)
-    {
-        parent::updateProductCategoryNameByUuid($c, $categoryUuidForFinding);
-    }
 
 }

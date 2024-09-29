@@ -4,31 +4,23 @@ use PhpParser\JsonDecoder;
 use Predis\Client;
 class ProductServiceImpl implements ProductService {
     private ProductRepository $productRepository;
+    private CategoryRepository $categoryRepository;
     private EmailService $emailService;
-    private ProductFactoryContext $productFactoryContext;
-    private ProductSubscriberFactory $productSubscriberFactory;
     private UploadService $uploadService;
-    private Client $redisClient;
 	function __construct(
         ProductRepository $productRepository,
+        CategoryRepository $categoryRepository,
         UploadService $uploadService,
         EmailService $emailService,
-        ProductFactoryContext $productFactoryContext,
-        Factory $productSubscriberFactory,
-        Client $redisClient
     ) {
-	    $this->productRepository     = $productRepository;
+	    $this->productRepository = $productRepository;
+        $this->categoryRepository = $categoryRepository;
         $this->uploadService = $uploadService;
         $this->emailService = $emailService;
-        $this->productFactoryContext = $productFactoryContext;
-        $this->productSubscriberFactory = $productSubscriberFactory;
-        $this->redisClient = $redisClient;
     }
     function craeteNewProduct(ProductCreationalDto $dto): ResponseViewModel
     {
-        $productDomainObject = $this->productFactoryContext->executeFactory(
-            ProductFactory::class,
-            true,
+        $productDomainObject = Product::newInstanceWithInsertLog(
             $dto->getUuid(),
             $dto->getBrand(),
             $dto->getModel(),
@@ -36,22 +28,13 @@ class ProductServiceImpl implements ProductService {
             $dto->getDescription(),
             $dto->getPrice(),
             $dto->getStockQuantity(),
-            $dto->getCreatedAt(),
-            $dto->getUpdatedAt()
         );
         
-        $productForCategoryDomainModel = $this->productRepository->findASetOfProductCategoryByUuids($dto->getCategories());
+        $categories = $this->categoryRepository->findASetOfByUuids($dto->getCategories());
         
-        if(count($productForCategoryDomainModel->getCategories()->getItems()) == 0){
-            throw new NotFoundException("Category(ies)");
-        }
+        $productDomainObject->addCategories($categories);
 
-        foreach($productForCategoryDomainModel->getCategories() as $category){
-            $category->setProductUuid($productDomainObject->getUuid());
-            $productDomainObject->addCategory($category);            
-        }
-
-        $this->productRepository->createProduct($productDomainObject);
+        $this->productRepository->saveChanges($productDomainObject);
         
         return new SuccessResponse([
                 "message" => "Product created successfully !",
