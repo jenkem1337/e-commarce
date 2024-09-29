@@ -1,3 +1,0 @@
-<?php
-
-class ConcreteProductCategoryCreationalModelFactory extends ProductCategoryCreationalModelFactory {}
