@@ -1,9 +1,10 @@
 <?php
 
 use Ramsey\Uuid\Uuid;
-class CategoryDaoImpl implements CategoryDao {
+class CategoryDaoImpl extends AbstractDataAccessObject implements CategoryDao {
     protected DatabaseConnection $databaseConnection;
 	function __construct(DatabaseConnection $databaseConnection) {
+        parent::__construct($databaseConnection);
         $this->databaseConnection = $databaseConnection;
 	}
 	function persist(Category $c) {
