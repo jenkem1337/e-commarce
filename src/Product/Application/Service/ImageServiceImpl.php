@@ -3,13 +3,11 @@
 class ImageServiceImpl implements ImageService {
     private ProductRepository $productAggregateRepository;
     private UploadService $uploadService;
-    private ImageFactory $imageFactory;
     
 
-	function __construct(ProductRepository $productAggregateRepository, UploadService $uploadService, ImageFactory $imageFactory) {
+	function __construct(ProductRepository $productAggregateRepository, UploadService $uploadService) {
 	    $this->productAggregateRepository = $productAggregateRepository;
 	    $this->uploadService = $uploadService;
-	    $this->imageFactory = $imageFactory;
 	}
     function uploadImageForProduct(ImageCreationalDto $dto): ResponseViewModel
     {
@@ -22,8 +20,7 @@ class ImageServiceImpl implements ImageService {
         
         
         foreach($dto->getImageIterator() as $imageObject){
-            $imageDomainObject= $this->imageFactory->createInstance(
-                true,
+            $imageDomainObject= Image::newStrictInstance(
                 $imageObject->uuid,
                 $imageObject->productUuid,
                 $imageObject->imageName,

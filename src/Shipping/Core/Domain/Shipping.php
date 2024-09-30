@@ -17,6 +17,16 @@ class Shipping extends BaseEntity implements AggregateRoot, ShippingInterface {
         parent::__construct($uuid, $createdAt, $updatedAt);
 
     }
+    public static function newInstance($shippingType,$uuid, $price, $createdAt, $updatedAt):ShippingInterface {
+        try {
+            return new Shipping($shippingType,$uuid, $price, $createdAt, $updatedAt);
+        } catch (\Throwable $th) {
+            return new NullShipping();
+        }
+    }
+    public static function newStrictInstance($shippingType,$uuid, $price, $createdAt, $updatedAt):ShippingInterface {
+        return new Shipping($shippingType,$uuid, $price, $createdAt, $updatedAt);
+    }
     function setShippingAddress($shippingAddress){
         if(!$shippingAddress) throw new NullException('shipping address');
         $this->shippingAddress = $shippingAddress;

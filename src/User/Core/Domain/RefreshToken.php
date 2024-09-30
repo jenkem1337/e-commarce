@@ -13,6 +13,17 @@ class RefreshToken extends BaseEntity implements RefreshTokenInterface {
         $this->userUuid = $userUuid;
         
     }
+    static function newInstance($uuid, $userUuid, $createdAt, $updatedAt):RefreshTokenInterface {
+        try {
+            return new RefreshToken($uuid, $userUuid, $createdAt, $updatedAt);
+        } catch (\Throwable $th) {
+            return new NullRefreshToken();
+        }
+    }
+
+    static function newStrictInstance($uuid, $userUuid, $createdAt, $updatedAt):RefreshTokenInterface {
+        return new RefreshToken($uuid, $userUuid, $createdAt, $updatedAt);
+    }
     function createRefreshToken($expireTime){
         $this->token = password_hash(bin2hex(random_bytes(16)),PASSWORD_DEFAULT);
         if(!$expireTime){ 

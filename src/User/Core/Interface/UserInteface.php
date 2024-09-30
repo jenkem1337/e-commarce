@@ -19,7 +19,8 @@ interface UserInterface {
     
         function setActivationCode($code);
     
-        function setRefreshTokenModel(RefreshToken $refToken);
+        function createRefreshTokenModel();
+        function setRefreshToken(RefreshTokenInterface $refreshToken);
     
         public function setUserRole($userRole);
     

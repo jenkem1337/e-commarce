@@ -21,7 +21,17 @@ class Comment extends BaseEntity implements CommentInterface{
         $this->productUuid= $productUuid;
         $this->comment = $comment;
     }
+    public static function newInstance($uuid, $productUuid, $userUuid, $comment, $createdAt, $updatedAt):CommentInterface {
+        try {
+            return new Comment($uuid, $productUuid, $userUuid,$comment,$createdAt,$updatedAt);
+        } catch (\Throwable $th) {
+            return new NullComment();
+        }
+    }
 
+    public static function newStrictInstance($uuid, $productUuid, $userUuid, $comment, $createdAt, $updatedAt):CommentInterface {
+        return new Comment($uuid, $productUuid, $userUuid,$comment,$createdAt,$updatedAt);
+    }
     function changeComment($comment){
         if(!$comment){
             throw new NullException('new comment');

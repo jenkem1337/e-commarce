@@ -1,10 +1,8 @@
 <?php
 class ProductSubscriberRepositoryImpl implements ProductSubscriberRepository {
     private ProductDao $productDao;
-    private ProductSubscriberFactory $productSubscriberFactory;
-    function __construct(ProductDao $productDao, Factory  $productSubscriberFactory){
+    function __construct(ProductDao $productDao){
         $this->productDao = $productDao;
-        $this->productSubscriberFactory = $productSubscriberFactory;
     }   
 
     function deleteByProductUuid($productUuid){
@@ -18,8 +16,8 @@ class ProductSubscriberRepositoryImpl implements ProductSubscriberRepository {
         $subscriberIterator = new SubscriberCollection();
 
         foreach($productSubscriberObjects as $subscriber){
-            $productSubscriberDomainObject = $this->productSubscriberFactory->createInstance(
-                false,
+            $productSubscriberDomainObject = ProductSubscriber::newInstance(
+                
                 $subscriber->uuid,
                 $subscriber->product_uuid,
                 $subscriber->user_uuid,
@@ -38,8 +36,7 @@ class ProductSubscriberRepositoryImpl implements ProductSubscriberRepository {
     }
     function findOneOrEmptySubscriberByUuid($uuid, $userUuid): ProductSubscriberInterface{
         $subscriberObj = $this->productDao->findOneOrEmptySubscriberByUuid($uuid, $userUuid);
-        $productSubscriberDomainObject = $this->productSubscriberFactory->createInstance(
-            false,
+        $productSubscriberDomainObject = ProductSubscriber::newInstance(
             $subscriberObj->uuid,
             $subscriberObj->product_uuid,
             $subscriberObj->user_uuid,

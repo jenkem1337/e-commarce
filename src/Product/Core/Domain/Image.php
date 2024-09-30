@@ -11,6 +11,16 @@ class Image extends BaseEntity implements ImageInterface{
         $this->productUuid = $productUuid;
         $this->imageName = $imageName;
     }
+    public static function newInstance($uuid, $productUuid, $imageName, $createdAt, $updatedAt):ImageInterface {
+        try {
+            return new Image($uuid, $productUuid, $imageName, $createdAt, $updatedAt);
+        } catch (\Throwable $th) {
+            return new NullImage();
+        }
+    }
+    public static function newStrictInstance($uuid, $productUuid, $imageName, $createdAt, $updatedAt):ImageInterface {
+        return new Image($uuid, $productUuid, $imageName, $createdAt, $updatedAt);
+    }
     /**
      * Get the value of productUuid
      */ 

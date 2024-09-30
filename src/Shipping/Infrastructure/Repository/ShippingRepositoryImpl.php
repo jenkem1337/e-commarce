@@ -2,27 +2,16 @@
 
 class ShippingRepositoryImpl implements ShippingRepository {
     private ShippingDao $shippingDao;
-    private ShippingFactoryContext $shippingFactoryContext;
     
-	/**
-	 * @param $shippingDao ShippingDao 
-	 * @param $shippingFactoryContext ShippingFactoryContext 
-	 */
-	function __construct(ShippingDao $shippingDao, ShippingFactoryContext $shippingFactoryContext) {
+	function __construct(ShippingDao $shippingDao) {
 	    $this->shippingDao = $shippingDao;
-	    $this->shippingFactoryContext = $shippingFactoryContext;
 	}
-	/**
-	 *
-	 * @return IteratorAggregate
-	 */
-	function findAll(): IteratorAggregate {
+	
+    function findAll(): IteratorAggregate {
         $shippingCollection = new ShippingCollection;
         $shippingObj = $this->shippingDao->findAll();
         foreach($shippingObj as $shipping){
-            $shippingDomainObject = $this->shippingFactoryContext->executeFactory(
-                $shipping->shipping_type,
-                false,
+            $shippingDomainObject = Shipping::newInstance(
                 $shipping->shipping_type,
                 $shipping->uuid,
                 $shipping->price,
@@ -37,9 +26,7 @@ class ShippingRepositoryImpl implements ShippingRepository {
     {
         $shippingObj = $this->shippingDao->findOneByUuid($uuid);
 
-        $shippingDomainObject = $this->shippingFactoryContext->executeFactory(
-            $shippingObj->shipping_type,
-            false,
+        $shippingDomainObject = Shipping::newInstance(
             $shippingObj->shipping_type,
             $shippingObj->uuid,
             $shippingObj->price,

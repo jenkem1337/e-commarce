@@ -4,36 +4,23 @@ use Ramsey\Uuid\Nonstandard\Uuid;
 class AuthServiceImpl implements AuthService{
     private UserRepository $userRepository;
     private EmailService $emailService;
-    private UserFactory $userFactory;
-    private RefreshTokenFactory $refreshTokenFactory;
 
     function __construct(
         UserRepository $userRepo, 
         EmailService $emailService, 
-        Factory $userFactory, 
-        Factory $refreshTokenFactory
         )
     {
         $this->userRepository = $userRepo;
         $this->emailService   = $emailService;
-        $this->userFactory = $userFactory;
-        $this->refreshTokenFactory = $refreshTokenFactory;
     }
     function login(UserLoginDto $userLoginDto):ResponseViewModel{
         $user = $this->userRepository->findUserByEmail($userLoginDto->getEmail());
+        
         if($user->isNull()){
             throw new NotFoundException('user');
         }
 
-        $refreshToken = $this->refreshTokenFactory->createInstance(
-            true,
-            Uuid::uuid4(),
-            $user->getUuid(),
-            date('Y-m-d H:i:s'),
-            date('Y-m-d H:i:s'));
-        $refreshToken->createRefreshToken(60*60*24*10);
-
-        $user->setRefreshTokenModel($refreshToken);
+        $user->createRefreshTokenModel();
 
         $this->userRepository->persistRefreshToken($user);
 
@@ -63,21 +50,15 @@ class AuthServiceImpl implements AuthService{
             throw new AlreadyExistException('user');
         }
 
-        $user = $this->userFactory->createInstance(
-            true,
+        $user = User::createNewUser(
             $userCreationalDto->getUuid(),
             $userCreationalDto->getFullname(),
             $userCreationalDto->getEmail(),
             $userCreationalDto->getPassword(),
-            $userCreationalDto->getIsUserActivaed(),
             $userCreationalDto->getCreated_at(),
             $userCreationalDto->getUpdated_at()
         );
         
-
-        $user->hashPassword($user->getPassword());
-        $user->createActivationCode();
-
         $this->userRepository->persistUser($user);
         $this->emailService->sendVerificationCode($user);
 

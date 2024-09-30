@@ -10,8 +10,6 @@ class UserControllerFactory implements Factory {
                         new UserRepositoryImpl(
                             new UserDaoImpl(MySqlPDOConnection::getInstance()),
                             new RefreshTokenDaoImpl(new RedisConnection()),
-                            new ConcreteUserFactory(),
-                            new ConcreteRefreshTokenFactory()        
                         )
                     )
                 ), MySqlPDOConnection::getInstance() 
@@ -22,14 +20,10 @@ class UserControllerFactory implements Factory {
                         new UserRepositoryImpl(
                             new UserDaoImpl(MySqlPDOConnection::getInstance()),
                             new RefreshTokenDaoImpl(new RedisConnection()),
-                            new ConcreteUserFactory(),
-                            new ConcreteRefreshTokenFactory()
             
                         )
                     ),
                     new EmailServiceImpl(new PHPMailer(true)),
-                    new ConcreteUserFactory(),
-                    new ConcreteRefreshTokenFactory()
                 ), MySqlPDOConnection::getInstance()
             )
         );

@@ -13,22 +13,18 @@ class ProductControllerFactory implements Factory {
         
         $productSubscriberRepoImpl = new ProductSubscriberRepositoryImpl(
             new ProductDaoImpl(MySqlPDOConnection::getInstance()),
-            new ConcreteProductSubscriberFactory(),
         );
         $categoryRepositoryImpl = new CategoryRepositoryImpl(
             new CategoryDaoImpl(MySqlPDOConnection::getInstance()),
         );
         $rateRepositoryImpl = new RateRepositoryImpl(
             new RateDaoImpl(MySqlPDOConnection::getInstance()),
-            new ConcreteRateFactory()
         );
         $commentRepositoryImpl = new CommentRepositoryImpl(
             new CommentDaoImpl(MySqlPDOConnection::getInstance()),
-            new ConcreteCommentFactory()
         );
         $imageRepositoryImpl = new ImageRepositoryImpl(
             new ImageDaoImpl(MySqlPDOConnection::getInstance()),
-            new ConcreteImageFactory()
         );
         $commentRepositoryImpl->setProductMediator($productRepositoryImpl);
         $rateRepositoryImpl->setProductMediator($productRepositoryImpl);

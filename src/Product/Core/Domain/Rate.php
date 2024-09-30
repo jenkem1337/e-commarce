@@ -25,7 +25,16 @@ class Rate extends BaseEntity implements RateInterface{
 
         $this->rateNumber = $rateNumber;
     }
-
+    public static function newInstance($uuid, $productUuid, $userUuid, $createdAt, $updatedAt):RateInterface {
+        try {
+            return new Rate($uuid, $productUuid, $userUuid, $createdAt, $updatedAt);
+        } catch (\Throwable $th) {
+            return new NullRate();
+        }
+    }
+    public static function newStrictInstance($uuid, $productUuid, $userUuid, $createdAt, $updatedAt):RateInterface {
+        return new Rate($uuid, $productUuid, $userUuid, $createdAt, $updatedAt);
+    }
     /**
      * Get the value of pruductUuid
      */ 

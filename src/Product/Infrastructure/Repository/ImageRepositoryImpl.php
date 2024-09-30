@@ -2,11 +2,9 @@
 
 class ImageRepositoryImpl implements ImageRepository {
     private ImageDao $imageDao;
-    private ImageFactory $imageFactory;
-    function __construct(ImageDao $imgDao, Factory $imgFactory)
+    function __construct(ImageDao $imgDao)
     {
         $this->imageDao = $imgDao;
-        $this->imageFactory = $imgFactory;
     }
     function persist(Image $i)
     {
@@ -24,8 +22,7 @@ class ImageRepositoryImpl implements ImageRepository {
         $imageObjects = $this->imageDao->findAll();
         $imageArray = new ImageCollection();
         foreach($imageObjects as $imageObject){
-            $imageDomainObject = $this->imageFactory->createInstance(
-                false,
+            $imageDomainObject = Image::newInstance(
                 $imageObject->uuid,
                 $imageObject->product_uuid,
                 $imageObject->image_name,
@@ -44,8 +41,7 @@ class ImageRepositoryImpl implements ImageRepository {
         $imageObjects = $this->imageDao->findAllByProductUuid($pUuid);
         $imageArray = new ImageCollection();
         foreach($imageObjects as $imageObject){
-            $imageDomainObject = $this->imageFactory->createInstance(
-                false,
+            $imageDomainObject = Image::newInstance(
                 $imageObject->uuid,
                 $imageObject->product_uuid,
                 $imageObject->image_name,
@@ -62,8 +58,7 @@ class ImageRepositoryImpl implements ImageRepository {
     function findImageByProductUuid($pUuid):ImageInterface
     {
         $imageObject = $this->imageDao->findImageByProductUuid($pUuid);
-        $imageDomainObject = $this->imageFactory->createInstance(
-            false,
+        $imageDomainObject = Image::newInstance(
             $imageObject->uuid,
             $imageObject->product_uuid,
             $imageObject->image_name,
@@ -75,8 +70,7 @@ class ImageRepositoryImpl implements ImageRepository {
     function findOneByUuid($uuid):ImageInterface
     {
         $imageObject = $this->imageDao->findOneByUuid($uuid);
-        $imageDomainObject = $this->imageFactory->createInstance(
-            false,
+        $imageDomainObject = Image::newInstance(
             $imageObject->uuid,
             $imageObject->product_uuid,
             $imageObject->image_name,

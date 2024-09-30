@@ -2,12 +2,10 @@
 
 class CommentRepositoryImpl implements CommentRepository {
     private CommentDao $commentDao;
-    private CommentFactory $commentFactory;
 
-    function __construct(CommentDao $commentDao, Factory $commentFactory)
+    function __construct(CommentDao $commentDao)
     {
         $this->commentDao = $commentDao;
-        $this->commentFactory = $commentFactory;
     }
     function persist(Comment $c)
     {
@@ -18,8 +16,7 @@ class CommentRepositoryImpl implements CommentRepository {
         $commentObjects = $this->commentDao->findAll();
         $commentArray = new CommentCollection();
         foreach($commentObjects as $commentObject){
-            $commentDomainObject = $this->commentFactory->createInstance(
-                false,
+            $commentDomainObject = Comment::newInstance(
                 $commentObject->uuid,
                 $commentObject->product_uuid,
                 $commentObject->user_uuid,
@@ -35,8 +32,7 @@ class CommentRepositoryImpl implements CommentRepository {
         $commentObjects = $this->commentDao->findAllByUserUuid($userUuid);
         $commentArray = new CommentCollection();
         foreach($commentObjects as $commentObject){
-            $commentDomainObject = $this->commentFactory->createInstance(
-                false,
+            $commentDomainObject = Comment::newInstance(
                 $commentObject->uuid,
                 $commentObject->product_uuid,
                 $commentObject->user_uuid,
@@ -56,8 +52,7 @@ class CommentRepositoryImpl implements CommentRepository {
         $commentObjects = $this->commentDao->findAllByProductUuid($productUuid);
         $commentArray = new CommentCollection();
         foreach($commentObjects as $commentObject){
-            $commentDomainObject = $this->commentFactory->createInstance(
-                false,
+            $commentDomainObject = Comment::newInstance(
                 $commentObject->uuid,
                 $commentObject->product_uuid,
                 $commentObject->user_uuid,
@@ -74,8 +69,7 @@ class CommentRepositoryImpl implements CommentRepository {
     function findOneByUuid($uuid): CommentInterface
     {
         $commentObject = $this->commentDao->findOneByUuid($uuid);
-        $commentDomainObject = $this->commentFactory->createInstance(
-            false,
+        $commentDomainObject = Comment::newInstance(
             $commentObject->uuid,
             $commentObject->product_uuid,
             $commentObject->user_uuid,

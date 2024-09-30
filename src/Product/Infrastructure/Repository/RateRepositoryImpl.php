@@ -2,11 +2,9 @@
 
 class RateRepositoryImpl implements RateRepository {
     private RateDao $rateDao;
-    private RateFactory $rateFactory;
-    function __construct(RateDao $rateDao, Factory $factory)
+    function __construct(RateDao $rateDao)
     {
         $this->rateDao = $rateDao;
-        $this->rateFactory = $factory;
     }
 
     function persist(Rate $r)
@@ -29,8 +27,8 @@ class RateRepositoryImpl implements RateRepository {
         $rateArray = new RateCollection();
         $rateObjects = $this->rateDao->findAll();
         foreach($rateObjects as $rateObject){
-            $rateDomainObject = $this->rateFactory->createInstance(
-                false,
+            $rateDomainObject = Rate::newInstance(
+                
                 $rateObject->uuid,
                 $rateObject->product_uuid,
                 $rateObject->user_uuid,
@@ -45,8 +43,8 @@ class RateRepositoryImpl implements RateRepository {
     function findOneByUuid($uuid): RateInterface
     {
         $rateObject = $this->rateDao->findOneByUuid($uuid);
-        $rateDomainObject = $this->rateFactory->createInstance(
-            false,
+        $rateDomainObject = Rate::newInstance(
+            
             $rateObject->uuid,
             $rateObject->product_uuid,
             $rateObject->user_uuid,
@@ -66,8 +64,8 @@ class RateRepositoryImpl implements RateRepository {
         $rateArray = new RateCollection();
         $rateObjects = $this->rateDao->findAllByProductUuid($pUuid);
         foreach($rateObjects as $rateObject){
-            $rateDomainObject = $this->rateFactory->createInstance(
-                false,
+            $rateDomainObject = Rate::newInstance(
+                
                 $rateObject->uuid,
                 $rateObject->product_uuid,
                 $rateObject->user_uuid,

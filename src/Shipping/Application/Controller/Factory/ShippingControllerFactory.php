@@ -8,13 +8,6 @@ class ShippingControllerFactory implements Factory {
                 new ShippingServiceImpl(
                     new ShippingRepositoryImpl(
                         new ShippingDaoImpl(MySqlPDOConnection::getInstance()),
-                        new ShippingFactoryContext(
-                            [
-                                ShippingType::SAME_DAY => new ConcreteSameDayShippingFactory,
-                                ShippingType::TWO_DAY => new ConcreteTwoDayShippingFactory,
-                                ShippingType::LONG_DISTANCE => new ConcreteLongDistanceFactory
-                            ]
-                        )
                     )
                 ), 
                 MySqlPDOConnection::getInstance()

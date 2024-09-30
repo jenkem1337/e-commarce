@@ -14,6 +14,16 @@ class ProductSubscriber extends BaseEntity implements ProductSubscriberInterface
         $this->productUuid = $productUuid;
         $this->userUuid = $userUuid; 
     }
+    public static function newInstance($uuid,$productUuid,$userUuid,$createdAt,$updatedAt):ProductSubscriberInterface {
+        try {
+            return new ProductSubscriber($uuid,$productUuid,$userUuid,$createdAt,$updatedAt);
+        } catch (\Throwable $th) {
+            return new NullProductSubscriber();
+        }
+    }
+    public static function newStrictInstance($uuid,$productUuid,$userUuid,$createdAt,$updatedAt):ProductSubscriberInterface {
+        return new ProductSubscriber($uuid,$productUuid,$userUuid,$createdAt,$updatedAt);
+    }
     /**
      * Get the value of productUuid
      */ 

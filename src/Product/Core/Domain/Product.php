@@ -179,8 +179,11 @@ class Product extends BaseEntity implements AggregateRoot, ProductInterface{
         if(count($this->getSubscribers()->getItems()) == 1){
             throw new AlreadyExistException('product subscriber');
         }
-        $productSubscriber = new ProductSubscriber(UUID::uuid4(), $this->getUuid(), $userUuid, date('Y-m-d H:i:s'), date('Y-m-d H:i:s'));
+        
+        $productSubscriber = ProductSubscriber::newStrictInstance(UUID::uuid4(), $this->getUuid(), $userUuid, date('Y-m-d H:i:s'), date('Y-m-d H:i:s'));
+        
         $this->addSubscriber($productSubscriber);
+        
         $this->appendLog(new InsertLog("product_subscriber", [
             "uuid" => UUID::uuid4(),
             "user_uuid" => $productSubscriber->getUserUuid(),

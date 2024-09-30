@@ -1,6 +1,6 @@
 <?php
 
-
+use Ramsey\Uuid\Uuid;
 
 class User extends BaseEntity implements AggregateRoot, UserInterface{
     private  string $fullname;
@@ -15,7 +15,7 @@ class User extends BaseEntity implements AggregateRoot, UserInterface{
     function __construct($uuid,$fullname,$email,$password, $isUserActiveted,$createdAt,$updatedAt)
     {
         parent::__construct($uuid, $createdAt, $updatedAt);
-        if(!$fullname){
+        if(!(trim($fullname))){
             throw new NullException('full name');
         }
         else if(!$email){
@@ -27,20 +27,51 @@ class User extends BaseEntity implements AggregateRoot, UserInterface{
         else if(!$password){
             throw new NullException('password');
         }
-        else if(strlen($password) < 6){
+        else if(strlen(trim($password)) < 6){
             throw new LengthMustBeGreaterThanException('password', 6);
         }
         else if(!isset($isUserActiveted)){
             throw new NullException('activated bool');
         }
         
-        $this->fullname = $fullname;
+        $this->fullname = trim($fullname);
         $this->email = $email;
-        $this->password = $password;
+        $this->password = trim($password);
         $this->isUserActiveted = $isUserActiveted;
         $this->userRole = Role::STRAIGHT;
     }
 
+    static function newInstance($uuid,$fullname,$email,$password, $isUserActiveted,$createdAt,$updatedAt):UserInterface {
+        try {
+            return new User($uuid,$fullname,$email,$password, $isUserActiveted,$createdAt,$updatedAt);
+        } catch (\Throwable $th) {
+            return new NullUser();
+        }
+    }
+    static function newStrictInstance($uuid,$fullname,$email,$password, $isUserActiveted,$createdAt,$updatedAt):UserInterface {
+        return new User($uuid,$fullname,$email,$password, $isUserActiveted,$createdAt,$updatedAt);
+    }
+
+    static function createNewUser($uuid, $fullname, $email, $password, $createdAt, $updatedAt):UserInterface {
+        $user = new User($uuid,$fullname,$email,$password, 0 ,$createdAt,$updatedAt);
+        
+        $user->hashPassword($user->getPassword());
+        
+        $user->createActivationCode();
+
+        $user->appendLog(new InsertLog("users", [
+            "uuid" => $user->getUuid(),
+            "full_name" => $user->getFullname(),
+            "email" => $user->getEmail(),
+            "user_password"=> $user->getPassword(),
+            "is_user_activated" => $user->getIsUserActiveted(),
+            "email_activation_code" => $user->getActivationCode(),
+            "user_role" => $user->getUserRole(),
+            "created_at" => $user->getCreatedAt(),
+            "updated_at" => $user->getUpdatedAt()
+        ]));
+        return $user;
+    }
     function changeFullName($newFullname){
         if(!$newFullname){
             throw new NullException('full name');
@@ -122,13 +153,16 @@ class User extends BaseEntity implements AggregateRoot, UserInterface{
             }
             $this->activationCode = $code;
     }
-    function setRefreshTokenModel(RefreshTokenInterface $refToken){
-        if(!$refToken){
-            throw new NullException('refresh token'); 
-        }
-        $this->refreshTokenModel = $refToken;
+    function createRefreshTokenModel(){
+        $refreshToken = RefreshToken::newStrictInstance(UUID::uuid4(), $this->getUuid(), date('Y-m-d H:i:s'), date('Y-m-d H:i:s'));
+        
+        $refreshToken->createRefreshToken(60*60*24*10);
+        
+        $this->refreshTokenModel = $refreshToken;    
     }
-    
+    function setRefreshToken(RefreshTokenInterface $refreshToken){
+        $this->refreshTokenModel = $refreshToken;
+    }
     public function setUserRole($userRole)
     {
         if(!$userRole){

@@ -9,7 +9,6 @@ class ImageControllerFactory implements Factory {
         
         $imageRepositoryImpl = new ImageRepositoryImpl(
             new ImageDaoImpl(MySqlPDOConnection::getInstance()),
-            new ConcreteImageFactory()
         );
         $imageRepositoryImpl->setProductMediator($productRepositoryImpl);
 
@@ -20,7 +19,6 @@ class ImageControllerFactory implements Factory {
                 new ImageServiceImpl(
                     $productRepositoryAggregateRootDecorator,
                     new UploadServiceImpl(),
-                    new ConcreteImageFactory
                 ),
                 MySqlPDOConnection::getInstance()
             )
