@@ -1,7 +1,7 @@
 <?php
 interface ImageInterface {
     public function getProductUuid();
-
+    public function getLocation();
     public function getImageName();
 
     public function getUuid();
