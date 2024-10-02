@@ -11,45 +11,42 @@ class ImageServiceImpl implements ImageService {
 	}
     function uploadImageForProduct(ImageCreationalDto $dto): ResponseViewModel
     {
-        $productDomainObject = $this->productAggregateRepository->findOneProductByUuid($dto->getProductUuid(), []);
-        if($productDomainObject->isNull()) throw new NotFoundException('product');
+        $productDomainObject = $this->productAggregateRepository->findOneProductAggregateByUuid($dto->getProductUuid(), [
+            "comments"=>false,
+            "subscribers"=>false,
+            "categories"=>false,
+            "rates"=> false,
+            "images"=>false
+        ]);
+        if($productDomainObject->isNull()) throw new NotFoundException('product');        
         
-        if(count( $productDomainObject->getImages()->getItems() ) >= 1){
-            $productDomainObject->getImages()->clearItems();
-        }
+        $productDomainObject->addImages($dto->getImages());        
         
+        $this->productAggregateRepository->saveChanges($productDomainObject);
         
-        foreach($dto->getImageIterator() as $imageObject){
-            $imageDomainObject= Image::newStrictInstance(
-                $imageObject->uuid,
-                $imageObject->productUuid,
-                $imageObject->imageName,
-                $imageObject->createdAt,
-                $imageObject->updatedAt
-            );
-            $productDomainObject->addImage($imageDomainObject);
-        }
-        
-        $this->productAggregateRepository->persistImage($productDomainObject);
-        $this->uploadService->uploadNewProductImages($dto->getImageIterator(), $productDomainObject->getUuid());
+        $this->uploadService->uploadNewProductImages($dto->getImages(), $productDomainObject->getUuid());
         
         return new SuccessResponse([
             "message" => "Images uploaded successfully !",
-            "data" => $dto->getImageIterator()->getArrayCopy()
+            "data" => $dto->getImages()
         ]);
     }
     function deleteImageByUuid(DeleteImageByUuidDto $dto): ResponseViewModel
     {
-        $productDomainObject = $this->productAggregateRepository->findOneProductByUuid($dto->getProductUuid(), []);
+        $productDomainObject = $this->productAggregateRepository->findOneProductAggregateByUuid($dto->getProductUuid(), [
+            "comments"=>false,
+            "subscribers"=>false,
+            "categories"=>false,
+            "rates"=> false,
+            "images"=>"get"
+        ]);
         if($productDomainObject->isNull()) throw new NotFoundException('product');
         
-        $imageDomainObject = $productDomainObject->getImages()
-                                                ->getItem($dto->getImageUuid());
-
-        if($imageDomainObject->isNull()) throw new DoesNotExistException('image');
+        $imageDomainObject = $productDomainObject->deleteImage($dto->getImageUuid());
         
-        $this->productAggregateRepository->deleteImageByUuid($imageDomainObject->getUuid());
-        $this->uploadService->deleteImageByUuid($imageDomainObject->getImageName(), $productDomainObject->getUuid());
+        $this->productAggregateRepository->saveChanges($productDomainObject);
+        
+        $this->uploadService->deleteOneImageByUuid($imageDomainObject->getLocation());
         
         return new SuccessResponse([
             "message" => 'Image deleted successfully',
