@@ -26,6 +26,8 @@ class ImageRepositoryImpl implements ImageRepository {
                 $imageObject->uuid,
                 $imageObject->product_uuid,
                 $imageObject->image_name,
+                $imageObject->location,
+
                 $imageObject->created_at,
                 $imageObject->updated_at
             );
@@ -45,6 +47,8 @@ class ImageRepositoryImpl implements ImageRepository {
                 $imageObject->uuid,
                 $imageObject->product_uuid,
                 $imageObject->image_name,
+                $imageObject->location,
+
                 $imageObject->created_at,
                 $imageObject->updated_at
             );
@@ -62,6 +66,8 @@ class ImageRepositoryImpl implements ImageRepository {
             $imageObject->uuid,
             $imageObject->product_uuid,
             $imageObject->image_name,
+            $imageObject->location,
+
             $imageObject->created_at,
             $imageObject->updated_at
         );
@@ -74,6 +80,7 @@ class ImageRepositoryImpl implements ImageRepository {
             $imageObject->uuid,
             $imageObject->product_uuid,
             $imageObject->image_name,
+            $imageObject->location,
             $imageObject->created_at,
             $imageObject->updated_at
         );
