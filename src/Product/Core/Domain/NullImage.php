@@ -10,6 +10,7 @@ class NullImage implements ImageInterface {
     public function getImageName(){}
 
     public function getUuid(){}
+    public function getLocation() {}
 
     public function getCreatedAt(){}
 
