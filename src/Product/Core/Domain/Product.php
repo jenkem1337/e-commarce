@@ -240,6 +240,40 @@ class Product extends BaseEntity implements AggregateRoot, ProductInterface{
     function addImage(ImageInterface $img){
         $this->images->add($img);
     }
+
+    function addImages($images) {
+        for($i = 0; $i < count($images["name"]); $i++) {
+            $imageDomainObject= Image::newStrictInstance(
+                UUID::uuid4(),
+                $this->getUuid(),
+                $images['name'][$i],
+                $this->getUuid()."/".$images['name'][$i],
+                date('Y-m-d H:i:s'),
+                date('Y-m-d H:i:s'),
+            );
+            $this->images->add($imageDomainObject);
+            $this->appendLog(new InsertLog("image", [
+                "uuid" => $imageDomainObject->getUuid(),
+                "image_name" => $imageDomainObject->getImageName(),
+                "product_uuid" => $this->getUuid(),
+                "location" => $imageDomainObject->getLocation(),
+                "created_at" => $imageDomainObject->getCreatedAt(),
+                "updated_at" => $imageDomainObject->getUpdatedAt()
+            ]));
+        }
+    }
+    function deleteImage($imageUuid): ImageInterface{
+        $image = $this->images->getItem($imageUuid);
+        if($image->isNull()) {
+            throw new DoesNotExistException('image');
+        }
+        $this->appendLog(new DeleteLog("image", [
+            "whereCondation" => [
+                "uuid" => $imageUuid
+            ] 
+        ]));
+        return $image;
+    }
     function addRate(RateInterface $rate){
         $this->rates->add($rate);
     }
