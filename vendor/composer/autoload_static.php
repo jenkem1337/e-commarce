@@ -8,11 +8,16 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
 {
     public static $files = array (
         'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
+        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
+        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '23c18046f52bef3eea034657bafda50f' => __DIR__ . '/..' . '/symfony/polyfill-php81/bootstrap.php',
+        'b067bc7112e384b61c701452d53a14a8' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/JmesPath.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
-        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
+        '8a9dc1de0ca7e01f3e08231539562f61' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/functions.php',
         'e39a8b23c42d4e1452234d762b03835a' => __DIR__ . '/..' . '/ramsey/uuid/src/functions.php',
     );
 
@@ -39,6 +44,8 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         ),
         'P' => 
         array (
+            'Psr\\Http\\Message\\' => 17,
+            'Psr\\Http\\Client\\' => 16,
             'Prophecy\\' => 9,
             'Predis\\' => 7,
             'PhpParser\\' => 10,
@@ -46,8 +53,15 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
             'PHPStan\\PhpDocParser\\' => 21,
             'PHPMailer\\PHPMailer\\' => 20,
         ),
+        'J' => 
+        array (
+            'JmesPath\\' => 9,
+        ),
         'G' => 
         array (
+            'GuzzleHttp\\Psr7\\' => 16,
+            'GuzzleHttp\\Promise\\' => 19,
+            'GuzzleHttp\\' => 11,
             'GrahamCampbell\\ResultType\\' => 26,
         ),
         'F' => 
@@ -64,6 +78,10 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'B' => 
         array (
             'Brick\\Math\\' => 11,
+        ),
+        'A' => 
+        array (
+            'Aws\\' => 4,
         ),
     );
 
@@ -102,6 +120,15 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         array (
             0 => __DIR__ . '/..' . '/ramsey/collection/src',
         ),
+        'Psr\\Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'Psr\\Http\\Client\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-client/src',
+        ),
         'Prophecy\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpspec/prophecy/src/Prophecy',
@@ -125,6 +152,22 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'PHPMailer\\PHPMailer\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+        ),
+        'JmesPath\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mtdowling/jmespath.php/src',
+        ),
+        'GuzzleHttp\\Psr7\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
+        ),
+        'GuzzleHttp\\Promise\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/promises/src',
+        ),
+        'GuzzleHttp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
         ),
         'GrahamCampbell\\ResultType\\' => 
         array (
@@ -154,9 +197,36 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         array (
             0 => __DIR__ . '/..' . '/brick/math/src',
         ),
+        'Aws\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/aws/aws-sdk-php/src',
+        ),
     );
 
     public static $classMap = array (
+        'AWS\\CRT\\Auth\\AwsCredentials' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Auth/AwsCredentials.php',
+        'AWS\\CRT\\Auth\\CredentialsProvider' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Auth/CredentialsProvider.php',
+        'AWS\\CRT\\Auth\\Signable' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Auth/Signable.php',
+        'AWS\\CRT\\Auth\\SignatureType' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Auth/SignatureType.php',
+        'AWS\\CRT\\Auth\\SignedBodyHeaderType' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Auth/SignedBodyHeaderType.php',
+        'AWS\\CRT\\Auth\\Signing' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Auth/Signing.php',
+        'AWS\\CRT\\Auth\\SigningAlgorithm' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Auth/SigningAlgorithm.php',
+        'AWS\\CRT\\Auth\\SigningConfigAWS' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Auth/SigningConfigAWS.php',
+        'AWS\\CRT\\Auth\\SigningResult' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Auth/SigningResult.php',
+        'AWS\\CRT\\Auth\\StaticCredentialsProvider' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Auth/StaticCredentialsProvider.php',
+        'AWS\\CRT\\CRT' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/CRT.php',
+        'AWS\\CRT\\HTTP\\Headers' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/HTTP/Headers.php',
+        'AWS\\CRT\\HTTP\\Message' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/HTTP/Message.php',
+        'AWS\\CRT\\HTTP\\Request' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/HTTP/Request.php',
+        'AWS\\CRT\\HTTP\\Response' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/HTTP/Response.php',
+        'AWS\\CRT\\IO\\EventLoopGroup' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/IO/EventLoopGroup.php',
+        'AWS\\CRT\\IO\\InputStream' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/IO/InputStream.php',
+        'AWS\\CRT\\Internal\\Encoding' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Internal/Encoding.php',
+        'AWS\\CRT\\Internal\\Extension' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Internal/Extension.php',
+        'AWS\\CRT\\Log' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Log.php',
+        'AWS\\CRT\\NativeResource' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/NativeResource.php',
+        'AWS\\CRT\\OptionValue' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Options.php',
+        'AWS\\CRT\\Options' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Options.php',
         'AbstractDataAccessObject' => __DIR__ . '/../..' . '/src/Shared/Infrasturcture/DataSource/AbstractDataAccessObject.php',
         'AbstractProductRepositoryMediatorComponent' => __DIR__ . '/../..' . '/src/Product/Infrastructure/Repository/MediatorComponent/AbstractProductRepositoryMediatorComponent.php',
         'AggregateRoot' => __DIR__ . '/../..' . '/src/Shared/Core/Domain/AggregateRoot.php',
@@ -179,7 +249,6 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'CategoryCreationalDto' => __DIR__ . '/../..' . '/src/Shared/Application/DTO/RequestDTO/CategoryCreationalDto.php',
         'CategoryDao' => __DIR__ . '/../..' . '/src/Product/Core/Interface/CategoryDao.php',
         'CategoryDaoImpl' => __DIR__ . '/../..' . '/src/Product/Infrastructure/DataAccessLayer/CategoryDaoImpl.php',
-        'CategoryFactory' => __DIR__ . '/../..' . '/src/Product/Core/Domain/Factory/CategoryFactory.php',
         'CategoryInterface' => __DIR__ . '/../..' . '/src/Product/Core/Interface/CategoryInterface.php',
         'CategoryRepository' => __DIR__ . '/../..' . '/src/Product/Core/Interface/CategoryRepository.php',
         'CategoryRepositoryImpl' => __DIR__ . '/../..' . '/src/Product/Infrastructure/Repository/CategoryRepositoryImpl.php',
@@ -204,26 +273,15 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'CommentCollection' => __DIR__ . '/../..' . '/src/Product/Core/Domain/IteratorAggregate/CommentCollection.php',
         'CommentDao' => __DIR__ . '/../..' . '/src/Product/Core/Interface/CommentDao.php',
         'CommentDaoImpl' => __DIR__ . '/../..' . '/src/Product/Infrastructure/DataAccessLayer/CommentDaoImpl.php',
-        'CommentFactory' => __DIR__ . '/../..' . '/src/Product/Core/Domain/Factory/CommentFactory.php',
         'CommentInterface' => __DIR__ . '/../..' . '/src/Product/Core/Interface/CommentInterface.php',
         'CommentRepository' => __DIR__ . '/../..' . '/src/Product/Core/Interface/CommentRepository.php',
         'CommentRepositoryImpl' => __DIR__ . '/../..' . '/src/Product/Infrastructure/Repository/CommentRepositoryImpl.php',
         'CommentTest' => __DIR__ . '/../..' . '/src/Tests/unit/model/comment/CommentTest.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'ConcreteCategoryFactory' => __DIR__ . '/../..' . '/src/Product/Core/Domain/Factory/Concrete/ConcreteCategoryFactory.php',
-        'ConcreteCommentFactory' => __DIR__ . '/../..' . '/src/Product/Core/Domain/Factory/Concrete/ConcreteCommentFactory.php',
-        'ConcreteImageFactory' => __DIR__ . '/../..' . '/src/Product/Core/Domain/Factory/Concrete/ConcreteImageFactory.php',
-        'ConcreteLongDistanceFactory' => __DIR__ . '/../..' . '/src/Shipping/Core/Domain/Factory/Concrete/ConcreteLongDistanceFactory.php',
-        'ConcreteProductSubscriberFactory' => __DIR__ . '/../..' . '/src/Product/Core/Domain/Factory/Concrete/ConcreteProductSubscriberFactory.php',
-        'ConcreteRateFactory' => __DIR__ . '/../..' . '/src/Product/Core/Domain/Factory/Concrete/ConcreteRateFactory.php',
-        'ConcreteRefreshTokenFactory' => __DIR__ . '/../..' . '/src/User/Core/Domain/Factory/Concrete/ConcreteRefreshTokenFactory.php',
-        'ConcreteSameDayShippingFactory' => __DIR__ . '/../..' . '/src/Shipping/Core/Domain/Factory/Concrete/ConcreteSameDayShippingFactory.php',
-        'ConcreteTwoDayShippingFactory' => __DIR__ . '/../..' . '/src/Shipping/Core/Domain/Factory/Concrete/ConcreteTwoDayShippingFactory.php',
-        'ConcreteUserFactory' => __DIR__ . '/../..' . '/src/User/Core/Domain/Factory/Concrete/ConcreteUserFactory.php',
         'CrateNewCategoryCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/CategoryController/CrateNewCategoryCommand.php',
         'CreateNewProductCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ProductController/CreateNewProductCommand.php',
         'CreateNewProductSubscriberCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ProductController/CreateNewProductSubscriberCommand.php',
-        'DatabaseConnection' => __DIR__ . '/../..' . '/src/Shared/Core/Services/Interface/DatabaseConnection.php',
+        'DatabaseConnection' => __DIR__ . '/../..' . '/src/Shared/Core/Interface/DatabaseConnection.php',
         'DeleteCategoryByUuidCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/CategoryController/DeleteCategoryByUuidCommand.php',
         'DeleteCategoryDto' => __DIR__ . '/../..' . '/src/Shared/Application/DTO/RequestDTO/DeleteCategoryDto.php',
         'DeleteImageByUuidDto' => __DIR__ . '/../..' . '/src/Shared/Application/DTO/RequestDTO/DeleteImageByUuidDto.php',
@@ -234,10 +292,10 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'DeleteProductSubscriberCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ProductController/DeleteProductSubscriberCommand.php',
         'DeleteProductSubscriberDto' => __DIR__ . '/../..' . '/src/Shared/Application/DTO/RequestDTO/DeleteProductSubscriberDto.php',
         'DoesNotExistException' => __DIR__ . '/../..' . '/src/Shared/Core/Exception/DoesNotExistException.php',
-        'EmailService' => __DIR__ . '/../..' . '/src/Shared/Core/Services/Interface/EmailService.php',
+        'EmailService' => __DIR__ . '/../..' . '/src/Shared/Core/Interface/EmailService.php',
         'EmailServiceImpl' => __DIR__ . '/../..' . '/src/Shared/Core/Services/EmailServiceImpl.php',
         'EmailVerificationDto' => __DIR__ . '/../..' . '/src/Shared/Application/DTO/RequestDTO/EmailVerificationDto.php',
-        'Factory' => __DIR__ . '/../..' . '/src/Shared/Core/Services/Interface/Factory.php',
+        'Factory' => __DIR__ . '/../..' . '/src/Shared/Core/Interface/Factory.php',
         'FindAllCategoryCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/CategoryController/FindAllCategoryCommand.php',
         'FindAllCategoryDto' => __DIR__ . '/../..' . '/src/Shared/Application/DTO/RequestDTO/FindAllCategoryDto.php',
         'FindAllProductWithPaginationCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ProductController/FindAllProductWithPaginationCommand.php',
@@ -274,7 +332,6 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'ImageCreationalDto' => __DIR__ . '/../..' . '/src/Shared/Application/DTO/RequestDTO/ImageCreationalDto.php',
         'ImageDao' => __DIR__ . '/../..' . '/src/Product/Core/Interface/ImageDao.php',
         'ImageDaoImpl' => __DIR__ . '/../..' . '/src/Product/Infrastructure/DataAccessLayer/ImageDaoImpl.php',
-        'ImageFactory' => __DIR__ . '/../..' . '/src/Product/Core/Domain/Factory/ImageFactory.php',
         'ImageInterface' => __DIR__ . '/../..' . '/src/Product/Core/Interface/ImageInterface.php',
         'ImageRepository' => __DIR__ . '/../..' . '/src/Product/Core/Interface/ImageRepository.php',
         'ImageRepositoryImpl' => __DIR__ . '/../..' . '/src/Product/Infrastructure/Repository/ImageRepositoryImpl.php',
@@ -292,8 +349,8 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'ListAllUserCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/UserController/ListAllUserCommand.php',
         'ListAllUserDto' => __DIR__ . '/../..' . '/src/Shared/Application/DTO/RequestDTO/ListAllUserDto.php',
         'LoginCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/AuthController/LoginCommand.php',
-        'LongDistanceShippingFactory' => __DIR__ . '/../..' . '/src/Shipping/Core/Domain/Factory/LongDistanceShippingFactory.php',
         'Middleware' => __DIR__ . '/../..' . '/src/Shared/Application/Middleware/AbstractMiddleware.php',
+        'MinIOConnection' => __DIR__ . '/../..' . '/src/Shared/Infrasturcture/DataSource/MinIOConnection.php',
         'MySqlPDOConnection' => __DIR__ . '/../..' . '/src/Shared/Infrasturcture/DataSource/MySqlPDOConnection.php',
         'NegativeValueException' => __DIR__ . '/../..' . '/src/Shared/Core/Exception/NegativeValueException.php',
         'NotActivatedException' => __DIR__ . '/../..' . '/src/Shared/Core/Exception/NotActivatedException.php',
@@ -310,6 +367,7 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'NullRefreshToken' => __DIR__ . '/../..' . '/src/User/Core/Domain/NullRefreshToken.php',
         'NullShipping' => __DIR__ . '/../..' . '/src/Shipping/Core/Domain/NullShipping.php',
         'NullUser' => __DIR__ . '/../..' . '/src/User/Core/Domain/NullUser.php',
+        'ObjectStorageConnection' => __DIR__ . '/../..' . '/src/Shared/Core/Interface/ObjectStorageConnection.php',
         'PHPUnit\\Exception' => __DIR__ . '/..' . '/phpunit/phpunit/src/Exception.php',
         'PHPUnit\\Framework\\ActualValueIsNotAnObjectException' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Exception/ActualValueIsNotAnObjectException.php',
         'PHPUnit\\Framework\\Assert' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert.php',
@@ -748,7 +806,6 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'ProductServiceImpl' => __DIR__ . '/../..' . '/src/Product/Application/Service/ProductServiceImpl.php',
         'ProductSubscriber' => __DIR__ . '/../..' . '/src/Product/Core/Domain/ProductSubscriber.php',
         'ProductSubscriberCreationalDto' => __DIR__ . '/../..' . '/src/Shared/Application/DTO/RequestDTO/ProductSubscriberCreationalDto.php',
-        'ProductSubscriberFactory' => __DIR__ . '/../..' . '/src/Product/Core/Domain/Factory/ProductSubscriberFactory.php',
         'ProductSubscriberInterface' => __DIR__ . '/../..' . '/src/Product/Core/Interface/ProductSubscriberInterface.php',
         'ProductSubscriberRepository' => __DIR__ . '/../..' . '/src/Product/Core/Interface/ProductSubscriberRepository.php',
         'ProductSubscriberRepositoryImpl' => __DIR__ . '/../..' . '/src/Product/Infrastructure/Repository/ProductSubscriberRepositoryImpl.php',
@@ -758,7 +815,6 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'RateCollection' => __DIR__ . '/../..' . '/src/Product/Core/Domain/IteratorAggregate/RateCollection.php',
         'RateDao' => __DIR__ . '/../..' . '/src/Product/Core/Interface/RateDao.php',
         'RateDaoImpl' => __DIR__ . '/../..' . '/src/Product/Infrastructure/DataAccessLayer/RateDaoImpl.php',
-        'RateFactory' => __DIR__ . '/../..' . '/src/Product/Core/Domain/Factory/RateFactory.php',
         'RateInterface' => __DIR__ . '/../..' . '/src/Product/Core/Interface/RateInterface.php',
         'RateRepository' => __DIR__ . '/../..' . '/src/Product/Core/Interface/RateRepository.php',
         'RateRepositoryImpl' => __DIR__ . '/../..' . '/src/Product/Infrastructure/Repository/RateRepositoryImpl.php',
@@ -770,7 +826,6 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'RefreshTokenDaoImpl' => __DIR__ . '/../..' . '/src/User/Infrastructure/DataAccessLayer/RefreshTokenDaoImpl.php',
         'RefreshTokenDto' => __DIR__ . '/../..' . '/src/Shared/Application/DTO/RequestDTO/RefreshTokenDto.php',
         'RefreshTokenExpireTimeEndedException' => __DIR__ . '/../..' . '/src/Shared/Core/Exception/RefreshTokenExpireTimeEndedException.php',
-        'RefreshTokenFactory' => __DIR__ . '/../..' . '/src/User/Core/Domain/Factory/RefreshTokenFactory.php',
         'RefreshTokenFactoryTest' => __DIR__ . '/../..' . '/src/Tests/unit/model/refresh_token/RefreshTokenFactoryTest.php',
         'RefreshTokenInterface' => __DIR__ . '/../..' . '/src/User/Core/Interface/RefreshTokenInterface.php',
         'RegisterCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/AuthController/RegisterCommand.php',
@@ -778,7 +833,6 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'ResponseViewModelTest' => __DIR__ . '/../..' . '/src/Tests/unit/response_abstraction/ResponseViewModelTest.php',
         'ReturnTypeWillChange' => __DIR__ . '/..' . '/symfony/polyfill-php81/Resources/stubs/ReturnTypeWillChange.php',
         'Role' => __DIR__ . '/../..' . '/src/User/Core/Domain/Role.php',
-        'SameDayShippingFactory' => __DIR__ . '/../..' . '/src/Shipping/Core/Domain/Factory/SameDayShippingFactory.php',
         'SamePropertyException' => __DIR__ . '/../..' . '/src/Shared/Core/Exception/SamePropertyException.php',
         'SaveChangesInterface' => __DIR__ . '/../..' . '/src/Shared/Infrasturcture/DataSource/SaveChangesInterface.php',
         'SebastianBergmann\\CliParser\\AmbiguousOptionException' => __DIR__ . '/..' . '/sebastian/cli-parser/src/exceptions/AmbiguousOptionException.php',
@@ -986,7 +1040,6 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'ShippingControllerFactory' => __DIR__ . '/../..' . '/src/Shipping/Application/Controller/Factory/ShippingControllerFactory.php',
         'ShippingDao' => __DIR__ . '/../..' . '/src/Shipping/Core/Interface/ShippingDao.php',
         'ShippingDaoImpl' => __DIR__ . '/../..' . '/src/Shipping/Infrastructure/DataAccessLayer/ShippingDaoImpl.php',
-        'ShippingFactoryContext' => __DIR__ . '/../..' . '/src/Shipping/Core/Domain/Factory/ShippingFactoryContext.php',
         'ShippingInterface' => __DIR__ . '/../..' . '/src/Shipping/Core/Interface/ShippingInterface.php',
         'ShippingRepository' => __DIR__ . '/../..' . '/src/Shipping/Core/Interface/ShippingRepository.php',
         'ShippingRepositoryImpl' => __DIR__ . '/../..' . '/src/Shipping/Infrastructure/Repository/ShippingRepositoryImpl.php',
@@ -1014,7 +1067,6 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'TransactionalProductServiceDecorator' => __DIR__ . '/../..' . '/src/Product/Application/Service/Decorator/ProductService/TransactionalProductServiceDecorator.php',
         'TransactionalShippingServiceDecorator' => __DIR__ . '/../..' . '/src/Shipping/Application/Service/Decorator/ShippingService/TransactionalShippingServiceDecorator.php',
         'TransactionalUserServiceDecorator' => __DIR__ . '/../..' . '/src/User/Application/Service/Decorator/UserService/TransactionalUserServiceDecorator.php',
-        'TwoDayShippingFactory' => __DIR__ . '/../..' . '/src/Shipping/Core/Domain/Factory/TwoDayShippingFactory.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
         'UpdateCategoryNameByUuidCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/CategoryController/UpdateCategoryNameByUuidCommand.php',
         'UpdateCategoryNameByUuidDto' => __DIR__ . '/../..' . '/src/Shared/Application/DTO/RequestDTO/UpdateCategoryNameByUuidDto.php',
@@ -1022,7 +1074,7 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'UpdateProductDetailsCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ProductController/UpdateProductDetailsCommand.php',
         'UpdateProductStockQuantityCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ProductController/UpdateProductStockQuantityCommand.php',
         'UploadImageForProductCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ImageController/UploadImageForProductCommand.php',
-        'UploadService' => __DIR__ . '/../..' . '/src/Shared/Core/Services/Interface/UploadService.php',
+        'UploadService' => __DIR__ . '/../..' . '/src/Shared/Core/Interface/UploadService.php',
         'UploadServiceImpl' => __DIR__ . '/../..' . '/src/Shared/Core/Services/UploadServiceImpl.php',
         'User' => __DIR__ . '/../..' . '/src/User/Core/Domain/User.php',
         'UserCollection' => __DIR__ . '/../..' . '/src/User/Core/Domain/IteratorAggregate/UserCollection.php',
@@ -1031,7 +1083,6 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'UserCreationalDto' => __DIR__ . '/../..' . '/src/Shared/Application/DTO/RequestDTO/UserCreationalDto.php',
         'UserDao' => __DIR__ . '/../..' . '/src/User/Core/Interface/UserDao.php',
         'UserDaoImpl' => __DIR__ . '/../..' . '/src/User/Infrastructure/DataAccessLayer/UserDaoImpl.php',
-        'UserFactory' => __DIR__ . '/../..' . '/src/User/Core/Domain/Factory/UserFactory.php',
         'UserFactoryTest' => __DIR__ . '/../..' . '/src/Tests/unit/model/user/UserFactoryTest.php',
         'UserInterface' => __DIR__ . '/../..' . '/src/User/Core/Interface/UserInteface.php',
         'UserLoginDto' => __DIR__ . '/../..' . '/src/Shared/Application/DTO/RequestDTO/UserLoginDto.php',
