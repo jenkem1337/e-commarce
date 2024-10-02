@@ -38,7 +38,7 @@ class ProductControllerFactory implements Factory {
                 new ProductServiceImpl(
                     $productRepositoryAggregateRootDecorator,
                     $categoryRepositoryImpl,
-                    new UploadServiceImpl,
+                    new UploadServiceImpl(MinIOConnection::getInstance()),
                     new EmailServiceImpl(new PHPMailer(true)),
                 ), MySqlPDOConnection::getInstance()
             )

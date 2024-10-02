@@ -18,7 +18,7 @@ class ImageControllerFactory implements Factory {
             new TransactionalImageServiceDecorator(
                 new ImageServiceImpl(
                     $productRepositoryAggregateRootDecorator,
-                    new UploadServiceImpl(),
+                    new UploadServiceImpl(MinIOConnection::getInstance()),
                 ),
                 MySqlPDOConnection::getInstance()
             )
