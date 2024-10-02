@@ -6,6 +6,8 @@ class NullProduct implements ProductInterface {
     {
         
     }
+    function deleteImage($imageUuid):ImageInterface{return new NullImage();}
+    function addImages($images){}
     function swapCategoryCollection(IteratorAggregate $i){}
     function swapCommentCollection(IteratorAggregate $i){}
     function swapImageCollection(IteratorAggregate $i){}
