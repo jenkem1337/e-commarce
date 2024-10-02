@@ -1,25 +1,35 @@
 <?php
 
 class UploadServiceImpl implements UploadService {
-    function uploadNewProductImages(ArrayIterator $images, $productUuid)
+    private ObjectStorageConnection $objectStorage;
+    function __construct(ObjectStorageConnection $objectStorage) {
+        $this->objectStorage = $objectStorage;
+    }
+    function uploadNewProductImages($images, $productUuid)
     {
-        if(!file_exists($_SERVER['DOCUMENT_ROOT']."/src/uploads/products/$productUuid")){
-            mkdir($_SERVER['DOCUMENT_ROOT']."/src/uploads/products/$productUuid", 0777, true);
-        }
-        foreach($images as $image){
-            $imageName = $image->imageName;
-            $targetFile = $_SERVER['DOCUMENT_ROOT']."/src/uploads/products/$productUuid/$imageName";
-            move_uploaded_file($image->imageTmpName, $targetFile);
+        $objectStorageConnection = $this->objectStorage->getConnection();
+
+        for($i = 0; $i < count($images["tmp_name"]); $i++){
+            
+            $objectStorageConnection->putObject([
+                "Bucket" => "image",
+                "Key" => $productUuid."/".$images["name"][$i],
+                "SourceFile" => $images['tmp_name'][$i]  
+            ]);
         }
     }
-    function deleteImageByUuid($imageName, $productUuid)
+    function deleteOneImageByUuid($location)
     {
-        if(!file_exists($_SERVER['DOCUMENT_ROOT']."/src/uploads/products/$productUuid")){
-            throw new DoesNotExistException('product image folder');
-        }
-        if(!unlink($_SERVER['DOCUMENT_ROOT']."/src/uploads/products/$productUuid/$imageName")){
-            throw new DoesNotExistException('product image file');
-        }
-        unlink($_SERVER['DOCUMENT_ROOT']."/src/uploads/products/$productUuid/$imageName");
+        $objectStorageConnection = $this->objectStorage->getConnection();
+
+            
+            $result = $objectStorageConnection->deleteObject([
+                "Bucket" => "image",
+                "Key" => $location  
+            ]);
+            
+            if($result["DeleteMarker"]){
+                throw new Exception("Image was not deleted");
+            }
     }
 }
