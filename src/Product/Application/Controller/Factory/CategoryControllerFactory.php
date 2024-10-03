@@ -11,7 +11,7 @@ class CategoryControllerFactory implements Factory {
                     new TransactionalCategoryServiceDecorator(
                         new CategoryServiceImpl(
                             $categoryRepositoryImpl,
-                        ),MySqlPDOConnection::getInstance()
+                        ),$categoryRepositoryImpl
                     )
                 );
         

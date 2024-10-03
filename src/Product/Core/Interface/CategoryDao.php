@@ -1,6 +1,5 @@
 <?php
-interface CategoryDao {
-    function saveChanges(Category $category);
+interface CategoryDao extends SaveChangesInterface, DatabaseTransaction{
     function persist(Category $c);
     function deleteByUuid($uuid);
     function findByUuid($uuid);

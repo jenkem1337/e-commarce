@@ -1,24 +1,23 @@
 <?php
 
 class TransactionalProductServiceDecorator extends ProductServiceDecorator {
-    private DatabaseConnection $dbConnection;
-    function __construct(ProductService $productService, DatabaseConnection $dbConnection)
+    private TransactionalRepository $transactionalRepository;
+    function __construct(ProductService $productService, TransactionalRepository $transactionalRepository)
     {
-        $this->dbConnection = $dbConnection;
+        $this->transactionalRepository = $transactionalRepository;
         parent::__construct($productService);
     }
     function craeteNewProduct(ProductCreationalDto $dto): ResponseViewModel
     {
         try {
-            $dbConnection = $this->dbConnection->getConnection();
             
-            $dbConnection->beginTransaction();
+            $this->transactionalRepository->beginTransaction();
             $response = parent::craeteNewProduct($dto);
             
-            $dbConnection->commit();
+            $this->transactionalRepository->commit();
             return $response;
         } catch (Exception $e) {
-            $dbConnection->rollBack();
+            $this->transactionalRepository->rollback();
             throw $e;
         } 
     }
@@ -37,15 +36,14 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
     function createNewProductSubscriber(ProductSubscriberCreationalDto $dto): ResponseViewModel
     {
         try {
-            $dbConnection = $this->dbConnection->getConnection();
             
-            $dbConnection->beginTransaction();
+            $this->transactionalRepository->beginTransaction();
             $response = parent::createNewProductSubscriber($dto);
             
-            $dbConnection->commit();
+            $this->transactionalRepository->commit();
             return $response;
         } catch (Exception $e) {
-            $dbConnection->rollBack();
+            $this->transactionalRepository->rollBack();
             throw $e;
         } 
 
@@ -54,15 +52,14 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
     function updateProductStockQuantity(ChangeProductStockQuantityDto $dto): ResponseViewModel
     {
         try {
-            $dbConnection = $this->dbConnection->getConnection();
             
-            $dbConnection->beginTransaction();
+            $this->transactionalRepository->beginTransaction();
             $response = parent::updateProductStockQuantity($dto);
             
-            $dbConnection->commit();
+            $this->transactionalRepository->commit();
             return $response;
         } catch (Exception $e) {
-            $dbConnection->rollBack();
+            $this->transactionalRepository->rollBack();
             throw $e;
         } 
 
@@ -70,15 +67,14 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
     function deleteProduct(DeleteProductByUuidDto $dto): ResponseViewModel
     {
         try {
-            $dbConnection = $this->dbConnection->getConnection();
             
-            $dbConnection->beginTransaction();
+            $this->transactionalRepository->beginTransaction();
             $response = parent::deleteProduct($dto);
             
-            $dbConnection->commit();
+            $this->transactionalRepository->commit();
             return $response;
         } catch (Exception $e) {
-            $dbConnection->rollBack();
+            $this->transactionalRepository->rollBack();
             throw $e;
         } 
 
@@ -87,16 +83,15 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
     function deleteProductSubscriber(DeleteProductSubscriberDto $dto): ResponseViewModel
     {
         try {
-            $dbConnection = $this->dbConnection->getConnection();
             
-            $dbConnection->beginTransaction();
+            $this->transactionalRepository->beginTransaction();
             $response = parent::deleteProductSubscriber($dto);
             
-            $dbConnection->commit();
+            $this->transactionalRepository->commit();
             return $response;
 
         } catch (Exception $e) {
-            $dbConnection->rollBack();
+            $this->transactionalRepository->rollBack();
             throw $e;
         } 
 
@@ -117,15 +112,14 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
     
     function updateProductDetailsByUuid(ProductDetailDto $dto): ResponseViewModel {
         try {
-            $dbConnection = $this->dbConnection->getConnection();
             
-            $dbConnection->beginTransaction();
+            $this->transactionalRepository->beginTransaction();
             $response = parent::updateProductDetailsByUuid($dto);
             
-            $dbConnection->commit();
+            $this->transactionalRepository->commit();
             return $response;
         } catch (Exception $e) {
-            $dbConnection->rollBack();
+            $this->transactionalRepository->rollBack();
             throw $e;
         } 
     }

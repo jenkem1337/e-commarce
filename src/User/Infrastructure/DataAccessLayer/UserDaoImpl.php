@@ -1,11 +1,12 @@
 <?php
 
-class UserDaoImpl implements UserDao{
+class UserDaoImpl extends AbstractDataAccessObject implements UserDao{
     private DatabaseConnection $dbConnection;
 
     public function __construct(DatabaseConnection $dbConnection)
     {  
         $this->dbConnection = $dbConnection;
+        parent::__construct($this->dbConnection);
     }
     function findAllWithPagination($startingLimit, $perPageForUsers)
     {

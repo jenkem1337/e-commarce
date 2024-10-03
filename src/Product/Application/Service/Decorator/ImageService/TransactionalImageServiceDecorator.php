@@ -1,40 +1,38 @@
 <?php
 
 class TransactionalImageServiceDecorator extends ImageServiceDecorator {
-    private DatabaseConnection $dbConnection;
-    function __construct(ImageService $imgService, DatabaseConnection $dbconn)
+    private TransactionalRepository $transactionalRepository;
+    function __construct(ImageService $imgService, TransactionalRepository $transactionalRepository)
     {
-        $this->dbConnection = $dbconn;
+        $this->transactionalRepository = $transactionalRepository;
         parent::__construct($imgService);
     }
     function uploadImageForProduct(ImageCreationalDto $dto): ResponseViewModel
     {
         try {
-            $dbConnection = $this->dbConnection->getConnection();
             
-            $dbConnection->beginTransaction();
+            $this->transactionalRepository->beginTransaction();
             $response = parent::uploadImageForProduct($dto);
             
-            $dbConnection->commit();
+            $this->transactionalRepository->commit();
             return $response;
 
         } catch (Exception $e) {
-            $dbConnection->rollBack();
+            $this->transactionalRepository->rollBack();
             throw $e;
         } 
     }
     function deleteImageByUuid(DeleteImageByUuidDto $dto):ResponseViewModel{
         try {
-            $dbConnection = $this->dbConnection->getConnection();
             
-            $dbConnection->beginTransaction();
+            $this->transactionalRepository->beginTransaction();
             $response = parent::deleteImageByUuid($dto);
             
-            $dbConnection->commit();
+            $this->transactionalRepository->commit();
             return $response;
 
         } catch (Exception $e) {
-            $dbConnection->rollBack();
+            $this->transactionalRepository->rollBack();
             throw $e;
 
         } 

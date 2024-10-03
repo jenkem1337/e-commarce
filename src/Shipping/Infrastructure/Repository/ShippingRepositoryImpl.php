@@ -1,10 +1,11 @@
 <?php
 
-class ShippingRepositoryImpl implements ShippingRepository {
+class ShippingRepositoryImpl extends TransactionalRepository implements ShippingRepository {
     private ShippingDao $shippingDao;
     
 	function __construct(ShippingDao $shippingDao) {
 	    $this->shippingDao = $shippingDao;
+        parent::__construct($this->shippingDao);
 	}
 	
     function findAll(): IteratorAggregate {

@@ -3,7 +3,7 @@
 use Ramsey\Uuid\Nonstandard\Uuid;
 
 require './vendor/autoload.php';
-class UserRepositoryImpl implements UserRepository{
+class UserRepositoryImpl extends TransactionalRepository implements UserRepository{
     private UserDao $userDao;
     private RefreshTokenDao $refreshTokenDao;
     public function __construct(
@@ -13,6 +13,7 @@ class UserRepositoryImpl implements UserRepository{
     {
         $this->userDao = $userDao;
         $this->refreshTokenDao = $refreshTokenDao;
+        parent::__construct($this->userDao);
     }
 
     function findAllWithPagination($startingLimit, $perPageForUsers, UserCollection $userCollection):IteratorAggregate

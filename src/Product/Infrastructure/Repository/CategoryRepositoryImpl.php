@@ -1,15 +1,16 @@
 <?php
 
-class CategoryRepositoryImpl implements CategoryRepository {
+class CategoryRepositoryImpl extends TransactionalRepository implements CategoryRepository {
     private CategoryDao $categoryDao;
 	function __construct(CategoryDao $categoryDao) {
 	    $this->categoryDao = $categoryDao;
+        parent::__construct($this->categoryDao);
 	}
     
 	function persist(CategoryInterface $c) {
         $this->categoryDao->persist($c);
     }
-    function saveChanges(CategoryInterface $category){
+    function saveChanges($category){
         $this->categoryDao->saveChanges($category);
     }
 	function deleteCategoryByProductUuid($uuid)

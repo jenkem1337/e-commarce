@@ -1,5 +1,5 @@
 <?php
-interface ShippingDao {
+interface ShippingDao extends SaveChangesInterface, DatabaseTransaction {
     function findAll();
     function findOneByUuid($uuid);
 }

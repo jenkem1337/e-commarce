@@ -1,12 +1,27 @@
 <?php
 
-class ProductRepositoryImpl extends AbstractProductRepositoryMediatorComponent implements ProductRepository{
-    private ProductDao $productDao;
+class ProductRepositoryImpl extends TransactionalRepository implements ProductRepository{
+    private ?ProductDao $productDao;
+    private ?ProductSubscriberRepository $productSubscriberRepository;
+    private ?CommentRepository $commentRepository;
+    private ?RateRepository $rateRepository;
+    private ?ImageRepository $imageRepository;
 	function __construct(
-        ProductDao $productDao) {
+        ProductDao $productDao = null,
+        ProductSubscriberRepository $productSubscriberRepository = null,
+        CommentRepository $commentRepository = null,
+        RateRepository $rateRepository = null,
+        ImageRepository $imageRepository = null) {
         $this->productDao = $productDao;
-        
+        $this->productSubscriberRepository = $productSubscriberRepository;
+        $this->commentRepository = $commentRepository;
+        $this->rateRepository = $rateRepository;
+        $this->imageRepository = $imageRepository;
+        parent::__construct($this->productDao);
 	}
+    static function newInstaceWithOnlyImageRepository(ProductDao $productDao, ImageRepository $imageRepository) {
+        return new ProductRepositoryImpl($productDao, null, null, null, $imageRepository);
+    }
     function saveChanges($e){
         $this->productDao->saveChanges($e);
     }

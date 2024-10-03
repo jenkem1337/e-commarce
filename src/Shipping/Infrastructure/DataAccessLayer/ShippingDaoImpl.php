@@ -1,10 +1,11 @@
 <?php
 
-class ShippingDaoImpl implements ShippingDao {
+class ShippingDaoImpl extends AbstractDataAccessObject implements ShippingDao {
     private DatabaseConnection $databaseConnection;
     function __construct(DatabaseConnection $dbConn)
     {
         $this->databaseConnection = $dbConn;
+        parent::__construct($this->databaseConnection);
     }
     function findAll()
     {

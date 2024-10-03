@@ -1,24 +1,23 @@
 <?php
 
 class TransactionalCategoryServiceDecorator extends CategoryServiceDecorator {
-    private DatabaseConnection $dbConnection;
-    function __construct(CategoryService $service, DatabaseConnection $dbconn)
+    private TransactionalRepository $transactionalRepository;
+    function __construct(CategoryService $service, TransactionalRepository $transactionalRepository)
     {
-        $this->dbConnection = $dbconn;
+        $this->transactionalRepository = $transactionalRepository;
         parent::__construct($service);
     }
     function createNewCategory(CategoryCreationalDto $dto): ResponseViewModel
     {
         try {
-            $dbConnection = $this->dbConnection->getConnection();
             
-            $dbConnection->beginTransaction();
+            $this->transactionalRepository->beginTransaction();
             $response = parent::createNewCategory($dto);
             
-            $dbConnection->commit();
+            $this->transactionalRepository->commit();
             return $response;
         } catch (Exception $e) {
-            $dbConnection->rollBack();
+            $this->transactionalRepository->rollBack();
             throw $e;
         } 
 
@@ -30,32 +29,30 @@ class TransactionalCategoryServiceDecorator extends CategoryServiceDecorator {
     function updateCategoryNameByUuid(UpdateCategoryNameByUuidDto $dto): ResponseViewModel
     {
         try {
-            $dbConnection = $this->dbConnection->getConnection();
             
-            $dbConnection->beginTransaction();
+            $this->transactionalRepository->beginTransaction();
             $response = parent::updateCategoryNameByUuid($dto);
             
-            $dbConnection->commit();
+            $this->transactionalRepository->commit();
             return $response;
 
         } catch (Exception $e) {
-            $dbConnection->rollBack();
+            $this->transactionalRepository->rollBack();
             throw $e;
         } 
     }
     function deleteCategoryByUuid(DeleteCategoryDto $dto): ResponseViewModel
     {
         try {
-            $dbConnection = $this->dbConnection->getConnection();
             
-            $dbConnection->beginTransaction();
+            $this->transactionalRepository->beginTransaction();
             $response = parent::deleteCategoryByUuid($dto);
             
-            $dbConnection->commit();
+            $this->transactionalRepository->commit();
             return $response;
 
         } catch (Exception $e) {
-            $dbConnection->rollBack();
+            $this->transactionalRepository->rollBack();
             throw $e;
         } 
 

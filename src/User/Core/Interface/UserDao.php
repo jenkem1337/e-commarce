@@ -1,6 +1,6 @@
 <?php
 
-interface UserDao{
+interface UserDao extends DatabaseTransaction, SaveChangesInterface{
     function findUserByEmail($email);
     function persist(User $user);
     function findUserByActivationCode($code);

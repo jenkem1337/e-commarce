@@ -4,8 +4,9 @@ require './vendor/autoload.php';
 class ProductDaoImpl extends AbstractDataAccessObject implements ProductDao {
     protected DatabaseConnection $dbConnection;
 	function __construct(DatabaseConnection $dbConnection) {
-        parent::__construct($dbConnection);
         $this->dbConnection = $dbConnection;
+        parent::__construct($this->dbConnection);
+
 	}
 	function persist(Product $p) {
         $conn = $this->dbConnection->getConnection();
@@ -175,19 +176,17 @@ class ProductDaoImpl extends AbstractDataAccessObject implements ProductDao {
 	function findBySearching($value, $startingLimit, $perPageForUsers) {
         $conn = $this->dbConnection->getConnection();
         $stmt = $conn->prepare(
-            "SELECT * FROM products 
-            WHERE (
-                model LIKE :_value OR
-                brand LIKE :_value OR
-                _description LIKE :_value OR
-                header LIKE :_value 
+            "SELECT * FROM products
+            WHERE uuid IN (
+                SELECT product_uuid FROM product_search WHERE 
+                    MATCH(brand, model, header, description ) AGAINST(:value IN NATURAL LANGUAGE MODE)
             )
             ORDER BY created_at DESC 
             LIMIT $startingLimit, $perPageForUsers" 
             
         );
         $stmt->execute([
-            '_value'=>"%".$value."%"
+            'value'=> $value
         ]);
         $products = $stmt->fetchAll(PDO::FETCH_OBJ);
         $conn = null;

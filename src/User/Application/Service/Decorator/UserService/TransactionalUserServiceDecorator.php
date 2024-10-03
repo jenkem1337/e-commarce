@@ -1,40 +1,38 @@
 <?php
 class TransactionalUserServiceDecorator extends UserServiceDecorator {
-    private DatabaseConnection $databaseConnection;
-    function __construct(UserService $service, DatabaseConnection $databaseConnection)
+    private TransactionalRepository $transactionalRepository;
+    function __construct(UserService $service, TransactionalRepository $transactionalRepository)
     {
-        $this->databaseConnection = $databaseConnection;
+        $this->transactionalRepository = $transactionalRepository;
         parent::__construct($service);
     }
     function changePassword(ChangePasswordDto $dto):ResponseViewModel {
         try {
-            $dbConnection =  $this->databaseConnection->getConnection();
 
-            $dbConnection->beginTransaction();
+            $this->transactionalRepository->beginTransaction();
             
             $response = parent::changePassword($dto);
             
-            $dbConnection->commit();
+            $this->transactionalRepository->commit();
             return $response;
 
         } catch (\Exception $e) {
-            $dbConnection->rollBack();
+            $this->transactionalRepository->rollBack();
             throw $e;
         }
     }
     function changeForgettenPassword(ForgettenPasswordDto $forgettenPasswordDto):ResponseViewModel{
         try {
-            $dbConnection =  $this->databaseConnection->getConnection();
 
-            $dbConnection->beginTransaction();
+            $this->transactionalRepository->beginTransaction();
             
             $response = parent::changeForgettenPassword($forgettenPasswordDto);
             
-            $dbConnection->commit();
+            $this->transactionalRepository->commit();
             return $response;
 
         } catch (\Exception $e) {
-            $dbConnection->rollBack();
+            $this->transactionalRepository->rollBack();
             throw $e;
         }
 
@@ -49,17 +47,16 @@ class TransactionalUserServiceDecorator extends UserServiceDecorator {
     }
     function changeFullName(ChangeFullNameDto $changeFullNameDto):ResponseViewModel{
         try {
-            $dbConnection = $this->databaseConnection->getConnection();
 
-            $dbConnection->beginTransaction();
+            $this->transactionalRepository->beginTransaction();
             
             $response = parent::changeFullName($changeFullNameDto);
             
-            $dbConnection->commit();
+            $this->transactionalRepository->commit();
             return $response;
 
         } catch (\Exception $e) {
-            $dbConnection->rollBack();
+            $this->transactionalRepository->rollBack();
             throw $e;
         }
 

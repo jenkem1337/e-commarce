@@ -1,9 +1,11 @@
 <?php
 
 class TransactionalShippingServiceDecorator extends ShippingServiceDecorator {
-    function __construct(ShippingService $service, DatabaseConnection $dbConnection)
+    private TransactionalRepository $transactionalRepository;
+    function __construct(ShippingService $service, TransactionalRepository $transactionalRepository)
     {
         parent::__construct($service);
+        $this->transactionalRepository = $transactionalRepository;
     }
 
     function findAll(FindAllShippingMethodDto $dto): ResponseViewModel

@@ -1,8 +1,21 @@
 <?php
 abstract class AbstractDataAccessObject {
-    private DatabaseConnection $databaseConnection;
-    function __construct($databaseConnection){
-        $this->databaseConnection = $databaseConnection;
+    private $databaseInterface;
+    private $tranactionConnection = null;
+    function __construct($databaseInterface){
+        $this->databaseInterface = $databaseInterface;
+    }
+    function startTransaction() {
+        $this->tranactionConnection = $this->databaseInterface->getConnection();
+        $this->tranactionConnection->beginTransaction();
+    }
+    function commitTransaction() {
+        $this->tranactionConnection->commit();
+        $this->tranactionConnection = null;
+    }
+    function rollbackTransaction(){
+        $this->tranactionConnection->rollback();
+        $this->tranactionConnection = null;
     }
     function saveChanges(BaseEntity $entity){
         $transactionLogs = $entity->getTransactionLogQueue();
@@ -28,7 +41,7 @@ abstract class AbstractDataAccessObject {
         
         $placeholders = implode(", ", array_fill(0, count($metadata), '?'));
         
-        $conn = $this->databaseConnection->getConnection();
+        $conn = $this->databaseInterface->getConnection();
         
         $sql = "INSERT INTO $table ($columns) VALUES ($placeholders)";
         
@@ -54,7 +67,7 @@ abstract class AbstractDataAccessObject {
         }
         $whereClauseString = implode( " AND ", $whereClause);
     
-        $conn = $this->databaseConnection->getConnection();
+        $conn = $this->databaseInterface->getConnection();
         $sql = "UPDATE $table SET $setClause WHERE $whereClauseString";
         $stmt = $conn->prepare($sql);
     
@@ -63,7 +76,7 @@ abstract class AbstractDataAccessObject {
     
     
     private function deleteEntity($table, $metadata) {
-        $conn = $this->databaseConnection->getConnection();
+        $conn = $this->databaseInterface->getConnection();
     
         $whereClause = [];
         $values = [];

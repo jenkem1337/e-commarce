@@ -7,9 +7,6 @@ class ProductControllerFactory implements Factory {
     function createInstance($isMustBeConcreteObjcet = false, ...$params):ProductController
     {
 
-        $productRepositoryImpl = new ProductRepositoryImpl(
-            new ProductDaoImpl(MySqlPDOConnection::getInstance())
-        );
         
         $productSubscriberRepoImpl = new ProductSubscriberRepositoryImpl(
             new ProductDaoImpl(MySqlPDOConnection::getInstance()),
@@ -26,10 +23,14 @@ class ProductControllerFactory implements Factory {
         $imageRepositoryImpl = new ImageRepositoryImpl(
             new ImageDaoImpl(MySqlPDOConnection::getInstance()),
         );
-        $commentRepositoryImpl->setProductMediator($productRepositoryImpl);
-        $rateRepositoryImpl->setProductMediator($productRepositoryImpl);
-        $imageRepositoryImpl->setProductMediator($productRepositoryImpl);
-        $productSubscriberRepoImpl->setProductMediator($productRepositoryImpl);
+        $productRepositoryImpl = new ProductRepositoryImpl(
+                new ProductDaoImpl(MySqlPDOConnection::getInstance()),
+                $productSubscriberRepoImpl,
+                $commentRepositoryImpl,
+                $rateRepositoryImpl,
+                $imageRepositoryImpl
+        );
+        
 
         $productRepositoryAggregateRootDecorator = new ProductRepositoryAggregateRootDecorator($productRepositoryImpl);
 
@@ -40,7 +41,7 @@ class ProductControllerFactory implements Factory {
                     $categoryRepositoryImpl,
                     new UploadServiceImpl(MinIOConnection::getInstance()),
                     new EmailServiceImpl(new PHPMailer(true)),
-                ), MySqlPDOConnection::getInstance()
+                ), $productRepositoryImpl
             )
         );
     }

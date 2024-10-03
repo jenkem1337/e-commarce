@@ -1,6 +1,6 @@
 <?php
 
-interface ProductDao extends SaveChangesInterface{
+interface ProductDao extends SaveChangesInterface, DatabaseTransaction{
     function persist(Product $p);
     function deleteSubscriberByProductUuid($pUuid);
     function deleteByUuid($uuid);
