@@ -63,7 +63,7 @@ class Product extends BaseEntity implements AggregateRoot, ProductInterface{
     public static function newStrictInstance($uuid, $brand,$model, $header,  $description, $price, $stockQuantity, $createdAt, $updatedAt):ProductInterface{
         return new Product($uuid, $brand,$model, $header,  $description, $price, $stockQuantity, $createdAt, $updatedAt);
     }
-    public static function newInstanceWithInsertLog($uuid, $brand,$model, $header,  $description, $price, $stockQuantity) {
+    public static function createNewProduct($uuid, $brand,$model, $header,  $description, $price, $stockQuantity) {
 
         $product =  new Product($uuid, $brand,$model, $header,  $description, $price, $stockQuantity, date('Y-m-d H:i:s'), date('Y-m-d H:i:s'));
         $product->appendLog(new InsertLog("products", [
@@ -78,6 +78,13 @@ class Product extends BaseEntity implements AggregateRoot, ProductInterface{
             "prev_price" => null,
             "created_at" => $product->getCreatedAt(),
             "updated_at" => $product->getUpdatedAt()
+        ]));
+        $product->appendLog(new InsertLog("product_search", [
+            "product_uuid" => $product->getUuid(),
+            "brand" => $product->getBrand(),
+            "model" => $product->getModel(),
+            "header" => $product->getHeader(),
+            "description" => $product->getDescription(),
         ]));
         return $product;
     }
@@ -247,7 +254,7 @@ class Product extends BaseEntity implements AggregateRoot, ProductInterface{
                 UUID::uuid4(),
                 $this->getUuid(),
                 $images['name'][$i],
-                $this->getUuid()."/".$images['name'][$i],
+                $_ENV["OBJECT_STROREGE_URL"]."/".$this->getUuid()."/".$images['name'][$i],
                 date('Y-m-d H:i:s'),
                 date('Y-m-d H:i:s'),
             );
