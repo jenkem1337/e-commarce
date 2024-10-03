@@ -254,7 +254,7 @@ class Product extends BaseEntity implements AggregateRoot, ProductInterface{
                 UUID::uuid4(),
                 $this->getUuid(),
                 $images['name'][$i],
-                $_ENV["OBJECT_STROREGE_URL"]."/".$this->getUuid()."/".$images['name'][$i],
+                $this->getUuid()."/".$images['name'][$i],
                 date('Y-m-d H:i:s'),
                 date('Y-m-d H:i:s'),
             );
