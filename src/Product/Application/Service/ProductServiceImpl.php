@@ -20,7 +20,7 @@ class ProductServiceImpl implements ProductService {
     }
     function craeteNewProduct(ProductCreationalDto $dto): ResponseViewModel
     {
-        $productDomainObject = Product::newInstanceWithInsertLog(
+        $productDomainObject = Product::createNewProduct(
             $dto->getUuid(),
             $dto->getBrand(),
             $dto->getModel(),
@@ -83,7 +83,7 @@ class ProductServiceImpl implements ProductService {
         
         if(count($productDomainObject->getImages()->getItems()) >= 1){
             foreach($productDomainObject->getImages()->getItems() as $image){
-                $this->uploadService->deleteImageByUuid($image->getImageName(), $productDomainObject->getUuid());
+                $this->uploadService->deleteOneImageByUuid($image->getLocation());
             }
         }
         $this->productRepository->deleteProductByUuid($productDomainObject);
