@@ -1,5 +1,5 @@
 <?php
-
+use Ramsey\Uuid\Uuid;
 class Brand extends BaseEntity implements AggregateRoot, BrandInterface {
     private $name;
     private ModelCollection $models;
@@ -23,8 +23,9 @@ class Brand extends BaseEntity implements AggregateRoot, BrandInterface {
         return new Brand($uuid, $name, $createdAt, $updatedAt);
     }
 
-    static function createNewBrand($uuid, $name, $createdAt, $updatedAt):BrandInterface {
-        $brand = new Brand($uuid, $name, $createdAt, $updatedAt);
+    static function createNewBrand($name):BrandInterface {
+        $date =  date('Y-m-d H:i:s');
+        $brand = new Brand(Uuid::uuid4(), $name, $date, $date);
         $brand->appendLog(new InsertLog("brands", [
             "uuid" => $brand->getUuid(),
             "name" => $brand->getName(),
@@ -50,9 +51,9 @@ class Brand extends BaseEntity implements AggregateRoot, BrandInterface {
         $this->models = $modelCollection;
     }
 
-    function addModel($uuid, $name, $createdAt, $updatedAt){
-        $model = Model::newStrictInstance($uuid, $name, $this->getUuid(), $createdAt, $updatedAt);
-        $this->models->add($model);
+    function createModel($name){
+        $date =  date('Y-m-d H:i:s');
+        $model = Model::newStrictInstance(Uuid::uuid4(), $name, $this->getUuid(), $date, $date);
         $this->appendLog(new InsertLog("models", [
             "uuid" => $model->getUuid(),
             "name" => $model->getName(),
@@ -61,7 +62,18 @@ class Brand extends BaseEntity implements AggregateRoot, BrandInterface {
             "updated_at" => $model->getUpdatedAt()
         ]));;
     }
-
+    function addModel(ModelInterface $model){
+        $this->models->add($model);
+    }
+    function deleteModel($modelUuid){
+        $model = $this->models->getItem($modelUuid);
+        if($model->isNull()) throw new NotFoundException("model");
+        $this->appendLog(new DeleteLog("models", [
+            "whereCondation" => [
+                "uuid" => $model->getUuid()
+            ]
+        ]));
+    }
     function changeModelName($uuid, $newName){
         $model = $this->models->getItem($uuid);
         if($model->isNull()) throw new NullException("model");

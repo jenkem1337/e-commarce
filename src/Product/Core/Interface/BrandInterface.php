@@ -2,8 +2,10 @@
 interface BrandInterface {
     function getName();
     function changeName($name);
-    function addModel($uuid, $name, $createdAt, $updatedAt);
+    function addModel(ModelInterface $modelInterface);
+    function createModel($name);
     function changeModelName($key, $value);
+    function deleteModel($modelUuid);
     public function getModelUuid($uuid);
     public function getUuid();
 
