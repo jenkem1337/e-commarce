@@ -7,6 +7,6 @@ class ChangeBrandNameDto{
         $this->uuid = $uuid;
         $this->name = $name;
     }
-    function name(){$this->name;}
-    function uuid(){$this->uuid;}
+    function name(){return $this->name;}
+    function uuid(){return $this->uuid;}
 }
