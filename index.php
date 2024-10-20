@@ -12,7 +12,7 @@ $categoryController = (new CategoryControllerFactory())->createInstance();
 $productController = (new ProductControllerFactory())->createInstance();
 $imageController = (new ImageControllerFactory())->createInstance(); 
 $shippingController = (new ShippingControllerFactory)->createInstance();
-
+$brandController = (new BrandControllerFactory)->createInstance();
         
 
 $f = new FrontController();
@@ -37,7 +37,16 @@ $f->registerRoute('DELETE', '/categories/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{
 $f->registerRoute('POST', '/categories', new CrateNewCategoryCommand($categoryController, new JwtAuthMiddleware()));
 $f->registerRoute('GET', '/categories', new FindAllCategoryCommand($categoryController, new JwtAuthMiddleware()));
 $f->registerRoute('GET', '/categories/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})', new FindOneCategoryCommand($categoryController, new JwtAuthMiddleware));
-        
+
+//Brand Route
+$f->registerRoute("GET", '/brands', new FindAllBrandCommand($brandController));
+$f->registerRoute("GET", "/brands/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})", new FindOneBrandWithModelsCommand($brandController));
+$f->registerRoute("POST", "/brands", new CreateBrandCommand($brandController));
+$f->registerRoute("POST", "/brands/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/model", new CreateBrandModelCommand($brandController));
+$f->registerRoute("PATCH", "/brands/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})", new ChangeBrandNameCommand($brandController));
+$f->registerRoute("PATCH", "/brands/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/model/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})", new ChangeBrandModelNameCommand($brandController));
+$f->registerRoute("DELETE", "/brands/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})", new DeleteBrandCommand($brandController));
+
 //Product Route
 $f->registerRoute("GET", '/products/search', new FindProductsBySearchCommand($productController));
 $f->registerRoute("GET", "/products", new FindProductByCriteriaCommand($productController));
@@ -65,6 +74,6 @@ $f->run($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
         'code' => $err->getCode(),
         'trace' => $err->getTrace()
     ];
-    http_response_code($err->getCode());
+    http_response_code( 500);
     echo json_encode($errorDetails, JSON_PRETTY_PRINT);
 }
