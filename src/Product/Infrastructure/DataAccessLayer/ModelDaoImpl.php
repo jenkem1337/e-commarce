@@ -8,7 +8,7 @@ class ModelDaoImpl implements ModelDao {
 
     function findAllByBrandUuid($uuid){
         $conn = $this->databaseInterface->getConnection();
-        $stmt = $conn->prepare("SELECT * FROM categories WHERE brand_uuid = :brand_uuid");
+        $stmt = $conn->prepare("SELECT * FROM brand_models WHERE brand_uuid = :brand_uuid");
         $stmt->execute([
             'brand_uuid'=>$uuid
         ]);
@@ -20,7 +20,7 @@ class ModelDaoImpl implements ModelDao {
     }
     function findOneByUuid($uuid){
         $conn = $this->databaseInterface->getConnection();
-        $stmt = $conn->prepare("SELECT * FROM models WHERE uuid = :uuid LIMIT 1");
+        $stmt = $conn->prepare("SELECT * FROM brand_models WHERE uuid = :uuid LIMIT 1");
         $stmt->execute([
             'uuid'=>$uuid
         ]);
@@ -34,7 +34,7 @@ class ModelDaoImpl implements ModelDao {
 
     function deleteByBrandUuid($brandUuid){
         $conn = $this->databaseInterface->getConnection();
-        $stmt = $conn->prepare("DELETE FROM models WHERE brand_uuid = :brand_uuid");
+        $stmt = $conn->prepare("DELETE FROM brand_models WHERE brand_uuid = :brand_uuid");
         $stmt->execute([
             "brand_uuid" => $brandUuid
         ]);

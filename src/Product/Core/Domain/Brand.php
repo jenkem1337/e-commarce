@@ -54,7 +54,7 @@ class Brand extends BaseEntity implements AggregateRoot, BrandInterface {
     function createModel($name){
         $date =  date('Y-m-d H:i:s');
         $model = Model::newStrictInstance(Uuid::uuid4(), $name, $this->getUuid(), $date, $date);
-        $this->appendLog(new InsertLog("models", [
+        $this->appendLog(new InsertLog("brand_models", [
             "uuid" => $model->getUuid(),
             "name" => $model->getName(),
             "brand_uuid" => $model->getBrandUuid(),
@@ -68,7 +68,7 @@ class Brand extends BaseEntity implements AggregateRoot, BrandInterface {
     function deleteModel($modelUuid){
         $model = $this->models->getItem($modelUuid);
         if($model->isNull()) throw new NotFoundException("model");
-        $this->appendLog(new DeleteLog("models", [
+        $this->appendLog(new DeleteLog("brand_models", [
             "whereCondation" => [
                 "uuid" => $model->getUuid()
             ]
@@ -78,7 +78,7 @@ class Brand extends BaseEntity implements AggregateRoot, BrandInterface {
         $model = $this->models->getItem($uuid);
         if($model->isNull()) throw new NullException("model");
         $model->changeName($newName);
-        $this->appendLog(new UpdateLog("models", [
+        $this->appendLog(new UpdateLog("brand_models", [
             "whereCondation" => [
                 "uuid" => $model->getUuid()
             ],
