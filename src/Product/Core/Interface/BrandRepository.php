@@ -6,5 +6,6 @@ interface BrandRepository {
     function findOneWithModels($uuid);
     function deleteBrand(Brand $brand);
     function findAll();
+    function findOneWithSingleModel($brandUuid, $modelUuid);
 
 }

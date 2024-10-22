@@ -91,6 +91,8 @@ class Brand extends BaseEntity implements AggregateRoot, BrandInterface {
         return $this->name;
     }
     function getModelUuid($uuid) {
-        return $this->models->getItem($uuid)->getUuid();
+        $model = $this->models->getItem($uuid);
+        if($model->isNull()) throw new NullException("model");
+        return $model->getUuid();
     }
 }

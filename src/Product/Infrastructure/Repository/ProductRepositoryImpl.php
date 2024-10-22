@@ -70,13 +70,13 @@ class ProductRepositoryImpl extends TransactionalRepository implements ProductRe
         $productObject    = $this->productDao->findOneByUuid($uuid);
                 
         if($filter["subscribers"] == "get"){
-            $subscriberCollection = $this->productSubscriberRepository->findAllProductSubscriberByProductAggregateUuid($productObject->uuid);
+            $subscriberCollection = $this->productSubscriberRepository->findAllProductSubscriberByProductUuid($productObject->uuid);
             $productObject->subscriers = $subscriberCollection;
 
         }
             
         if($filter["comments"] == "get"){
-            $commentIterator  = $this->commentRepository->findAllByProductAggregateUuid($productObject->uuid);
+            $commentIterator  = $this->commentRepository->findAllByProductUuid($productObject->uuid);
             $productObject->comments = $commentIterator;
 
         }
@@ -85,11 +85,11 @@ class ProductRepositoryImpl extends TransactionalRepository implements ProductRe
         //    $productObject->categories = $categoryIterator;
         //}
         if($filter["rates"] == "get"){
-            $rateIterator     = $this->rateRepository->findAllByProductAggregateUuid($productObject->uuid);
+            $rateIterator     = $this->rateRepository->findAllByProductUuid($productObject->uuid);
             $productObject->rates = $rateIterator;
         }
         if($filter["images"] == "get"){
-            $imageIterator    = $this->imageRepository->findAllByProductAggregateUuid($productObject->uuid);
+            $imageIterator    = $this->imageRepository->findAllByProductUuid($productObject->uuid);
             $productObject->images = $imageIterator;
         }
         return $productObject;

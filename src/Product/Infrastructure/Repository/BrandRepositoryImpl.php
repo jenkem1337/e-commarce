@@ -56,7 +56,14 @@ class BrandRepositoryImpl extends TransactionalRepository implements BrandReposi
         $brandObject->models = $modelObjects;
         return $brandObject; 
     }
-
+    function findOneWithSingleModel($brandUuid, $modelUuid){
+        $brandObject = $this->brandDao->findOneByUuid($brandUuid);
+        $modelObject = $this->modelRepository->findOneByUuid($modelUuid);
+        
+        $brandObject->model = $modelObject;
+        return $brandObject;
+        
+    }
     function deleteBrand(Brand $brand){
         $this->modelRepository->deleteByBrandUuid($brand->getUuid());
         $this->brandDao->deleteByUuid($brand->getUuid());

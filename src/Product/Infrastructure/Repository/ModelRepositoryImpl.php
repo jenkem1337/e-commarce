@@ -23,4 +23,8 @@ class ModelRepositoryImpl implements ModelRepository {
     function deleteByBrandUuid($brandUuid){
         $this->modelDao->deleteByBrandUuid($brandUuid);
     }
+
+    function findOneByUuid($uuid){
+        return $this->modelDao->findOneByUuid($uuid);
+    }
 }

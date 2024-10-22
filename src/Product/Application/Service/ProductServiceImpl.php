@@ -5,25 +5,32 @@ use Predis\Client;
 class ProductServiceImpl implements ProductService {
     private ProductRepository $productRepository;
     private CategoryRepository $categoryRepository;
+    private BrandRepository $brandRepository;
     private EmailService $emailService;
     private UploadService $uploadService;
 	function __construct(
         ProductRepository $productRepository,
         CategoryRepository $categoryRepository,
+        BrandRepository $brandRepository,
         UploadService $uploadService,
         EmailService $emailService,
     ) {
 	    $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
+        $this->brandRepository = $brandRepository;
         $this->uploadService = $uploadService;
         $this->emailService = $emailService;
     }
     function craeteNewProduct(ProductCreationalDto $dto): ResponseViewModel
     {
+        $brand = $this->brandRepository->findOneOnlyWithSingleModelByUuidAndModelUuid($dto->getBrand(), $dto->getModel());
+        
+        if($brand->isNull()) throw new NullException("brand");
+        
         $productDomainObject = Product::createNewProduct(
             $dto->getUuid(),
-            $dto->getBrand(),
-            $dto->getModel(),
+            $brand->getUuid(),
+            $brand->getModelUuid($dto->getModel()),
             $dto->getHeader(),
             $dto->getDescription(),
             $dto->getPrice(),
@@ -40,8 +47,8 @@ class ProductServiceImpl implements ProductService {
                 "message" => "Product created successfully !",
                 "data" => [
                     "uuid" => $dto->getUuid(),
-                    "brand"=>$dto->getBrand(),
-                    "model"=>$dto->getModel(),
+                    "brand_uuid"=>$dto->getBrand(),
+                    "model_uuid"=>$dto->getModel(),
                     "header"=>$dto->getHeader(),
                     "description"=>$dto->getDescription(),
                     "price"=>$dto->getPrice(),
@@ -131,11 +138,30 @@ class ProductServiceImpl implements ProductService {
    
     function findOneProductByUuid(FindOneProductByUuidDto $dto):ResponseViewModel{
         $productObject = $this->productRepository->findOneProductByUuid($dto->getUuid(),$dto->getFilter());
+        
+        if(isset($productObject->isNull)) throw new NotFoundException('product');
 
-        if($productObject->isNull) throw new NotFoundException('product');
+        $brandObject = $this->brandRepository->findOneWithSingleModel($productObject->brand_uuid, $productObject->model_uuid);
+        
+        if($dto->getFilter()["categories"] == "get"){
+            $categories = $this->categoryRepository->findAllByProductUuid($productObject->uuid);
+            $productObject->categories = $categories;
+        }
         
         return new SuccessResponse([
-            "data" => $productObject
+            "data" => [
+                "uuid" => $productObject->uuid,
+                "brand" => $brandObject,
+                "header" => $productObject->header,
+                "description" => $productObject->_description,
+                "price" =>$productObject->price,
+                "prev_price" => $productObject->prev_price,
+                "rate" => $productObject->rate,
+                "stock_quantity" => $productObject->stockquantity,
+                "categories" => $productObject->categories ?? null,
+                "created_at" => $productObject->created_at,
+                "updated_at" => $productObject->updated_at
+            ]
         ]);
     }
     function updateProductDetailsByUuid(ProductDetailDto $dto): ResponseViewModel {

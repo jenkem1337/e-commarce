@@ -3,8 +3,8 @@
 class ProductCreationalDto {
     public function __construct(  
     protected $uuid,  
-    protected $brand,
-    protected $model,
+    protected $brandUuid,
+    protected $modelUuid,
     protected $header,
     protected $description,
     protected $price,
@@ -22,7 +22,7 @@ class ProductCreationalDto {
      */ 
     public function getBrand()
     {
-        return $this->brand;
+        return $this->brandUuid;
     }
 
     /**
@@ -30,7 +30,7 @@ class ProductCreationalDto {
      */ 
     public function getModel()
     {
-        return $this->model;
+        return $this->modelUuid;
     }
 
     /**

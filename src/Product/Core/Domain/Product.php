@@ -68,8 +68,8 @@ class Product extends BaseEntity implements AggregateRoot, ProductInterface{
         $product =  new Product($uuid, $brand,$model, $header,  $description, $price, $stockQuantity, date('Y-m-d H:i:s'), date('Y-m-d H:i:s'));
         $product->appendLog(new InsertLog("products", [
             "uuid" => $product->getUuid(),
-            "brand" => $product->getBrand(),
-            "model" => $product->getModel(),
+            "brand_uuid" => $product->getBrand(),
+            "model_uuid" => $product->getModel(),
             "header" => $product->getHeader(),
             "_description" => $product->getDescription(),
             "price" => $product->getPrice(),
@@ -78,13 +78,6 @@ class Product extends BaseEntity implements AggregateRoot, ProductInterface{
             "prev_price" => null,
             "created_at" => $product->getCreatedAt(),
             "updated_at" => $product->getUpdatedAt()
-        ]));
-        $product->appendLog(new InsertLog("product_search", [
-            "product_uuid" => $product->getUuid(),
-            "brand" => $product->getBrand(),
-            "model" => $product->getModel(),
-            "header" => $product->getHeader(),
-            "description" => $product->getDescription(),
         ]));
         return $product;
     }
@@ -136,8 +129,8 @@ class Product extends BaseEntity implements AggregateRoot, ProductInterface{
         
         $this->appendLog(new UpdateLog("products", [
             "setter" => [
-                "brand" => $this->brand,
-                "model" => $this->model,
+                "brand_uuid" => $this->brand,
+                "model_uuid" => $this->model,
                 "header" => $this->header,
                 "_description" => $this->description,
                 "price" => $this->price,

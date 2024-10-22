@@ -30,7 +30,10 @@ class ProductControllerFactory implements Factory {
                 $rateRepositoryImpl,
                 $imageRepositoryImpl
         );
-        
+        $brandRepository = new BrandRepositoryImpl(
+            new BrandDaoImpl(MySqlPDOConnection::getInstance()),
+            new ModelRepositoryImpl(new ModelDaoImpl(MySqlPDOConnection::getInstance()))
+        );
 
         $productRepositoryAggregateRootDecorator = new ProductRepositoryAggregateRootDecorator($productRepositoryImpl);
 
@@ -39,6 +42,7 @@ class ProductControllerFactory implements Factory {
                 new ProductServiceImpl(
                     $productRepositoryAggregateRootDecorator,
                     $categoryRepositoryImpl,
+                    $brandRepository,
                     new UploadServiceImpl(MinIOConnection::getInstance()),
                     new EmailServiceImpl(new PHPMailer(true)),
                 ), $productRepositoryImpl

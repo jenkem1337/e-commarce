@@ -54,7 +54,7 @@ class ProductDaoImpl extends AbstractDataAccessObject implements ProductDao {
 	}
 	function findProductsByCriteria(FindProductsByCriteriaDto $findProductsByCriteriaDto){
         
-        $selectQuery = "SELECT product.uuid, product.brand, product.model, product.header, product._description, product.price, product.stockquantity, product.created_at, product.updated_at ";
+        $selectQuery = "SELECT product.uuid, product.brand_uuid, product.model_uuid, product.header, product._description, product.price, product.stockquantity, product.created_at, product.updated_at ";
         
         $categoriesJoinQuery = "";
         
@@ -212,7 +212,7 @@ class ProductDaoImpl extends AbstractDataAccessObject implements ProductDao {
 	
     function returnNullStatment() {
         $arr = [
-            "isNull" => null,
+            "isNull" => true,
             'uuid'=>null,
             'brand' => null,
             'model'=>null, 
