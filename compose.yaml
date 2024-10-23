@@ -1,16 +1,26 @@
 services:
-  php-backend:
-    container_name: php-backend
+  php-proxy:
+    container_name: php-proxy
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.PHP-Proxy
     ports:
       - "8000:80"
-    entrypoint: ["/bin/bash", "-c"]
-    command: ["a2enmod rewrite && service php8.3-fpm start && apachectl -D FOREGROUND"]
     networks:
       - php-app
-    restart: on-failure
+    restart: always
+    depends_on:
+      - php-backend-fpm
+  
+  php-backend-fpm:
+    container_name: php-backend-fpm
+    build:
+      context: .
+      dockerfile: Dockerfile.PHP-FPM
+    networks:
+      - php-app
+    
+    restart: always
   #broker:
   #  image: apache/kafka:latest
   #  container_name: broker
