@@ -1,6 +1,6 @@
 <?php
 
-class NullProductSubscriber implements ProductSubscriberInterface{
+class NullProductSubscriber implements ProductSubscriberInterface, NullEntityInterface{
     function __construct()
     {
         
@@ -23,7 +23,7 @@ class NullProductSubscriber implements ProductSubscriberInterface{
 
     public function getUpdatedAt(){}
 
-    function isNull(){
+    function isNull():bool{
         return true;
     }
 

@@ -1,10 +1,10 @@
 <?php
 
-class NullUser implements UserInterface {
+class NullUser implements UserInterface, NullEntityInterface {
     function __construct()
     {
     }
-    function isNull(){
+    function isNull():bool{
         return true;
     }
     public function getUuid(){}

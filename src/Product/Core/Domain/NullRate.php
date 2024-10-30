@@ -1,6 +1,6 @@
 <?php
-class NullRate implements RateInterface{
-    function isNull()
+class NullRate implements RateInterface, NullEntityInterface{
+    function isNull():bool
     {
         return true;
     }

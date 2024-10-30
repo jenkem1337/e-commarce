@@ -1,5 +1,5 @@
 <?php
-class NullCategory implements CategoryInterface {
+class NullCategory implements CategoryInterface, NullEntityInterface {
     function __construct()
     {
         
@@ -17,7 +17,7 @@ class NullCategory implements CategoryInterface {
 
     public function getUpdatedAt(){}
 
-    function isNull(){
+    function isNull():bool{
         return true;
     }
 

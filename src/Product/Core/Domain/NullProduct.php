@@ -1,7 +1,7 @@
 <?php
 
 
-class NullProduct implements ProductInterface {
+class NullProduct implements ProductInterface, NullEntityInterface {
     function __construct()
     {
         
@@ -71,7 +71,7 @@ class NullProduct implements ProductInterface {
 
     public function getUpdatedAt(){}
 
-    function isNull(){
+    function isNull():bool{
         return true;
     }
 

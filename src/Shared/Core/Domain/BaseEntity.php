@@ -1,7 +1,7 @@
 <?php
 use Ramsey\Uuid\Uuid;
 
-abstract class BaseEntity {
+abstract class BaseEntity implements ConcreteEntityInterface {
     private $uuid;
     private $transactionLogQueue;
     private $createdAt;
@@ -53,9 +53,10 @@ abstract class BaseEntity {
         return $this->updatedAt;
     }
 
-    function isNull(){
-        return false;
-    }
+   function isNull(): bool
+   {
+    return false;
+   }
 
     function appendLog(TransactionLog $log){
         if(!$log){
@@ -67,7 +68,7 @@ abstract class BaseEntity {
     /**
      * Get the value of transactionLogQueue
      */ 
-    public function getTransactionLogQueue()
+    public function getTransactionLogQueue(): SplQueue
     {
         return $this->transactionLogQueue;
     }

@@ -1,10 +1,10 @@
 <?php
 
-class NullModel implements ModelInterface {
+class NullModel implements ModelInterface, NullEntityInterface {
     function getName(){}
     function changeName($name){}
     function getBrandUuid(){}
-    function isNull(){return true;}
+    function isNull():bool{return true;}
     public function getUuid(){}
 
     public function getCreatedAt(){}

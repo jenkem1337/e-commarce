@@ -1,5 +1,5 @@
 <?php
-class NullComment implements CommentInterface {
+class NullComment implements CommentInterface, NullEntityInterface {
     function __construct()
     {
         
@@ -20,7 +20,7 @@ class NullComment implements CommentInterface {
 
     public function getUpdatedAt(){}
 
-    function isNull(){
+    function isNull():bool{
         return true;
     }
 

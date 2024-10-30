@@ -1,10 +1,10 @@
 <?php
 
-class NullRefreshToken implements RefreshTokenInterface {
+class NullRefreshToken implements RefreshTokenInterface, NullEntityInterface {
         function __construct()
         {
         }
-        function isNull(){
+        function isNull():bool{
             return true;
         }
         function createRefreshToken($expireTime){}

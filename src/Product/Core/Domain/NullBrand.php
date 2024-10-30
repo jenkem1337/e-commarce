@@ -1,9 +1,11 @@
 <?php
 
-class NullBrand implements BrandInterface {
+class NullBrand implements BrandInterface, NullEntityInterface {
     function getName(){}
     function changeName($name){}
-    function addModel($uuid, $name, $createdAt, $updatedAt){}
+    function addModel(ModelInterface $modelInterface) {}
+    function deleteModel($modelUuid){}
+    function createModel($name) {}
     function changeModelName($key, $value){}
     public function getUuid(){}
 
@@ -15,7 +17,9 @@ class NullBrand implements BrandInterface {
         
     }
 
-    function isNull(){}
+    function isNull():bool{
+        return true;
+    }
 
 
 }

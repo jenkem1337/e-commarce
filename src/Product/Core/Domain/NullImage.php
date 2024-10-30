@@ -1,6 +1,8 @@
 <?php
 
-class NullImage implements ImageInterface {
+use PHPUnit\Runner\BeforeTestHook;
+
+class NullImage implements ImageInterface, NullEntityInterface {
     function __construct()
     {
         
@@ -16,7 +18,7 @@ class NullImage implements ImageInterface {
 
     public function getUpdatedAt(){}
 
-    function isNull(){
+    function isNull():bool{
         return true;
     }
 

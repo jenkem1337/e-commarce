@@ -1,6 +1,6 @@
 <?php
 
-class NullShipping implements ShippingInterface {
+class NullShipping implements ShippingInterface, NullEntityInterface {
     
 	/**
 	 */
@@ -56,7 +56,7 @@ class NullShipping implements ShippingInterface {
 	 *
 	 * @return mixed
 	 */
-	function isNull() {
+	function isNull() :bool{
         return true;
 	}
 	/**
