@@ -101,8 +101,8 @@ class ProductRepositoryImpl extends TransactionalRepository implements ProductRe
         $productDomainObject = Product::newInstance(
 
             $productObject->uuid,
-            $productObject->brand,
-            $productObject->model,
+            $productObject->brand_uuid,
+            $productObject->model_uuid,
             $productObject->header,
             $productObject->_description,
             $productObject->price,
