@@ -4,11 +4,11 @@ use Firebase\JWT\Key;
 
 class JwtAuthMiddleware extends Middleware {
     function check():bool{
-            $headers = apache_request_headers();
+            $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? null;
         
-            if(!$headers['Authorization']) throw new NullException("authorization header");
+            if(!$authHeader) throw new NullException("authorization header");
             
-            $authorization = explode(' ', $headers['Authorization']);
+            $authorization = explode(' ', $authHeader);
             $jwt = $authorization[1];
             
             if(!$jwt) throw new DoesNotExistException('jwt token');
