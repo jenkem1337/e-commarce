@@ -1,0 +1,27 @@
+FROM php:8.2-cli
+RUN apt-get update && apt-get install -y \
+libpng-dev \
+libjpeg-dev \
+libfreetype6-dev \
+zip \
+unzip \
+librdkafka-dev \
+&& docker-php-ext-configure gd --with-freetype --with-jpeg \
+&& docker-php-ext-install gd
+
+COPY . /usr/src/kafka-consumer
+WORKDIR /usr/src/kafka-consumer
+RUN rm .env && mv .env.docker .env
+
+RUN docker-php-ext-install pdo pdo_mysql
+
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+
+RUN install-php-extensions @composer
+RUN composer install
+
+RUN pecl install rdkafka
+
+RUN docker-php-ext-enable rdkafka pdo pdo_mysql
+
+CMD ["php", "./AsyncProcessorBrokerController.php"]
