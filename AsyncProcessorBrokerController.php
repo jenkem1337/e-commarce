@@ -1,6 +1,8 @@
 <?php
 
-$conf = new RdKafka\Conf();
+require './vendor/autoload.php';
+
+$conf = $conf = new RdKafka\Conf();
 
 // Set a rebalance callback to log partition assignments (optional)
 $conf->setRebalanceCb(function (RdKafka\KafkaConsumer $kafka, $err, array $partitions = null) {
@@ -38,7 +40,6 @@ $conf->set('auto.offset.reset', 'earliest');
 $conf->set('enable.partition.eof', 'true');
 
 $consumer = new RdKafka\KafkaConsumer($conf);
-
 // Subscribe to topic 'test'
 $consumer->subscribe(
     [

@@ -1,7 +1,9 @@
 <?php
+
+require './vendor/autoload.php';
+
 $conf = new RdKafka\Conf();
 
-// Set a rebalance callback to log partition assignments (optional)
 $conf->setRebalanceCb(function (RdKafka\KafkaConsumer $kafka, $err, array $partitions = null) {
     switch ($err) {
         case RD_KAFKA_RESP_ERR__ASSIGN_PARTITIONS:
@@ -21,24 +23,14 @@ $conf->setRebalanceCb(function (RdKafka\KafkaConsumer $kafka, $err, array $parti
     }
 });
 
-// Configure the group.id. All consumer with the same group.id will consume
-// different partitions.
 $conf->set('group.id', 'order-saga-consumer');
-
-// Initial list of Kafka brokers
-$conf->set('metadata.broker.list', 'order-saga-broker');
-
-// Set where to start consuming messages when there is no initial offset in
-// offset store or the desired offset is out of range.
-// 'earliest': start from the beginning
-$conf->set('auto.offset.reset', 'earliest');
-
-// Emit EOF event when reaching the end of a partition
+$conf->set('metadata.broker.list', 'order-saga-broker:9092');
+$conf->set('auto.offset.reset', 'latest');
 $conf->set('enable.partition.eof', 'true');
+$conf->set("enable.auto.commit", "false");
 
 $consumer = new RdKafka\KafkaConsumer($conf);
 
-// Subscribe to topic 'test'
 $consumer->subscribe(['pay-with-CreditCart']);
 
 echo "Waiting for partition assignment... (make take some time when\n";
@@ -48,7 +40,9 @@ while (true) {
     $message = $consumer->consume(120*1000);
     switch ($message->err) {
         case RD_KAFKA_RESP_ERR_NO_ERROR:
-            echo var_dump($message);
+            echo $message->payload . "\n";
+            echo $message->topic_name;
+            $consumer->commit($message);
             break;
         case RD_KAFKA_RESP_ERR__PARTITION_EOF:
             echo "No more messages; will wait for more\n";
