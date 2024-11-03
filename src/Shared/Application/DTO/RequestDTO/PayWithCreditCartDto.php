@@ -1,5 +1,5 @@
 <?php
-class CreationalPaymentDto {
+class PayWithCreditCartDto {
     function __construct(
         private $userUuid,
         private $paymentMethod,

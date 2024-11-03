@@ -5,7 +5,7 @@ class PaymentServiceImpl implements PaymentService {
         private PaymentRepository $paymentRepository,
         private PaymentGateway $paymentGateway
     ){}
-    function payWithCreditCart(CreationalPaymentDto $dto){
-        
+    function payWithCreditCart(PayWithCreditCartDto $dto){
+        $payment = Payment::payWithCreditCart()
     }
 }
