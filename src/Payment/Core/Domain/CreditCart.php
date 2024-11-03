@@ -1,12 +1,14 @@
 <?php
 
-class CreditCart {
+class CreditCart implements PaymentStrategy{
     private function __construct(
         private $number,
         private $expirationDate,
         private $cvc,
         private $owner
-    ) {}
+    ) {
+        $this->checkCart();
+    }
 
     static function new($number, $expirationDate, $cvc, $owner) {
         return new CreditCart($number, $expirationDate, $cvc, $owner);
