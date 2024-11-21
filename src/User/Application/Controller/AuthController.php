@@ -21,15 +21,15 @@ class AuthController {
          $payload = [
              "exp"=> $expireTime ,
              "iat"=>$issuedAt,
-             "user_uuid"=>$response->getData()["data"]["uuid"],
-             "full_name"=>$response->getData()["data"]["full_name"],
-             "email"=>$response->getData()["data"]["email"],
-             "user_role"=>$response->getData()["data"]["role"]
+             "user_uuid"=>$response->getData()["uuid"],
+             "full_name"=>$response->getData()["full_name"],
+             "email"=>$response->getData()["email"],
+             "user_role"=>$response->getData()["role"]
          ];
          
          $token = JWT::encode($payload,  $_ENV["SECRET_KEY"], "HS256");
          http_response_code(200);
-         $refreshToken = $response->getData()["data"]["refresh_token"];
+         $refreshToken = $response->getData()["refresh_token"];
          echo json_encode([
              "message"=>"Login Process Succesful",
              "access_token"=> $token,
@@ -70,15 +70,15 @@ class AuthController {
              $payload = [
                  "exp"=> $expireTime ,
                  "iat"=>$issuedAt,
-                 "user_uuid"=>$response->getData()["data"]["uuid"],
-                 "full_name"=>$response->getData()["data"]["full_name"],
-                 "email"=>$response->getData()["data"]["email"],
-                 "user_role"=>$response->getData()["data"]["role"]
+                 "user_uuid"=>$response->getData()["uuid"],
+                 "full_name"=>$response->getData()["full_name"],
+                 "email"=>$response->getData()["email"],
+                 "user_role"=>$response->getData()["role"]
              ];
              
              $token = JWT::encode($payload,  $_ENV["SECRET_KEY"], "HS256");
              http_response_code(200);
-             $refreshToken = $response->getData()["data"]["refresh_token"];
+             $refreshToken = $response->getData()["refresh_token"];
              echo json_encode([
                  "message"=>"Token Refreshed",
                  "access_token"=> $token,
