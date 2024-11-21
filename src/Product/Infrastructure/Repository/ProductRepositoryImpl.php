@@ -53,14 +53,6 @@ class ProductRepositoryImpl extends TransactionalRepository implements ProductRe
         }
         return $productObjects;
     }
-    function createProduct(Product $p)
-    {
-        //$categories = $p->getCategories()->getItems();
-        $this->productDao->persist($p);
-        //foreach($categories as $category){
-        //    $this->categoryRepository->addCategoryUuidToProduct($category);
-        //}
-    }
     function findProductsByCriteria(FindProductsByCriteriaDto $findProductsByCriteriaDto)
     {
         $productObjects = $this->productDao->findProductsByCriteria($findProductsByCriteriaDto);
@@ -154,26 +146,13 @@ class ProductRepositoryImpl extends TransactionalRepository implements ProductRe
         $this->productDao->deleteByUuid($product->getUuid());
     }
     
-    function persistImage(Product $p)
-    {
-        $images = $p->getImages()->getItems();
-        foreach($images as $image){
-            $this->imageRepository->persist($image);
-        }
-        
-    }
-    function deleteImageByUuid($uuid)
-    {
-        $this->imageRepository->deleteByUuid($uuid);
-    }
-
     function findOneProductWithOnlySubscriberByUuid($uuid, $userUuid): ProductInterface{
         $productObject = $this->productDao->findOneByUuid($uuid);
         $productSubscriberDomainObject = $this->productSubscriberRepository->findOneOrEmptySubscriberByUuid($productObject->uuid, $userUuid);
         $productDomainObject = Product::newInstance(
             $productObject->uuid,
-            $productObject->brand,
-            $productObject->model,
+            $productObject->brand_uuid,
+            $productObject->model_uuid,
             $productObject->header,
             $productObject->_description,
             $productObject->price,
@@ -187,6 +166,24 @@ class ProductRepositoryImpl extends TransactionalRepository implements ProductRe
         return $productDomainObject;
     }
 
-
+    function findManyAggregateByUuids($uuids): ProductCollection {
+        $productObjects = $this->productDao->findManyByUuids($uuids);
+        $productCollection = new ProductCollection();
+        foreach($productObjects as $productObject) {
+            $product = Product::newInstance(
+                $productObject->uuid,
+                $productObject->brand_uuid,
+                $productObject->model_uuid,
+                $productObject->header,
+            $productObject->_description,
+            $productObject->price,
+            $productObject->stockquantity,
+            $productObject->created_at,
+            $productObject->updated_at
+            );
+            $productCollection->add($product);
+        }
+        return $productCollection;
+    }
     
 }
