@@ -1,7 +1,6 @@
 <?php
 
 interface ProductDao extends SaveChangesInterface, DatabaseTransaction{
-    function persist(Product $p);
     function deleteSubscriberByProductUuid($pUuid);
     function deleteByUuid($uuid);
     function findProductsByCriteria(FindProductsByCriteriaDto $findProductsByCriteriaDto);
@@ -10,4 +9,5 @@ interface ProductDao extends SaveChangesInterface, DatabaseTransaction{
     function findOneByUuid($uuid);
     function findBySearching($value, $startingLimit, $perPageForUsers);
     function findOneOrEmptySubscriberByUuid($uuid, $userUuid);
+    function findManyByUuids($uuids);
 }
