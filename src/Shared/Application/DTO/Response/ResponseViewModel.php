@@ -1,5 +1,5 @@
 <?php
 
 interface ResponseViewModel {
-    function getData():array;
+    function getData():mixed;
 }
