@@ -7,30 +7,28 @@ class ShippingRepositoryImpl extends TransactionalRepository implements Shipping
 	    $this->shippingDao = $shippingDao;
         parent::__construct($this->shippingDao);
 	}
-	
-    function findAll(): IteratorAggregate {
-        $shippingCollection = new ShippingCollection;
-        $shippingObj = $this->shippingDao->findAll();
-        foreach($shippingObj as $shipping){
-            $shippingDomainObject = Shipping::newInstance(
-                $shipping->shipping_type,
-                $shipping->uuid,
-                $shipping->price,
-                $shipping->created_at,
-                $shipping->updated_at
-            );
-            $shippingCollection->add($shippingDomainObject);
-        }
-        return $shippingCollection; 
+	function saveChanges(BaseEntity $shipping){
+        $this->shippingDao->saveChanges($shipping);
+    }
+    function findAll() {
+        return $this->shippingDao->findAll();
 	}
     function findOneByUuid($uuid): ShippingInterface
     {
         $shippingObj = $this->shippingDao->findOneByUuid($uuid);
 
         $shippingDomainObject = Shipping::newInstance(
-            $shippingObj->shipping_type,
             $shippingObj->uuid,
-            $shippingObj->price,
+            $shippingObj->type,
+            $shippingObj->status,
+            $shippingObj->address_title,
+            $shippingObj->address_owner_name,
+            $shippingObj->address_owner_surname,
+            $shippingObj->full_address,
+            $shippingObj->address_country,
+            $shippingObj->address_province,
+            $shippingObj->address_district,
+            $shippingObj->address_zipcode,
             $shippingObj->created_at,
             $shippingObj->updated_at
         );
