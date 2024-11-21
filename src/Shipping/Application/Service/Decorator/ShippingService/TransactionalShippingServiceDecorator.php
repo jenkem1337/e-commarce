@@ -20,4 +20,7 @@ class TransactionalShippingServiceDecorator extends ShippingServiceDecorator {
 
             return  $response;
     }
+    function createShippingForOrderCreation(CreationalShippingDto $dto): ResponseViewModel {
+        return parent::createShippingForOrderCreation($dto);
+    }
 }

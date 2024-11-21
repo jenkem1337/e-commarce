@@ -14,4 +14,7 @@ abstract class ShippingServiceDecorator implements ShippingService {
     {
         return $this->shippingService->findOneByUuid($dto);
     }
+    function createShippingForOrderCreation(CreationalShippingDto $dto): ResponseViewModel{
+        return $this->shippingService->createShippingForOrderCreation($dto);
+    }
 }
