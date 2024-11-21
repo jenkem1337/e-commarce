@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
     
     COPY . /var/www/html
     RUN rm .env && mv .env.docker .env
+    RUN echo "allow_url_fopen=On" >> /usr/local/etc/php/conf.d/custom.ini
 
     RUN docker-php-ext-install pdo pdo_mysql
     
