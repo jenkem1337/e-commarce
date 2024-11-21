@@ -13,7 +13,7 @@ $productController = (new ProductControllerFactory())->createInstance();
 $imageController = (new ImageControllerFactory())->createInstance(); 
 $shippingController = (new ShippingControllerFactory)->createInstance();
 $brandController = (new BrandControllerFactory)->createInstance();
-        
+$orderController = (new OrderControllerFactory)->createInstance();
 
 $f = new FrontController();
 
@@ -62,10 +62,12 @@ $f->registerRoute("DELETE", '/products/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}
 $f->registerRoute('POST', '/uploads/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/image', new UploadImageForProductCommand($imageController, new JwtAuthMiddleware));
 $f->registerRoute("DELETE", '/uploads/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/image/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/product', new DeleteImageCommand($imageController, new JwtAuthMiddleware));
 
+//Order Route
+$f->registerRoute("POST", "/orders", new PlaceOrderCommand($orderController));
+
 //Shipping Route
 $f->registerRoute("GET", "/shippings", new FindAllShippingMethodsCommand($shippingController, new JwtAuthMiddleware));
 $f->registerRoute("GET", "/shippings/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})", new FindOneShippingMethodCommand($shippingController, new JwtAuthMiddleware));
-
 $f->run($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']); 
 
 } catch (\Exception $err) {
