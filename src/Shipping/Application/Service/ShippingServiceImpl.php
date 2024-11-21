@@ -10,7 +10,7 @@ class ShippingServiceImpl implements ShippingService {
     {
         $shippings = $this->shippingRepository->findAll();
         return new SuccessResponse([
-            "data" => $shippings->getIterator()
+            "data" => $shippings
         ]);
     }
     function findOneByUuid(FindOneShippingMethodDto $dto): ResponseViewModel
@@ -21,11 +21,34 @@ class ShippingServiceImpl implements ShippingService {
             "message" => "A shipping founded",
             "data" => [
                 "uuid" => $shippingDomainModel->getUuid(),
-                "shipping_type" => $shippingDomainModel->getShippingType(),
-                "price" => $shippingDomainModel->getPrice(),
+                "type" => $shippingDomainModel->getShippingType()->getType(),
+                "price" => $shippingDomainModel->getShippingType()->getPrice(),
                 "created_at" => $shippingDomainModel->getCreatedAt(),
                 "updated_at" => $shippingDomainModel->getUpdatedAt()
     
+            ]
+        ]);
+    }
+
+    function createShippingForOrderCreation(CreationalShippingDto $dto): ResponseViewModel{
+        $shipping = Shipping::newInstanceFromOrderCreation(
+            $dto->getOrderAmount(),
+            $dto->getAddressTitle(),
+            $dto->getAddressOwnerName(),
+            $dto->getAddressOwnerSurname(),
+            $dto->getFullAddress(),
+            $dto->getAddressCountry(),
+            $dto->getAddressProvince(),
+            $dto->getAddressDistrict(),
+            $dto->getAddressZipCode()
+        );
+
+        $this->shippingRepository->saveChanges($shipping);
+
+        return new SuccessResponse([
+            "data" => [
+                "uuid" => $shipping->getUuid(),
+                "price" => $shipping->getShippingType()->getPrice()
             ]
         ]);
     }
