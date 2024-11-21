@@ -226,4 +226,19 @@ class ProductServiceImpl implements ProductService {
             ] 
         ]);
     }
+
+    function checkQuantityAndDecrease(CheckAndDecreaseProductsDto $dto): ResponseViewModel{
+        $productCollection = $this->productRepository->findManyAggregateByUuids($dto->getProductUuids());
+        
+        foreach($productCollection->getIterator() as $product) {
+            
+            if($product->isNull()) throw new NotFoundException("product");
+
+            $product->checkAndDecreaseQuantity($dto->getOrterItemsProductUuidReverseIndex());
+            
+            $this->productRepository->saveChanges($product);
+        }
+        
+        return new SuccessResponse(["data" => true]);
+    }
 }
