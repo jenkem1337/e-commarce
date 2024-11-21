@@ -8,28 +8,6 @@ class ProductDaoImpl extends AbstractDataAccessObject implements ProductDao {
         parent::__construct($this->dbConnection);
 
 	}
-	function persist(Product $p) {
-        $conn = $this->dbConnection->getConnection();
-        $stmt = $conn->prepare(
-            "INSERT INTO products (uuid, brand, model, header, _description, price, prev_price, rate, stockquantity, created_at, updated_at)
-            VALUES (:uuid, :brand, :model, :header, :_description, :price, :prev_price, :rate, :stockquantity, :created_at, :updated_at)"
-        );
-        $stmt->execute([
-            'uuid'=>$p->getUuid(),
-            'brand'=>$p->getBrand(),
-            'model'=>$p->getModel(),
-            'header'=>$p->getHeader(),
-            '_description'=>$p->getDescription(),
-            'price'=>$p->getPrice(),
-            'prev_price'=>NULL,
-            'rate'=>$p->getAvarageRate(),
-            'stockquantity'=>$p->getStockQuantity(),
-            'created_at'=>$p->getCreatedAt(),
-            'updated_at'=>$p->getUpdatedAt()
-        ]);
-        $conn = null;
-	}
-	
     function deleteSubscriberByProductUuid($pUuid)
     {
         $conn = $this->dbConnection->getConnection();
@@ -210,6 +188,21 @@ class ProductDaoImpl extends AbstractDataAccessObject implements ProductDao {
         return $products;
     }
 	
+    function findManyByUuids($uuids) {
+        $conn = $this->dbConnection->getConnection();
+        $limit = count($uuids);
+        $stmt = $conn->prepare(
+            "SELECT * FROM products 
+             WHERE uuid IN (:uuids) LIMIT $limit" 
+        );
+        $stmt->execute([
+            "uuids" => implode(", ", $uuids)
+        ]);
+        $products = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $conn = null;
+        if($products == null) return $this->returnManyNullStatement();
+        return $products;
+    }
     function returnNullStatment() {
         $arr = [
             "isNull" => true,
