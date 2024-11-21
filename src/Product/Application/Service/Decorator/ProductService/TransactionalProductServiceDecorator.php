@@ -124,5 +124,7 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
         } 
     }
 
-    
+    function checkQuantityAndDecrease(CheckAndDecreaseProductsDto $dto): ResponseViewModel {
+        return parent::checkQuantityAndDecrease($dto);
+    }
 }

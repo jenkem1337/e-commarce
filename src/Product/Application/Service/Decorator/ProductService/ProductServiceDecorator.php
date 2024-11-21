@@ -40,4 +40,7 @@ abstract class ProductServiceDecorator implements ProductService {
 	{
 		return $this->productService->deleteProductSubscriber($dto);
 	}
+	function checkQuantityAndDecrease(CheckAndDecreaseProductsDto $dto): ResponseViewModel {
+		return $this->productService->checkQuantityAndDecrease($dto);
+	}
 }
