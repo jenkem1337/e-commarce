@@ -10,15 +10,6 @@ class ProductRepositoryAggregateRootDecorator extends ProductRepositoryDecorator
     function saveChanges($e){
         parent::saveChanges($e);
     }
-    function persistImage(AggregateRoot $p)
-    {
-        parent::persistImage($p);
-    }
-    
-    function createProduct(AggregateRoot $p)
-    {
-        parent::createProduct($p);
-    }
     function deleteProductByUuid(AggregateRoot $p)
     {
         parent::deleteProductByUuid($p);
