@@ -11,4 +11,5 @@ interface ProductService {
     function findOneProductByUuid(FindOneProductByUuidDto $dto): ResponseViewModel;
     function updateProductDetailsByUuid(ProductDetailDto $dto):ResponseViewModel;
     function updateProductStockQuantity(ChangeProductStockQuantityDto $dto):ResponseViewModel;
+    function checkQuantityAndDecrease(CheckAndDecreaseProductsDto $dto):ResponseViewModel;
 }
