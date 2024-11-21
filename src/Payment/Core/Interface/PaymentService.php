@@ -1,5 +1,5 @@
 <?php
 
 interface PaymentService {
-    function payWithCreditCart(CreationalPaymentDto $dto);
+    function pay(PayOrderDto $dto):ResponseViewModel;
 }
