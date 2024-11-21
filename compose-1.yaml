@@ -24,17 +24,7 @@ services:
       - minio
     
     restart: always
-  
-  php-order-saga-consumer:
-    container_name: php-order-saga-consumer
-    build:
-      context: .
-      dockerfile: Dockerfile.OrderSagaBrokerController
-    networks:
-      - e-commarce-network
-    restart: always
-   
-  
+      
   #php-async-processor-consumer:
   #  container_name: php-async-processor-consumer
   #  build:
@@ -68,28 +58,6 @@ services:
       - "9092"
       - "9093"
 
-  order-saga-broker:
-    image: apache/kafka:latest
-    container_name: order-saga-broker
-    environment:
-      KAFKA_NODE_ID: 1
-      KAFKA_PROCESS_ROLES: broker,controller
-      KAFKA_LISTENERS: PLAINTEXT://order-saga-broker:9092,CONTROLLER://order-saga-broker:9093
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://order-saga-broker:9092
-      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
-      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@order-saga-broker:9093
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-      KAFKA_NUM_PARTITIONS: 3
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: true
-    networks:
-      - e-commarce-network
-    expose:
-      - "9092"
-      - "9093"
 
   #async-processor-broker:
   #  image: apache/kafka:latest
@@ -126,7 +94,6 @@ services:
       - e-commarce-network
     depends_on:
       - checkout-projection-broker
-      - order-saga-broker
   
   checkout-read-service:
     image: hasancansahan/checkout-read-side-service
