@@ -1,14 +1,16 @@
 <?php
 interface ShippingInterface {
-    function changePrice($price);
-    function setShippingAddress($shippingAddress);
-    function changeShippingAddress($shippingAddress);
-    function getShippingType();
+    function getShippingType():Type;
     function getShippingState();
-    function getWhenWillFinish();
-    function  getPrice();
-    function getShippingAddress();
     function getUuid();
+    function getAddressTitle();
+    function getAddressOwnerName();
+    function getAddressOwnerSurname();
+    function getFullAddress();
+    function getAddressCountry();
+    function getAddressProvince();
+    function getAddressDistrict();
+    function getAddressZipCode();
     function getCreatedAt();
     function getUpdatedAt();
     function isNull();
