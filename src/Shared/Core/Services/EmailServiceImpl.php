@@ -42,7 +42,7 @@ class EmailServiceImpl implements EmailService {
             $this->phpMailer->send();
         } catch (Exception $e) {
             echo json_encode(["mailler_err"=>$this->phpMailer->ErrorInfo]);
-            die();
+            throw $e;
         }
     }
 
@@ -62,7 +62,7 @@ class EmailServiceImpl implements EmailService {
 
         } catch (Exception $e) {
             echo json_encode(["mailler_err"=>$this->phpMailer->ErrorInfo]);
-            die();
+            throw $e;
 
         }
     }
@@ -90,10 +90,26 @@ class EmailServiceImpl implements EmailService {
             $this->phpMailer->send();
         } catch (Exception $e) {
             echo json_encode(["mailler_err"=>$this->phpMailer->ErrorInfo]);
-            die();
+            throw $e;
 
         }
+    }
 
+    function notifyUserForOrderCreated(PlaceOrderDto $dto){
+        try {
+            $this->serverOptions();
+            
+            $this->phpMailer->setFrom($_ENV['EMAIL'], "ADMIN");
+            $this->phpMailer->addAddress($dto->getEmail(), $dto->getAddressOwnerSurname());
+
+            $this->phpMailer->isHTML();
+            $this->phpMailer->Subject = "We have received your order, and it is being prepared";
+            $this->phpMailer->Body = "";
+            $this->phpMailer->send();
+        } catch (Exception $e) {
+            echo json_encode(["mailler_err"=>$this->phpMailer->ErrorInfo]);
+            throw $e;
+        }
     }
 
 }
