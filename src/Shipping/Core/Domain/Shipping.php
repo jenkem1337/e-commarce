@@ -1,84 +1,151 @@
 <?php
+use Ramsey\Uuid\Uuid;
 
-//this component development stage, not completed
 class Shipping extends BaseEntity implements AggregateRoot, ShippingInterface {
-    private $shippingType;
-    private $price;
-    private $shippingAddress;
-    private $shippingState;
-    private $whenWillFinish;
-    function __construct($shippingType,$uuid, $price, $createdAt, $updatedAt)
+    private Type $type;
+    private ShippingState $state;
+    private $addressTitle;
+    private $addressOwnerName;
+    private $addressOwnerSurname;
+    private $fullAddress;
+    private $addressCountry;
+    private $addressProvince;
+    private $addressDistrict;
+    private $addressZipCode;
+
+    function __construct($uuid, Type $type, ShippingState $shippingState, $addressTitle,$addressOwnerName,$addressOwnerSurname,$fullAddress,$addressCountry,$addressProvince,$addressDistrict, $addressZipCode,$createdAt, $updatedAt)
     {
-        if(!$shippingType) throw new NullException('shipping type');
-        $this->shippingType = $shippingType;
-        if(!$price) throw new NullException('price');
-        if($price < 0) throw new NegativeValueException();
-        $this->price = $price;
+        if(!$type) throw new NullException('shipping type');
+        $this->type = $type;
+        $this->state = $shippingState;
+        $this->addressTitle = $addressTitle;
+        $this->addressOwnerName = $addressOwnerName;
+        $this->addressOwnerSurname = $addressOwnerSurname;
+        $this->fullAddress = $fullAddress;
+        $this->addressCountry = $addressCountry;
+        $this->addressProvince = $addressProvince;
+        $this->addressDistrict = $addressDistrict;
+        $this->addressZipCode = $addressZipCode;
+    
         parent::__construct($uuid, $createdAt, $updatedAt);
 
     }
-    public static function newInstance($shippingType,$uuid, $price, $createdAt, $updatedAt):ShippingInterface {
+    public static function newInstance($uuid, Type $type, ShippingState $shippingState, $addressTitle,$addressOwnerName,$addressOwnerSurname,$fullAddress,$addressCountry,$addressProvince,$addressDistrict, $addressZipCode,$createdAt, $updatedAt):ShippingInterface {
         try {
-            return new Shipping($shippingType,$uuid, $price, $createdAt, $updatedAt);
+            return new Shipping($uuid, $type, $shippingState, $addressTitle,$addressOwnerName,$addressOwnerSurname,$fullAddress,$addressCountry,$addressProvince,$addressDistrict, $addressZipCode,$createdAt, $updatedAt);
+
         } catch (\Throwable $th) {
             return new NullShipping();
         }
     }
-    public static function newStrictInstance($shippingType,$uuid, $price, $createdAt, $updatedAt):ShippingInterface {
-        return new Shipping($shippingType,$uuid, $price, $createdAt, $updatedAt);
+    public static function newStrictInstance($uuid, Type $type, ShippingState $shippingState, $addressTitle,$addressOwnerName,$addressOwnerSurname,$fullAddress,$addressCountry,$addressProvince,$addressDistrict, $addressZipCode,$createdAt, $updatedAt):ShippingInterface {
+        return new Shipping($uuid,  $type, $shippingState,  $addressTitle,$addressOwnerName,$addressOwnerSurname,$fullAddress,$addressCountry,$addressProvince,$addressDistrict, $addressZipCode,$createdAt, $updatedAt);
     }
-    function setShippingAddress($shippingAddress){
-        if(!$shippingAddress) throw new NullException('shipping address');
-        $this->shippingAddress = $shippingAddress;
-
+    static function newInstanceFromOrderCreation(
+        $orderAmount,
+        $addressTitle,
+        $addressOwnerName,
+        $addressOwnerSurname,
+        $fullAddress,
+        $addressCountry,
+        $addressProvince,
+        $addressDistrict,
+        $addressZipCode
+    ):Shipping {
+        $date =  date('Y-m-d H:i:s');
+        $shipping =  new Shipping(UUID::uuid4(), Type::fromOrderAmount($orderAmount), ShippingState::PENDING, $addressTitle,$addressOwnerName,$addressOwnerSurname,$fullAddress,$addressCountry,$addressProvince,$addressDistrict,$addressZipCode, $date, $date);
+        
+        $shipping->appendLog(new InsertLog("shipments", [
+            "uuid" => $shipping->getUuid(),
+            "type" => $shipping->getShippingType()->getType(),
+            "status" => $shipping->getShippingState(),
+            "address_title" => $shipping->getAddressTitle(),
+            "address_owner_name" => $shipping->getAddressOwnerName(),
+            "address_owner_surname" => $shipping->getAddressOwnerSurname(),
+            "full_address" => $shipping->getFullAddress(),
+            "address_country" => $shipping->getAddressCountry(),
+            "address_province" => $shipping->getAddressProvince(),
+            "address_district" => $shipping->getAddressDistrict(),
+            "address_zipcode" => $shipping->getAddressZipCode(),
+            "created_at" => $shipping->getCreatedAt(),
+            "updated_at" => $shipping->getUpdatedAt()
+        ]));
+        return $shipping;
     }
-    function changePrice($price){
-        if(!$price) throw new NullException('price');
-        if($price < 0) throw new NegativeValueException();
-        $this->price = $price;
-    }
-    function changeShippingAddress($shippingAddress) {
-        if(!$shippingAddress) throw new NullException('shipping address');
-        $this->shippingAddress = $shippingAddress;
-    }
-
-    /**
-     * Get the value of shippingType
-     */ 
-    public function getShippingType()
+    
+    public function getShippingType(): Type
     {
-        return $this->shippingType;
+        return $this->type;
     }
 
-    /**
-     * Get the value of price
-     */ 
-    public function getPrice()
-    {
-        return $this->price;
-    }
-
-    /**
-     * Get the value of shippingAddress
-     */ 
-    public function getShippingAddress()
-    {
-        return $this->shippingAddress;
-    }
 
     /**
      * Get the value of shippingState
      */ 
     public function getShippingState()
     {
-        return $this->shippingState;
+        return $this->state->name;
+    }
+
+
+    public function getAddressTitle()
+    {
+        return $this->addressTitle;
     }
 
     /**
-     * Get the value of whenWillFinish
+     * Get the value of addressOwnerName
      */ 
-    public function getWhenWillFinish()
+    public function getAddressOwnerName()
     {
-        return $this->whenWillFinish;
+        return $this->addressOwnerName;
+    }
+
+    /**
+     * Get the value of addressOwnerSurname
+     */ 
+    public function getAddressOwnerSurname()
+    {
+        return $this->addressOwnerSurname;
+    }
+
+    /**
+     * Get the value of fullAddress
+     */ 
+    public function getFullAddress()
+    {
+        return $this->fullAddress;
+    }
+
+    /**
+     * Get the value of addressCountry
+     */ 
+    public function getAddressCountry()
+    {
+        return $this->addressCountry;
+    }
+
+    /**
+     * Get the value of addressProvince
+     */ 
+    public function getAddressProvince()
+    {
+        return $this->addressProvince;
+    }
+
+    /**
+     * Get the value of addressDistrict
+     */ 
+    public function getAddressDistrict()
+    {
+        return $this->addressDistrict;
+    }
+
+    /**
+     * Get the value of addressZipCode
+     */ 
+    public function getAddressZipCode()
+    {
+        return $this->addressZipCode;
     }
 } 
