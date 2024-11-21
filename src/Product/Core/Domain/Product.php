@@ -274,6 +274,14 @@ class Product extends BaseEntity implements AggregateRoot, ProductInterface{
         ]));
         return $image;
     }
+
+    function checkAndDecreaseQuantity($items) {
+        $orderItem = $items[$this->getUuid()];
+        if($this->getStockQuantity() < $orderItem->getQuantity()){
+            throw new ItemQuantityMuchMoreThanActualQuantityException();
+        }
+        $this->decrementStockQuantity($orderItem->getQuantity());
+    }
     function addRate(RateInterface $rate){
         $this->rates->add($rate);
     }
