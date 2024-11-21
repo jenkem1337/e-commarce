@@ -1,5 +1,6 @@
 <?php
 interface ShippingRepository {
-    function findAll():IteratorAggregate;
+    function saveChanges(BaseEntity $shipping);
+    function findAll();
     function findOneByUuid($uuid): ShippingInterface;
 }
