@@ -12,8 +12,8 @@ class SuccessResponse implements ResponseViewModel, JsonSerializable{
     /**
      * Get the value of data
      */ 
-    public function getData(): array
+    public function getData(): mixed
     {
-        return $this->data;
+        return $this->data["data"];
     }
 }
