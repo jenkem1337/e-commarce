@@ -1,19 +1,28 @@
 <?php
 
 class CreditCart implements PaymentStrategy{
+    private $number;
+    private $expirationDate;
+    private $cvc;
+    private $owner;
+
     private function __construct(
-        private $number,
-        private $expirationDate,
-        private $cvc,
-        private $owner
+        $number,
+        $expirationDate,
+        $cvc,
+        $owner
     ) {
+        $this->number = $number;
+        $this->expirationDate = $expirationDate;
+        $this->cvc = $cvc;
+        $this->owner = $owner;
         $this->checkCart();
     }
 
     static function new($number, $expirationDate, $cvc, $owner) {
         return new CreditCart($number, $expirationDate, $cvc, $owner);
     }
-    function checkCart(){
+    private function checkCart(){
         $this->luhnCheckForCreditCartNumber($this->number) ?: throw new InvalidCartNumberException();
         $this->isValidCardExpirationDate($this->expirationDate) ?: throw new InvalidCartExpirationExcepion(); 
         $this->isValidCVC($this->cvc) ?: throw new InvalidCartCVCException();
