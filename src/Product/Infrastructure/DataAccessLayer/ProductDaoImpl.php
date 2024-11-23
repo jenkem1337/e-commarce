@@ -39,6 +39,8 @@ class ProductDaoImpl extends AbstractDataAccessObject implements ProductDao {
         $whereQuery = " WHERE ";
         $isWhereConditionSetted = false;
         
+        $executebleKeys = [];
+
         if($findProductsByCriteriaDto->getPriceLowerBound()){
             if(!$isWhereConditionSetted){
                 $whereQuery .= " product.price >= :price_lower_bound";
@@ -46,6 +48,7 @@ class ProductDaoImpl extends AbstractDataAccessObject implements ProductDao {
             } else {
                 $whereQuery .= " AND product.price >= :price_lower_bound";
             }
+            $executebleKeys["price_lower_bound"] = $findProductsByCriteriaDto->getPriceLowerBound();
         }
         if ($findProductsByCriteriaDto->getPriceUpperBound()){
             if(!$isWhereConditionSetted){
@@ -55,40 +58,52 @@ class ProductDaoImpl extends AbstractDataAccessObject implements ProductDao {
             else {
                 $whereQuery .= " AND product.price <= :price_upper_bound";
             }
+            $executebleKeys["price_upper_bound"] = $findProductsByCriteriaDto->getPriceUpperBound();
         }
         if(count($findProductsByCriteriaDto->getSpesificCategories()) > 0) {
+            $placeholders = [];
+            foreach ($findProductsByCriteriaDto->getSpesificCategories() as $index => $uuid) {
+                $placeholders[] = ":category_uuid_$index";
+            }
+
             $categoriesJoinQuery .= " JOIN product_category as pc ON pc.product_uuid = product.uuid";
             
             if(!$isWhereConditionSetted){
-                $whereQuery .= " pc.category_uuid IN (:category_uuids)";
+                $whereQuery .= " pc.category_uuid IN (".implode(',', $placeholders).")";
                 $isWhereConditionSetted = true;
             } 
             else {
-                $whereQuery .= " AND pc.category_uuid IN (:category_uuids)";
+                $whereQuery .= " AND pc.category_uuid IN (".implode(',', $placeholders).")";
             }
         }
+        
         $startLimit = (int) $findProductsByCriteriaDto->getStartingLimit(); 
         $perPage = (int) $findProductsByCriteriaDto->getPerPageForProduct();
 
         $whereQuery .= " LIMIT $startLimit, $perPage" ;
+        
         $selectQuery .= " FROM products as product";
+        
         $sql = $selectQuery . "" . $categoriesJoinQuery . "" . $whereQuery;
+        
         $conn =  $this->dbConnection->getConnection();
+        
         $stmt = $conn->prepare($sql);
-        if(count($findProductsByCriteriaDto->getSpesificCategories()) == 0){
-            $stmt->execute([
-                "price_lower_bound" => $findProductsByCriteriaDto->getPriceLowerBound(),
-                "price_upper_bound" => $findProductsByCriteriaDto->getPriceUpperBound(),
-            ]);
-    
+        
+        if(count(value: $findProductsByCriteriaDto->getSpesificCategories()) == 0){
+            $stmt->bindValue("price_lower_bound",  $findProductsByCriteriaDto->getPriceLowerBound());
+            $stmt->bindValue("price_upper_bound",  $findProductsByCriteriaDto->getPriceUpperBound());    
+        
         } else {
-            $stmt->execute([
-                "price_lower_bound" => $findProductsByCriteriaDto->getPriceLowerBound(),
-                "price_upper_bound" => $findProductsByCriteriaDto->getPriceUpperBound(),
-                "category_uuids"    => implode(", ", $findProductsByCriteriaDto->getSpesificCategories()),
-            ]);
-    
+            
+            $stmt->bindValue("price_lower_bound",  $findProductsByCriteriaDto->getPriceLowerBound());
+            $stmt->bindValue("price_upper_bound",  $findProductsByCriteriaDto->getPriceUpperBound());    
+
+            foreach ($findProductsByCriteriaDto->getSpesificCategories() as $index => $uuid) {
+                $stmt->bindValue(":category_uuid_$index", $uuid);
+            }    
         }
+        $stmt->execute();
         $products = $stmt->fetchAll(PDO::FETCH_OBJ);    
         $conn = null;
         if($products == null) return $this->returnManyNullStatement();
