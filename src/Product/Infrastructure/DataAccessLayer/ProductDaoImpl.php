@@ -39,8 +39,6 @@ class ProductDaoImpl extends AbstractDataAccessObject implements ProductDao {
         $whereQuery = " WHERE ";
         $isWhereConditionSetted = false;
         
-        $executebleKeys = [];
-
         if($findProductsByCriteriaDto->getPriceLowerBound()){
             if(!$isWhereConditionSetted){
                 $whereQuery .= " product.price >= :price_lower_bound";
@@ -48,7 +46,6 @@ class ProductDaoImpl extends AbstractDataAccessObject implements ProductDao {
             } else {
                 $whereQuery .= " AND product.price >= :price_lower_bound";
             }
-            $executebleKeys["price_lower_bound"] = $findProductsByCriteriaDto->getPriceLowerBound();
         }
         if ($findProductsByCriteriaDto->getPriceUpperBound()){
             if(!$isWhereConditionSetted){
@@ -58,7 +55,6 @@ class ProductDaoImpl extends AbstractDataAccessObject implements ProductDao {
             else {
                 $whereQuery .= " AND product.price <= :price_upper_bound";
             }
-            $executebleKeys["price_upper_bound"] = $findProductsByCriteriaDto->getPriceUpperBound();
         }
         if(count($findProductsByCriteriaDto->getSpesificCategories()) > 0) {
             $placeholders = [];
@@ -205,14 +201,20 @@ class ProductDaoImpl extends AbstractDataAccessObject implements ProductDao {
 	
     function findManyByUuids($uuids) {
         $conn = $this->dbConnection->getConnection();
+        $placeholders = [];
+        foreach ($uuids as $index => $uuid) {
+            $placeholders[] = ":product_uuid_$index";
+        }
+
         $limit = count($uuids);
         $stmt = $conn->prepare(
             "SELECT * FROM products 
-             WHERE uuid IN (:uuids) LIMIT $limit" 
+             WHERE uuid IN (".implode(',', $placeholders).") LIMIT $limit" 
         );
-        $stmt->execute([
-            "uuids" => implode(", ", $uuids)
-        ]);
+        foreach($uuids as $index => $uuid) {
+            $stmt->bindValue("product_uuid_$index", $uuid);
+        }
+        $stmt->execute();
         $products = $stmt->fetchAll(PDO::FETCH_OBJ);
         $conn = null;
         if($products == null) return $this->returnManyNullStatement();
