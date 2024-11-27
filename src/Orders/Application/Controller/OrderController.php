@@ -36,6 +36,7 @@ class OrderController {
                 $checkout->checkoutItemDocument
             )
         );
+        $this->remoteCheckoutService->completeCheckout($checkout->uuid);
         http_response_code(201);
         echo json_encode($response);
 
