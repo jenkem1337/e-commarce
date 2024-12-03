@@ -1,4 +1,5 @@
 <?php
+
 use Ramsey\Uuid\Uuid;
 class Order extends BaseEntity implements AggregateRoot, OrderInterface {
     private $userUuid;
@@ -9,22 +10,35 @@ class Order extends BaseEntity implements AggregateRoot, OrderInterface {
     private OrderItemCollection $items;
     private function __construct(
         $uuid,
-        $userUuid, 
+        $userUuid,
+        $paymentUuid,
+        $shippingUuid,
         $amount,
         $orderStatus,
         $createdAt, 
         $updatedAt){
             parent::__construct($uuid, $createdAt, $updatedAt);
-
+            if(!$userUuid)    throw new NullException("user uuid");
+            if(!$amount)      throw new NullException("amount");
+            if($amount < 0)   throw new NegativeValueException();
+            if(!$orderStatus) throw new NullException("order status");
             $this->userUuid = $userUuid;
+            $this->paymentUuid = $paymentUuid;
+            $this->shippingUuid = $shippingUuid;
             $this->amount = $amount;
             $this->status = $orderStatus;
             $this->items = new OrderItemCollection();
     }
-
+    static function newInstance($uuid,$userUuid, $paymentUuid, $shippingUuid, $amount,$orderStatus,$createdAt, $updatedAt):OrderInterface {
+        try {
+            return new Order($uuid, $userUuid, $paymentUuid, $shippingUuid, $amount, $orderStatus, $createdAt, $updatedAt);
+        } catch (\Throwable $th) {
+            return new NullOrder();
+        }
+    }
     static function placeOrder($userUuid, $amount, $orderItems){
         $timestamp = date('Y-m-d H:i:s');
-        $order = new Order(UUID::uuid4(),$userUuid, $amount, OrderStatus::CREATED, $timestamp, $timestamp);
+        $order = new Order(UUID::uuid4(),$userUuid, null, null, $amount, OrderStatus::CREATED, $timestamp, $timestamp);
         $order->appendLog(new InsertLog("orders", [
             "uuid" => $order->getUuid(),
             "user_uuid" => $order->getUserUuid(),
@@ -85,9 +99,22 @@ class Order extends BaseEntity implements AggregateRoot, OrderInterface {
         $this->appendLog(new UpdateLog("orders", [
             "whereCondation" => ["uuid" => $this->getUuid()],
             "setter" => [
-                "status" => $this->getStatus()
+                "status" => $this->getStatus(),
+                "updated_at" => date('Y-m-d H:i:s')
             ]
         ]));
+    }
+
+    function setStatusToDispatched(){
+        $this->status = OrderStatus::DISPATCHED;
+        $this->appendLog(new UpdateLog("orders", [
+            "whereCondation" => ["uuid" => $this->getUuid()],
+            "setter" => [
+                "status" => $this->getStatus(),
+                "updated_at" => date('Y-m-d H:i:s')
+            ]
+        ]));
+
     }
     /**
      * Get the value of userUuid
