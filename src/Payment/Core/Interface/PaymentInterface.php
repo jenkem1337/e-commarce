@@ -1,6 +1,8 @@
 <?php
-interface PaymentInterface {
-
+interface PaymentInterface extends BaseEntityInterface {
+    function setStatusToCompleted();
+    function setStatusToRefunded();
+    function setStatusToFailed();
     function getUserUuid() ;
     function getAmount() ;
     function getMethod() ;

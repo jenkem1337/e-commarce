@@ -1,5 +1,8 @@
 <?php
 class NullPayment implements PaymentInterface, NullEntityInterface {
+    function setStatusToFailed(){}
+    function setStatusToCompleted(){}
+    function setStatusToRefunded() {}
     function getUserUuid() {}
     function getAmount() {}
     function getMethod() {}

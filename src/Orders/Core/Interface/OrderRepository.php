@@ -2,4 +2,5 @@
 
 interface OrderRepository {
     function saveChanges(Order $order);
+    function findOneAggregateByUuid($uuid):OrderInterface;
 }

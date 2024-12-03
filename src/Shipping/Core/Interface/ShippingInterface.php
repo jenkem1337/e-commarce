@@ -1,5 +1,9 @@
 <?php
 interface ShippingInterface {
+    function setStatusToCanceled();
+    function isDelivered();
+    function setStatusToDispatched();
+    function setStateToDelivered();
     function getShippingType():Type;
     function getShippingState();
     function getUuid();

@@ -6,24 +6,17 @@ class NullShipping implements ShippingInterface, NullEntityInterface {
 	 */
 	function __construct() {
 	}
+	function setStatusToCanceled(){}
+	function isDelivered(){}
+	function setStateToDelivered(){}
+	function setStatusToDispatched(){}
 	function changeShippingAddress($shippingAddress)
 	{
 		
 	}
-	/**
-	 *
-	 * @return mixed
-	 */
-	function getShippingType() {
-	}
-	
-	/**
-	 *
-	 * @return mixed
-	 */
 	function getPrice() {
 	}
-	
+	function getShippingType(): Type {return new Type(ShippingType::FREE , 0);}
 	/**
 	 *
 	 * @return mixed
@@ -51,7 +44,14 @@ class NullShipping implements ShippingInterface, NullEntityInterface {
 	 */
 	function getUpdatedAt() {
 	}
-	
+	function getAddressCountry(){}
+	function getAddressDistrict(){}
+	function getAddressOwnerName(){}
+	function getAddressOwnerSurname(){}
+	function getAddressProvince(){}
+	function getAddressTitle(){}
+	function getAddressZipCode(){}
+	function getFullAddress(){}
 	/**
 	 *
 	 * @return mixed
