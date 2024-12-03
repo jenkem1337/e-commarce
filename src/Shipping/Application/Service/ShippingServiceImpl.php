@@ -52,4 +52,48 @@ class ShippingServiceImpl implements ShippingService {
             ]
         ]);
     }
+
+    function setStateToDispatched(ShippingStatusDto $dto) {
+        $shipmentAggregate = $this->shippingRepository->findOneByUuid($dto->getUuid());
+        
+        if($shipmentAggregate->isNull()) throw new NotFoundException("shippiment");
+
+        $shipmentAggregate->setStatusToDispatched();
+
+        $this->shippingRepository->saveChanges($shipmentAggregate);
+    }
+
+    function setStateToDelivered(ShippingStatusDto $dto):ResponseViewModel{
+        $shipmentAggregate = $this->shippingRepository->findOneByUuid($dto->getUuid());
+        
+        if($shipmentAggregate->isNull()) throw new NotFoundException("shippiment");
+
+        $shipmentAggregate->setStateToDelivered();
+
+        $this->shippingRepository->saveChanges($shipmentAggregate);
+        return new SuccessResponse([
+            "message" => "Shipment successfully delivered to customer",
+            "data" => [
+                "uuid" => $shipmentAggregate->getUuid()
+            ]
+        ]);
+    }
+
+    function isShipmentDelivered($dto) {
+        $shipmentAggregate = $this->shippingRepository->findOneByUuid($dto->getUuid());
+        
+        if($shipmentAggregate->isNull()) throw new NotFoundException("shippiment");
+
+        $shipmentAggregate->isDelivered();
+    }
+
+    function setStateToCanceled(ShippingStatusDto $shippingStatusDto) {
+        $shipmentAggregate = $this->shippingRepository->findOneByUuid($shippingStatusDto->getUuid());
+        
+        if($shipmentAggregate->isNull()) throw new NotFoundException("shippiment");
+
+        $shipmentAggregate->setStatusToCanceled();
+        
+        $this->shippingRepository->saveChanges($shipmentAggregate);
+    }
 }

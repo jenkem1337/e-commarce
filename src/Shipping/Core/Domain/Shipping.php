@@ -73,6 +73,46 @@ class Shipping extends BaseEntity implements AggregateRoot, ShippingInterface {
         return $shipping;
     }
     
+    function setStatusToDispatched() {
+        $this->state = ShippingState::DISPATCHED;
+        $this->appendLog(new UpdateLog("shipments", [
+            "whereCondation" => ["uuid" => $this->getUuid()],
+            "setter" => [
+                "status" => $this->getShippingState(),
+                "updated_at" => date('Y-m-d H:i:s')
+            ]
+        ]));
+
+    }
+
+    function setStateToDelivered() {
+        $this->state = ShippingState::DELIVERED;
+        $this->appendLog(new UpdateLog("shipments", [
+            "whereCondation" => ["uuid" => $this->getUuid()],
+            "setter" => [
+                "status" => $this->getShippingState(),
+                "updated_at" => date('Y-m-d H:i:s')
+            ]
+        ]));
+
+    }
+
+    function setStatusToCanceled(){
+        $this->state = ShippingState::CANCELED;
+        $this->appendLog(new UpdateLog("shipments", [
+            "whereCondation" => ["uuid" => $this->getUuid()],
+            "setter" => [
+                "status" => $this->getShippingState(),
+                "updated_at" => date('Y-m-d H:i:s')
+            ]
+        ]));
+    }
+    
+    function isDelivered() {
+        if($this->state !== ShippingState::DELIVERED) {
+            throw new ShippingHasNotDeliveredException();
+        }
+    }
     public function getShippingType(): Type
     {
         return $this->type;

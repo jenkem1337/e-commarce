@@ -34,4 +34,17 @@ class PaymentServiceImpl implements PaymentService {
         }
         return $response;
     }
+
+    function refund(RefundPaymentDto $refundPaymentDto){
+        $paymentAggregate = $this->paymentRepository->findOneAggregateByUuid($refundPaymentDto->getUuid());
+        
+        if ($paymentAggregate->isNull()) throw new NotFoundException("payment");
+
+        $this->paymentGateway->refund($paymentAggregate);
+
+        $paymentAggregate->setStatusToCompleted();
+
+        $this->paymentRepository->saveChanges($paymentAggregate);
+
+    }
 }

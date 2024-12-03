@@ -8,7 +8,21 @@ class PaymentRepositoryImpl extends TransactionalRepository implements PaymentRe
         parent::__construct($this->paymentDao);
     }
 
-    function saveChanges(Payment $peyment){
-        $this->paymentDao->saveChanges($peyment);
+    function saveChanges(Payment $payment){
+        $this->paymentDao->saveChanges($payment);
+    }
+
+    function findOneAggregateByUuid($uuid): PaymentInterface {
+        $paymentObject = $this->paymentDao->findOneByUuid($uuid);
+
+        return Payment::newInstance(
+            $paymentObject->uuid,
+            $paymentObject->user_uuid,
+            $paymentObject->amount,
+            $paymentObject->method,
+            $paymentObject->status,
+            $paymentObject->created_at,
+            $paymentObject->updated_at
+        );
     }
 }
