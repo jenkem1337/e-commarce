@@ -2,8 +2,9 @@
 
 class NullOrder implements OrderInterface {
     function determineLatestAmount($shippingPrice){}
-function setStateToProcessingAndAssignPaymentAndShippingUuid($paymentUuid, $shippingUuid){}
-function setStatusToDelivered(){}
+    function setStateToProcessingAndAssignPaymentAndShippingUuid($paymentUuid, $shippingUuid){}
+    function setStatusToDelivered(){}
+    function setStatusToDispatched(){}
     public function getUserUuid(){}
 
     public function getPaymentUuid(){}
@@ -15,7 +16,11 @@ function setStatusToDelivered(){}
     public function getStatus(): string {return OrderStatus::CANCELLED->value;}
 
     public function getItems(): OrderItemCollection{return new OrderItemCollection();}
-    function isNull() {
+
+    function getCreatedAt(){}
+    function getUpdatedAt(){}
+    function getUuid(){}
+    function isNull(): bool {
         return true;
     }
 }
