@@ -7,7 +7,7 @@ class ShippingRepositoryImpl extends TransactionalRepository implements Shipping
 	    $this->shippingDao = $shippingDao;
         parent::__construct($this->shippingDao);
 	}
-	function saveChanges(BaseEntity $shipping){
+	function saveChanges(Shipping $shipping){
         $this->shippingDao->saveChanges($shipping);
     }
     function findAll() {

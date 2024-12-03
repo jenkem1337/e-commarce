@@ -1,6 +1,6 @@
 <?php
 interface ShippingRepository {
-    function saveChanges(BaseEntity $shipping);
+    function saveChanges(Shipping $shipping);
     function findAll();
     function findOneByUuid($uuid): ShippingInterface;
 }
