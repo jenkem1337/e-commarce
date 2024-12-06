@@ -233,8 +233,31 @@ class ProductServiceImpl implements ProductService {
         foreach($productCollection->getIterator() as $product) {
             
             if($product->isNull()) throw new NotFoundException("product");
+            
+            $orderItem = $dto->getOrterItemsProductUuidReverseIndex()[$product->getUuid()];
+            
+            if($product->getStockQuantity() < $orderItem->getQuantity()){
+                throw new ItemQuantityMuchMoreThanActualQuantityException();
+            }
+    
+            $product->decrementStockQuantity($orderItem->getQuantity());
+            
+            $this->productRepository->saveChanges($product);
+        }
+        
+        return new SuccessResponse(["data" => true]);
+    }
 
-            $product->checkAndDecreaseQuantity($dto->getOrterItemsProductUuidReverseIndex());
+    function incrementStockQuantityForCanceledOrder($dto): ResponseViewModel {
+        $productCollection = $this->productRepository->findManyAggregateByUuids($dto->getProductUuids());
+        
+        foreach($productCollection->getIterator() as $product) {
+            
+            if($product->isNull()) throw new NotFoundException("product");
+            
+            $orderItem = $dto->getOrterItemsProductUuidReverseIndex()[$product->getUuid()];
+    
+            $product->incrementStockQuantity($orderItem->getQuantity());
             
             $this->productRepository->saveChanges($product);
         }
