@@ -16,7 +16,6 @@ interface ProductInterface {
         function addImage(ImageInterface $img);
         function addImages($images);
         function deleteImage($imageUuid):ImageInterface;
-        function checkAndDecreaseQuantity($items);
         function swapSubscribersCollection(IteratorAggregate $i);
         function swapCategoryCollection(IteratorAggregate $i);
         function swapRateCollection(IteratorAggregate $i);
