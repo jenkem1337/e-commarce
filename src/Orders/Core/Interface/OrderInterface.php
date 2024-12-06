@@ -7,6 +7,7 @@ interface OrderInterface extends BaseEntityInterface{
     function setStateToProcessingAndAssignPaymentAndShippingUuid($paymentUuid, $shippingUuid);
     function setStatusToDelivered();
     function setStatusToDispatched();
+    function setStatusToCanceled();
     public function getUserUuid();
 
     public function getPaymentUuid();
