@@ -42,16 +42,24 @@ class OrderServiceImpl implements OrderService {
 
     function findByCriteria() {}
     
-    //TODO This method is in progress.
     function cancelOrder(OrderStatusDto $dto):ResponseViewModel{
-        $orderAggregate = $this->orderRepository->findOneAggregateByUuid($dto->getUuid());
+        $orderAggregate = $this->orderRepository->findOneAggregateWithItemsByUuid($dto->getUuid());
 
         if($orderAggregate->isNull()) throw new NotFoundException("order");
+
+        $orderAggregate->setStatusToCanceled();
 
         $this->paymentService->refund(new RefundPaymentDto($orderAggregate->getPaymentUuid()));
 
         $this->shippingService->setStateToCanceled(new ShippingStatusDto($orderAggregate->getShippingUuid()));
 
+        $this->productService->incrementStockQuantityForCanceledOrder(
+            new IncrementStockQuantityForCanceledOrderDto(
+                $orderAggregate->getItems()
+            )
+        );
+
+        $this->orderRepository->saveChanges($orderAggregate);
 
         return new SuccessResponse([]);
     }
