@@ -12,4 +12,5 @@ interface ProductService {
     function updateProductDetailsByUuid(ProductDetailDto $dto):ResponseViewModel;
     function updateProductStockQuantity(ChangeProductStockQuantityDto $dto):ResponseViewModel;
     function checkQuantityAndDecrease(CheckAndDecreaseProductsDto $dto):ResponseViewModel;
+    function incrementStockQuantityForCanceledOrder($dto): ResponseViewModel;
 }
