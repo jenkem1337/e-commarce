@@ -14,6 +14,14 @@ class OrderItem extends BaseEntity {
     static function newStrictInsatance($uuid, $orderUuid, $productUuid, $quantity, $createdAt, $updatedAt): OrderItem {
         return new OrderItem($uuid, $orderUuid, $productUuid, $quantity, $createdAt, $updatedAt);
     }
+
+    static function newInstance($uuid, $orderUuid, $productUuid, $quantity, $createdAt, $updatedAt){
+        try {
+            return new OrderItem($uuid, $orderUuid, $productUuid, $quantity, $createdAt, $updatedAt);
+        } catch (\Throwable $th) {
+            return new NullOrderItem();
+        }
+    }
     /**
      * Get the value of productUuid
      */ 
