@@ -36,6 +36,16 @@ class Order extends BaseEntity implements AggregateRoot, OrderInterface {
             return new NullOrder();
         }
     }
+
+    static function newInstanceWithItems($uuid,$userUuid, $paymentUuid, $shippingUuid, $amount,$orderStatus, $items, $createdAt, $updatedAt):OrderInterface {
+        try {
+            $order = new Order($uuid, $userUuid, $paymentUuid, $shippingUuid, $amount, $orderStatus, $createdAt, $updatedAt);
+            $order->swapItemCollection($items);
+            return $order;
+        } catch (\Throwable $th) {
+            return new NullOrder();
+        }
+    }
     static function placeOrder($userUuid, $amount, $orderItems){
         $timestamp = date('Y-m-d H:i:s');
         $order = new Order(UUID::uuid4(),$userUuid, null, null, $amount, OrderStatus::CREATED, $timestamp, $timestamp);
@@ -115,6 +125,27 @@ class Order extends BaseEntity implements AggregateRoot, OrderInterface {
             ]
         ]));
 
+    }
+
+    function setStatusToCanceled() {
+        if($this->status == OrderStatus::DISPATCHED) {
+            throw new OrderCannotCanceledException("You cannot cancel the order because it has already been shipped");
+        }
+        if($this->status == OrderStatus::DELIVERED) {
+            throw new OrderCannotCanceledException("You cannot cancel the order because it has already been delivered, so please apply for a return");
+        }
+
+        $this->status = OrderStatus::CANCELLED;
+        $this->appendLog(new UpdateLog("orders", [
+            "whereCondation" => ["uuid" => $this->getUuid()],
+            "setter" => [
+                "status" => $this->getStatus(),
+                "updated_at" => date('Y-m-d H:i:s')
+            ]
+        ]));
+    }
+    private function swapItemCollection(OrderItemCollection $orderItemCollection) {
+        $this->items = $orderItemCollection; 
     }
     /**
      * Get the value of userUuid
