@@ -64,10 +64,17 @@ $f->registerRoute("DELETE", '/uploads/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-
 
 //Order Route
 $f->registerRoute("POST", "/orders", new PlaceOrderCommand($orderController));
+$f->registerRoute("POST", "/orders/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/dispatch", new DispatchOrderCommand($orderController));
+$f->registerRoute("POST", "/orders/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/complete", new CompleteOrderCommand($orderController));
+$f->registerRoute("POST", "/orders/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/cancel", new CancelOrderCommand($orderController));
+$f->registerRoute("POST", "/orders/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/return-request", new SendReturnRequestCommand($orderController));
+$f->registerRoute("POST", "/orders/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/return", new ReturnOrderCommand($orderController));
 
 //Shipping Route
 $f->registerRoute("GET", "/shippings", new FindAllShippingMethodsCommand($shippingController, new JwtAuthMiddleware));
 $f->registerRoute("GET", "/shippings/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})", new FindOneShippingMethodCommand($shippingController, new JwtAuthMiddleware));
+$f->registerRoute("POST", "/shippings/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/deliver", new ShippingDeliveredCommand($shippingController));
+
 $f->run($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']); 
 
 } catch (\Exception $err) {
@@ -76,6 +83,6 @@ $f->run($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
         'code' => $err->getCode(),
         'trace' => $err->getTrace()
     ];
-    http_response_code( 500);
+    http_response_code( (int)$err->getCode());
     echo json_encode($errorDetails, JSON_PRETTY_PRINT);
 }
