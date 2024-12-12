@@ -6,7 +6,11 @@ class JwtAuthMiddleware extends Middleware {
     function check():bool{
             $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? null;
         
-            if(!$authHeader) throw new NullException("authorization header");
+            if(!$authHeader) {
+                $headers = getallheaders();
+                $authHeader = $headers["Authorization"];
+                if(!$authHeader) throw new NullException("authorization header");
+            }
             
             $authorization = explode(' ', $authHeader);
             $jwt = $authorization[1];
