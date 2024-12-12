@@ -69,6 +69,7 @@ $f->registerRoute("POST", "/orders/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[08
 $f->registerRoute("POST", "/orders/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/cancel", new CancelOrderCommand($orderController));
 $f->registerRoute("POST", "/orders/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/return-request", new SendReturnRequestCommand($orderController));
 $f->registerRoute("POST", "/orders/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/return", new ReturnOrderCommand($orderController));
+$f->registerRoute("GET", "/orders/([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})/user", new FindAllOrderWithItemsByUserUuidCommand($orderController));
 
 //Shipping Route
 $f->registerRoute("GET", "/shippings", new FindAllShippingMethodsCommand($shippingController, new JwtAuthMiddleware));
