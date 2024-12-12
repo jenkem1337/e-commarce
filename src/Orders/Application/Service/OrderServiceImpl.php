@@ -40,7 +40,11 @@ class OrderServiceImpl implements OrderService {
         ]);
     }
 
-    function findByCriteria() {}
+    function findAllWithItemsByUserUuid(FindAllOrderWithItemsByUserUuidDto $dto): ResponseViewModel {
+        return new SuccessResponse([
+            "data" => $this->orderRepository->findAllWithItemsByUserUuid($dto->getUserUuid())
+        ]);
+    }
     
     function cancelOrder(OrderStatusDto $dto):ResponseViewModel{
         $orderAggregate = $this->orderRepository->findOneAggregateWithItemsByUuid($dto->getUuid());

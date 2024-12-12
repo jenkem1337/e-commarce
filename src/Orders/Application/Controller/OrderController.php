@@ -6,6 +6,14 @@ class OrderController {
         private RemoteCheckoutService $remoteCheckoutService
     ){}
 
+    function findAllWithItemsByUserUuid($userUuid) {
+        $response = $this->orderService->findAllWithItemsByUserUuid(
+            new FindAllOrderWithItemsByUserUuidDto($userUuid)
+        );
+        http_response_code(200);
+        echo json_encode($response);
+
+    }
     function placeOrder(){
         
         

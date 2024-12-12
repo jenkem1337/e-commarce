@@ -24,4 +24,7 @@ abstract class OrderServiceDecorator implements OrderService {
     function returnOrderRequest(OrderStatusDto $dto): ResponseViewModel{
         return $this->orderService->returnOrderRequest($dto);
     }
+    function findAllWithItemsByUserUuid(FindAllOrderWithItemsByUserUuidDto $dto): ResponseViewModel{
+        return $this->orderService->findAllWithItemsByUserUuid($dto);
+    }
 }

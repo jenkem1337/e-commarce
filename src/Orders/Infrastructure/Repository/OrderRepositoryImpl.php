@@ -54,6 +54,14 @@ class OrderRepositoryImpl extends TransactionalRepository implements OrderReposi
             $orderObject->updated_at
         );
     }
-    function findOneOrderWithItemsByUuid(){}
-    function listAllOrdersByCriteria(){}
+    function findAllWithItemsByUserUuid($userUuid): array{
+        $orderList = [];
+        $orders = $this->orderDao->findAllByUserUuid($userUuid);
+        foreach($orders as $order) {
+            $items = $this->orderDao->findAllItemsByOrderUuid($order->uuid);
+            $order->items = $items;
+            $orderList[] = $order;
+        }
+        return $orderList;
+    }
 }

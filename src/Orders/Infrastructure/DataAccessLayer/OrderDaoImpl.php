@@ -30,6 +30,17 @@ class OrderDaoImpl extends AbstractDataAccessObject implements OrderDao{
         $order = $stmt->fetchAll(PDO::FETCH_OBJ);
         $conn = null;
         if($order == null) return $this->returnManyNullStatement();
+        return $order; 
+    }
+    function findAllByUserUuid($userUuid){
+        $conn =  $this->databaseConnection->getConnection();
+        $stmt = $conn->prepare("SELECT * FROM orders WHERE user_uuid = :user_uuid");
+        $stmt->execute([
+            "user_uuid" => $userUuid
+        ]);
+        $order = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $conn = null;
+        if($order == null) return $this->returnNullStatement();
 
         return $order; 
 
