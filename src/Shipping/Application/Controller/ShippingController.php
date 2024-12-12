@@ -20,4 +20,11 @@ class ShippingController {
         echo json_encode($response);    
 
     }
+
+    function shippingDelivered($shippingUuid) {
+        $response = $this->shippingService->setStateToDelivered(new ShippingStatusDto($shippingUuid));
+        http_response_code(response_code: 200);
+        echo json_encode($response);    
+
+    }
 }
