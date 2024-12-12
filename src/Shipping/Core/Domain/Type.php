@@ -1,9 +1,9 @@
 <?php
 class Type {
-    private ShippingType $type;
+    private $type;
     private $price;
     
-    function __construct(ShippingType $type, $price){
+    function __construct($type, $price){
         $this->type = $type;
         $this->price = $price;
     }
@@ -20,6 +20,21 @@ class Type {
         }
         return $type;
     }
-    function getType() {return $this->type->value;}
+    static function fromValue(string $value): Type {
+        $type = null;
+        
+        switch($value) {
+            case 'FREE':
+                $type = new Type(ShippingType::FREE, 0);
+                break;
+            case 'PAIDED':
+                $type = new Type(ShippingType::PAIDED, 40);
+                break;
+            default:
+                throw new Exception("Unknown type");
+        }
+        return $type;
+    }
+    function getType() {return $this->type->name;}
     function getPrice() {return $this->price;}
 }

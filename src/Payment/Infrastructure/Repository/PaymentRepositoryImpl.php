@@ -15,12 +15,12 @@ class PaymentRepositoryImpl extends TransactionalRepository implements PaymentRe
     function findOneAggregateByUuid($uuid): PaymentInterface {
         $paymentObject = $this->paymentDao->findOneByUuid($uuid);
 
-        return Payment::newInstance(
+        return Payment::newStrictInstance(
             $paymentObject->uuid,
             $paymentObject->user_uuid,
             $paymentObject->amount,
-            $paymentObject->method,
-            $paymentObject->status,
+            PaymentMethodFactory::fromValue($paymentObject->method),
+            PaymentStatusFactory::fromValue($paymentObject->status),
             $paymentObject->created_at,
             $paymentObject->updated_at
         );

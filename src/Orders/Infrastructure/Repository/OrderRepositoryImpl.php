@@ -33,9 +33,9 @@ class OrderRepositoryImpl extends TransactionalRepository implements OrderReposi
             $orderObj->uuid,
             $orderObj->user_uuid,
             $orderObj->payment_uuid,
-            $orderObj->shipping_uuid,
+            $orderObj->shipment_uuid,
             $orderObj->amount,
-            $orderObj->status,
+            OrderStatusFactory::fromValue($orderObj->status),
             $itemCollection,
             $orderObj->created_at,
             $orderObj->updated_at
@@ -49,7 +49,7 @@ class OrderRepositoryImpl extends TransactionalRepository implements OrderReposi
             $orderObject->payment_uuid,
             $orderObject->shipment_uuid,
             $orderObject->amount,
-            $orderObject->status,
+            OrderStatusFactory::fromValue($orderObject->status),
             $orderObject->created_at,
             $orderObject->updated_at
         );

@@ -16,11 +16,11 @@ class ShippingRepositoryImpl extends TransactionalRepository implements Shipping
     function findOneByUuid($uuid): ShippingInterface
     {
         $shippingObj = $this->shippingDao->findOneByUuid($uuid);
-
+        
         $shippingDomainObject = Shipping::newInstance(
             $shippingObj->uuid,
-            $shippingObj->type,
-            $shippingObj->status,
+            Type::fromValue($shippingObj->type),
+            ShippingStatusFactory::fromValue($shippingObj->status),
             $shippingObj->address_title,
             $shippingObj->address_owner_name,
             $shippingObj->address_owner_surname,
