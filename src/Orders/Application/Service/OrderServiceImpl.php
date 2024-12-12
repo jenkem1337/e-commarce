@@ -101,6 +101,41 @@ class OrderServiceImpl implements OrderService {
             ]
         ]);
     }
-    function refundOrder(OrderStatusDto $dto){}
+    
+    function returnOrderRequest(OrderStatusDto $dto):ResponseViewModel{
+        $orderAggregate = $this->orderRepository->findOneAggregateByUuid($dto->getUuid());
+        
+        if($orderAggregate->isNull()) throw new NotFoundException("order");
+
+        $orderAggregate->setStatusToReturnRequest();
+
+        $this->orderRepository->saveChanges($orderAggregate);
+
+        return new SuccessResponse([
+            "message" => "Order return request has been sent successfully.",
+            "data" => [
+                "uuid" => $orderAggregate->getUuid()
+            ]
+        ]);
+
+    }
+    function returnOrder(OrderStatusDto $dto):ResponseViewModel{
+        $orderAggregate = $this->orderRepository->findOneAggregateByUuid($dto->getUuid());
+        
+        if($orderAggregate->isNull()) throw new NotFoundException("order");
+
+        $orderAggregate->setStatusToReturned();
+
+        $this->paymentService->refund(new RefundPaymentDto($orderAggregate->getPaymentUuid()));
+
+        $this->orderRepository->saveChanges($orderAggregate);
+
+        return new SuccessResponse([
+            "message" => "Order successfully returned.",
+            "data" => [
+                "uuid" => $orderAggregate->getUuid()
+            ]
+        ]);
+    }
     
 }
