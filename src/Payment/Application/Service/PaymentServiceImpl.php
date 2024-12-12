@@ -16,6 +16,9 @@ class PaymentServiceImpl implements PaymentService {
         );
         
         $this->paymentGateway->payWithCreditCart($payment);
+
+        $payment->setStatusToCompleted();
+
         $this->paymentRepository->saveChanges($payment);
         return new SuccessResponse([
             "data" => [
@@ -37,12 +40,11 @@ class PaymentServiceImpl implements PaymentService {
 
     function refund(RefundPaymentDto $refundPaymentDto){
         $paymentAggregate = $this->paymentRepository->findOneAggregateByUuid($refundPaymentDto->getUuid());
-        
         if ($paymentAggregate->isNull()) throw new NotFoundException("payment");
 
         $this->paymentGateway->refund($paymentAggregate);
 
-        $paymentAggregate->setStatusToCompleted();
+        $paymentAggregate->setStatusToRefunded();
 
         $this->paymentRepository->saveChanges($paymentAggregate);
 

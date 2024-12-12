@@ -7,8 +7,8 @@ class Payment extends BaseEntity implements PaymentInterface, AggregateRoot {
     private $amount;
     private PaymentMethod $method;
     private PaymentStatus $status;
-    private PaymentStrategy $paymentStrategy;
-    function __construct($uuid, $userUuid, $amount, $method, PaymentStatus $status, $paymentStrategy, $createdAt, $updatedAt) {
+    private ?PaymentStrategy $paymentStrategy;
+    function __construct($uuid, $userUuid, $amount, PaymentMethod $method, PaymentStatus $status, $paymentStrategy, $createdAt, $updatedAt) {
         parent::__construct($uuid, $createdAt, $updatedAt);
         if(!$userUuid) throw new NullException("user uuid");
         if(!UUID::isValid($userUuid)) throw new InvalidUuidStringException("user uuid invalid");
@@ -23,7 +23,7 @@ class Payment extends BaseEntity implements PaymentInterface, AggregateRoot {
         $this->status = $status;
     }
 
-    static function newInstance($uuid, $userUuid, $amount, $method, PaymentStatus $status, $createdAt, $updatedAt):PaymentInterface {
+    static function newInstance($uuid, $userUuid, $amount, PaymentMethod $method, PaymentStatus $status, $createdAt, $updatedAt):PaymentInterface {
         try {
             return new Payment($uuid, $userUuid, $amount, $method, $status, null, $createdAt, $updatedAt);
         } catch (\Throwable $th) {
@@ -31,7 +31,7 @@ class Payment extends BaseEntity implements PaymentInterface, AggregateRoot {
         }
     }
 
-    static function newStrictInstance($uuid, $userUuid, $amount, $method, PaymentStatus $status, $createdAt, $updatedAt){
+    static function newStrictInstance($uuid, $userUuid, $amount, PaymentMethod $method, PaymentStatus $status, $createdAt, $updatedAt){
         return new Payment($uuid, $userUuid, $amount, $method, $status, null, $createdAt, $updatedAt);
     }
 
@@ -39,56 +39,59 @@ class Payment extends BaseEntity implements PaymentInterface, AggregateRoot {
         $date = date('Y-m-d H:i:s');
         
         $cart = CreditCart::new($cardNumber, $cardExpirationDate, $CVC, $cardOwnerFullName);
-        $peyment = new Payment(UUID::uuid4(), $userUuid, $amount, PaymentMethod::CreditCard, PaymentStatus::Pending, $cart,  $date, $date);
+        $payment = new Payment(UUID::uuid4(), $userUuid, $amount, PaymentMethod::CreditCard, PaymentStatus::Pending, $cart,  $date, $date);
         
-        $peyment->appendLog(new InsertLog("payments", [
-            "uuid" => $peyment->getUuid(),
-            "user_uuid" => $peyment->getUserUuid(),
-            "amount" => $peyment->getAmount(),
-            "method" => $peyment->getMethod(),
-            "status" => $peyment->getStatus(),
-            "created_at" => $peyment->getCreatedAt(),
-            "updated_at" => $peyment->getUpdatedAt()
+        $payment->appendLog(new InsertLog("payments", [
+            "uuid" => $payment->getUuid(),
+            "user_uuid" => $payment->getUserUuid(),
+            "amount" => $payment->getAmount(),
+            "method" => $payment->getMethod(),
+            "status" => $payment->getStatus(),
+            "created_at" => $payment->getCreatedAt(),
+            "updated_at" => $payment->getUpdatedAt()
         ]));
-        return $peyment;
+        return $payment;
     }
     
     function setStatusToCompleted(){
         $this->status = PaymentStatus::Completed;
-        $this->appendLog(new UpdateLog("peyments", [
+        $this->appendLog(new UpdateLog("payments", [
             "whereCondation" => [
                 "uuid" => $this->getUuid()
             ],
             "setter" => [
-                "status" => $this->status
+                "status" => $this->getStatus(),
+                "updated_at" => date('Y-m-d H:i:s')
             ]
         ]));
     }
     function setStatusToRefunded(){
         $this->status = PaymentStatus::Refunded;
-        $this->appendLog(new UpdateLog("peyments", [
+        $this->appendLog(new UpdateLog("payments", [
             "whereCondation" => [
                 "uuid" => $this->getUuid()
             ],
             "setter" => [
-                "status" => $this->status
+                "status" => $this->getStatus(),
+                "updated_at" => date('Y-m-d H:i:s')
             ]
         ]));
     }
     function setStatusToFailed(){
         $this->status = PaymentStatus::Failed;
-        $this->appendLog(new UpdateLog("peyments", [
+        $this->appendLog(new UpdateLog("payments", [
             "whereCondation" => [
                 "uuid" => $this->getUuid()
             ],
             "setter" => [
-                "status" => $this->status
+                "status" => $this->getStatus(),
+                "updated_at" => date('Y-m-d H:i:s')
             ]
         ]));
     }
     function getUserUuid() {return $this->userUuid;}
     function getAmount() {return $this->amount;}
-    function getMethod() {return $this->method->value;}
-    function getStatus() {return $this->status->value;}
+    function getMethod() {return $this->method->name;}
+    function getStatus() {return $this->status->name;}
     function getStrategy() {return $this->paymentStrategy;}
 }
