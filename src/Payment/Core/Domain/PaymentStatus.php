@@ -1,7 +1,7 @@
 <?php
-enum PaymentStatus: string {
-    case Pending = "Pending";
-    case Completed = "Completed";
-    case Failed = "Failed";
-    case Refunded  = "Refunded";
+enum PaymentStatus {
+    case Pending;
+    case Completed;
+    case Failed;
+    case Refunded;
 }

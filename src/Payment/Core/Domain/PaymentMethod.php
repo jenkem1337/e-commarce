@@ -1,4 +1,4 @@
 <?php
-enum PaymentMethod:string {
-    case CreditCard = "CreditCart";
+enum PaymentMethod {
+    case CreditCard;
 }

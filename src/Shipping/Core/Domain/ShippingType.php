@@ -1,6 +1,6 @@
 <?php
 
-enum ShippingType:string {
-    case FREE = "FREE";
-    case PAIDED = "PAIDED";
+enum ShippingType {
+    case FREE;
+    case PAIDED;
 }
