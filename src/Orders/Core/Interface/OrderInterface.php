@@ -1,13 +1,13 @@
 <?php
 
-use phpDocumentor\Reflection\Types\Boolean;
-
 interface OrderInterface extends BaseEntityInterface{
     function determineLatestAmount($shippingPrice);
     function setStateToProcessingAndAssignPaymentAndShippingUuid($paymentUuid, $shippingUuid);
     function setStatusToDelivered();
+    function setStatusToReturned();
     function setStatusToDispatched();
     function setStatusToCanceled();
+    function setStatusToReturnRequest();
     public function getUserUuid();
 
     public function getPaymentUuid();
