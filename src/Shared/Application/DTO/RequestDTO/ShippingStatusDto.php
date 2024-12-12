@@ -1,4 +1,4 @@
-<?
+<?php
 
 class ShippingStatusDto {
     public string $uuid;
