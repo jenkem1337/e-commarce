@@ -104,27 +104,34 @@ class Order extends BaseEntity implements AggregateRoot, OrderInterface {
     }
 
     function setStatusToDelivered(){
-        $this->status = OrderStatus::DELIVERED;
+        if($this->status == OrderStatus::DISPATCHED){
+            $this->status = OrderStatus::DELIVERED;
 
-        $this->appendLog(new UpdateLog("orders", [
-            "whereCondation" => ["uuid" => $this->getUuid()],
-            "setter" => [
-                "status" => $this->getStatus(),
-                "updated_at" => date('Y-m-d H:i:s')
-            ]
-        ]));
+            $this->appendLog(new UpdateLog("orders", [
+                "whereCondation" => ["uuid" => $this->getUuid()],
+                "setter" => [
+                    "status" => $this->getStatus(),
+                    "updated_at" => date('Y-m-d H:i:s')
+                ]
+            ]));
+            return;
+        }
+        throw new OrderStatusException("You cannot set as delivered");
     }
 
     function setStatusToDispatched(){
-        $this->status = OrderStatus::DISPATCHED;
-        $this->appendLog(new UpdateLog("orders", [
-            "whereCondation" => ["uuid" => $this->getUuid()],
-            "setter" => [
-                "status" => $this->getStatus(),
-                "updated_at" => date('Y-m-d H:i:s')
-            ]
-        ]));
-
+        if($this->status == OrderStatus::PROCESSING) {
+            $this->status = OrderStatus::DISPATCHED;
+            $this->appendLog(new UpdateLog("orders", [
+                "whereCondation" => ["uuid" => $this->getUuid()],
+                "setter" => [
+                    "status" => $this->getStatus(),
+                    "updated_at" => date('Y-m-d H:i:s')
+                ]
+            ]));
+            return;
+        }
+        throw new OrderStatusException("You cannot dispatch the order because the order is not marked as processing");
     }
 
     function setStatusToCanceled() {
@@ -143,6 +150,36 @@ class Order extends BaseEntity implements AggregateRoot, OrderInterface {
                 "updated_at" => date('Y-m-d H:i:s')
             ]
         ]));
+    }
+
+    function setStatusToReturnRequest(){
+        if($this->status == OrderStatus::DELIVERED){
+            $this->status = OrderStatus::RETURN_REQUEST;
+            $this->appendLog(new UpdateLog("orders", [
+                "whereCondation" => ["uuid" => $this->getUuid()],
+                "setter" => [
+                    "status" => $this->getStatus(),
+                    "updated_at" => date('Y-m-d H:i:s')
+                ]
+            ]));
+            return;
+        }
+        throw new OrderStatusException("You cannot send a return request because the order is not marked as delivered");
+    }
+
+    function setStatusToReturned(){
+        if($this->status !== OrderStatus::RETURN_REQUEST) {
+            throw new OrderStatusException("The order status have not setted as return request");
+        }
+        $this->status = OrderStatus::RETURNED;
+        $this->appendLog(log: new UpdateLog("orders", [
+            "whereCondation" => ["uuid" => $this->getUuid()],
+            "setter" => [
+                "status" => $this->getStatus(),
+                "updated_at" => date('Y-m-d H:i:s')
+            ]
+        ]));
+
     }
     private function swapItemCollection(OrderItemCollection $orderItemCollection) {
         $this->items = $orderItemCollection; 
