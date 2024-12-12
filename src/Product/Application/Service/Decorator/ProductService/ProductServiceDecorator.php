@@ -43,4 +43,7 @@ abstract class ProductServiceDecorator implements ProductService {
 	function checkQuantityAndDecrease(CheckAndDecreaseProductsDto $dto): ResponseViewModel {
 		return $this->productService->checkQuantityAndDecrease($dto);
 	}
+	function incrementStockQuantityForCanceledOrder($dto): ResponseViewModel{
+		return $this->productService->incrementStockQuantityForCanceledOrder($dto);
+	}
 }
