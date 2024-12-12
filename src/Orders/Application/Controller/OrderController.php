@@ -43,4 +43,34 @@ class OrderController {
         $jwtPayloadDto->removePayload();
 
     }
+
+    function dispatchOrder($orderUuid) {
+        $response = $this->orderService->shipOrder(new OrderStatusDto($orderUuid));
+        http_response_code(201);
+        echo json_encode($response);
+    }
+
+    function completeOrder($orderUuid) {
+        $response = $this->orderService->orderDelivered(new OrderStatusDto($orderUuid));
+        http_response_code(201);
+        echo json_encode($response);
+    }
+
+    function cancelOrder($orderUuid) {
+        $response = $this->orderService->cancelOrder(new OrderStatusDto($orderUuid));
+        http_response_code(201);
+        echo json_encode($response);
+    }
+
+    function sendReturnRequest($orderUuid) {
+        $response = $this->orderService->returnOrderRequest(new OrderStatusDto($orderUuid));
+        http_response_code(201);
+        echo json_encode($response);
+    }
+
+    function returnOrder($orderUuid) {
+        $response = $this->orderService->returnOrder(new OrderStatusDto($orderUuid));
+        http_response_code(201);
+        echo json_encode($response);
+    }
 }
