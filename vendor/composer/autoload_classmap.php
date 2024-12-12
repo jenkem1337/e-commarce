@@ -133,6 +133,8 @@ return array(
     'FindAllBrandCommand' => $baseDir . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/BrandController/FindAllBrandCommand.php',
     'FindAllCategoryCommand' => $baseDir . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/CategoryController/FindAllCategoryCommand.php',
     'FindAllCategoryDto' => $baseDir . '/src/Shared/Application/DTO/RequestDTO/FindAllCategoryDto.php',
+    'FindAllOrderWithItemsByUserUuidCommand' => $baseDir . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/OrderController/FindAllOrderWithItemsByUserUuidCommand.php',
+    'FindAllOrderWithItemsByUserUuidDto' => $baseDir . '/src/Shared/Application/DTO/RequestDTO/FindAllOrderWithItemsByUserUuidDto.php',
     'FindAllProductWithPaginationCommand' => $baseDir . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ProductController/FindAllProductWithPaginationCommand.php',
     'FindAllProductWithPaginationDto' => $baseDir . '/src/Shared/Application/DTO/RequestDTO/FindAllProductWithPaginationDto.php',
     'FindAllProductsDto' => $baseDir . '/src/Shared/Application/DTO/RequestDTO/FindAllProductsDto.php',
