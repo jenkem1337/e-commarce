@@ -17,4 +17,17 @@ abstract class ShippingServiceDecorator implements ShippingService {
     function createShippingForOrderCreation(CreationalShippingDto $dto): ResponseViewModel{
         return $this->shippingService->createShippingForOrderCreation($dto);
     }
+    function setStateToDispatched(ShippingStatusDto $dto){
+        return $this->shippingService->setStateToDispatched($dto);
+    }
+    function setStateToDelivered(ShippingStatusDto $dto):ResponseViewModel{
+        return $this->shippingService->setStateToDelivered($dto);
+    }
+    function isShipmentDelivered(IsShippingDeliveredDto $dto){
+        return $this->shippingService->isShipmentDelivered($dto);
+    }
+    function setStateToCanceled(ShippingStatusDto $shippingStatusDto){
+        return $this->shippingService->setStateToCanceled($shippingStatusDto);
+    }
+
 }

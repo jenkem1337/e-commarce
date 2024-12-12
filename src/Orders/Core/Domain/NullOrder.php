@@ -2,6 +2,9 @@
 
 class NullOrder implements OrderInterface {
     function determineLatestAmount($shippingPrice){}
+    function setStatusToReturned(){}
+    function setStatusToCanceled(){}
+    function setStatusToReturnRequest(){}
     function setStateToProcessingAndAssignPaymentAndShippingUuid($paymentUuid, $shippingUuid){}
     function setStatusToDelivered(){}
     function setStatusToDispatched(){}
