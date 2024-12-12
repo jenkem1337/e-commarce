@@ -10,7 +10,7 @@ class ShippingDaoImpl extends AbstractDataAccessObject implements ShippingDao {
     function findAll()
     {
         $conn = $this->databaseConnection->getConnection();
-        $stmt = $conn->prepare("SELECT * FROM shipping");
+        $stmt = $conn->prepare("SELECT * FROM shipments");
         $stmt->execute();
         $shippings = $stmt->fetchAll(PDO::FETCH_OBJ);
         $conn=null;
@@ -21,7 +21,7 @@ class ShippingDaoImpl extends AbstractDataAccessObject implements ShippingDao {
     {
         $conn = $this->databaseConnection->getConnection();
         $stmt = $conn->prepare(
-            "SELECT * FROM shipping
+            "SELECT * FROM shipments
              WHERE uuid = :uuid"
         );
         $stmt->execute([

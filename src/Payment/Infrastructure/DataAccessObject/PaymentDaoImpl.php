@@ -9,15 +9,14 @@ class PaymentDaoImpl extends AbstractDataAccessObject implements PaymentDao {
     }
     function findOneByUuid($uuid) {
         $conn =  $this->databaseConnection->getConnection();
-        $stmt = $conn->prepare("SELECT * FROM shipments WHERE uuid = :uuid LIMIT 1");
+        $stmt = $conn->prepare("SELECT * FROM payments WHERE uuid = :uuid LIMIT 1");
         $stmt->execute([
             "uuid" => $uuid
         ]);
-        $shipment = $stmt->fetch(PDO::FETCH_OBJ);
+        $payment = $stmt->fetch(PDO::FETCH_OBJ);
         $conn = null;
-        if($shipment == null) return $this->returnNullStatement();
-
-        return $shipment; 
+        if($payment == null) return $this->returnNullStatement();
+        return $payment; 
     }
 
     private function returnNullStatement(){
