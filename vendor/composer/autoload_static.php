@@ -326,6 +326,8 @@ class ComposerStaticInitaf0a67d453862fbb23c42d2459c3b4d6
         'FindAllBrandCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/BrandController/FindAllBrandCommand.php',
         'FindAllCategoryCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/CategoryController/FindAllCategoryCommand.php',
         'FindAllCategoryDto' => __DIR__ . '/../..' . '/src/Shared/Application/DTO/RequestDTO/FindAllCategoryDto.php',
+        'FindAllOrderWithItemsByUserUuidCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/OrderController/FindAllOrderWithItemsByUserUuidCommand.php',
+        'FindAllOrderWithItemsByUserUuidDto' => __DIR__ . '/../..' . '/src/Shared/Application/DTO/RequestDTO/FindAllOrderWithItemsByUserUuidDto.php',
         'FindAllProductWithPaginationCommand' => __DIR__ . '/../..' . '/src/Shared/Application/FrontController/FrontControllerComand/controller_commands/ProductController/FindAllProductWithPaginationCommand.php',
         'FindAllProductWithPaginationDto' => __DIR__ . '/../..' . '/src/Shared/Application/DTO/RequestDTO/FindAllProductWithPaginationDto.php',
         'FindAllProductsDto' => __DIR__ . '/../..' . '/src/Shared/Application/DTO/RequestDTO/FindAllProductsDto.php',
