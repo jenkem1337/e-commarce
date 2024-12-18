@@ -13,12 +13,11 @@ class ImageControllerFactory implements Factory {
             new ProductDaoImpl(MySqlPDOConnection::getInstance()),
             $imageRepositoryImpl);
         
-            $productRepositoryAggregateRootDecorator = new ProductRepositoryAggregateRootDecorator($productRepositoryImpl);
 
         return new ImageController(
             new TransactionalImageServiceDecorator(
                 new ImageServiceImpl(
-                    $productRepositoryAggregateRootDecorator,
+                    $productRepositoryImpl,
                     new UploadServiceImpl(MinIOConnection::getInstance()),
                 ),
                 $productRepositoryImpl

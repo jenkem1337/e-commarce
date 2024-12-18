@@ -35,12 +35,11 @@ class ProductControllerFactory implements Factory {
             new ModelRepositoryImpl(new ModelDaoImpl(MySqlPDOConnection::getInstance()))
         );
 
-        $productRepositoryAggregateRootDecorator = new ProductRepositoryAggregateRootDecorator($productRepositoryImpl);
         $orderService = new OrderServiceImpl(new OrderRepositoryImpl(new OrderDaoImpl(MySqlPDOConnection::getInstance())),null,null,null,null);
         return new ProductController(
             new TransactionalProductServiceDecorator(
                 new ProductServiceImpl(
-                    $productRepositoryAggregateRootDecorator,
+                    $productRepositoryImpl,
                     $categoryRepositoryImpl,
                     $brandRepository,
                     new UploadServiceImpl(MinIOConnection::getInstance()),
