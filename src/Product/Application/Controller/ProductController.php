@@ -155,4 +155,38 @@ class ProductController {
         echo json_encode($response);
         http_response_code(201);
     }
+    function updateProductComment($productUuid) {
+        $jsonBody = json_decode(file_get_contents('php://input'));
+
+        $response = $this->productService->updateProductComment(
+            new UpdateProductCommentDto($productUuid, $jsonBody->user_uuid,$jsonBody->comment)
+        );
+
+        echo json_encode($response);
+        http_response_code(201);
+    }
+
+    function updateProductRate($productUuid) {
+        $jsonBody = json_decode(file_get_contents('php://input'));
+
+        $response = $this->productService->updateProductRate(
+            new UpdateProductRateDto($productUuid, $jsonBody->user_uuid,$jsonBody->rate)
+        );
+
+        echo json_encode($response);
+        http_response_code(201);
+
+    }
+
+    function removeProductReview($productUuid) {
+        $jsonBody = json_decode(file_get_contents('php://input'));
+
+        $response = $this->productService->deleteProductReview(
+            new DeleteProductReviewDto($productUuid, $jsonBody->user_uuid)
+        );
+
+        echo json_encode($response);
+        http_response_code(201);
+
+    }
 }
