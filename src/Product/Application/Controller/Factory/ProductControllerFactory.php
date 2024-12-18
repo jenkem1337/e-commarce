@@ -36,7 +36,7 @@ class ProductControllerFactory implements Factory {
         );
 
         $productRepositoryAggregateRootDecorator = new ProductRepositoryAggregateRootDecorator($productRepositoryImpl);
-
+        $orderService = new OrderServiceImpl(new OrderRepositoryImpl(new OrderDaoImpl(MySqlPDOConnection::getInstance())),null,null,null,null);
         return new ProductController(
             new TransactionalProductServiceDecorator(
                 new ProductServiceImpl(
@@ -45,6 +45,7 @@ class ProductControllerFactory implements Factory {
                     $brandRepository,
                     new UploadServiceImpl(MinIOConnection::getInstance()),
                     new EmailServiceImpl(new PHPMailer(true)),
+                    $orderService
                 ), $productRepositoryImpl
             )
         );
