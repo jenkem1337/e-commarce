@@ -49,4 +49,13 @@ abstract class ProductServiceDecorator implements ProductService {
 	function reviewProduct(ProductReviewDto $dto): ResponseViewModel{
 		return $this->productService->reviewProduct($dto);
 	}
+	function updateProductComment(UpdateProductCommentDto $dto): ResponseViewModel{
+		return $this->productService->updateProductComment($dto);
+	}
+	function updateProductRate(UpdateProductRateDto $dto): ResponseViewModel {
+		return $this->productService->updateProductRate($dto);
+	}
+	function deleteProductReview(DeleteProductReviewDto $dto): ResponseViewModel {
+		return $this->productService->deleteProductReview($dto);
+	}
 }

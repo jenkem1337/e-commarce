@@ -209,6 +209,52 @@ class Product extends BaseEntity implements AggregateRoot, ProductInterface{
             "updated_at" => $rateModel->getUpdatedAt()
         ]));
     }
+
+    function updateReviewComment($newComment){
+        $comments = $this->comments->getItems();
+        $comment = reset($comments);
+        $comment->changeComment($newComment);
+        $this->appendLog(new UpdateLog("comment", [
+            "whereCondation" => [
+                "uuid" => $comment->getUuid()
+            ],
+            "setter" => [
+                "comment_text" => $comment->getComment(),
+                "updated_at"=> date('Y-m-d H:i:s')
+            ]
+        ]));
+    }
+    function updateReviewRate($newRate){
+        $rates = $this->rates->getItems();
+        $rate = reset($rates);
+        $rate->rateIt($newRate);
+        $this->appendLog(new UpdateLog("rates", [
+            "whereCondation" => [
+                "uuid" => $rate->getUuid()
+            ],
+            "setter" => [
+                "rate_num" => $rate->getRateNumber(),
+                "updated_at"=> date('Y-m-d H:i:s')
+            ]
+        ]));
+
+    }
+    function removeReview(){
+        $commentList = $this->comments->getItems();
+        $rateList = $this->rates->getItems();
+
+        $comment = reset($commentList);
+        $rate = reset($rateList);
+        
+        $this->appendLog(new DeleteLog("comment", [
+            "whereCondation" => ["uuid" => $comment->getUuid()]
+        ]));
+        $this->appendLog(new DeleteLog("rates", [
+            "whereCondation" => ["uuid" => $rate->getUuid()]
+        ]));
+    }
+
+
     function isPriceLessThanPreviousPrice(){
         return ($this->price < $this->previousPrice) ? true : false;
     }

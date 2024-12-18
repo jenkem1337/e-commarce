@@ -160,6 +160,10 @@ class ProductServiceImpl implements ProductService {
                 "rate" => $productObject->rate,
                 "stock_quantity" => $productObject->stockquantity,
                 "categories" => $productObject->categories ?? null,
+                "comments" => $productObject->comments ?? null,
+                "rates" => $productObject->rates ?? null,
+                "images" => $productObject->images ?? null,
+                "subscribers" => $productObject->subscribers ?? null,
                 "created_at" => $productObject->created_at,
                 "updated_at" => $productObject->updated_at
             ]
@@ -291,5 +295,59 @@ class ProductServiceImpl implements ProductService {
                 "comment" => $dto->getComment()
             ]
         ]);
+    }
+
+    function updateProductComment(UpdateProductCommentDto $dto): ResponseViewModel {
+        $product = $this->productRepository->findOneAggregateWithCommentByProductAndUserUuid($dto->getProductUuid(), $dto->getUserUuid());
+    
+        if($product->isNull()) throw new NotFoundException("product");
+
+        $product->updateReviewComment($dto->getNewComment());
+
+        $this->productRepository->saveChanges($product);
+
+        return new SuccessResponse([
+            "message" => "Product review comment updated successfully",
+            "data" => [
+                "product_uuid" => $product->getUuid(),
+                "new_comment" => $dto->getNewComment()
+            ]
+        ]);
+    }
+
+    function updateProductRate(UpdateProductRateDto $dto): ResponseViewModel {
+        $product = $this->productRepository->findOneAggregateWithRateByProductAndUserUuid($dto->getProductUuid(), $dto->getUserUuid());
+    
+        if($product->isNull()) throw new NotFoundException("product");
+
+        $product->updateReviewRate($dto->getNewRate());
+
+        $this->productRepository->saveChanges($product);
+
+        return new SuccessResponse([
+            "message" => "Product review rate updated successfully",
+            "data" => [
+                "product_uuid" => $product->getUuid(),
+                "new_rate" => $dto->getNewRate()
+            ]
+        ]);
+    }
+
+    function deleteProductReview(DeleteProductReviewDto $dto): ResponseViewModel {
+        $product = $this->productRepository->findOneAggregateWithCommentAndRateByProductAndUserUuid($dto->getProductUuid(), $dto->getUserUuid());
+    
+        if($product->isNull()) throw new NotFoundException("product");
+
+        $product->removeReview();
+
+        $this->productRepository->saveChanges($product);
+
+        return new SuccessResponse([
+            "message" => "Product review deleted successfully",
+            "data" => [
+                "product_uuid" => $product->getUuid(),
+            ]
+        ]);
+
     }
 }

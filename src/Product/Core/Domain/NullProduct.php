@@ -6,6 +6,10 @@ class NullProduct implements ProductInterface, NullEntityInterface {
     {
         
     }
+    function updateReviewComment($newComment){}
+    function updateReviewRate($rate){}
+    function removeReview(){}
+
     function review($rate, $comment, $userUuid){}
     function deleteImage($imageUuid):ImageInterface{return new NullImage();}
     function addImages($images){}

@@ -11,4 +11,8 @@ interface ProductRepository {
 
     function findOneProductWithOnlySubscriberByUuid($uuid, $userUuid): ProductInterface;
     function findManyAggregateByUuids($uuids):ProductCollection;
+
+    function findOneAggregateWithCommentAndRateByProductAndUserUuid($productUuid, $userUuid):ProductInterface;
+    function findOneAggregateWithCommentByProductAndUserUuid($productUuid, $userUuid):ProductInterface;
+    function findOneAggregateWithRateByProductAndUserUuid($productUuid, $userUuid):ProductInterface;
 }

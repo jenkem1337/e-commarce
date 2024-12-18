@@ -141,4 +141,46 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
         } 
 
     }
+    function updateProductComment(UpdateProductCommentDto $dto): ResponseViewModel{
+        try {
+            
+            $this->transactionalRepository->beginTransaction();
+            $response = parent::updateProductComment($dto);
+            
+            $this->transactionalRepository->commit();
+            return $response;
+        } catch (Exception $e) {
+            $this->transactionalRepository->rollBack();
+            throw $e;
+        } 
+
+    }
+    function updateProductRate(UpdateProductRateDto $dto): ResponseViewModel{
+        try {
+            
+            $this->transactionalRepository->beginTransaction();
+            $response = parent::updateProductRate($dto);
+            
+            $this->transactionalRepository->commit();
+            return $response;
+        } catch (Exception $e) {
+            $this->transactionalRepository->rollBack();
+            throw $e;
+        } 
+
+    }
+    function deleteProductReview(DeleteProductReviewDto $dto): ResponseViewModel{
+        try {
+            
+            $this->transactionalRepository->beginTransaction();
+            $response = parent::deleteProductReview($dto);
+            
+            $this->transactionalRepository->commit();
+            return $response;
+        } catch (Exception $e) {
+            $this->transactionalRepository->rollBack();
+            throw $e;
+        } 
+
+    }
 }
