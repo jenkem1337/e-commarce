@@ -46,4 +46,7 @@ abstract class ProductServiceDecorator implements ProductService {
 	function incrementStockQuantityForCanceledOrder($dto): ResponseViewModel{
 		return $this->productService->incrementStockQuantityForCanceledOrder($dto);
 	}
+	function reviewProduct(ProductReviewDto $dto): ResponseViewModel{
+		return $this->productService->reviewProduct($dto);
+	}
 }

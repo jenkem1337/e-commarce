@@ -172,6 +172,43 @@ class Product extends BaseEntity implements AggregateRoot, ProductInterface{
         }
     }
 
+    function review($rate, $comment, $userUuid){
+        $timestampt = date('Y-m-d H:i:s');
+        $commentModel = Comment::newStrictInstance(
+            UUID::uuid4(), 
+            $this->getUuid(),
+            $userUuid,
+            $comment,
+            $timestampt,
+            $timestampt
+        );
+        $rateModel = Rate::newStrictInstance(
+            UUID::uuid4(),
+            $this->getUuid(),
+            $userUuid,
+            $timestampt,
+            $timestampt
+        );
+        $rateModel->rateIt($rate);
+
+        $this->appendLog(new InsertLog("comment", [
+            "uuid" =>$commentModel->getUuid(),
+            "comment_text" =>$commentModel->getComment(),
+            "user_uuid" => $commentModel->getUserUuid(),
+            "product_uuid" => $this->getUuid(),
+            "created_at" => $commentModel->getCreatedAt(),
+            "updated_at" => $commentModel->getUpdatedAt()
+        ]));
+
+        $this->appendLog(new InsertLog("rates", [
+            "uuid" => $rateModel -> getUuid(),
+            "rate_num" => $rateModel->getRateNumber(),
+            "product_uuid" => $this->getUuid(),
+            "user_uuid" => $rateModel->getUserUuid(),
+            "created_at" => $rateModel->getCreatedAt(),
+            "updated_at" => $rateModel->getUpdatedAt()
+        ]));
+    }
     function isPriceLessThanPreviousPrice(){
         return ($this->price < $this->previousPrice) ? true : false;
     }

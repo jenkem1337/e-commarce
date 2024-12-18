@@ -1,25 +1,26 @@
 <?php
 
-use PhpParser\JsonDecoder;
-use Predis\Client;
 class ProductServiceImpl implements ProductService {
     private ProductRepository $productRepository;
     private CategoryRepository $categoryRepository;
     private BrandRepository $brandRepository;
     private EmailService $emailService;
     private UploadService $uploadService;
+    private ?OrderService $orderService;
 	function __construct(
         ProductRepository $productRepository,
         CategoryRepository $categoryRepository,
         BrandRepository $brandRepository,
         UploadService $uploadService,
         EmailService $emailService,
+        ?OrderService $orderService
     ) {
 	    $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
         $this->brandRepository = $brandRepository;
         $this->uploadService = $uploadService;
         $this->emailService = $emailService;
+        $this->orderService = $orderService;
     }
     function craeteNewProduct(ProductCreationalDto $dto): ResponseViewModel
     {
@@ -263,5 +264,32 @@ class ProductServiceImpl implements ProductService {
         }
         
         return new SuccessResponse(["data" => true]);
+    }
+
+    function reviewProduct(ProductReviewDto $dto): ResponseViewModel{
+        $product = $this->productRepository->findOneProductAggregateByUuid($dto->getProductUuid(), [
+            "comments"=>false,
+            "subscribers"=>false,
+            "categories"=>false,
+            "rates"=> false,
+            "images"=>false
+
+        ]);
+
+        if($product->isNull()) throw new NotFoundException("product");
+
+        $this->orderService->isOrderDelivered(new IsOrderDeliveredDto($dto->getOrderUuid()));
+
+        $product->review($dto->getRate(), $dto->getComment(), $dto->getUserUuid());
+
+        $this->productRepository->saveChanges($product);
+        return new SuccessResponse([
+            "message"=>"Review created successfully",
+            "data" => [
+                "uuid" => $product->getUuid(),
+                "rate" => $dto->getRate(),
+                "comment" => $dto->getComment()
+            ]
+        ]);
     }
 }

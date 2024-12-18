@@ -13,4 +13,5 @@ interface ProductService {
     function updateProductStockQuantity(ChangeProductStockQuantityDto $dto):ResponseViewModel;
     function checkQuantityAndDecrease(CheckAndDecreaseProductsDto $dto):ResponseViewModel;
     function incrementStockQuantityForCanceledOrder($dto): ResponseViewModel;
+    function reviewProduct(ProductReviewDto $dto):ResponseViewModel;
 }

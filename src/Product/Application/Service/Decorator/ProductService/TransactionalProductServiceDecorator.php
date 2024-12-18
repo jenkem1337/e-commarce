@@ -127,4 +127,18 @@ class TransactionalProductServiceDecorator extends ProductServiceDecorator {
     function checkQuantityAndDecrease(CheckAndDecreaseProductsDto $dto): ResponseViewModel {
         return parent::checkQuantityAndDecrease($dto);
     }
+    function reviewProduct(ProductReviewDto $dto): ResponseViewModel{
+        try {
+            
+            $this->transactionalRepository->beginTransaction();
+            $response = parent::reviewProduct($dto);
+            
+            $this->transactionalRepository->commit();
+            return $response;
+        } catch (Exception $e) {
+            $this->transactionalRepository->rollBack();
+            throw $e;
+        } 
+
+    }
 }

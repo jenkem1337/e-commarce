@@ -144,6 +144,15 @@ class ProductController {
         $response = $this->productService->updateProductStockQuantity(new ChangeProductStockQuantityDto($productUuid, $jsonBody->new_stock_quantity, $jsonBody->update_event_constant));
         echo json_encode($response);
         http_response_code(201);
+    }
+    function reviewProduct($productUuid) {
+        $jsonBody = json_decode(file_get_contents('php://input'));
 
+        $response = $this->productService->reviewProduct(
+            new ProductReviewDto($productUuid, $jsonBody->order_uuid, $jsonBody->user_uuid, $jsonBody->rate, $jsonBody->comment)
+        );
+
+        echo json_encode($response);
+        http_response_code(201);
     }
 }

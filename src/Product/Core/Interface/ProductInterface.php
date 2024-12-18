@@ -6,6 +6,7 @@ interface ProductInterface {
         function calculateAvarageRate();
         function changeDetails($model, $brand, $header, $description, $price);
         function isPriceLessThanPreviousPrice();
+        function review($rate, $comment, $userUuid);
         function subscribeToProduct($userUuid);
         function unSubscribeToProduct($userUuid);
         function addSubscriber(ProductSubscriberInterface $sub);
