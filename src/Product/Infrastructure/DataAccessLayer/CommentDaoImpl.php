@@ -7,22 +7,6 @@ class CommentDaoImpl implements CommentDao {
     {
         $this->dbConnection = $dbConn;
     }
-	function persist(Comment $c) {
-        $conn = $this->dbConnection->getConnection();
-        $stmt = $conn->prepare(
-            "INSERT INTO comment (uuid, comment_text, user_uuid, product_uuid, created_at, updated_at)
-             VALUES (:uuid, :comment_text, :user_uuid, :product_uuid, :created_at, :updated_at)"
-        );
-        $stmt->execute([
-            'uuid'=>$c->getUuid(),
-            'comment_text' => $c->getComment(),
-            'user_uuid'=>$c->getUserUuid(),
-            'product_uuid'=>$c->getProductUuid(),
-            'created_at'=> $c->getCreatedAt(),
-            'updated_at'=>$c->getUpdatedAt()
-        ]);
-        $conn=null;
-	}
 	
 	function deleteByUuid($uuid) {
         $conn = $this->dbConnection->getConnection();
@@ -71,18 +55,20 @@ class CommentDaoImpl implements CommentDao {
         return $comment;
 	}
 	
-	function updateByUuid(Comment $c) {
+    function findOneByProductUuidAndUserUuid($productUuid, $userUuid){
         $conn = $this->dbConnection->getConnection();
         $stmt = $conn->prepare(
-            "UPDATE comment SET comment_text = :comment_text, updated_at = NOW() WHERE uuid = :uuid"
+            "SELECT * FROM comment WHERE product_uuid = :product_uuid AND user_uuid = :user_uuid LIMIT 1"
         );
         $stmt->execute([
-            'uuid'=>$c->getUuid(),
-            'comment_text'=>$c->getComment()
+            'product_uuid' => $productUuid,
+            'user_uuid' => $userUuid
         ]);
-        $conn = null;
-	}
+        $comment = $stmt->fetch(PDO::FETCH_OBJ);
+        if($comment == null) return $this->returnNullStatment();
+        return $comment;
 
+    }
     function findAllByProductUuid($productUuid){
         $conn = $this->dbConnection->getConnection();
         $stmt = $conn->prepare(

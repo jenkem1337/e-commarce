@@ -5,30 +5,24 @@ class RateDaoImpl implements RateDao {
 	function __construct(DatabaseConnection $dbConn) {
         $this->dbConnection = $dbConn;
 	}
-	function persist(Rate $r) {
+
+    function findOneByProductUuidAndUserUuid($productUuid, $userUuid){
         $conn = $this->dbConnection->getConnection();
         $stmt = $conn->prepare(
-            "INSERT INTO rates (uuid, rate_num, product_uuid, user_uuid, created_at, updated_at)
-            VALUES (:uuid, :rate_num, :product_uuid, :user_uuid, :created_at, :updated_at)"
+            "SELECT * FROM rates WHERE product_uuid = :product_uuid AND user_uuid = :user_uuid LIMIT 1"
         );
         $stmt->execute([
-            'uuid'=>$r->getUuid(),
-            'rate_num'=>$r->getRateNumber(),
-            'product_uuid'=>$r->getPruductUuid(),
-            'user_uuid'=>$r->getUserUuid(),
-            'created_at'=>$r->getCreatedAt(),
-            'updated_at'=>$r->getUpdatedAt()
+            'product_uuid'=>$productUuid,
+            'user_uuid' => $userUuid
         ]);
+        $rate = $stmt->fetch(PDO::FETCH_OBJ);
         $conn = null;
-	}
-	
-	/**
-	 *
-	 * @param mixed $uuid
-	 *
-	 * @return mixed
-	 */
-	function findOneByUuid($uuid) {
+        if($rate ==null) return $this->returnNullStatment();
+        return $rate;
+
+    }
+
+    function findOneByUuid($uuid) {
         $conn = $this->dbConnection->getConnection();
         $stmt = $conn->prepare(
             "SELECT * FROM rates WHERE uuid = :uuid LIMIT 1"
@@ -60,24 +54,6 @@ class RateDaoImpl implements RateDao {
 
 	}
 	
-	/**
-	 *
-	 * @param Rate $r
-	 *
-	 * @return mixed
-	 */
-	function updateRateNumberByUuid(Rate $r) {
-        $conn = $this->dbConnection->getConnection();
-        $stmt = $conn->prepare(
-            "UPDATE rates SET rate_num = :rate_num, updated_at = NOW()
-            WHERE uuid = :uuid"
-        );
-        $stmt->execute([
-            'uuid'=>$r->getUuid(),
-            'rate_num'=>$r->getRateNumber()
-        ]);
-        $conn = null;
-	}
 	function findAllByProductUuid($pUuid)
     {
         $conn = $this->dbConnection->getConnection();
