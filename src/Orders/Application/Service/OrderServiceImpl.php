@@ -3,10 +3,10 @@
 class OrderServiceImpl implements OrderService {
     function __construct(
         private OrderRepository $orderRepository,
-        private PaymentService $paymentService,
-        private ShippingService $shippingService,
-        private ProductService $productService,
-        private EmailService $emailService
+        private ?PaymentService $paymentService,
+        private ?ShippingService $shippingService,
+        private ?ProductService $productService,
+        private ?EmailService $emailService
     ){}
 
     function placeOrder(PlaceOrderDto $placeOrderDto): ResponseViewModel{
@@ -142,4 +142,11 @@ class OrderServiceImpl implements OrderService {
         ]);
     }
     
+    function isOrderDelivered(IsOrderDeliveredDto $isOrderDeliveredDto){
+        $orderAggregate = $this->orderRepository->findOneAggregateByUuid($isOrderDeliveredDto->getUuid());
+        
+        if($orderAggregate->isNull()) throw new NotFoundException("order");
+
+        $orderAggregate->isDelivered();
+    }
 }
