@@ -24,7 +24,6 @@ class OrderControllerFactory implements Factory{
                 
             ),
             new ProductServiceImpl(
-                new ProductRepositoryAggregateRootDecorator(
                     new ProductRepositoryImpl(
                         $productDao,
                         new ProductSubscriberRepositoryImpl(
@@ -39,8 +38,7 @@ class OrderControllerFactory implements Factory{
                         new ImageRepositoryImpl(
                             new ImageDaoImpl(MySqlPDOConnection::getInstance())
                         )
-                    )
-                ),
+                    ),
                 new CategoryRepositoryImpl(
                     new CategoryDaoImpl(MySqlPDOConnection::getInstance())
                 ),
