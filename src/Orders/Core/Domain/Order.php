@@ -181,6 +181,12 @@ class Order extends BaseEntity implements AggregateRoot, OrderInterface {
         ]));
 
     }
+    function isDelivered(){
+        if(!($this->status == OrderStatus::DELIVERED)) {
+            throw new OrderStatusException("The order status is not delivered");
+        }
+        return true;
+    }
     private function swapItemCollection(OrderItemCollection $orderItemCollection) {
         $this->items = $orderItemCollection; 
     }

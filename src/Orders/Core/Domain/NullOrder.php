@@ -1,6 +1,7 @@
 <?php
 
 class NullOrder implements OrderInterface {
+    function isDelivered(){}
     function determineLatestAmount($shippingPrice){}
     function setStatusToReturned(){}
     function setStatusToCanceled(){}
