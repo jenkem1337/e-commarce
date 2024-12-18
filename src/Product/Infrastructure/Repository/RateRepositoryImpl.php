@@ -7,14 +7,6 @@ class RateRepositoryImpl implements RateRepository {
         $this->rateDao = $rateDao;
     }
 
-    function persist(Rate $r)
-    {
-        $this->rateDao->persist($r);
-    }
-    function updateRateNumberByUuid(Rate $r)
-    {
-        $this->rateDao->updateRateNumberByUuid($r);
-    }
     function deleteRateByUuid($uuid)
     {
         $this->rateDao->deleteRateByUuid($uuid);
@@ -80,8 +72,14 @@ class RateRepositoryImpl implements RateRepository {
         return $rateArray;
 
     }
-    function setProductMediator(AbstractProductRepositoryMediatorComponent $mediator)
-    {
-        $mediator->setRateRepository($this);
+    function findOneByProductUuidAndUserUuid($productUuid, $userUuid): RateInterface{
+        $rateObject = $this->rateDao->findOneByProductUuidAndUserUuid($productUuid, $userUuid);
+        return Rate::newInstance(
+            $rateObject->uuid,
+            $rateObject->product_uuid,
+            $rateObject->user_uuid,
+            $rateObject->created_at,
+            $rateObject->updated_at
+        );
     }
 }
