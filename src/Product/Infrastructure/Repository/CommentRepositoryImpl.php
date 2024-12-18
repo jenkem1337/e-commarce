@@ -7,9 +7,16 @@ class CommentRepositoryImpl implements CommentRepository {
     {
         $this->commentDao = $commentDao;
     }
-    function persist(Comment $c)
-    {
-        $this->commentDao->persist($c);
+    function findOneByProductUuidAndUserUuid($productUuid, $userUuid): CommentInterface{
+        $commentObj = $this->commentDao->findOneByProductUuidAndUserUuid($productUuid, $userUuid);
+        return Comment::newInstance(
+            $commentObj->uuid,
+            $commentObj->product_uuid,
+            $commentObj->user_uuid,
+            $commentObj->comment_text,
+            $commentObj->created_at,
+            $commentObj->updated_at
+        );
     }
     function findAll():IteratorAggregate
     {
@@ -85,13 +92,5 @@ class CommentRepositoryImpl implements CommentRepository {
     }
     function deleteAllByProductUuid($productUuid){
         $this->commentDao->deleteAllByProductUuid($productUuid);
-    }
-    function updateByUuid(Comment $c)
-    {
-        $this->commentDao->updateByUuid($c);
-    }
-    function setProductMediator(AbstractProductRepositoryMediatorComponent $mediator)
-    {
-        $mediator->setCommentRepository($this);
     }
 }
