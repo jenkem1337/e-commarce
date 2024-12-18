@@ -51,7 +51,8 @@ class OrderControllerFactory implements Factory{
                 new UploadServiceImpl(
                     MinIOConnection::getInstance()
                 ),
-                $mailService
+                $mailService,
+                null
             ),
             $mailService
         );
