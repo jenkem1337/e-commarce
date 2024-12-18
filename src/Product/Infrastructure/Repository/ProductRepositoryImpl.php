@@ -186,4 +186,70 @@ class ProductRepositoryImpl extends TransactionalRepository implements ProductRe
         return $productCollection;
     }
     
+    function findOneAggregateWithCommentAndRateByProductAndUserUuid($productUuid, $userUuid):ProductInterface{
+        $rate = $this->rateRepository->findOneByProductUuidAndUserUuid($productUuid, $userUuid);
+        $comment = $this->commentRepository->findOneByProductUuidAndUserUuid($productUuid, $userUuid);
+        
+        $productObject = $this->productDao->findOneByUuid($productUuid);
+
+        $productAggregate = Product::newInstance(
+                            $productObject->uuid,
+                            $productObject->brand_uuid,
+                            $productObject->model_uuid,
+                            $productObject->header,
+                            $productObject->_description,
+                            $productObject->price,
+                            $productObject->stockquantity,
+                            $productObject->created_at,
+                            $productObject->updated_at
+                        );
+        $productAggregate->addComment($comment);
+        $productAggregate->addRate($rate);
+
+        return $productAggregate;
+    }
+
+    function findOneAggregateWithCommentByProductAndUserUuid($productUuid, $userUuid):ProductInterface{
+        $comment = $this->commentRepository->findOneByProductUuidAndUserUuid($productUuid, $userUuid);
+        
+        $productObject = $this->productDao->findOneByUuid($productUuid);
+
+        $productAggregate = Product::newInstance(
+                            $productObject->uuid,
+                            $productObject->brand_uuid,
+                            $productObject->model_uuid,
+                            $productObject->header,
+                            $productObject->_description,
+                            $productObject->price,
+                            $productObject->stockquantity,
+                            $productObject->created_at,
+                            $productObject->updated_at
+                        );
+        $productAggregate->addComment($comment);
+
+        return $productAggregate;
+
+    }
+    function findOneAggregateWithRateByProductAndUserUuid($productUuid, $userUuid):ProductInterface{
+        $rate = $this->rateRepository->findOneByProductUuidAndUserUuid($productUuid, $userUuid);
+        
+        $productObject = $this->productDao->findOneByUuid($productUuid);
+
+        $productAggregate = Product::newInstance(
+                            $productObject->uuid,
+                            $productObject->brand_uuid,
+                            $productObject->model_uuid,
+                            $productObject->header,
+                            $productObject->_description,
+                            $productObject->price,
+                            $productObject->stockquantity,
+                            $productObject->created_at,
+                            $productObject->updated_at
+                        );
+        $productAggregate->addRate($rate);
+
+        return $productAggregate;
+
+    }
+
 }
