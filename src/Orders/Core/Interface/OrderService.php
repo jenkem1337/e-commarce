@@ -8,4 +8,5 @@ interface OrderService {
     function returnOrderRequest(OrderStatusDto $dto):ResponseViewModel;
     function returnOrder(OrderStatusDto $dto):ResponseViewModel;
     function findAllWithItemsByUserUuid(FindAllOrderWithItemsByUserUuidDto $dto): ResponseViewModel;
+    function isOrderDelivered(IsOrderDeliveredDto $isOrderDeliveredDto);
 }
