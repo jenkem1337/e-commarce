@@ -8,6 +8,7 @@ interface OrderInterface extends BaseEntityInterface{
     function setStatusToDispatched();
     function setStatusToCanceled();
     function setStatusToReturnRequest();
+    function isDelivered();
     public function getUserUuid();
 
     public function getPaymentUuid();
