@@ -16,22 +16,11 @@ class UserRepositoryImpl extends TransactionalRepository implements UserReposito
         parent::__construct($this->userDao);
     }
 
-    function findAllWithPagination($startingLimit, $perPageForUsers, UserCollection $userCollection):IteratorAggregate
+    function findAllWithPagination($startingLimit, $perPageForUsers):array
     {
-        $users = $this->userDao->findAllWithPagination($startingLimit, $perPageForUsers);
-        foreach($users as $u){
-            $user = User::newInstance(
-                $u->uuid,
-                $u->full_name,
-                $u->email,
-                $u->user_password,
-                $u->is_user_activated,
-                $u->created_at,
-                $u->updated_at
-            );
-            $user->setUserRole($u->user_role);
-            $userCollection->add($user);
-        }
+
+        $userCollection = $this->userDao->findAllWithPagination($startingLimit, $perPageForUsers);
+       
         return $userCollection;
     }
     function findOneUserByUuid($uuid):UserInterface
