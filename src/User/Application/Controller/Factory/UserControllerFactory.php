@@ -17,7 +17,7 @@ class UserControllerFactory implements Factory {
             ),new TransactionalAuthServiceDecorator(
                 new AuthServiceImpl(
                     $userAggregateRepositoryDecorator,
-                    new EmailServiceImpl(new PHPMailer(true)),
+                    KafkaConnection::getInstance(),
                 ), $userRepository
             )
         );

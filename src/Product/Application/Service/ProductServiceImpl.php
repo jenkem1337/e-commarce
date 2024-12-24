@@ -2,24 +2,24 @@
 
 class ProductServiceImpl implements ProductService {
     private ProductRepository $productRepository;
-    private CategoryRepository $categoryRepository;
-    private BrandRepository $brandRepository;
-    private EmailService $emailService;
-    private UploadService $uploadService;
+    private ?CategoryRepository $categoryRepository;
+    private ?BrandRepository $brandRepository;
+    private ?MessageBroker $broker;
+    private ?UploadService $uploadService;
     private ?OrderService $orderService;
 	function __construct(
         ProductRepository $productRepository,
-        CategoryRepository $categoryRepository,
-        BrandRepository $brandRepository,
-        UploadService $uploadService,
-        EmailService $emailService,
+        ?CategoryRepository $categoryRepository,
+        ?BrandRepository $brandRepository,
+        ?UploadService $uploadService,
+        ?MessageBroker $broker,
         ?OrderService $orderService
     ) {
 	    $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
         $this->brandRepository = $brandRepository;
         $this->uploadService = $uploadService;
-        $this->emailService = $emailService;
+        $this->broker = $broker;
         $this->orderService = $orderService;
     }
     function craeteNewProduct(ProductCreationalDto $dto): ResponseViewModel
@@ -44,6 +44,13 @@ class ProductServiceImpl implements ProductService {
 
         $this->productRepository->saveChanges($productDomainObject);
         
+        $this->broker->emit("product-search-projection", [
+            "productUuid" => $productDomainObject->getUuid(),
+            "brand"=> $brand->getName(),
+            "model" => $brand->getModels()->getItem($dto->getModel())->getName(),
+            "header" => $productDomainObject->getHeader(),
+            "description" => $productDomainObject->getDescription()
+        ]);
         return new SuccessResponse([
                 "message" => "Product created successfully !",
                 "data" => [
@@ -172,7 +179,7 @@ class ProductServiceImpl implements ProductService {
     function updateProductDetailsByUuid(ProductDetailDto $dto): ResponseViewModel {
         $productDomainObject = $this->productRepository->findOneProductAggregateByUuid($dto->getUuid(),[
             "comments"=>false,
-            "subscribers"=>false,
+            "subscribers"=>"get",
             "categories"=>false,
             "rates"=> false,
             "images"=>false
@@ -186,6 +193,19 @@ class ProductServiceImpl implements ProductService {
             $dto->getDescription(),
             $dto->getPrice()
         );
+
+        if($productDomainObject->isPriceLessThanPreviousPrice()) {
+            foreach($productDomainObject->getSubscribers()->getItems() as $subscriber){
+                $this->broker->emit("send-price-less-than-previous-email", [
+                    "fullname" => $subscriber->getUserFullName(),
+                    "email" => $subscriber->getUserEmail(),
+                    "newPrice"=>$productDomainObject->getPrice(),
+                    "oldPrice"=>$productDomainObject->getPreviousPrice(),
+                    "productUuid"=>$productDomainObject->getUuid()
+                ]);
+    
+            }
+        }
         $this->productRepository->saveChanges($productDomainObject);
         return new SuccessResponse([
             "message" => "Product details changed successfully",

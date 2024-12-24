@@ -3,15 +3,15 @@ use Ramsey\Uuid\Nonstandard\Uuid;
 
 class AuthServiceImpl implements AuthService{
     private UserRepository $userRepository;
-    private EmailService $emailService;
+    private MessageBroker $messageBroker;
 
     function __construct(
         UserRepository $userRepo, 
-        EmailService $emailService, 
+        MessageBroker $messageBroker, 
         )
     {
         $this->userRepository = $userRepo;
-        $this->emailService   = $emailService;
+        $this->messageBroker   = $messageBroker;
     }
     function login(UserLoginDto $userLoginDto):ResponseViewModel{
         $user = $this->userRepository->findUserByEmail($userLoginDto->getEmail());
@@ -60,7 +60,12 @@ class AuthServiceImpl implements AuthService{
         );
         
         $this->userRepository->persistUser($user);
-        $this->emailService->sendVerificationCode($user);
+        
+        $this->messageBroker->emit("send-register-activation-email", [
+            "fullname"=> $user->getFullname(),
+            "email"=>$user->getEmail(),
+            "activationCode"=> $user->getActivationCode()
+        ]);
 
         return new SuccessResponse([
             "message" => "User registered successfully !",
@@ -69,7 +74,6 @@ class AuthServiceImpl implements AuthService{
                 "full_name" => $user->getFullname(),
                 "email" => $user->getEmail(),
                 "role" => $user->getUserRole(),
-                "refresh_token" => $user->getRefreshTokenModel()->getRefreshToken()
             ]
         ]);
 
@@ -130,9 +134,14 @@ class AuthServiceImpl implements AuthService{
         $user->createForgettenPasswordCode();
         
         $this->userRepository->updateForgettenPasswordCode($user);
-        $this->emailService->sendChangeForgettenPasswordEmail($user);
         
-        return new SuccessResponse([
+        $this->messageBroker->emit("send-forgetten-password-email", [
+            "fullname"=> $user->getFullname(),
+            "email"=>$user->getEmail(),
+            "forgettenPasswordCode"=> $user->getForegettenPasswordCode()
+        ]);
+        
+        return new SuccessResponse( [
             "message" => "Email successfuly sended, take your code and create new password :)",
             "data" => [
                 "email" => $forgettenPasswordMailDto->getEmail()

@@ -39,20 +39,13 @@ class OrderControllerFactory implements Factory{
                             new ImageDaoImpl(MySqlPDOConnection::getInstance())
                         )
                     ),
-                new CategoryRepositoryImpl(
-                    new CategoryDaoImpl(MySqlPDOConnection::getInstance())
-                ),
-                new BrandRepositoryImpl(
-                    new BrandDaoImpl(MySqlPDOConnection::getInstance()),
-                    new ModelRepositoryImpl(new ModelDaoImpl(MySqlPDOConnection::getInstance()))
-                ),
-                new UploadServiceImpl(
-                    MinIOConnection::getInstance()
-                ),
-                $mailService,
+                null,
+                null,
+                null,
+                null,
                 null
             ),
-            $mailService
+            KafkaConnection::getInstance()
         );
         return new OrderController(new TransactionalOrderService($orderService, $orderRepo),  new RemoteCheckoutServiceImpl(new HttpCheckoutServiceDataSource()));
     }

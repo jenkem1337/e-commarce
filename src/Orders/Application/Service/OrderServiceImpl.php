@@ -6,7 +6,7 @@ class OrderServiceImpl implements OrderService {
         private ?PaymentService $paymentService,
         private ?ShippingService $shippingService,
         private ?ProductService $productService,
-        private ?EmailService $emailService
+        private ?MessageBroker $broker
     ){}
 
     function placeOrder(PlaceOrderDto $placeOrderDto): ResponseViewModel{
@@ -31,7 +31,11 @@ class OrderServiceImpl implements OrderService {
         
         $this->orderRepository->saveChanges($order);
         
-        //$this->emailService->notifyUserForOrderCreated($placeOrderDto);
+        $this->broker->emit("send-order-created-email", [
+            "orderOwnerName" => $placeOrderDto->getAddressOwnerName(),
+            "email" => $placeOrderDto->getEmail()
+        ]);
+        
         return new SuccessResponse([
             "message" => "Order created successfully !!",
             "data" => [
