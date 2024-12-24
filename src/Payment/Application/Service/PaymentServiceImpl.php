@@ -30,7 +30,7 @@ class PaymentServiceImpl implements PaymentService {
     function pay(PayOrderDto $dto): ResponseViewModel {
         $response = null;
         switch($dto->getPaymentMethod()){
-            case "CreditCart":
+            case "CreditCard":
                 $response = $this->payWithCreditCart(new PayWithCreditCartDto($dto->getUserUuid(), $dto->getPaymentMethod(), $dto->getOrderAmount(), $dto->getPaymentDetail()->number, $dto->getPaymentDetail()->expiration_date, $dto->getPaymentDetail()->cvc, $dto->getPaymentDetail()->owner));
                 break;
             default: throw new Exception("Unknown payment command");
