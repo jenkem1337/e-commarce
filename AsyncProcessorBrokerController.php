@@ -1,9 +1,11 @@
 <?php
 
 require './vendor/autoload.php';
-
+Dotenv\Dotenv::createImmutable(__DIR__)->load();
+$emailService = new EmailServiceImpl(
+    new PHPMailer\PHPMailer\PHPMailer(true)
+);
 $conf = $conf = new RdKafka\Conf();
-
 // Set a rebalance callback to log partition assignments (optional)
 $conf->setRebalanceCb(function (RdKafka\KafkaConsumer $kafka, $err, array $partitions = null) {
     switch ($err) {
@@ -29,7 +31,7 @@ $conf->setRebalanceCb(function (RdKafka\KafkaConsumer $kafka, $err, array $parti
 $conf->set('group.id', 'async-processor-consumer');
 
 // Initial list of Kafka brokers
-$conf->set('metadata.broker.list', 'async-processor-broker');
+$conf->set('metadata.broker.list', $_ENV["KAFKA_HOST"]);
 
 // Set where to start consuming messages when there is no initial offset in
 // offset store or the desired offset is out of range.
@@ -40,22 +42,68 @@ $conf->set('auto.offset.reset', 'earliest');
 $conf->set('enable.partition.eof', 'true');
 
 $consumer = new RdKafka\KafkaConsumer($conf);
+$producer = new RdKafka\Producer($conf);
+$producer->newTopic('send-register-activation-email');
+$producer->newTopic('send-forgetten-password-email');
+$producer->newTopic('send-price-less-than-previous-email');
+$producer->newTopic('send-order-created-email');
+$producer->newTopic('product-search-projection');
 // Subscribe to topic 'test'
 $consumer->subscribe(
     [
-        'send-register-verification-email',
-        'send-forgetten-password-email'
-    ]);
+        'send-register-activation-email',
+        'send-forgetten-password-email',
+        'send-price-less-than-previous-email',
+        'send-order-created-email',
+        'product-search-projection'
+    ]); 
 
 echo "Waiting for partition assignment... (make take some time when\n";
 echo "quickly re-joining the group after leaving it.)\n";
-
+$database = MySqlPDOConnection::getInstance();
+$pdo = $database->getConnection();
 while (true) {
     $message = $consumer->consume(120*1000);
     switch ($message->err) {
         case RD_KAFKA_RESP_ERR_NO_ERROR:
             echo var_dump($message);
-            break;
+            if($message->topic_name == "send-register-activation-email"){
+                $payload = json_decode($message->payload);
+                $emailService->sendVerificationCode(new VerficationCodeEmailDto($payload->fullname, $payload->email, $payload->activationCode));
+                return;
+            }
+            
+            if($message->topic_name == 'send-forgetten-password-email') {
+                $payload = json_decode($message->payload);
+                $emailService->sendChangeForgettenPasswordEmail(new ForgottenPasswordEmailDto($payload->fullname, $payload->email, $payload->forgettenPasswordCode));
+                return;
+            }
+            if($message->topic_name == "send-price-less-than-previous-email"){
+                $payload = json_decode($message->payload);
+                $emailService->notifyProductSubscribersForPriceChanged(new SendPriceReducedEmailDto($payload->fullname, $payload->email, $payload->productUuid, $payload->newPrice, $payload->oldPrice));
+                return;
+            }
+            if($message->topic_name == "send-order-created-email"){
+                $payload = json_decode($message->payload);
+                $emailService->notifyUserForOrderCreated(new OrderCreatedEmailDto($payload->orderOwnerName, $payload->email));
+                return;
+            }
+            if($message->topic_name == 'product-search-projection'){
+                $payload = json_decode($message->payload);
+                try {
+                    $stmt = $pdo->prepare("INSERT INTO product_search (product_uuid, brand, model, header, description) VALUES (:uuid, :brand, :model, :header, :description)");
+                    $stmt->execute([
+                        "uuid" => $payload->productUuid,
+                        "brand" => $payload->brand,
+                        "model" => $payload->model,
+                        "header" => $payload->header,
+                        "description" => $payload->description
+                    ]);                
+                    echo "Product search projection completed\n";
+                } catch (\Throwable $th) {
+                    echo $th->getMessage();
+                }
+            }
         case RD_KAFKA_RESP_ERR__PARTITION_EOF:
             echo "No more messages; will wait for more\n";
             break;
