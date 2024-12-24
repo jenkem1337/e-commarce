@@ -1,5 +1,5 @@
 # e-commarce
 
-Front Controller - Layered Architecture - RESTFull - Rich Domain Model - Redis - MySql
+Front Controller - Layered Architecture - RESTFull - Rich Domain Model - Redis - MySql - Apache Kafka
 
 
