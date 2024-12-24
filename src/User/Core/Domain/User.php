@@ -59,6 +59,8 @@ class User extends BaseEntity implements AggregateRoot, UserInterface{
         
         $user->createActivationCode();
 
+        $user->createRefreshTokenModel();
+
         $user->appendLog(new InsertLog("users", [
             "uuid" => $user->getUuid(),
             "full_name" => $user->getFullname(),

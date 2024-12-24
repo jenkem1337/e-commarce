@@ -29,8 +29,8 @@ class UserRepositoryAggregateRootDecorator extends UserRepositoryDecorator{
     function findUserByForgettenPasswordCode($passwordCode):UserInterface{
         return parent::findUserByForgettenPasswordCode($passwordCode);
     }
-    function findAllWithPagination($startingLimit, $perPageForUsers, UserCollection $u):IteratorAggregate{
-        return parent::findAllWithPagination($startingLimit, $perPageForUsers, $u);
+    function findAllWithPagination($startingLimit, $perPageForUsers):array{
+        return parent::findAllWithPagination($startingLimit, $perPageForUsers);
     }
     function findOneUserByUuid($uuid):UserInterface{
         return parent::findOneUserByUuid($uuid);

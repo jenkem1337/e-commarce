@@ -24,7 +24,7 @@ class EmailServiceImpl implements EmailService {
         $this->phpMailer->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
     }
-    function sendVerificationCode(User $user){
+    function sendVerificationCode(VerficationCodeEmailDto $user){
         try {
             $this->serverOptions();
             
@@ -33,7 +33,7 @@ class EmailServiceImpl implements EmailService {
     
             $code = $user->getActivationCode();
             $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https://" : "http://";
-            $url.=$_SERVER['HTTP_HOST'];
+            $url.=$_SERVER['HTTP_HOST'] ?? "localhost:".$_ENV["APP_PORT"];
             $url.="/auth/verify-user-acc?code=$code";
     
             $this->phpMailer->isHTML();
@@ -46,14 +46,14 @@ class EmailServiceImpl implements EmailService {
         }
     }
 
-    function sendChangeForgettenPasswordEmail(User $user){
+    function sendChangeForgettenPasswordEmail(ForgottenPasswordEmailDto $user){
         try {
             $this->serverOptions();
             
             $this->phpMailer->setFrom($_ENV['EMAIL'], "ADMIN");
             $this->phpMailer->addAddress($user->getEmail(), $user->getFullname());
     
-            $code = $user->getForegettenPasswordCode();
+            $code = $user->getForgettenPasswordCode();
     
             $this->phpMailer->isHTML();
             $this->phpMailer->Subject = "User Account Mail Verification";
@@ -80,7 +80,7 @@ class EmailServiceImpl implements EmailService {
             $productUuid = $dto->getProductUuid();
 
             $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https://" : "http://";
-            $url.=$_SERVER['HTTP_HOST'] ?? "localhost";
+            $url.=$_SERVER['HTTP_HOST'] ?? "localhost:".$_ENV["APP_PORT"];
             $url.="/products/$productUuid";
 
 
@@ -95,16 +95,16 @@ class EmailServiceImpl implements EmailService {
         }
     }
 
-    function notifyUserForOrderCreated(PlaceOrderDto $dto){
+    function notifyUserForOrderCreated(OrderCreatedEmailDto $dto){
         try {
             $this->serverOptions();
             
             $this->phpMailer->setFrom($_ENV['EMAIL'], "ADMIN");
-            $this->phpMailer->addAddress($dto->getEmail(), $dto->getAddressOwnerSurname());
+            $this->phpMailer->addAddress($dto->getEmail(), $dto->getFullname());
 
             $this->phpMailer->isHTML();
             $this->phpMailer->Subject = "We have received your order, and it is being prepared";
-            $this->phpMailer->Body = "";
+            $this->phpMailer->Body = "We have received your order, and it is being prepared";
             $this->phpMailer->send();
         } catch (Exception $e) {
             echo json_encode(["mailler_err"=>$this->phpMailer->ErrorInfo]);

@@ -35,9 +35,8 @@ class UserServiceImpl implements UserService{
         $userList = $this->userRepository->findAllWithPagination(
             $listAllUserDto->getStartingLimit(), 
             $listAllUserDto->getPerPageForUser(),
-            new UserCollection()
         );
-        return new AllUserResponseDto($userList->getIterator());
+        return new SuccessResponse(["data"=>$userList]);
     }
 
     function findOneUserByUuid(FindOneUserByUuidDto $userUuidDto): ResponseViewModel

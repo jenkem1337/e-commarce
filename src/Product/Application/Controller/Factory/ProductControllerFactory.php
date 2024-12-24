@@ -43,7 +43,7 @@ class ProductControllerFactory implements Factory {
                     $categoryRepositoryImpl,
                     $brandRepository,
                     new UploadServiceImpl(MinIOConnection::getInstance()),
-                    new EmailServiceImpl(new PHPMailer(true)),
+                    KafkaConnection::getInstance(),
                     $orderService
                 ), $productRepositoryImpl
             )

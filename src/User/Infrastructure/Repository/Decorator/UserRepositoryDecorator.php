@@ -32,8 +32,8 @@ abstract class UserRepositoryDecorator implements UserRepository {
     function findUserByForgettenPasswordCode($passwordCode):UserInterface{
         return $this->userRepository->findUserByForgettenPasswordCode($passwordCode);
     }
-    function findAllWithPagination($startingLimit, $perPageForUsers, UserCollection $u):IteratorAggregate{
-        return $this->userRepository->findAllWithPagination($startingLimit, $perPageForUsers, $u);
+    function findAllWithPagination($startingLimit, $perPageForUsers):array{
+        return $this->userRepository->findAllWithPagination($startingLimit, $perPageForUsers);
     }
     function findOneUserByUuid($uuid):UserInterface{
         return $this->userRepository->findOneUserByUuid($uuid);
