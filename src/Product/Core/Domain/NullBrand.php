@@ -1,6 +1,7 @@
 <?php
 
 class NullBrand implements BrandInterface, NullEntityInterface {
+    function getModels(): ModelCollection{return new ModelCollection();}
     function getName(){}
     function changeName($name){}
     function addModel(ModelInterface $modelInterface) {}
