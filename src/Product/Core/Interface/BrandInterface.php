@@ -1,5 +1,6 @@
 <?php
 interface BrandInterface {
+    function getModels(): ModelCollection;
     function getName();
     function changeName($name);
     function addModel(ModelInterface $modelInterface);
