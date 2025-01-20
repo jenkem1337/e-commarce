@@ -1,7 +1,7 @@
 <?php
 
 require './vendor/autoload.php';
-Dotenv\Dotenv::createImmutable(__DIR__)->load();
+Dotenv\Dotenv::createImmutable(__DIR__, getenv("APP_ENV") == "docker" ? [".env.docker"] : [".env"])->load();
 $emailService = new EmailServiceImpl(
     new PHPMailer\PHPMailer\PHPMailer(true)
 );

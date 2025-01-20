@@ -9,6 +9,8 @@ services:
     networks:
       - php-app
     restart: always
+    environment:
+      - APP_ENV=docker
     depends_on:
       - php-backend-fpm
   
@@ -17,19 +19,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.PHP-FPM
+    environment:
+      - APP_ENV=docker
     networks:
       - php-app
     restart: always
   
-  php-async-processor-consumer:
-    container_name: php-async-processor-consumer
-    build:
-      context: .
-      dockerfile: Dockerfile.AsyncProcessorBrokerController
-    networks:
-      - php-app
-    restart: always
-
   async-processor-broker:
     image: apache/kafka:latest
     container_name: async-processor-broker
@@ -53,6 +48,15 @@ services:
       - "9092"
       - "9093"
     restart: always
+
+  refresh-token-cache:
+    image: redis:7-alpine
+    container_name: refresh-token-cache
+    expose: 
+      - "6379"
+    networks:
+      - php-app
+
 networks:
   php-app:
     

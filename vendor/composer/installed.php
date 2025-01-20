@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '98e90bd9f69683fd28a9adda7c2caa9f39d6410b',
+        'reference' => 'bcf928f8cc234c25c83f66f3392981c2b66c6cc5',
         'name' => 'hasan/htdocs',
         'dev' => true,
     ),
@@ -106,7 +106,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '98e90bd9f69683fd28a9adda7c2caa9f39d6410b',
+            'reference' => 'bcf928f8cc234c25c83f66f3392981c2b66c6cc5',
             'dev_requirement' => false,
         ),
         'mtdowling/jmespath.php' => array(
@@ -536,6 +536,15 @@
             'install_path' => __DIR__ . '/../symfony/polyfill-php80',
             'aliases' => array(),
             'reference' => '60328e362d4c2c802a54fcbf04f9d3fb892b4cf8',
+            'dev_requirement' => false,
+        ),
+        'symfony/yaml' => array(
+            'pretty_version' => 'v7.2.0',
+            'version' => '7.2.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/yaml',
+            'aliases' => array(),
+            'reference' => '099581e99f557e9f16b43c5916c26380b54abb22',
             'dev_requirement' => false,
         ),
         'theseer/tokenizer' => array(

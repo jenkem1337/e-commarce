@@ -9,6 +9,9 @@ services:
     networks:
       - e-commarce-network
     restart: always
+    environment:
+      - APP_ENV=docker
+
     depends_on:
       - php-backend-fpm
       - minio
@@ -18,6 +21,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.PHP-FPM
+    environment:
+      - APP_ENV=docker
+
     networks:
       - e-commarce-network
     depends_on:
@@ -33,6 +39,9 @@ services:
     networks:
       - e-commarce-network
     restart: always
+    environment:
+      - APP_ENV=docker
+
 
   checkout-projection-broker:
     image: apache/kafka:latest
@@ -91,6 +100,8 @@ services:
     restart: always
     networks:
       - e-commarce-network
+    environment:
+      - NODE_ENV=docker
     depends_on:
       - checkout-projection-broker
   
@@ -100,6 +111,8 @@ services:
     ports:
       - "3001:3000"
     restart: always
+    environment:
+      - NODE_ENV=docker
     networks:
       - e-commarce-network
     depends_on:
@@ -120,7 +133,30 @@ services:
     networks:
       - e-commarce-network
 
-    
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - e-commarce-network
+
+  refresh-token-cache:
+    image: redis:7-alpine
+    container_name: refresh-token-cache
+    expose: 
+      - "6379"
+    networks:
+      - e-commarce-network
+  
+  idempotent-message-cache:
+    image: redis:7-alpine
+    container_name: idempotent-message-cache
+    expose: 
+      - "6379"
+    networks:
+      - e-commarce-network
 networks:
   e-commarce-network:
   

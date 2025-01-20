@@ -16,13 +16,13 @@ class EmailServiceImpl implements EmailService {
     private function serverOptions(){
         $this->phpMailer->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
         $this->phpMailer->isSMTP();                                            //Send using SMTP
-        $this->phpMailer->Host       = $_ENV['EMAIL_HOST'];                     //Set the SMTP server to send through
-        $this->phpMailer->SMTPAuth   = true;                                   //Enable SMTP authentication
-        $this->phpMailer->Username   = $_ENV['EMAIL'];                    //SMTP username
-        $this->phpMailer->Password   = $_ENV['EMAIL_PASSWORD'];                              //SMTP password
-        $this->phpMailer->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption PHPMailer::ENCRYPTION_SMTPS 
-        $this->phpMailer->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-
+        $this->phpMailer->Host       = 'mailhog';
+        $this->phpMailer->SMTPAuth   = false;
+        $this->phpMailer->Username   = null;
+        $this->phpMailer->Password   = null;
+        $this->phpMailer->SMTPSecure = false;
+        $this->phpMailer->Port       = 1025;
+    
     }
     function sendVerificationCode(VerficationCodeEmailDto $user){
         try {
