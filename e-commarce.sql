@@ -1,28 +1,5 @@
--- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
---
--- Host: localhost    Database: e-ticaret-crud
--- ------------------------------------------------------
--- Server version	8.4.2
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Table structure for table `brand_models`
---
-
-DROP TABLE IF EXISTS `brand_models`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `brand_models` (
+CREATE TABLE IF NOT EXISTS `brand_models` (
   `uuid` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `brand_uuid` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
@@ -38,10 +15,9 @@ CREATE TABLE `brand_models` (
 -- Table structure for table `brands`
 --
 
-DROP TABLE IF EXISTS `brands`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `brands` (
+CREATE TABLE IF NOT EXISTS `brands` (
   `uuid` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `created_at` timestamp(6) NOT NULL,
@@ -54,10 +30,9 @@ CREATE TABLE `brands` (
 -- Table structure for table `categories`
 --
 
-DROP TABLE IF EXISTS `categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `categories` (
+CREATE TABLE IF NOT EXISTS `categories` (
   `uuid` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
   `category_name` varchar(256) COLLATE utf8mb4_general_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -71,10 +46,9 @@ CREATE TABLE `categories` (
 -- Table structure for table `comment`
 --
 
-DROP TABLE IF EXISTS `comment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `comment` (
+CREATE TABLE IF NOT EXISTS `comment` (
   `uuid` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
   `comment_text` text COLLATE utf8mb4_general_ci NOT NULL,
   `user_uuid` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
@@ -114,10 +88,9 @@ CREATE TABLE `image` (
 -- Table structure for table `order_items`
 --
 
-DROP TABLE IF EXISTS `order_items`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `order_items` (
+CREATE TABLE IF NOT EXISTS `order_items` (
   `uuid` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
   `order_uuid` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
   `product_uuid` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
@@ -137,10 +110,9 @@ CREATE TABLE `order_items` (
 -- Table structure for table `order_status`
 --
 
-DROP TABLE IF EXISTS `order_status`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `order_status` (
+CREATE TABLE IF NOT EXISTS `order_status` (
   `status` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`status`),
   UNIQUE KEY `status_UNIQUE` (`status`)
@@ -151,10 +123,9 @@ CREATE TABLE `order_status` (
 -- Table structure for table `orders`
 --
 
-DROP TABLE IF EXISTS `orders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `orders` (
+CREATE TABLE IF NOT EXISTS `orders` (
   `uuid` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
   `user_uuid` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
   `payment_uuid` varchar(36) COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -180,10 +151,9 @@ CREATE TABLE `orders` (
 -- Table structure for table `payment_methods`
 --
 
-DROP TABLE IF EXISTS `payment_methods`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `payment_methods` (
+CREATE TABLE IF NOT EXISTS `payment_methods` (
   `method` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`method`),
   UNIQUE KEY `method_UNIQUE` (`method`)
@@ -194,10 +164,9 @@ CREATE TABLE `payment_methods` (
 -- Table structure for table `payments`
 --
 
-DROP TABLE IF EXISTS `payments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `payments` (
+CREATE TABLE IF NOT EXISTS `payments` (
   `uuid` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
   `user_uuid` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
   `amount` int NOT NULL,
@@ -217,10 +186,9 @@ CREATE TABLE `payments` (
 -- Table structure for table `product_category`
 --
 
-DROP TABLE IF EXISTS `product_category`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `product_category` (
+CREATE TABLE IF NOT EXISTS `product_category` (
   `uuid` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
   `category_uuid` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
   `product_uuid` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
@@ -238,10 +206,9 @@ CREATE TABLE `product_category` (
 -- Table structure for table `product_search`
 --
 
-DROP TABLE IF EXISTS `product_search`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `product_search` (
+CREATE TABLE IF NOT EXISTS `product_search` (
   `product_uuid` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
   `brand` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `model` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
@@ -256,10 +223,9 @@ CREATE TABLE `product_search` (
 -- Table structure for table `product_subscriber`
 --
 
-DROP TABLE IF EXISTS `product_subscriber`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `product_subscriber` (
+CREATE TABLE IF NOT EXISTS `product_subscriber` (
   `uuid` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
   `user_uuid` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
   `product_uuid` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
@@ -277,10 +243,9 @@ CREATE TABLE `product_subscriber` (
 -- Table structure for table `products`
 --
 
-DROP TABLE IF EXISTS `products`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `products` (
+CREATE TABLE IF NOT EXISTS `products` (
   `uuid` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
   `brand_uuid` varchar(36) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `model_uuid` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
@@ -304,10 +269,9 @@ CREATE TABLE `products` (
 -- Table structure for table `rates`
 --
 
-DROP TABLE IF EXISTS `rates`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `rates` (
+CREATE TABLE IF NOT EXISTS `rates` (
   `uuid` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
   `rate_num` int NOT NULL,
   `product_uuid` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
@@ -326,10 +290,9 @@ CREATE TABLE `rates` (
 -- Table structure for table `shipment_types`
 --
 
-DROP TABLE IF EXISTS `shipment_types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `shipment_types` (
+CREATE TABLE IF NOT EXISTS `shipment_types` (
   `type` varchar(64) COLLATE utf8mb4_general_ci NOT NULL,
   `price` int NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -342,10 +305,9 @@ CREATE TABLE `shipment_types` (
 -- Table structure for table `shipments`
 --
 
-DROP TABLE IF EXISTS `shipments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `shipments` (
+CREATE TABLE IF NOT EXISTS `shipments` (
   `uuid` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
   `type` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
   `status` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
@@ -371,10 +333,9 @@ CREATE TABLE `shipments` (
 -- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `uuid` varchar(36) COLLATE utf8mb4_general_ci NOT NULL,
   `full_name` varchar(256) COLLATE utf8mb4_general_ci NOT NULL,
   `email` varchar(256) COLLATE utf8mb4_general_ci NOT NULL,
@@ -402,3 +363,16 @@ CREATE TABLE `users` (
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2024-12-31 15:14:24
+
+INSERT INTO shipment_types (type, price) VALUES ('FREE', 0);
+INSERT INTO shipment_types (type, price) VALUES ('PAIDED', 40);
+
+INSERT INTO payment_methods (method) VALUES ('CreditCard');
+
+INSERT INTO order_status (status) VALUES ('CANCELED');
+INSERT INTO order_status (status) VALUES ('CREATED');
+INSERT INTO order_status (status) VALUES ('DELIVERED');
+INSERT INTO order_status (status) VALUES ('DISPATCHED');
+INSERT INTO order_status (status) VALUES ('PROCESSING');
+INSERT INTO order_status (status) VALUES ('RETURNED');
+INSERT INTO order_status (status) VALUES ('RETURN_REQUEST');

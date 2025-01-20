@@ -114,7 +114,7 @@ executeCommand("docker build -f Dockerfile.AsyncProcessorBrokerController -t php
 executeCommand("docker volume create ecommerce-volume");
 executeCommand("docker network create mysql-db-net");
 executeCommand("docker container run -d -it -v ecommerce-volume:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=rootpassword -e MYSQL_USER=myuser -e MYSQL_PASSWORD=mypassword -e MYSQL_DATABASE=e-commerce-db --name temp-db --network mysql-db-net mysql:latest");
-sleep(2);
+sleep(5);
 executeCommand("type .\\e-commarce.sql | docker exec -i temp-db mysql -u root -prootpassword e-commerce-db");
 sleep(1);
 executeCommand("docker exec -i temp-db mysql -u root -prootpassword -e \"USE e-commerce-db; INSERT INTO users (uuid, full_name, email, user_password, email_activation_code, is_user_activated, user_role) VALUES ('5ca97765-840a-4069-8db7-0e1a1910c4c8', 'admin', 'admin@ecommerce.com', MD5('123456789'), '11111111111', 1, 'ADMIN');\"");
@@ -291,6 +291,7 @@ $eCommarceComposeData = [
         ],
         'mailhog' => [
             'image' => 'mailhog/mailhog',
+            'container_name' => "mailhog",
             'ports' => [
                 '1025:1025',
                 '8025:8025',
