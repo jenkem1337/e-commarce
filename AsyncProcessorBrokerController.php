@@ -69,7 +69,6 @@ while (true) {
             echo var_dump($message);
             if($message->topic_name == "send-register-activation-email"){
                 $payload = json_decode($message->payload);
-                error_log($payload);
                 $emailService->sendVerificationCode(new VerficationCodeEmailDto($payload->fullname, $payload->email, $payload->activationCode));
                 return;
             }
