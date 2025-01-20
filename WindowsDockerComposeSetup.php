@@ -45,7 +45,7 @@ file_put_contents('.env.docker', $eCommerceAppDockerEnv);
 $actualProjectFolder = getcwd();
 
 $checkoutServiceWriteFolder = __DIR__."/checkout-service/write-side";
-$checkoutServiceReadFolder = __DIR__."/checkout-service/read-side";
+$checkoutServiceReadFolder  = __DIR__."/checkout-service/read-side";
 
 executeCommand("git clone https://github.com/jenkem1337/checkout-service.git");
 
