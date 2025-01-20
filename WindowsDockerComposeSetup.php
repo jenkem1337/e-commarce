@@ -170,22 +170,25 @@ $eCommarceComposeData = [
         "php-proxy" => [
             "image" => "php-ecommerce-apache-proxy",
             "ports" => ["8000:80"],
-            "depends_on" => ["php-backend-fpm", "minio", "mysql-database","refresh-token-cache"],
+            "depends_on" => ["async-processor-broker","php-backend-fpm", "minio", "mysql-database","refresh-token-cache"],
             "networks" => ["e-commarce-network"],
-            "environment" => ["APP_ENV" => "docker"]
+            "environment" => ["APP_ENV" => "docker"],
+            "restart" => "always"
 
         ],
         "php-backend-fpm" => [
             "image" => "php-ecommerce-fpm-backend",
             "networks" => ["e-commarce-network"],
-            "depends_on" => ["minio", "mysql-database","refresh-token-cache"],
-            "environment" => ["APP_ENV" => "docker"]
+            "depends_on" => ["async-processor-broker","minio", "mysql-database","refresh-token-cache"],
+            "environment" => ["APP_ENV" => "docker"],
+            "restart" => "always"
         ],
         "php-async-processor-consumer" => [
             "image" => "php-ecommerce-async-processor",
             "networks" => ["e-commarce-network"],
-            "depends_on"=>["async-processor-broker", "php-proxy", "php-backend-fpm"],
-            "environment" => ["APP_ENV" => "docker"]
+            "depends_on"=>["async-processor-broker", "php-proxy", "php-backend-fpm", "mysql-database"],
+            "environment" => ["APP_ENV" => "docker"],
+            "restart" => "always"
         ],
         'async-processor-broker' => [
             'image' => 'apache/kafka:latest',
@@ -211,6 +214,7 @@ $eCommarceComposeData = [
                 '9092',
                 '9093',
             ],
+            "restart" => "always"
         ],
         'checkout-projection-broker' => [
             'image' => 'apache/kafka:latest',
@@ -236,6 +240,7 @@ $eCommarceComposeData = [
                 '9092',
                 '9093',
             ],
+            "restart" => "always"
         ],
         'checkout-write-service' => [
             'image' => 'checkout-write-side',
