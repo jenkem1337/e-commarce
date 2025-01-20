@@ -40,6 +40,7 @@ class EmailServiceImpl implements EmailService {
             $this->phpMailer->Subject = "User Account Mail Verification";
             $this->phpMailer->Body = "Verify your account <br> <a href='$url'>Click For Verify => $url</a>";
             $this->phpMailer->send();
+            error_log("mail sended !!");
         } catch (Exception $e) {
             echo json_encode(["mailler_err"=>$this->phpMailer->ErrorInfo]);
             throw $e;
