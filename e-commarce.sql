@@ -386,6 +386,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 -- Dump completed on 2024-12-31 15:14:24
 
+INSERT INTO users (uuid, full_name, email, user_password, email_activation_code, is_user_activated, user_role) VALUES ('5ca97765-840a-4069-8db7-0e1a1910c4c8', 'admin', 'admin@ecommerce.com', MD5('123456789'), '11111111111', 1, 'ADMIN');
+
 INSERT INTO shipment_types (type, price) VALUES ('FREE', 0);
 INSERT INTO shipment_types (type, price) VALUES ('PAIDED', 40);
 
