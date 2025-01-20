@@ -81,7 +81,7 @@ EOT;
 file_put_contents('.env.docker', $checkoutReadSideEnv);
 
 executeCommand("docker build -t checkout-read-side .");
-
+executeCommand("Remove-Item -Path \".\checkout-service\" -Force -Recurse ");
 chdir($actualProjectFolder);
 
 $virtualHostConfig = <<<EOT
