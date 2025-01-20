@@ -20,5 +20,4 @@ RUN a2ensite 000-default.conf
 
 COPY . /var/www/html/
 WORKDIR /var/www/html/
-RUN rm .env && mv .env.docker .env
     
