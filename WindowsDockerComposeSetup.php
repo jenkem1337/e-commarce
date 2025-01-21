@@ -175,7 +175,7 @@ $eCommarceComposeData = [
             'environment' => [
                 'ME_CONFIG_MONGODB_ADMINUSERNAME' => 'root',
                 'ME_CONFIG_MONGODB_ADMINPASSWORD' => 'password',
-                'ME_CONFIG_MONGODB_URL' => 'mongodb://root:password@checkout_db:27017/',
+                'ME_CONFIG_MONGODB_URL' => 'mongodb://root:password@checkout-mongo-database:27017/',
             ],
             "networks" => ["e-commarce-network"],
         ],
