@@ -170,6 +170,24 @@ $eCommarceComposeData = [
                 "5432"
             ]
         ],
+        
+        'pgadmin' => [
+            'image' => 'dpage/pgadmin4:latest',
+            'environment' => [
+                'PGADMIN_DEFAULT_EMAIL' => 'admin@admin.com',
+                'PGADMIN_DEFAULT_PASSWORD' => 'admin',
+            ],
+            'ports' => [
+                '8081:80',
+            ],
+            'networks' => [
+                'e-commarce-network',
+            ],
+            'depends_on' => [
+                'checkout-postgres-database',
+            ],
+        ],
+    
         "checkout-mongo-database" => [
             "image" => "mongo:latest",
             "environment" => [
