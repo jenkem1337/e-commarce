@@ -139,7 +139,22 @@ $eCommarceComposeData = [
             ],
             "networks" => ["e-commarce-network"]
         ],
-
+        'phpmyadmin' => [
+            'image' => 'phpmyadmin/phpmyadmin:latest',
+            'environment' => [
+                'PMA_HOST' => 'mysql-database',
+                'PMA_PORT' => '3306',
+                'PMA_USER' => 'root',
+                'PMA_PASSWORD' => 'rootpassword',
+            ],
+            'ports' => [
+                '8082:80',
+            ],
+            'networks' => [
+                'e-commarce-network',
+            ],
+        ],
+    
         "checkout-postgres-database" => [
             "image" => "postgres:16-alpine",
             "environment" => [
