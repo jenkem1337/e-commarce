@@ -178,7 +178,7 @@ $eCommarceComposeData = [
                 'PGADMIN_DEFAULT_PASSWORD' => 'admin',
             ],
             'ports' => [
-                '8081:80',
+                '8083:80',
             ],
             'networks' => [
                 'e-commarce-network',
