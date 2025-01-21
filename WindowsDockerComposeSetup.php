@@ -338,10 +338,10 @@ $eCommarceComposeData = [
         ]
     ],
     "volumes" => [
-        "ecommerce-volume",
-        "minio-volume",
-        "postgres-checkout-service-volume",
-        "mongodb-checkout-service-volume"
+        "ecommerce-volume" => null,
+        "minio-volume" => null,
+        "postgres-checkout-service-volume" => null,
+        "mongodb-checkout-service-volume" => null
 
     ],
     "networks" => [
