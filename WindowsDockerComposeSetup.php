@@ -183,6 +183,7 @@ $eCommarceComposeData = [
             'networks' => [
                 'e-commarce-network',
             ],
+            "volumes" => ["pgadmin-volume:/var/lib/pgadmin"],
             'depends_on' => [
                 'checkout-postgres-database',
             ],
@@ -378,7 +379,8 @@ $eCommarceComposeData = [
         "ecommerce-volume" => null,
         "minio-volume" => null,
         "postgres-checkout-service-volume" => null,
-        "mongodb-checkout-service-volume" => null
+        "mongodb-checkout-service-volume" => null,
+        "pgadmin-volume" => null
 
     ],
     "networks" => [
