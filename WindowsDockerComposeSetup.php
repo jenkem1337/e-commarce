@@ -165,6 +165,19 @@ $eCommarceComposeData = [
             "volumes" => ["mongodb-checkout-service-volume:/data/db"],
             "expose" => ["27017"]
         ],
+        "mongo-express" => [
+            'image' => 'mongo-express',
+            'restart' => 'always',
+            'ports' => [
+                '8081:8081',
+            ],
+            'environment' => [
+                'ME_CONFIG_MONGODB_ADMINUSERNAME' => 'root',
+                'ME_CONFIG_MONGODB_ADMINPASSWORD' => 'password',
+                'ME_CONFIG_MONGODB_URL' => 'mongodb://root:password@checkout_db:27017/',
+            ],
+            "networks" => ["e-commarce-network"],
+        ],
         //php-proxy service
         "php-proxy" => [
             "image" => "php-ecommerce-apache-proxy",
