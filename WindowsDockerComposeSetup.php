@@ -111,17 +111,17 @@ executeCommand("docker build -f Dockerfile.PHP-FPM -t php-ecommerce-fpm-backend 
 executeCommand("docker build -f Dockerfile.AsyncProcessorBrokerController -t php-ecommerce-async-processor .");
 
 
-executeCommand("docker volume create ecommerce-volume");
-executeCommand("docker network create mysql-db-net");
-executeCommand("docker container run -d -it -v ecommerce-volume:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=rootpassword -e MYSQL_USER=myuser -e MYSQL_PASSWORD=mypassword -e MYSQL_DATABASE=e-commerce-db --name temp-db --network mysql-db-net mysql:latest");
-sleep(15);
-executeCommand("type .\\e-commarce.sql | docker exec -i temp-db mysql -u root -prootpassword e-commerce-db");
-executeCommand("docker container rm -f temp-db");
-executeCommand("docker network rm mysql-db-net");
-
-executeCommand("docker volume create minio-volume");
-executeCommand("docker volume create postgres-checkout-service-volume");
-executeCommand("docker volume create mongodb-checkout-service-volume");
+//executeCommand("docker volume create ecommerce-volume");
+//executeCommand("docker network create mysql-db-net");
+//executeCommand("docker container run -d -it -v ecommerce-volume:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=rootpassword -e MYSQL_USER=myuser -e MYSQL_PASSWORD=mypassword -e MYSQL_DATABASE=e-commerce-db --name temp-db --network mysql-db-net mysql:latest");
+//sleep(15);
+//executeCommand("type .\\e-commarce.sql | docker exec -i temp-db mysql -u root -prootpassword e-commerce-db");
+//executeCommand("docker container rm -f temp-db");
+//executeCommand("docker network rm mysql-db-net");
+//
+//executeCommand("docker volume create minio-volume");
+//executeCommand("docker volume create postgres-checkout-service-volume");
+//executeCommand("docker volume create mongodb-checkout-service-volume");
 $eCommarceComposeData = [
     "services" => [
         //ecommarce mysql database service
@@ -134,6 +134,7 @@ $eCommarceComposeData = [
                 "MYSQL_USER" => "myuser"
             ],
             "volumes" => [
+                "./e-commarce.sql:/docker-entrypoint-initdb.d/e-commarce.sql",
                 "ecommerce-volume:/var/lib/mysql"
             ],
             "networks" => ["e-commarce-network"]
@@ -337,18 +338,10 @@ $eCommarceComposeData = [
         ]
     ],
     "volumes" => [
-        "ecommerce-volume" => [
-            "external" => true
-        ],
-        "minio-volume" => [
-            "external" => true
-        ],
-        "postgres-checkout-service-volume" => [
-            "external" => true
-        ],
-        "mongodb-checkout-service-volume" => [
-            "external" => true
-        ],
+        "ecommerce-volume",
+        "minio-volume",
+        "postgres-checkout-service-volume",
+        "mongodb-checkout-service-volume"
 
     ],
     "networks" => [
