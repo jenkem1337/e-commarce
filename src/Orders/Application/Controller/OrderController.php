@@ -6,10 +6,15 @@ class OrderController {
         private RemoteCheckoutService $remoteCheckoutService
     ){}
 
-    function findAllWithItemsByUserUuid($userUuid) {
+    function findAllWithItemsByUserUuid() {
+        $jwtPayload = JwtPayloadDto::getInstance();
+        $userDetail = $jwtPayload->getPayload();
+        $jwtPayload->removePayload();
+
         $response = $this->orderService->findAllWithItemsByUserUuid(
-            new FindAllOrderWithItemsByUserUuidDto($userUuid)
+            new FindAllOrderWithItemsByUserUuidDto($userDetail->user_uuid)
         );
+
         http_response_code(200);
         echo json_encode($response);
 

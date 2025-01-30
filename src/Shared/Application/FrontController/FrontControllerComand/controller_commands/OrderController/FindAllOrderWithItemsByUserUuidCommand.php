@@ -8,6 +8,6 @@ class FindAllOrderWithItemsByUserUuidCommand implements Command {
     function process($params = []){
         $jwtAuth = new JwtAuthMiddleware();
         $jwtAuth->check();
-        $this->orderController->findAllWithItemsByUserUuid(...$params);
+        $this->orderController->findAllWithItemsByUserUuid();
     }
 }
