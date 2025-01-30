@@ -147,9 +147,13 @@ class ProductController {
     }
     function reviewProduct($productUuid) {
         $jsonBody = json_decode(file_get_contents('php://input'));
+        
+        $jwtPayload = JwtPayloadDto::getInstance();
+        $userDetail = $jwtPayload->getPayload();
+        $jwtPayload->removePayload();
 
         $response = $this->productService->reviewProduct(
-            new ProductReviewDto($productUuid, $jsonBody->order_uuid, $jsonBody->user_uuid, $jsonBody->rate, $jsonBody->comment)
+            new ProductReviewDto($productUuid, $jsonBody->order_uuid, $userDetail->user_uuid, $jsonBody->rate, $jsonBody->comment)
         );
 
         echo json_encode($response);
@@ -157,9 +161,12 @@ class ProductController {
     }
     function updateProductComment($productUuid) {
         $jsonBody = json_decode(file_get_contents('php://input'));
+        $jwtPayload = JwtPayloadDto::getInstance();
+        $userDetail = $jwtPayload->getPayload();
+        $jwtPayload->removePayload();
 
         $response = $this->productService->updateProductComment(
-            new UpdateProductCommentDto($productUuid, $jsonBody->user_uuid,$jsonBody->comment)
+            new UpdateProductCommentDto($productUuid, $userDetail->user_uuid,$jsonBody->comment)
         );
 
         echo json_encode($response);
@@ -168,9 +175,12 @@ class ProductController {
 
     function updateProductRate($productUuid) {
         $jsonBody = json_decode(file_get_contents('php://input'));
+        $jwtPayload = JwtPayloadDto::getInstance();
+        $userDetail = $jwtPayload->getPayload();
+        $jwtPayload->removePayload();
 
         $response = $this->productService->updateProductRate(
-            new UpdateProductRateDto($productUuid, $jsonBody->user_uuid,$jsonBody->rate)
+            new UpdateProductRateDto($productUuid, $userDetail->user_uuid,$jsonBody->rate)
         );
 
         echo json_encode($response);
@@ -180,9 +190,12 @@ class ProductController {
 
     function removeProductReview($productUuid) {
         $jsonBody = json_decode(file_get_contents('php://input'));
+        $jwtPayload = JwtPayloadDto::getInstance();
+        $userDetail = $jwtPayload->getPayload();
+        $jwtPayload->removePayload();
 
         $response = $this->productService->deleteProductReview(
-            new DeleteProductReviewDto($productUuid, $jsonBody->user_uuid)
+            new DeleteProductReviewDto($productUuid, $userDetail->user_uuid)
         );
 
         echo json_encode($response);
