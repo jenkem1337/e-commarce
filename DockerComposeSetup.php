@@ -47,7 +47,9 @@ $actualProjectFolder = getcwd();
 $checkoutServiceWriteFolder = __DIR__."/checkout-service/write-side";
 $checkoutServiceReadFolder  = __DIR__."/checkout-service/read-side";
 
-executeCommand("git clone https://github.com/jenkem1337/checkout-service.git");
+if (!is_dir('checkout-service/.git')) {
+    executeCommand("git clone https://github.com/jenkem1337/checkout-service.git");
+}
 
 chdir($checkoutServiceWriteFolder);
 
