@@ -15,7 +15,7 @@ To set up the project, follow these steps:
 
 ### 1. Clone the repository:
 ```bash
-git clone https://github.com/your-username/e-commerce-php.git
+git clone https://github.com/jenkem1337/e-commarce.git
 ```
 ### 2. Run Docker Setup:
 
