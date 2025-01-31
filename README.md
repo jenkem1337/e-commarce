@@ -2,7 +2,7 @@
 
 ## Project Purpose
 
-This project is a simple e-commerce system built in PHP, aimed at providing a platform for practicing and improving PHP development skills. The goal of the project is to create a basic online store that allows for product listings, a shopping cart, user authentication, and order management. It's a great exercise for anyone looking to improve their PHP skills and understand the fundamentals of building an e-commerce application.
+This project is a simple e-commerce system built in PHP, aimed at providing a platform for practicing and improving backend development skills.
 
 ## Prerequisites
 
@@ -23,3 +23,11 @@ Navigate to the project folder and execute the following command to set up the n
 ```bash
 php DockerComposeSetup.php
 ```
+### 3. Start the Application
+Once the setup is complete, run the following command to start the application:
+
+```bash
+docker compose up
+```
+This will launch the application in a Docker container, and you can access it through your local server.
+
